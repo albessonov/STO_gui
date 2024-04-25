@@ -71,7 +71,5 @@ def Test4_run(Seatbelt_position):
   Result.ParseFromString(bytes(Resultbuf))
   print(Result)
 
-if __name__=="__main__":
-    Test2_run()
 
 
