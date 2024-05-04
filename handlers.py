@@ -1,6 +1,6 @@
 import STO_tests_V2_nanopb_pb2 as Messages
 import serial
-portNumber = "COM5"  # Replace with the appropriate COM port name
+portNumber = "COM6"  # Replace with the appropriate COM port name
 baudrate = 115200  # Replace with the desired baud rate
 UART = serial.Serial(portNumber, baudrate=baudrate,timeout=10)
 def Test1_run():
