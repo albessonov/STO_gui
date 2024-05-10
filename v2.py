@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import time
 
 # Form implementation generated from reading ui file 'avtovaz.ui'
 #
@@ -16,21 +16,21 @@ from PyQt5 import QtSerialPort
 import serial
 import threading
 import multiprocessing
-
+from states import *
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1029, 754)
+        MainWindow.resize(1115, 840)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
-        self.tabWidget.setGeometry(QtCore.QRect(0, 0, 1021, 741))
+        self.tabWidget.setGeometry(QtCore.QRect(0, 0, 1111, 841))
         self.tabWidget.setObjectName("tabWidget")
         self.init_tab = QtWidgets.QWidget()
         self.init_tab.setObjectName("init_tab")
         self.groupBox_2 = QtWidgets.QGroupBox(self.init_tab)
-        self.groupBox_2.setGeometry(QtCore.QRect(10, 0, 1001, 241))
+        self.groupBox_2.setGeometry(QtCore.QRect(10, 0, 1091, 241))
         self.groupBox_2.setTitle("")
         self.groupBox_2.setObjectName("groupBox_2")
         self.Run_Init_btn = QtWidgets.QPushButton(self.groupBox_2)
@@ -39,84 +39,93 @@ class Ui_MainWindow(object):
         self.Run_Init_btn.setObjectName("Run_Init_btn")
         self.inittime_brs = QtWidgets.QTextBrowser(self.groupBox_2)
         self.inittime_brs.setGeometry(QtCore.QRect(660, 90, 271, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.inittime_brs.setFont(font)
         self.inittime_brs.setObjectName("inittime_brs")
         self.initresult_brs = QtWidgets.QTextBrowser(self.groupBox_2)
         self.initresult_brs.setGeometry(QtCore.QRect(660, 150, 271, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.initresult_brs.setFont(font)
         self.initresult_brs.setObjectName("initresult_brs")
         self.Inittime_lbl = QtWidgets.QLabel(self.groupBox_2)
-        self.Inittime_lbl.setGeometry(QtCore.QRect(40, 90, 271, 20))
+        self.Inittime_lbl.setGeometry(QtCore.QRect(40, 90, 301, 31))
         font = QtGui.QFont()
-        font.setFamily("Noto Sans Armenian")
-        font.setPointSize(10)
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(14)
         self.Inittime_lbl.setFont(font)
         self.Inittime_lbl.setTextFormat(QtCore.Qt.AutoText)
         self.Inittime_lbl.setObjectName("Inittime_lbl")
         self.Initreuult_lbl = QtWidgets.QLabel(self.groupBox_2)
-        self.Initreuult_lbl.setGeometry(QtCore.QRect(80, 150, 161, 20))
+        self.Initreuult_lbl.setGeometry(QtCore.QRect(40, 150, 221, 20))
         font = QtGui.QFont()
-        font.setFamily("Noto Sans Armenian")
-        font.setPointSize(10)
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(14)
         self.Initreuult_lbl.setFont(font)
         self.Initreuult_lbl.setObjectName("Initreuult_lbl")
         self.can_msg_brs = QtWidgets.QTextBrowser(self.init_tab)
-        self.can_msg_brs.setGeometry(QtCore.QRect(30, 330, 951, 241))
+        self.can_msg_brs.setGeometry(QtCore.QRect(30, 360, 1051, 261))
         self.can_msg_brs.setObjectName("can_msg_brs")
         self.can_msg_lbl = QtWidgets.QLabel(self.init_tab)
-        self.can_msg_lbl.setGeometry(QtCore.QRect(40, 300, 261, 16))
+        self.can_msg_lbl.setGeometry(QtCore.QRect(40, 320, 271, 31))
         font = QtGui.QFont()
-        font.setPointSize(11)
+        font.setPointSize(14)
         self.can_msg_lbl.setFont(font)
         self.can_msg_lbl.setObjectName("can_msg_lbl")
         self.tabWidget.addTab(self.init_tab, "")
         self.can_tab = QtWidgets.QWidget()
         self.can_tab.setObjectName("can_tab")
         self.groupBox_3 = QtWidgets.QGroupBox(self.can_tab)
-        self.groupBox_3.setGeometry(QtCore.QRect(10, 0, 1001, 361))
+        self.groupBox_3.setGeometry(QtCore.QRect(10, 0, 1091, 391))
         self.groupBox_3.setTitle("")
         self.groupBox_3.setObjectName("groupBox_3")
         self.perod_periodic_btn = QtWidgets.QPushButton(self.groupBox_3)
-        self.perod_periodic_btn.setGeometry(QtCore.QRect(720, 80, 251, 31))
+        self.perod_periodic_btn.setGeometry(QtCore.QRect(770, 80, 251, 41))
         self.perod_periodic_btn.setObjectName("perod_periodic_btn")
         self.measured_period_brs = QtWidgets.QTextBrowser(self.groupBox_3)
-        self.measured_period_brs.setGeometry(QtCore.QRect(720, 190, 256, 31))
+        self.measured_period_brs.setGeometry(QtCore.QRect(770, 190, 256, 31))
         self.measured_period_brs.setObjectName("measured_period_brs")
         self.result_periodic_brs = QtWidgets.QTextBrowser(self.groupBox_3)
-        self.result_periodic_brs.setGeometry(QtCore.QRect(720, 300, 256, 31))
+        self.result_periodic_brs.setGeometry(QtCore.QRect(770, 300, 256, 31))
         self.result_periodic_brs.setObjectName("result_periodic_brs")
         self.period_peciodic_title = QtWidgets.QLabel(self.groupBox_3)
-        self.period_peciodic_title.setGeometry(QtCore.QRect(270, 20, 491, 31))
+        self.period_peciodic_title.setGeometry(QtCore.QRect(270, 20, 571, 31))
         font = QtGui.QFont()
-        font.setFamily("Bahnschrift Light SemiCondensed")
-        font.setPointSize(14)
+        font.setFamily("Franklin Gothic Medium")
+        font.setPointSize(18)
         self.period_peciodic_title.setFont(font)
         self.period_peciodic_title.setObjectName("period_peciodic_title")
         self.accepted_periodic_brs = QtWidgets.QTextBrowser(self.groupBox_3)
         self.accepted_periodic_brs.setGeometry(QtCore.QRect(10, 140, 611, 192))
         self.accepted_periodic_brs.setObjectName("accepted_periodic_brs")
         self.label_5 = QtWidgets.QLabel(self.groupBox_3)
-        self.label_5.setGeometry(QtCore.QRect(720, 160, 151, 16))
+        self.label_5.setGeometry(QtCore.QRect(770, 170, 151, 16))
         font = QtGui.QFont()
-        font.setPointSize(9)
+        font.setPointSize(11)
         self.label_5.setFont(font)
         self.label_5.setObjectName("label_5")
         self.label_6 = QtWidgets.QLabel(self.groupBox_3)
-        self.label_6.setGeometry(QtCore.QRect(720, 280, 81, 16))
+        self.label_6.setGeometry(QtCore.QRect(770, 280, 81, 16))
         font = QtGui.QFont()
-        font.setPointSize(9)
+        font.setPointSize(11)
         self.label_6.setFont(font)
         self.label_6.setObjectName("label_6")
         self.label_7 = QtWidgets.QLabel(self.groupBox_3)
-        self.label_7.setGeometry(QtCore.QRect(20, 110, 231, 16))
+        self.label_7.setGeometry(QtCore.QRect(20, 110, 251, 21))
         font = QtGui.QFont()
-        font.setPointSize(10)
+        font.setFamily("Yu Gothic UI")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
         self.label_7.setFont(font)
         self.label_7.setObjectName("label_7")
         self.groupBox_4 = QtWidgets.QGroupBox(self.can_tab)
-        self.groupBox_4.setGeometry(QtCore.QRect(10, 360, 1001, 361))
+        self.groupBox_4.setGeometry(QtCore.QRect(10, 390, 1091, 421))
         self.groupBox_4.setTitle("")
         self.groupBox_4.setObjectName("groupBox_4")
         self.start_trig_btn = QtWidgets.QPushButton(self.groupBox_4)
-        self.start_trig_btn.setGeometry(QtCore.QRect(720, 80, 251, 31))
+        self.start_trig_btn.setGeometry(QtCore.QRect(720, 80, 251, 41))
         self.start_trig_btn.setObjectName("start_trig_btn")
         self.measured_trig_brs = QtWidgets.QTextBrowser(self.groupBox_4)
         self.measured_trig_brs.setGeometry(QtCore.QRect(720, 190, 256, 31))
@@ -125,90 +134,106 @@ class Ui_MainWindow(object):
         self.result_trig_brs.setGeometry(QtCore.QRect(720, 300, 256, 31))
         self.result_trig_brs.setObjectName("result_trig_brs")
         self.period_trig_title = QtWidgets.QLabel(self.groupBox_4)
-        self.period_trig_title.setGeometry(QtCore.QRect(180, 20, 631, 31))
+        self.period_trig_title.setGeometry(QtCore.QRect(230, 20, 731, 31))
         font = QtGui.QFont()
-        font.setFamily("Bahnschrift Light SemiCondensed")
-        font.setPointSize(14)
+        font.setFamily("Franklin Gothic Medium")
+        font.setPointSize(18)
+        font.setBold(False)
+        font.setWeight(50)
         self.period_trig_title.setFont(font)
         self.period_trig_title.setObjectName("period_trig_title")
         self.accepted_trig_brs = QtWidgets.QTextBrowser(self.groupBox_4)
         self.accepted_trig_brs.setGeometry(QtCore.QRect(10, 140, 611, 192))
         self.accepted_trig_brs.setObjectName("accepted_trig_brs")
         self.measured_trig_lbl = QtWidgets.QLabel(self.groupBox_4)
-        self.measured_trig_lbl.setGeometry(QtCore.QRect(720, 160, 151, 16))
+        self.measured_trig_lbl.setGeometry(QtCore.QRect(720, 170, 151, 16))
         font = QtGui.QFont()
-        font.setPointSize(9)
+        font.setPointSize(11)
         self.measured_trig_lbl.setFont(font)
         self.measured_trig_lbl.setObjectName("measured_trig_lbl")
         self.result_trig_lbl = QtWidgets.QLabel(self.groupBox_4)
         self.result_trig_lbl.setGeometry(QtCore.QRect(720, 280, 81, 16))
         font = QtGui.QFont()
-        font.setPointSize(9)
+        font.setPointSize(11)
         self.result_trig_lbl.setFont(font)
         self.result_trig_lbl.setObjectName("result_trig_lbl")
         self.accepted_trig_lbl = QtWidgets.QLabel(self.groupBox_4)
-        self.accepted_trig_lbl.setGeometry(QtCore.QRect(20, 110, 231, 16))
+        self.accepted_trig_lbl.setGeometry(QtCore.QRect(20, 100, 241, 31))
         font = QtGui.QFont()
-        font.setPointSize(10)
+        font.setFamily("Yu Gothic UI")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
         self.accepted_trig_lbl.setFont(font)
         self.accepted_trig_lbl.setObjectName("accepted_trig_lbl")
         self.tabWidget.addTab(self.can_tab, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
         self.groupBox = QtWidgets.QGroupBox(self.tab_2)
-        self.groupBox.setGeometry(QtCore.QRect(700, 10, 311, 281))
+        self.groupBox.setGeometry(QtCore.QRect(770, 10, 331, 281))
         self.groupBox.setObjectName("groupBox")
         self.AIRBAG_OFF_btn = QtWidgets.QRadioButton(self.groupBox)
-        self.AIRBAG_OFF_btn.setGeometry(QtCore.QRect(10, 40, 261, 20))
+        self.AIRBAG_OFF_btn.setGeometry(QtCore.QRect(10, 40, 281, 20))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.AIRBAG_OFF_btn.setFont(font)
         self.AIRBAG_OFF_btn.setObjectName("AIRBAG_OFF_btn")
         self.acc_selector = QtWidgets.QComboBox(self.groupBox)
-        self.acc_selector.setGeometry(QtCore.QRect(10, 90, 131, 21))
+        self.acc_selector.setGeometry(QtCore.QRect(30, 120, 181, 21))
         self.acc_selector.setObjectName("acc_selector")
         self.acc_selector.addItem("")
         self.acc_selector.addItem("")
         self.acc_selector.addItem("")
         self.acc_selector.addItem("")
         self.acc_selector_lbl = QtWidgets.QLabel(self.groupBox)
-        self.acc_selector_lbl.setGeometry(QtCore.QRect(150, 90, 161, 16))
+        self.acc_selector_lbl.setGeometry(QtCore.QRect(30, 90, 201, 16))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.acc_selector_lbl.setFont(font)
         self.acc_selector_lbl.setObjectName("acc_selector_lbl")
         self.groupBox_5 = QtWidgets.QGroupBox(self.tab_2)
-        self.groupBox_5.setGeometry(QtCore.QRect(0, 10, 701, 281))
+        self.groupBox_5.setGeometry(QtCore.QRect(0, 10, 771, 281))
         self.groupBox_5.setTitle("")
         self.groupBox_5.setObjectName("groupBox_5")
         self.start_acc_btn = QtWidgets.QPushButton(self.groupBox_5)
         self.start_acc_btn.setGeometry(QtCore.QRect(340, 20, 301, 41))
         self.start_acc_btn.setObjectName("start_acc_btn")
         self.exp_res_acc_brs = QtWidgets.QTextBrowser(self.groupBox_5)
-        self.exp_res_acc_brs.setText("СНПБ срабатывает, TTF=30 мс")
         self.exp_res_acc_brs.setGeometry(QtCore.QRect(330, 80, 331, 31))
         self.exp_res_acc_brs.setObjectName("exp_res_acc_brs")
         self.got_res_brs = QtWidgets.QTextBrowser(self.groupBox_5)
         self.got_res_brs.setGeometry(QtCore.QRect(330, 170, 331, 31))
         self.got_res_brs.setObjectName("got_res_brs")
         self.expected_res_acc_lbl = QtWidgets.QLabel(self.groupBox_5)
-        self.expected_res_acc_lbl.setGeometry(QtCore.QRect(90, 80, 161, 20))
+        self.expected_res_acc_lbl.setGeometry(QtCore.QRect(40, 80, 211, 20))
         font = QtGui.QFont()
-        font.setPointSize(9)
+        font.setPointSize(14)
         self.expected_res_acc_lbl.setFont(font)
         self.expected_res_acc_lbl.setObjectName("expected_res_acc_lbl")
         self.got_res_acc_lbl = QtWidgets.QLabel(self.groupBox_5)
-        self.got_res_acc_lbl.setGeometry(QtCore.QRect(90, 170, 161, 20))
+        self.got_res_acc_lbl.setGeometry(QtCore.QRect(40, 170, 211, 20))
         font = QtGui.QFont()
-        font.setPointSize(9)
+        font.setPointSize(14)
         self.got_res_acc_lbl.setFont(font)
         self.got_res_acc_lbl.setObjectName("got_res_acc_lbl")
         self.tabWidget.addTab(self.tab_2, "")
         self.tab_6 = QtWidgets.QWidget()
         self.tab_6.setObjectName("tab_6")
         self.groupBox_6 = QtWidgets.QGroupBox(self.tab_6)
-        self.groupBox_6.setGeometry(QtCore.QRect(0, 0, 511, 701))
+        self.groupBox_6.setGeometry(QtCore.QRect(0, 0, 511, 811))
         self.groupBox_6.setTitle("")
         self.groupBox_6.setObjectName("groupBox_6")
         self.start_SBR_btn = QtWidgets.QPushButton(self.groupBox_6)
-        self.start_SBR_btn.setGeometry(QtCore.QRect(20, 40, 421, 41))
+        self.start_SBR_btn.setGeometry(QtCore.QRect(20, 210, 421, 41))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.start_SBR_btn.setFont(font)
         self.start_SBR_btn.setObjectName("start_SBR_btn")
         self.SBR_test_selector = QtWidgets.QComboBox(self.groupBox_6)
-        self.SBR_test_selector.setGeometry(QtCore.QRect(20, 130, 421, 31))
+        self.SBR_test_selector.setGeometry(QtCore.QRect(20, 310, 421, 31))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.SBR_test_selector.setFont(font)
         self.SBR_test_selector.setObjectName("SBR_test_selector")
         self.SBR_test_selector.addItem("")
         self.SBR_test_selector.addItem("")
@@ -218,64 +243,199 @@ class Ui_MainWindow(object):
         self.SBR_test_selector.addItem("")
         self.SBR_test_selector.addItem("")
         self.sbr_test_sel_lbl = QtWidgets.QLabel(self.groupBox_6)
-        self.sbr_test_sel_lbl.setGeometry(QtCore.QRect(170, 100, 151, 20))
+        self.sbr_test_sel_lbl.setGeometry(QtCore.QRect(150, 280, 181, 20))
         font = QtGui.QFont()
-        font.setPointSize(10)
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
         self.sbr_test_sel_lbl.setFont(font)
         self.sbr_test_sel_lbl.setObjectName("sbr_test_sel_lbl")
         self.exp_res_SBR_brs = QtWidgets.QTextBrowser(self.groupBox_6)
-        self.exp_res_SBR_brs.setGeometry(QtCore.QRect(10, 400, 461, 61))
+        self.exp_res_SBR_brs.setGeometry(QtCore.QRect(10, 470, 461, 61))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.exp_res_SBR_brs.setFont(font)
         self.exp_res_SBR_brs.setObjectName("exp_res_SBR_brs")
-        self.exp_res_SBR_brs.setText("При пристёгнутом ремне сигнал DriverSafetyBeltState равен 0х02 (SB fastened) \nПри непристёгнутом ремне сигнал DriverSafetyBeltState равен 0х01 (SB unfastened)")
         self.got_res_SBR_brs = QtWidgets.QTextBrowser(self.groupBox_6)
-        self.got_res_SBR_brs.setGeometry(QtCore.QRect(10, 590, 461, 61))
+        self.got_res_SBR_brs.setGeometry(QtCore.QRect(10, 620, 461, 61))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.got_res_SBR_brs.setFont(font)
         self.got_res_SBR_brs.setObjectName("got_res_SBR_brs")
         self.exp_res_SBR_lbl = QtWidgets.QLabel(self.groupBox_6)
-        self.exp_res_SBR_lbl.setGeometry(QtCore.QRect(20, 370, 181, 20))
+        self.exp_res_SBR_lbl.setGeometry(QtCore.QRect(20, 430, 211, 20))
         font = QtGui.QFont()
-        font.setPointSize(10)
+        font.setPointSize(14)
         self.exp_res_SBR_lbl.setFont(font)
         self.exp_res_SBR_lbl.setObjectName("exp_res_SBR_lbl")
         self.got_res_SBR_lbl = QtWidgets.QLabel(self.groupBox_6)
-        self.got_res_SBR_lbl.setGeometry(QtCore.QRect(20, 560, 221, 20))
+        self.got_res_SBR_lbl.setGeometry(QtCore.QRect(20, 580, 221, 20))
         font = QtGui.QFont()
-        font.setPointSize(10)
+        font.setPointSize(14)
         self.got_res_SBR_lbl.setFont(font)
         self.got_res_SBR_lbl.setObjectName("got_res_SBR_lbl")
-        self.acc_SBR_brs = QtWidgets.QTextBrowser(self.tab_6)
-        self.acc_SBR_brs.setGeometry(QtCore.QRect(530, 150, 471, 481))
-        self.acc_SBR_brs.setObjectName("acc_SBR_brs")
-        self.accepted_SBR_title = QtWidgets.QLabel(self.tab_6)
-        self.accepted_SBR_title.setGeometry(QtCore.QRect(540, 110, 161, 20))
+        self.groupBox_7 = QtWidgets.QGroupBox(self.groupBox_6)
+        self.groupBox_7.setGeometry(QtCore.QRect(0, 0, 511, 191))
+        self.groupBox_7.setObjectName("groupBox_7")
+        self.Seatbelt_selector = QtWidgets.QComboBox(self.groupBox_7)
+        self.Seatbelt_selector.setGeometry(QtCore.QRect(20, 70, 181, 22))
         font = QtGui.QFont()
         font.setPointSize(11)
+        self.Seatbelt_selector.setFont(font)
+        self.Seatbelt_selector.setObjectName("Seatbelt_selector")
+        self.Seatbelt_selector.addItem("")
+        self.Seatbelt_selector.addItem("")
+        self.Seatbelt_selector.addItem("")
+        self.Seatbelt_selector.addItem("")
+        self.Seatbelt_selector.addItem("")
+        self.Door_selector = QtWidgets.QComboBox(self.groupBox_7)
+        self.Door_selector.setGeometry(QtCore.QRect(290, 70, 181, 22))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.Door_selector.setFont(font)
+        self.Door_selector.setObjectName("Door_selector")
+        self.Door_selector.addItem("")
+        self.Door_selector.addItem("")
+        self.Door_selector.addItem("")
+        self.Door_selector.addItem("")
+        self.SB_select_lbl = QtWidgets.QLabel(self.groupBox_7)
+        self.SB_select_lbl.setGeometry(QtCore.QRect(20, 50, 191, 16))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.SB_select_lbl.setFont(font)
+        self.SB_select_lbl.setObjectName("SB_select_lbl")
+        self.Door_select_lbl = QtWidgets.QLabel(self.groupBox_7)
+        self.Door_select_lbl.setGeometry(QtCore.QRect(290, 50, 111, 16))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.Door_select_lbl.setFont(font)
+        self.Door_select_lbl.setObjectName("Door_select_lbl")
+        self.acc_SBR_brs = QtWidgets.QTextBrowser(self.tab_6)
+        self.acc_SBR_brs.setGeometry(QtCore.QRect(530, 200, 471, 481))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.acc_SBR_brs.setFont(font)
+        self.acc_SBR_brs.setObjectName("acc_SBR_brs")
+        self.accepted_SBR_title = QtWidgets.QLabel(self.tab_6)
+        self.accepted_SBR_title.setGeometry(QtCore.QRect(540, 170, 161, 20))
+        font = QtGui.QFont()
+        font.setPointSize(14)
         self.accepted_SBR_title.setFont(font)
         self.accepted_SBR_title.setObjectName("accepted_SBR_title")
         self.tabWidget.addTab(self.tab_6, "")
+        self.tab = QtWidgets.QWidget()
+        self.tab.setObjectName("tab")
+        self.groupBox_8 = QtWidgets.QGroupBox(self.tab)
+        self.groupBox_8.setGeometry(QtCore.QRect(0, -10, 441, 821))
+        self.groupBox_8.setTitle("")
+        self.groupBox_8.setObjectName("groupBox_8")
+        self.START_UDS_BTN = QtWidgets.QPushButton(self.groupBox_8)
+        self.START_UDS_BTN.setGeometry(QtCore.QRect(30, 40, 361, 41))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.START_UDS_BTN.setFont(font)
+        self.START_UDS_BTN.setObjectName("START_UDS_BTN")
+        self.UDS_TEST_SELECTOR = QtWidgets.QComboBox(self.groupBox_8)
+        self.UDS_TEST_SELECTOR.setGeometry(QtCore.QRect(30, 110, 361, 31))
+        font = QtGui.QFont()
+        font.setPointSize(9)
+        self.UDS_TEST_SELECTOR.setFont(font)
+        self.UDS_TEST_SELECTOR.setObjectName("UDS_TEST_SELECTOR")
+        self.UDS_TEST_SELECTOR.addItem("")
+        self.UDS_TEST_SELECTOR.addItem("")
+        self.UDS_TEST_SELECTOR.addItem("")
+        self.UDS_TEST_SELECTOR.addItem("")
+        self.UDS_TEST_SELECTOR.addItem("")
+        self.UDS_TEST_SELECTOR.addItem("")
+        self.UDS_TEST_SELECTOR.addItem("")
+        self.UDS_TEST_SELECTOR.addItem("")
+        self.EXP_RESULT_UDS_BRS = QtWidgets.QTextBrowser(self.groupBox_8)
+        self.EXP_RESULT_UDS_BRS.setGeometry(QtCore.QRect(30, 490, 361, 71))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.EXP_RESULT_UDS_BRS.setFont(font)
+        self.EXP_RESULT_UDS_BRS.setObjectName("EXP_RESULT_UDS_BRS")
+        self.EXP_RES_UDS_LBL = QtWidgets.QLabel(self.groupBox_8)
+        self.EXP_RES_UDS_LBL.setGeometry(QtCore.QRect(90, 450, 201, 20))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.EXP_RES_UDS_LBL.setFont(font)
+        self.EXP_RES_UDS_LBL.setObjectName("EXP_RES_UDS_LBL")
+        self.groupBox_9 = QtWidgets.QGroupBox(self.tab)
+        self.groupBox_9.setGeometry(QtCore.QRect(440, -10, 661, 281))
+        self.groupBox_9.setTitle("")
+        self.groupBox_9.setObjectName("groupBox_9")
+        self.ACCEPTED_CAN_MSG_UDS_BRS = QtWidgets.QTextBrowser(self.groupBox_9)
+        self.ACCEPTED_CAN_MSG_UDS_BRS.setGeometry(QtCore.QRect(30, 80, 591, 192))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.ACCEPTED_CAN_MSG_UDS_BRS.setFont(font)
+        self.ACCEPTED_CAN_MSG_UDS_BRS.setObjectName("ACCEPTED_CAN_MSG_UDS_BRS")
+        self.ACCEPTED_CAN_MSG_LBL = QtWidgets.QLabel(self.groupBox_9)
+        self.ACCEPTED_CAN_MSG_LBL.setGeometry(QtCore.QRect(30, 50, 251, 31))
+        font = QtGui.QFont()
+        font.setFamily("Yu Gothic UI")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
+        self.ACCEPTED_CAN_MSG_LBL.setFont(font)
+        self.ACCEPTED_CAN_MSG_LBL.setObjectName("ACCEPTED_CAN_MSG_LBL")
+        self.groupBox_10 = QtWidgets.QGroupBox(self.tab)
+        self.groupBox_10.setGeometry(QtCore.QRect(440, 270, 661, 551))
+        self.groupBox_10.setTitle("")
+        self.groupBox_10.setObjectName("groupBox_10")
+        self.UDS_ERROR_BRS = QtWidgets.QTextBrowser(self.groupBox_10)
+        self.UDS_ERROR_BRS.setGeometry(QtCore.QRect(240, 90, 391, 41))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.UDS_ERROR_BRS.setFont(font)
+        self.UDS_ERROR_BRS.setObjectName("UDS_ERROR_BRS")
+        self.UDS_RESULT_BRS = QtWidgets.QTextBrowser(self.groupBox_10)
+        self.UDS_RESULT_BRS.setGeometry(QtCore.QRect(240, 230, 391, 41))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.UDS_RESULT_BRS.setFont(font)
+        self.UDS_RESULT_BRS.setObjectName("UDS_RESULT_BRS")
+        self.UDS_ERROR_LBL = QtWidgets.QLabel(self.groupBox_10)
+        self.UDS_ERROR_LBL.setGeometry(QtCore.QRect(70, 100, 151, 20))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.UDS_ERROR_LBL.setFont(font)
+        self.UDS_ERROR_LBL.setObjectName("UDS_ERROR_LBL")
+        self.UDS_RESULT_LBL = QtWidgets.QLabel(self.groupBox_10)
+        self.UDS_RESULT_LBL.setGeometry(QtCore.QRect(70, 240, 151, 20))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.UDS_RESULT_LBL.setFont(font)
+        self.UDS_RESULT_LBL.setObjectName("UDS_RESULT_LBL")
+        self.tabWidget.addTab(self.tab, "")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(0)
-        self.Run_Init_btn.clicked.connect(self.run_test1)  # type: ignore
+        self.Run_Init_btn.clicked.connect(self.run_test1)
         self.Run_Init_btn.clicked.connect(self.inittime_brs.clear)
         self.Run_Init_btn.clicked.connect(self.initresult_brs.clear)
         self.Run_Init_btn.clicked.connect(self.can_msg_brs.clear)
 
-        self.perod_periodic_btn.clicked.connect(self.run_test2) # type: ignore
-        self.perod_periodic_btn.clicked.connect(self.accepted_periodic_brs.clear)  # type: ignore
-        self.perod_periodic_btn.clicked.connect(self.measured_period_brs.clear)  # type: ignore
+        self.perod_periodic_btn.clicked.connect(self.run_test2)
+        self.perod_periodic_btn.clicked.connect(self.accepted_periodic_brs.clear)
+        self.perod_periodic_btn.clicked.connect(self.measured_period_brs.clear)
         self.perod_periodic_btn.clicked.connect(self.result_periodic_brs.clear)
 
         self.start_trig_btn.clicked.connect(self.run_test3_period)
-        self.perod_periodic_btn.clicked.connect(self.accepted_trig_brs.clear)
-        self.perod_periodic_btn.clicked.connect(self.measured_trig_brs.clear)
-        self.perod_periodic_btn.clicked.connect(self.result_trig_brs.clear)
+        self.start_trig_btn.clicked.connect(self.accepted_trig_brs.clear)
+        self.start_trig_btn.clicked.connect(self.measured_trig_brs.clear)
+        self.start_trig_btn.clicked.connect(self.result_trig_brs.clear)
 
 
         self.start_acc_btn.clicked.connect(self.run_test4)
         self.start_acc_btn.clicked.connect(self.got_res_brs.clear)
 
-        self.start_SBR_btn.clicked.connect(self.SBR_test_selector.clear) # type: ignore
+        self.start_SBR_btn.clicked.connect(self.run_SBR)
+        self.start_SBR_btn.clicked.connect(self.acc_SBR_brs.clear)
+        self.start_SBR_btn.clicked.connect(self.got_res_SBR_brs.clear)
+
         self.acc_selector.currentIndexChanged['int'].connect(self.acc_set_changed) # type: ignore
         self.SBR_test_selector.currentIndexChanged['int'].connect(self.SBR_test_changed) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -289,42 +449,80 @@ class Ui_MainWindow(object):
         self.Inittime_lbl.setText(_translate("MainWindow", "Измеренное время инциализации"))
         self.Initreuult_lbl.setText(_translate("MainWindow", "Результат проверки"))
         self.can_msg_lbl.setText(_translate("MainWindow", "Принятые сообщения CAN"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.init_tab), _translate("MainWindow", "Проверка инициализации"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.init_tab),
+                                  _translate("MainWindow", "Проверка инициализации"))
         self.perod_periodic_btn.setText(_translate("MainWindow", "Старт"))
         self.period_peciodic_title.setText(_translate("MainWindow", "Измерение периода периодических CAN-сообщений"))
         self.label_5.setText(_translate("MainWindow", "Измеренный период"))
         self.label_6.setText(_translate("MainWindow", "Результат"))
         self.label_7.setText(_translate("MainWindow", "Принятые CAN-сообщения"))
         self.start_trig_btn.setText(_translate("MainWindow", "Старт"))
-        self.period_trig_title.setText(_translate("MainWindow", "Измерение периода CAN-сообщений при срабатывании системы"))
+        self.period_trig_title.setText(
+            _translate("MainWindow", "Измерение периода CAN-сообщений при срабатывании системы"))
         self.measured_trig_lbl.setText(_translate("MainWindow", "Измеренный период"))
         self.result_trig_lbl.setText(_translate("MainWindow", "Результат"))
         self.accepted_trig_lbl.setText(_translate("MainWindow", "Принятые CAN-сообщения"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.can_tab), _translate("MainWindow", "Проверка периода CAN"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.can_tab),
+                                  _translate("MainWindow", "Проверка периода CAN"))
         self.groupBox.setTitle(_translate("MainWindow", "Параметры испытания"))
         self.AIRBAG_OFF_btn.setText(_translate("MainWindow", "Отключить ПБ переднего пассажира"))
-        self.acc_selector.setItemText(0, _translate("MainWindow", "Front 1885-XGE 56km\h"))
-        self.acc_selector.setItemText(1, _translate("MainWindow", "Front XGF 100% 50km\h"))
-        self.acc_selector.setItemText(2, _translate("MainWindow", "Front 1882 XGE 15km\h"))
-        self.acc_selector.setItemText(3, _translate("MainWindow", "Rear 1883-XGE 38 km\h"))
+        self.acc_selector.setItemText(0, _translate("MainWindow", "1885-XGE 56km\\h"))
+        self.acc_selector.setItemText(1, _translate("MainWindow", "Front XGF 100% 50km\\h"))
+        self.acc_selector.setItemText(2, _translate("MainWindow", "1882 XGE 15km\\h "))
+        self.acc_selector.setItemText(3, _translate("MainWindow", "1883-XGE 38 km\\h"))
         self.acc_selector_lbl.setText(_translate("MainWindow", "Выбор набора ускорений"))
         self.start_acc_btn.setText(_translate("MainWindow", "Старт"))
         self.expected_res_acc_lbl.setText(_translate("MainWindow", "Ожидаемый результат"))
         self.got_res_acc_lbl.setText(_translate("MainWindow", "Полученный результат"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Проверка срабатывания системы"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2),
+                                  _translate("MainWindow", "Проверка срабатывания системы"))
         self.start_SBR_btn.setText(_translate("MainWindow", "Старт"))
-        self.SBR_test_selector.setItemText(0, _translate("MainWindow", "Проверка корректности передачи состояний РБ по CAN шине"))
-        self.SBR_test_selector.setItemText(1, _translate("MainWindow", "Проверка активации системы при включении зажигания"))
-        self.SBR_test_selector.setItemText(2, _translate("MainWindow", "Проверка включения 1 уровня тревоги seat belt reminder"))
-        self.SBR_test_selector.setItemText(3, _translate("MainWindow", "Проверка включения 2 уровня тревоги seat belt reminder"))
-        self.SBR_test_selector.setItemText(4, _translate("MainWindow", "Проверка отключения сообщения о тревоге по таймауту"))
+        self.SBR_test_selector.setItemText(0, _translate("MainWindow",
+                                                         "Проверка корректности передачи состояний РБ по CAN шине"))
+        self.SBR_test_selector.setItemText(1, _translate("MainWindow",
+                                                         "Проверка активации системы при включении зажигания"))
+        self.SBR_test_selector.setItemText(2, _translate("MainWindow",
+                                                         "Проверка включения 1 уровня тревоги seat belt reminder"))
+        self.SBR_test_selector.setItemText(3, _translate("MainWindow",
+                                                         "Проверка включения 2 уровня тревоги seat belt reminder"))
+        self.SBR_test_selector.setItemText(4, _translate("MainWindow",
+                                                         "Проверка отключения сообщения о тревоге по таймауту"))
         self.SBR_test_selector.setItemText(5, _translate("MainWindow", "Проверка обнуления таймаута"))
-        self.SBR_test_selector.setItemText(6, _translate("MainWindow", "Проверка отключения тревоги при открытии дверей"))
+        self.SBR_test_selector.setItemText(6,
+                                           _translate("MainWindow", "Проверка отключения тревоги при открытии дверей"))
         self.sbr_test_sel_lbl.setText(_translate("MainWindow", "Запускаемый тест"))
         self.exp_res_SBR_lbl.setText(_translate("MainWindow", "Ожидаемый результат"))
         self.got_res_SBR_lbl.setText(_translate("MainWindow", "Полученный результат"))
+        self.groupBox_7.setTitle(_translate("MainWindow", "Параметры"))
+        self.Seatbelt_selector.setItemText(0, _translate("MainWindow", "Водитель"))
+        self.Seatbelt_selector.setItemText(1, _translate("MainWindow", "Передний пассажир"))
+        self.Seatbelt_selector.setItemText(2, _translate("MainWindow", "Задний левый пассажир"))
+        self.Seatbelt_selector.setItemText(3, _translate("MainWindow", "Центральный задний пассажир"))
+        self.Seatbelt_selector.setItemText(4, _translate("MainWindow", "Правый задний пассажир"))
+        self.Door_selector.setItemText(0, _translate("MainWindow", "Передняя левая"))
+        self.Door_selector.setItemText(1, _translate("MainWindow", "Передняя правая"))
+        self.Door_selector.setItemText(2, _translate("MainWindow", "Задняя левая"))
+        self.Door_selector.setItemText(3, _translate("MainWindow", "Задняя правая"))
+        self.SB_select_lbl.setText(_translate("MainWindow", "Селектор ремня безопасности"))
+        self.Door_select_lbl.setText(_translate("MainWindow", "Селектор двери"))
         self.accepted_SBR_title.setText(_translate("MainWindow", "Ход проверки"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_6), _translate("MainWindow", "Проверка SBR"))
+        self.START_UDS_BTN.setText(_translate("MainWindow", "Старт"))
+        self.UDS_TEST_SELECTOR.setItemText(0, _translate("MainWindow", "Проверка изменения состояний ПБ"))
+        self.UDS_TEST_SELECTOR.setItemText(1, _translate("MainWindow", "Проверка чтения высокого напряжения"))
+        self.UDS_TEST_SELECTOR.setItemText(2, _translate("MainWindow", "Проверка чтения низкого напряжения"))
+        self.UDS_TEST_SELECTOR.setItemText(3, _translate("MainWindow", "Проверка обнуления VIN"))
+        self.UDS_TEST_SELECTOR.setItemText(4, _translate("MainWindow", "Проверка чтения ACU crash details"))
+        self.UDS_TEST_SELECTOR.setItemText(5, _translate("MainWindow", "Проверка Lost CAN communication"))
+        self.UDS_TEST_SELECTOR.setItemText(6, _translate("MainWindow",
+                                                         "Проверка изменения состояний кнопки отключения ПБ"))
+        self.UDS_TEST_SELECTOR.setItemText(7, _translate("MainWindow",
+                                                         "Проверка изменения состояний датчика наличия пассажира"))
+        self.EXP_RES_UDS_LBL.setText(_translate("MainWindow", "Ожидаемый результат"))
+        self.ACCEPTED_CAN_MSG_LBL.setText(_translate("MainWindow", "Принятые CAN-сообщения"))
+        self.UDS_ERROR_LBL.setText(_translate("MainWindow", "Считанные ошибки"))
+        self.UDS_RESULT_LBL.setText(_translate("MainWindow", "Результат"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Проверка самодиагностки"))
 
     def acc_set_changed(self):
         if self.acc_selector.currentIndex() == 0:
@@ -337,19 +535,26 @@ class Ui_MainWindow(object):
             self.exp_res_acc_brs.setText("СНПБ не срабатывает")
     def SBR_test_changed(self):
         if self.SBR_test_selector.currentIndex() == 0:
-            self.exp_res_SBR_brs.setText("При пристёгнутом ремне сигнал DriverSafetyBeltState равен 0х02 (SB fastened) \nПри непристёгнутом ремне сигнал DriverSafetyBeltState равен 0х01 (SB unfastened)")
+            self.exp_res_SBR_brs.setText("При пристёгнутом ремне соответствующий сигнал SafetyBeltState равен 0х02 (SB fastened) \nПри непристёгнутом ремне соответствующий сигнал SafetyBeltState равен 0х01 (SB unfastened)")
+            self.Door_selector.setDisabled(1)
         elif self.SBR_test_selector.currentIndex() == 1:
             self.exp_res_SBR_brs.setText("Сигнал DriverSafetyBeltReminder равен 0 (No warning)")
+            self.Door_selector.setDisabled(1)
         elif self.SBR_test_selector.currentIndex() == 2:
-            self.exp_res_SBR_brs.setText("Сигнал DriverSafetyBeltReminder равен 1 (Warning level 1)")
+            self.exp_res_SBR_brs.setText("Соответствующий сигнал SafetyBeltReminder равен 1 (Warning level 1)")
+            self.Door_selector.setDisabled(1)
         elif self.SBR_test_selector.currentIndex() == 3:
-            self.exp_res_SBR_brs.setText("Сигнал DriverSafetyBeltReminder  равен 2 (Warning level 2)")
+            self.exp_res_SBR_brs.setText("Соответствующий сигнал SafetyBeltReminder  равен 2 (Warning level 2)")
+            self.Door_selector.setDisabled(1)
         elif self.SBR_test_selector.currentIndex() == 4:
-            self.exp_res_SBR_brs.setText("Сигнал DriverSafetyBeltReminder  равен 0 (No warning)")
+            self.exp_res_SBR_brs.setText("Соответствующий сигнал SafetyBeltReminder  равен 0 (No warning)")
+            self.Door_selector.setDisabled(1)
         elif self.SBR_test_selector.currentIndex() == 6:
             self.exp_res_SBR_brs.setText("Сигнал FrontPassengerSafetyBeltReminder равен 0 (No warning)")
+            self.Door_selector.setEnabled(1)
         elif self.SBR_test_selector.currentIndex() == 5:
-            self.exp_res_SBR_brs.setText("При пристёгнутом ремне сигнал DriverSafetyBeltState равен 0х02 SB fastened\n При НЕпристёгнутом ремне сигнал DriverSafetyBeltState  равен 0х01 SB unfastened")
+            self.exp_res_SBR_brs.setText("После обнуления таймаута SafetyBeltReminder равен 0 (No warning)\n После сброса сигнал SafetyBeltReminder  равен 1 (Warning level 1)")
+            self.Door_selector.setDisabled(1)
 
     def Test1_handler(self):
         self.UART = serial.Serial('COM8', 115200)
@@ -364,7 +569,9 @@ class Ui_MainWindow(object):
         bytes_read = self.UART.read(int(received_len,16))
         Result.ParseFromString(bytes_read)
         self.can_msg_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
+        time.sleep(0.05)
         self.inittime_brs.append(str(Result.measuredValue[0]))
+        time.sleep(0.05)
         if(Result.measuredValue[0]<300):
             self.initresult_brs.append("Success")
         else:
@@ -386,9 +593,10 @@ class Ui_MainWindow(object):
         bytes_read = self.UART.read(int(received_len,16))
         Result.ParseFromString(bytes_read)
         for i in range(0,4):
-            self.accepted_periodic_brs.append(
-                f"Timestamp:{str(Result.frame[i].timestamp)}   id:{str(hex(Result.frame[i].id))}   DLC:{str(Result.frame[i].length)}   Data:{str(Result.frame[i].data.hex())}")
+            self.accepted_periodic_brs.append(f"Timestamp:{str(Result.frame[i].timestamp)}   id:{str(hex(Result.frame[i].id))}   DLC:{str(Result.frame[i].length)}   Data:{str(Result.frame[i].data.hex())}")
+        time.sleep(0.01)
         self.measured_period_brs.append(f"{str(Result.measuredValue[0]/1000)} мс.")
+        time.sleep(0.01)
         if (Result.measuredValue[0]/1000 < 110 and Result.measuredValue[0]/1000 > 90):
             self.result_periodic_brs.append("Success")
         else:
@@ -411,9 +619,10 @@ class Ui_MainWindow(object):
         bytes_read = self.UART.read(int(received_len,16))
         Result.ParseFromString(bytes_read)
         for i in range(0,4):
-            self.accepted_trig_brs.append(
-                f"Timestamp:{str(Result.frame[i].timestamp)}   id:{str(hex(Result.frame[i].id))}   DLC:{str(Result.frame[i].length)}   Data:{str(Result.frame[i].data.hex())}")
+            self.accepted_trig_brs.append(f"Timestamp:{str(Result.frame[i].timestamp)}   id:{str(hex(Result.frame[i].id))}   DLC:{str(Result.frame[i].length)}   Data:{str(Result.frame[i].data.hex())}")
+            time.sleep(0.01)
         self.measured_trig_brs.append(f"{str(Result.measuredValue[0]/1000)} мс.")
+        time.sleep(0.01)
         if (Result.measuredValue[0]/1000 < 4.4 and Result.measuredValue[0]/1000 > 3.6):
             self.result_trig_brs.append("Success")
         else:
@@ -455,6 +664,313 @@ class Ui_MainWindow(object):
 
     def run_test4(self):
         Receiver=threading.Thread(target=self.Test4_handler)
+        Receiver.start()
+
+    def SBR_handler(self):
+        self.UART = serial.Serial('COM8', 115200)
+        Command = Messages.TestData()
+        Result = Messages.TestData()
+        Command.method = 0
+        Command.testNumber = self.SBR_test_selector.currentIndex()+5
+        Command.Seatbelt_position=self.Seatbelt_selector.currentIndex()+1
+        match Command.testNumber:
+            case 5: #Проверка корректности передачи состояний РБ по CAN шине
+                Command.VehicleStateExtended=1
+            case 6: #Проверка активации системы при включении зажигания
+                Command.VehicleStateExtended=0
+                Command.vehicle_speed=0
+            case 7: #Проверка включения 1 уровня тревоги seat belt reminder. Скорость < 20 km/h
+                Command.VehicleStateExtended = 1
+                Command.vehicle_speed = 0
+            case 8: #Проверка включения 2 уровня тревоги seat belt reminder. Скорость > 20 km/h
+                Command.VehicleStateExtended = 1
+                Command.vehicle_speed = 1
+            case 9:  # Проверка отключения сообщения о тревоге по таймауту
+                Command.VehicleStateExtended = 1
+                Command.vehicle_speed = 0
+            case 10:  # Проверка обнуления таймаута
+                Command.VehicleStateExtended = 1
+                Command.vehicle_speed = 0
+            case 11:  # Проверка отключения тревоги при открытии дверей
+                Command.VehicleStateExtended = 1
+                Command.vehicle_speed = 0
+        Cmd = Command.SerializeToString()
+        print(Cmd)
+        self.UART.write(Cmd)
+        received_len=self.UART.read(1).hex()
+        bytes_read = self.UART.read(int(received_len,16))
+        Result.ParseFromString(bytes_read)
+        match Result.testNumber:
+            case 5:
+                for i in range(0, 2):
+                    self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[i].timestamp)}   id:{str(hex(Result.frame[i].id))}   DLC:{str(Result.frame[i].length)}   Data:{str(Result.frame[i].data.hex())}")
+                time.sleep(0.1)
+                match Command.Seatbelt_position:
+                    case 1:
+                        self.got_res_SBR_brs.append(f"При пристегнутом ремне: {hex((Result.frame[0].data[0] & DriverSafetyBeltState.Unavalible) >> DriverSafetyBeltState.shift)}\nПри непристегнутом ремне: {hex((Result.frame[1].data[0] & DriverSafetyBeltState.Unavalible) >> DriverSafetyBeltState.shift)}")
+                        time.sleep(0.1)
+                        if (Result.frame[0].data[0] & DriverSafetyBeltState.Unavalible == DriverSafetyBeltState.SB_fastened and Result.frame[1].data[0] & DriverSafetyBeltState.Unavalible == DriverSafetyBeltState.SB_unfastened):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 2:
+                        self.got_res_SBR_brs.append(f"При пристегнутом ремне: {hex((Result.frame[0].data[0] & FrontPassengerSafetyBeltState.Unavalible) >> FrontPassengerSafetyBeltState.shift)}\nПри непристегнутом ремне: {hex((Result.frame[1].data[0] &FrontPassengerSafetyBeltState.Unavalible) >> FrontPassengerSafetyBeltState.shift)}")
+                        if (Result.frame[0].data[0] & FrontPassengerSafetyBeltState.Unavalible == FrontPassengerSafetyBeltState.SB_fastened and Result.frame[1].data[0] & FrontPassengerSafetyBeltState.Unavalible == FrontPassengerSafetyBeltState.SB_unfastened):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 3:
+                        self.got_res_SBR_brs.append(f"При пристегнутом ремне: {hex((Result.frame[0].data[3] & SecondRowRightSafetyBeltState.Unavalible) >> SecondRowLeftSafetyBeltState.shift)}\nПри непристегнутом ремне: {hex((Result.frame[1].data[3] & SecondRowRightSafetyBeltState.Unavalible) >> SecondRowLeftSafetyBeltState.shift)}")
+                        if (Result.frame[0].data[3] & SecondRowRightSafetyBeltState.Unavalible == SecondRowRightSafetyBeltState.SB_fastened and Result.frame[1].data[3] & SecondRowRightSafetyBeltState.Unavalible == SecondRowRightSafetyBeltState.SB_unfastened):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 4:
+                        self.got_res_SBR_brs.append(f"При пристегнутом ремне: {hex((Result.frame[0].data[2] & SecondRowCenterSafetyBeltState.Unavalible) >> SecondRowCenterSafetyBeltState.shift)}\nПри непристегнутом ремне: {hex((Result.frame[1].data[2] & SecondRowCenterSafetyBeltState.Unavalible) >> SecondRowCenterSafetyBeltState.shift)}")
+                        if (Result.frame[0].data[2] & SecondRowCenterSafetyBeltState.Unavalible == SecondRowCenterSafetyBeltState.SB_unfastened and Result.frame[1].data[2] & SecondRowCenterSafetyBeltState.Unavalible== SecondRowCenterSafetyBeltState.SB_unfastened):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 5:
+                        self.got_res_SBR_brs.append(f"При пристегнутом ремне: {hex(((Result.frame[0].data[2] & SecondRowLeftSafetyBeltState.Unavalible_B2) >> SecondRowLeftSafetyBeltState.shift)+Result.frame[0].data[3]&SecondRowLeftSafetyBeltState.Unavalible_B3)}\nПри непристегнутом ремне: {hex(((Result.frame[1].data[2] & SecondRowLeftSafetyBeltState.Unavalible_B2) >> SecondRowLeftSafetyBeltState.shift)+Result.frame[1].data[3]&SecondRowLeftSafetyBeltState.Unavalible_B3)}")
+                        if ((Result.frame[0].data[2] & SecondRowLeftSafetyBeltState.Unavalible_B2) >> SecondRowLeftSafetyBeltState.shift== SecondRowLeftSafetyBeltState.SB_fastened_B2 and Result.frame[0].data[3]&SecondRowLeftSafetyBeltState.Unavalible_B3==SecondRowLeftSafetyBeltState.SB_fastened_B3 and(Result.frame[1].data[2] & SecondRowLeftSafetyBeltState.Unavalible_B2) >> SecondRowLeftSafetyBeltState.shift==SecondRowLeftSafetyBeltState.SB_unfastened_B2 and Result.frame[1].data[3]&SecondRowLeftSafetyBeltState.Unavalible_B3==SecondRowLeftSafetyBeltState.SB_unfastened_B3):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+            case 6:
+                self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
+                time.sleep(0.1)
+                match Command.Seatbelt_position:
+                    case 1:
+                        self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used) )}")
+                        if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.No_Warning):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 2:
+                        self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
+                        if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.No_Warning ):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 3:
+                        self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
+                        if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.No_Warning ):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 4:
+                        self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) >> SecondRowCenterSafetyBeltWarning.shift)}")
+                        if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.No_Warning):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 5:
+                        self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used) )}")
+                        if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.No_Warning):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+
+            case 7:
+                self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
+                time.sleep(0.05)
+                match Command.Seatbelt_position:
+                    case 1:
+                        self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used) )}")
+                        if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.Warning_level_1):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 2:
+                        self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
+                        if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.Warning_level_1 ):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 3:
+                        self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
+                        if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.Warning_level_1 ):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 4:
+                        self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) >> SecondRowCenterSafetyBeltWarning.shift)}")
+                        if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.Warning_level_1):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 5:
+                        self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used) )}")
+                        if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.Warning_level_1):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+            case 8:
+                self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
+                time.sleep(0.05)
+                match Command.Seatbelt_position:
+                    case 1:
+                        self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used) )}")
+                        if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.Warning_level_2):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 2:
+                        self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
+                        if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.Warning_level_2 ):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 3:
+                        self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
+                        if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.Warning_level_2 ):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 4:
+                        self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) >> SecondRowCenterSafetyBeltWarning.shift)}")
+                        if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.Warning_level_2):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 5:
+                        self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used) )}")
+                        if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.Warning_level_2):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+            case 9:
+                self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
+                time.sleep(0.05)
+                match Command.Seatbelt_position:
+                    case 1:
+                        self.got_res_SBR_brs.append(
+                            f"Значение DriverSafetyBeltReminder: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used))}")
+                        if (Result.frame[0].data[
+                            1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.No_Warning):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 2:
+                        self.got_res_SBR_brs.append(
+                            f"Значение FrontPassengerSafetyBeltReminder: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
+                        if (Result.frame[0].data[
+                            1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.No_Warning):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 3:
+                        self.got_res_SBR_brs.append(
+                            f"Значение SecondRowRightSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
+                        if (Result.frame[0].data[
+                            2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.No_Warning):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 4:
+                        self.got_res_SBR_brs.append(
+                            f"Значение SecondRowCenterSafetyBeltWarning: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) >> SecondRowCenterSafetyBeltWarning.shift)}")
+                        if (Result.frame[0].data[
+                            1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.No_Warning):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 5:
+                        self.got_res_SBR_brs.append(
+                            f"Значение SecondRowLeftSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used))}")
+                        if (Result.frame[0].data[
+                            2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.No_Warning):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+
+            case 10:
+                for i in range(0,2):
+                    self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
+                time.sleep(0.05)
+                match Command.Seatbelt_position:
+                    case 1:
+                        self.got_res_SBR_brs.append(
+                            f"Значение DriverSafetyBeltReminder до обнуления таймаута: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used))}\nЗначение DriverSafetyBeltReminder после обнуления таймаута: {hex((Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used))}")
+                        if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.No_Warning and Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.Warning_level_1):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 2:
+                        self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder до обнуления таймаута: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}\nЗначение FrontPassengerSafetyBeltReminder после обнуления таймаута: {hex((Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
+                        if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.No_Warning and Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.Warning_level_1):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 3:
+                        self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning до обнуления таймаута: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}\nЗначение SecondRowRightSafetyBeltWarning после обнуления таймаута: {hex((Result.frame[1].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
+                        if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.No_Warning and Result.frame[1].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.Warning_level_1):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 4:
+                        self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning до обнуления таймаута: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) >> SecondRowCenterSafetyBeltWarning.shift)}\nЗначение SecondRowCenterSafetyBeltWarning после обнуления таймаута: {hex((Result.frame[1].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) >> SecondRowCenterSafetyBeltWarning.shift)}")
+                        if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.No_Warning and Result.frame[1].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.Warning_level_1):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 5:
+                        self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning до обнуления таймаута: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used))}\nЗначение SecondRowLeftSafetyBeltWarning после обнуления таймаута: {hex((Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used))}")
+                        if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.No_Warning and Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.Warning_level_1):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+            case 11:
+                self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
+                match Command.Seatbelt_position:
+                    case 1:
+                        self.got_res_SBR_brs.append(
+                            f"Значение DriverSafetyBeltReminder: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used))}")
+                        if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.No_Warning):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 2:
+                        self.got_res_SBR_brs.append(
+                            f"Значение FrontPassengerSafetyBeltReminder: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
+                        if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.No_Warning):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 3:
+                        self.got_res_SBR_brs.append(
+                            f"Значение SecondRowRightSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
+                        if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.No_Warning):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 4:
+                        self.got_res_SBR_brs.append(
+                            f"Значение SecondRowCenterSafetyBeltWarning: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) >> SecondRowCenterSafetyBeltWarning.shift)}")
+                        if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.No_Warning):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 5:
+                        self.got_res_SBR_brs.append(
+                            f"Значение SecondRowLeftSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used))}")
+                        if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.No_Warning):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+
+
+
+
+
+
+
+        #print(Result)
+        self.UART.close()
+
+    def run_SBR(self):
+        Receiver=threading.Thread(target=self.SBR_handler)
         Receiver.start()
 
 if __name__ == "__main__":
