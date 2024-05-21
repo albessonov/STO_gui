@@ -20,6 +20,7 @@ from states import *
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+        self.COM_PORT='COM8'
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1115, 840)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -305,9 +306,23 @@ class Ui_MainWindow(object):
         font.setPointSize(11)
         self.UDS_TEST_SELECTOR.setFont(font)
         self.UDS_TEST_SELECTOR.setObjectName("UDS_TEST_SELECTOR")
-        self.UDS_TEST_SELECTOR.addItem("")
-        self.UDS_TEST_SELECTOR.addItem("")
-        self.UDS_TEST_SELECTOR.addItem("")
+        self.UDS_TEST_SELECTOR.addItem("Проверка ECU reset 0x11")
+        self.UDS_TEST_SELECTOR.addItem("Проверка InputOutputControlByIdentifier 0x2F")
+        self.UDS_TEST_SELECTOR.addItem("Проверка Tester Present 0x3E")
+        self.UDS_TEST_SELECTOR.addItem("Проверка CommunicationControl 0x28 disable tx")
+        self.UDS_TEST_SELECTOR.addItem("Проверка CommunicationControl 0x28 disable tx,rx")
+        self.UDS_TEST_SELECTOR.addItem("Проверка ClearDiagnosticInformation 0x14")
+        self.UDS_TEST_SELECTOR.addItem("Проверка ReadDiagnosticInformation 0x19 - 0x0A ReportSupportedDTC")
+        self.UDS_TEST_SELECTOR.addItem("Проверка ControlDTCSetting 0x85")
+        self.UDS_TEST_SELECTOR.addItem("Проверка SecurityAccess 0x27")
+        self.UDS_TEST_SELECTOR.addItem("Проверка записи DID ECU Operating States")
+        self.UDS_TEST_SELECTOR.addItem("Проверка записи DID ACU configuration")
+        self.UDS_TEST_SELECTOR.addItem("Проверка чтения Driver Airbag Resistance")
+        self.UDS_TEST_SELECTOR.addItem("Проверка чтения PAB Deactivation Indicator Status")
+        self.UDS_TEST_SELECTOR.addItem("Проверка чтения Vehicle speed")
+        self.UDS_TEST_SELECTOR.addItem("Проверка чтения Battery Voltage")
+        self.UDS_TEST_SELECTOR.addItem("Проверка чтения ECU's lifetime timer")
+        self.UDS_TEST_SELECTOR.addItem("Проверка чтения Occupant Input")
         self.UDS_LED_SELECTOR = QtWidgets.QComboBox(self.groupBox_12)
         self.UDS_LED_SELECTOR.setGeometry(QtCore.QRect(50, 250, 441, 31))
         font = QtGui.QFont()
@@ -413,28 +428,20 @@ class Ui_MainWindow(object):
         self.Seatbelt_selector.addItem("")
         self.Seatbelt_selector.addItem("")
         self.Seatbelt_selector.addItem("")
-        self.Door_selector = QtWidgets.QComboBox(self.groupBox_7)
-        self.Door_selector.setGeometry(QtCore.QRect(290, 70, 181, 22))
+
         font = QtGui.QFont()
         font.setPointSize(11)
-        self.Door_selector.setFont(font)
-        self.Door_selector.setObjectName("Door_selector")
-        self.Door_selector.addItem("")
-        self.Door_selector.addItem("")
-        self.Door_selector.addItem("")
-        self.Door_selector.addItem("")
+
         self.SB_select_lbl = QtWidgets.QLabel(self.groupBox_7)
         self.SB_select_lbl.setGeometry(QtCore.QRect(20, 50, 191, 16))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.SB_select_lbl.setFont(font)
         self.SB_select_lbl.setObjectName("SB_select_lbl")
-        self.Door_select_lbl = QtWidgets.QLabel(self.groupBox_7)
-        self.Door_select_lbl.setGeometry(QtCore.QRect(290, 50, 111, 16))
+
         font = QtGui.QFont()
         font.setPointSize(10)
-        self.Door_select_lbl.setFont(font)
-        self.Door_select_lbl.setObjectName("Door_select_lbl")
+
         self.acc_SBR_brs = QtWidgets.QTextBrowser(self.tab_6)
         self.acc_SBR_brs.setGeometry(QtCore.QRect(570, 210, 471, 471))
         font = QtGui.QFont()
@@ -467,6 +474,8 @@ class Ui_MainWindow(object):
         font.setPointSize(9)
         self.DIAG_TEST_SELECTOR.setFont(font)
         self.DIAG_TEST_SELECTOR.setObjectName("DIAG_TEST_SELECTOR")
+        self.DIAG_TEST_SELECTOR.addItem("")
+        self.DIAG_TEST_SELECTOR.addItem("")
         self.DIAG_TEST_SELECTOR.addItem("")
         self.DIAG_TEST_SELECTOR.addItem("")
         self.DIAG_TEST_SELECTOR.addItem("")
@@ -560,12 +569,12 @@ class Ui_MainWindow(object):
         self.HighVolatgeWarning = QtWidgets.QMessageBox()
         self.HighVolatgeWarning.setWindowTitle("Внимание")
         self.HighVolatgeWarning.setText("Проверьте,что напряжение питания>17,2 В.")
-        self.HighVolatgeWarning.setIcon(QtWidgets.QMessageBox.Warning)
+        self.HighVolatgeWarning.setIcon(QtWidgets.QMessageBox.Information)
 
         self.LowVolatgeWarning = QtWidgets.QMessageBox()
         self.LowVolatgeWarning.setWindowTitle("Внимание")
         self.LowVolatgeWarning.setText("Проверьте,что напряжение питания<8 В.")
-        self.LowVolatgeWarning.setIcon(QtWidgets.QMessageBox.Warning)
+        self.LowVolatgeWarning.setIcon(QtWidgets.QMessageBox.Information)
         self.retranslateUi(MainWindow)
 
         self.tabWidget.setCurrentIndex(0)
@@ -653,9 +662,6 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Проверка срабатывания системы"))
         self.UDS_MSG_LBL.setText(_translate("MainWindow", "Ход проверки"))
         self.UDS_RUN_BTN.setText(_translate("MainWindow", "Старт"))
-        self.UDS_TEST_SELECTOR.setItemText(0, _translate("MainWindow", "Проверка ECU reset"))
-        self.UDS_TEST_SELECTOR.setItemText(1, _translate("MainWindow", "Проверка InputOutputControlByIdentifier"))
-        self.UDS_TEST_SELECTOR.setItemText(2, _translate("MainWindow", "Проверка CommunicationControl"))
         self.UDS_TEST_LBL.setText(_translate("MainWindow", "Запускаемый тест"))
         self.EXP_UDS_LBL.setText(_translate("MainWindow", "Ожидаемый ход проверки"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("MainWindow", "Проверка системы UDS"))
@@ -682,12 +688,9 @@ class Ui_MainWindow(object):
         self.Seatbelt_selector.setItemText(2, _translate("MainWindow", "Задний левый пассажир"))
         self.Seatbelt_selector.setItemText(3, _translate("MainWindow", "Центральный задний пассажир"))
         self.Seatbelt_selector.setItemText(4, _translate("MainWindow", "Правый задний пассажир"))
-        self.Door_selector.setItemText(0, _translate("MainWindow", "Передняя левая"))
-        self.Door_selector.setItemText(1, _translate("MainWindow", "Передняя правая"))
-        self.Door_selector.setItemText(2, _translate("MainWindow", "Задняя левая"))
-        self.Door_selector.setItemText(3, _translate("MainWindow", "Задняя правая"))
+
         self.SB_select_lbl.setText(_translate("MainWindow", "Селектор ремня безопасности"))
-        self.Door_select_lbl.setText(_translate("MainWindow", "Селектор двери"))
+
         self.accepted_SBR_title.setText(_translate("MainWindow", "Ход проверки"))
         self.exp_res_SBR_brs.setText("При пристёгнутом ремне соответствующий сигнал SafetyBeltState равен 0х02 (SB fastened) \nПри непристёгнутом ремне соответствующий сигнал SafetyBeltState равен 0х01 (SB unfastened)")
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_6), _translate("MainWindow", "Проверка SBR"))
@@ -697,9 +700,11 @@ class Ui_MainWindow(object):
         self.DIAG_TEST_SELECTOR.setItemText(2, _translate("MainWindow", "Проверка диагностики низкого напряжения питания"))
         self.DIAG_TEST_SELECTOR.setItemText(3, _translate("MainWindow", "Проверка диагностики отсутствия VIN"))
         self.DIAG_TEST_SELECTOR.setItemText(4, _translate("MainWindow", "Проверка чтения ACU crash details"))
-        self.DIAG_TEST_SELECTOR.setItemText(5, _translate("MainWindow", "Проверка диагностики получения сообщений по CAN-шины"))
+        self.DIAG_TEST_SELECTOR.setItemText(5, _translate("MainWindow", "Проверка диагностики получения сообщений по CAN-шине"))
         self.DIAG_TEST_SELECTOR.setItemText(6, _translate("MainWindow","Проверка изменения состояний выходов кнопки отключения ПБ"))
         self.DIAG_TEST_SELECTOR.setItemText(7, _translate("MainWindow","Проверка изменения состояний датчика наличия пассажира"))
+        self.DIAG_TEST_SELECTOR.setItemText(8, _translate("MainWindow","Проверка CAN bus-off"))
+        self.DIAG_TEST_SELECTOR.setItemText(9, _translate("MainWindow","Проверка отключения работы алгоритма"))
         self.DIAG_SB_SELECTOR.setItemText(0, _translate("MainWindow", "Front Airbag Driver"))
         self.DIAG_SB_SELECTOR.setItemText(1, _translate("MainWindow", "Front Airbag Passenger"))
         self.DIAG_SB_SELECTOR.setItemText(2, _translate("MainWindow", "Side Airbag Driver"))
@@ -726,46 +731,68 @@ class Ui_MainWindow(object):
             self.exp_res_acc_brs.setText("СНПБ не срабатывает")
     def UDS_test_changed(self):
         if self.UDS_TEST_SELECTOR.currentIndex() == 0:
-            self.EXP_UDS_BRS.setText("Отправлено: 02 11 01\nПринято: 02 51 01")
+            self.EXP_UDS_BRS.setText("Отправлено: 02 11 01\nПринято: 02 51 01\nДиагностический светодиод моргает")
             self.UDS_LED_SELECTOR.setDisabled(1)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 1:
             self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 01 03 00\nПринято: 05 6F 38 01 03 00")
             self.UDS_LED_SELECTOR.setDisabled(0)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 2:
-            self.EXP_UDS_BRS.setText("Отправлено: 03 28 01 01\nПринято: 03 28 01\nОтправлено: 03 28 00 01\nПринято: 05 28 00")
+            self.EXP_UDS_BRS.setText("Отправлено: 02 3E 00\nПринято: 02 7E 00")
+            self.UDS_LED_SELECTOR.setDisabled(1)
+        elif self.UDS_TEST_SELECTOR.currentIndex() == 3:
+            self.EXP_UDS_BRS.setText("Отправлено: 03 28 01 01\nПринято: 03 68 01\nСообщения по CAN не принимаются\n\nОтправлено: 03 28 00 01\nПринято: 03 68 03\n Сообщения по CAN  принимаются")
+            self.UDS_LED_SELECTOR.setDisabled(1)
+        elif self.UDS_TEST_SELECTOR.currentIndex() == 4:
+            self.EXP_UDS_BRS.setText("Отправлено: 03 28 03 03\nПринято: 03 68 03\nСообщения по CAN не принимаются и не передаются")
+            self.UDS_LED_SELECTOR.setDisabled(1)
+        elif self.UDS_TEST_SELECTOR.currentIndex() == 5:
+            self.EXP_UDS_BRS.setText("Коды ошибок стёрлись")
+            self.UDS_LED_SELECTOR.setDisabled(1)
+        elif self.UDS_TEST_SELECTOR.currentIndex() == 6:
+            self.EXP_UDS_BRS.setText("На экране появились все поддерживаемые DTC и их состояния")
+            self.UDS_LED_SELECTOR.setDisabled(1)
+        elif self.UDS_TEST_SELECTOR.currentIndex() == 11:
+            self.EXP_UDS_BRS.setText(f"Отправлено: 03 22 59 10\nПринято: 05 62 59 10 xx xx \nxx-Считанное сопротивление")
+        elif self.UDS_TEST_SELECTOR.currentIndex() == 12:
+            self.EXP_UDS_BRS.setText(f"Отправлено: 03 22 59 18\nПринято: 04 62 59 10 xx \nxx-Состояние светодиода")
+            self.UDS_LED_SELECTOR.setDisabled(1)
+        elif self.UDS_TEST_SELECTOR.currentIndex() == 13:
+            self.EXP_UDS_BRS.setText(f"Отправлено: 03 22 C9 21\nПринято: 05 62 C9 21 xx xx\nxx-Считанное значение скорости")
+            self.UDS_LED_SELECTOR.setDisabled(1)
+        elif self.UDS_TEST_SELECTOR.currentIndex() == 14:
+            self.EXP_UDS_BRS.setText("Отправлено: 03 22 C9 53\nПринято: 04 62 C9 53 xx \nxx- Считанное напряжение\nПреобразовать!")
+            self.UDS_LED_SELECTOR.setDisabled(1)
+        elif self.UDS_TEST_SELECTOR.currentIndex() == 15:
+            self.EXP_UDS_BRS.setText("Отправлено: 03 22 C9 14\nПринято: 07 62 C9 53 xx xx xx xx\nПосле ожидания 5с.\nОтправлено: 03 22 C9 14\nПринято: 07 62 C9 53 xx xx xx xx\nСчитанное значение увеличилось на 5")
+            self.UDS_LED_SELECTOR.setDisabled(1)
+        elif self.UDS_TEST_SELECTOR.currentIndex() == 16:
+            self.EXP_UDS_BRS.setText("Отправлено: 03 22 C9 57\nПринято: 05 62 C9 57 xx xx\nxx xx -Состояние РБ и кнопки отключения ПБ\nУбедиться, что считанное состояние соответствует реальному")
             self.UDS_LED_SELECTOR.setDisabled(1)
     def UDS_LED_changed(self):
         if self.UDS_LED_SELECTOR.currentIndex() == 0:
-            self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 01 03 00\nПринято: 05 6F 38 01 03 00")
+            self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 01 03 00\nПринято: 05 6F 38 01 03 00\nДиагностический светодиод загорелся")
         elif self.UDS_LED_SELECTOR.currentIndex() == 1:
-            self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 01 03 01\nПринято: 05 6F 38 01 03 01")
+            self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 01 03 01\nПринято: 05 6F 38 01 03 01\nДиагностический светодиод погас")
         elif self.UDS_LED_SELECTOR.currentIndex() == 2:
-            self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 02 03 00\nПринято: 05 6F 38 02 03 00")
+            self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 02 03 00\nПринято: 05 6F 38 02 03 00\nСветодиод отключения ПБ переднего пассажира горит")
         elif self.UDS_LED_SELECTOR.currentIndex() == 3:
-            self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 02 03 01\nПринято: 05 6F 38 02 03 01")
+            self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 02 03 01\nПринято: 05 6F 38 02 03 01\nСветодиод отключения ПБ переднего пассажира погас")
 
     def SBR_test_changed(self):
         if self.SBR_test_selector.currentIndex() == 0:
             self.exp_res_SBR_brs.setText("При пристёгнутом ремне соответствующий сигнал SafetyBeltState равен 0х02 (SB fastened) \nПри непристёгнутом ремне соответствующий сигнал SafetyBeltState равен 0х01 (SB unfastened)")
-            self.Door_selector.setDisabled(1)
         elif self.SBR_test_selector.currentIndex() == 1:
             self.exp_res_SBR_brs.setText("Сигнал DriverSafetyBeltReminder равен 0 (No warning)")
-            self.Door_selector.setDisabled(1)
         elif self.SBR_test_selector.currentIndex() == 2:
             self.exp_res_SBR_brs.setText("Соответствующий сигнал SafetyBeltReminder равен 1 (Warning level 1)")
-            self.Door_selector.setDisabled(1)
         elif self.SBR_test_selector.currentIndex() == 3:
             self.exp_res_SBR_brs.setText("Соответствующий сигнал SafetyBeltReminder  равен 2 (Warning level 2)")
-            self.Door_selector.setDisabled(1)
         elif self.SBR_test_selector.currentIndex() == 4:
             self.exp_res_SBR_brs.setText("Соответствующий сигнал SafetyBeltReminder  равен 0 (No warning)")
-            self.Door_selector.setDisabled(1)
         elif self.SBR_test_selector.currentIndex() == 6:
             self.exp_res_SBR_brs.setText("Сигнал FrontPassengerSafetyBeltReminder равен 0 (No warning)")
-            self.Door_selector.setEnabled(1)
         elif self.SBR_test_selector.currentIndex() == 5:
             self.exp_res_SBR_brs.setText("После обнуления таймаута SafetyBeltReminder равен 0 (No warning)\n После сброса сигнал SafetyBeltReminder  равен 1 (Warning level 1)")
-            self.Door_selector.setDisabled(1)
     def DIAG_test_changed(self):
         if self.DIAG_TEST_SELECTOR.currentIndex() == 0:
             self.DIAG_SB_SELECTOR.setDisabled(0)
@@ -781,16 +808,22 @@ class Ui_MainWindow(object):
             self.EXP_RESULT_DIAG_BRS.setText("Считана ошибка 0x909800")
             self.DIAG_SB_SELECTOR.setDisabled(1)
         elif self.DIAG_TEST_SELECTOR.currentIndex() == 4:
-            self.EXP_RESULT_DIAG_BRS.setText("Последний принятый байт равен 0x0A")
+            self.EXP_RESULT_DIAG_BRS.setText("Считана ошибка 0x901400")
             self.DIAG_SB_SELECTOR.setDisabled(1)
         elif self.DIAG_TEST_SELECTOR.currentIndex() == 5:
-            self.EXP_RESULT_DIAG_BRS.setText("Считаны ошибки 0хС121 0xC140 0xC155")
+            self.EXP_RESULT_DIAG_BRS.setText("Считаны ошибки 0хС12187 0xC14087 0xC15587")
             self.DIAG_SB_SELECTOR.setDisabled(1)
         elif self.DIAG_TEST_SELECTOR.currentIndex() == 6:
             self.EXP_RESULT_DIAG_BRS.setText("Считаны ошибки 0х910314 0x910412")
             self.DIAG_SB_SELECTOR.setDisabled(1)
-        elif self.UDIAG_TEST_SELECTOR.currentIndex() == 7:
-            self.EXP_RESULT_DIAG_BRS.setText("Считаны ошибки 0х910314 0x910412")
+        elif self.DIAG_TEST_SELECTOR.currentIndex() == 7:
+            self.EXP_RESULT_DIAG_BRS.setText("Считаны ошибки 0х910514 0x910512")
+            self.DIAG_SB_SELECTOR.setDisabled(1)
+        elif self.DIAG_TEST_SELECTOR.currentIndex() == 8:
+            self.EXP_RESULT_DIAG_BRS.setText("Считана ошибка 0xC07388")
+            self.DIAG_SB_SELECTOR.setDisabled(1)
+        elif self.DIAG_TEST_SELECTOR.currentIndex() == 9:
+            self.EXP_RESULT_DIAG_BRS.setText("На пиропатроне не задетектирован импульс")
             self.DIAG_SB_SELECTOR.setDisabled(1)
     def DIAG_SB_CHANGED(self):
         if self.DIAG_SB_SELECTOR.currentIndex() == 0:
@@ -862,7 +895,7 @@ class Ui_MainWindow(object):
         Receiver=threading.Thread(target=self.Test2_handler)
         Receiver.start()
     def Test3_period_handler(self):
-        self.UART = serial.Serial('COM8', 115200)
+        self.UART = serial.Serial(self.COM_PORT, 115200)
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -888,7 +921,7 @@ class Ui_MainWindow(object):
         Receiver=threading.Thread(target=self.Test3_period_handler)
         Receiver.start()
     def Accelerometer_handler(self):
-        self.UART = serial.Serial('COM8', 115200)
+        self.UART = serial.Serial(self.COM_PORT, 115200)
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -924,11 +957,16 @@ class Ui_MainWindow(object):
         Receiver=threading.Thread(target=self.Accelerometer_handler)
         Receiver.start()
     def UDS_handler(self):
-        self.UART = serial.Serial('COM8', 115200)
+        self.UART = serial.Serial(self.COM_PORT, 115200)
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
-        Command.testNumber = self.UDS_TEST_SELECTOR.currentIndex()+0x31
+        if (self.UDS_TEST_SELECTOR.currentIndex() < 15):
+            Command.testNumber = self.UDS_TEST_SELECTOR.currentIndex()+0x31
+        elif(self.UDS_TEST_SELECTOR.currentIndex() == 15):
+            Command.testNumber = 0x301
+        else:
+            Command.testNumber = 0x302
         if(Command.testNumber==0x32):
             Command.LED=self.UDS_LED_SELECTOR.currentIndex()
         Cmd = Command.SerializeToString()
@@ -938,54 +976,98 @@ class Ui_MainWindow(object):
         Result.ParseFromString(bytes_read)
         print(Result)
         match Result.testNumber:
-            case 0x31:
+            case 0x31:#ECU reset
                 self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-            case 0x32:
+            case 0x32:#InputOutputControlByIdentifier
                 self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-            case 0x33:
+            case 0x33:#Проверка Tester Present 0x3E
+                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+            case 0x34:#Проверка CommunicationControl 0x28 disable tx
                 self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
                 time.sleep(0.01)
-                if(Result.measuredValue[0]==Result.measuredValue[1]):
+                if(Result.measuredValue[0]==0):
                     self.UDS_MSG_BRS.append("Сообщения по CAN не принимаются ")
                 else:
                     self.UDS_MSG_BRS.append("Сообщения по CAN принимаются ")
                 time.sleep(0.01)
                 self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
                 time.sleep(0.01)
-                if (Result.measuredValue[2] == Result.measuredValue[3]):
+                if (Result.measuredValue[1] == 0):
                     self.UDS_MSG_BRS.append("Сообщения по CAN не принимаются ")
                 else:
                     self.UDS_MSG_BRS.append("Сообщения по CAN принимаются ")
+            case 0x35: #Проверка CommunicationControl 0x28 disable tx,rx
+                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                if (Result.measuredValue[0] == 0):
+                    self.UDS_MSG_BRS.append("Сообщения по CAN не принимаются ")
+                else:
+                    self.UDS_MSG_BRS.append("Сообщения по CAN принимаются ")
+                #ПРОВЕРИТЬ FDCAN->PSR И ЕСЛИ ОН МЕНЯЕТ СОСТОЯНИЕ ДОБАВИТЬ В OUTPUT
+            case 0x36:#Проверка ClearDiagnosticInformation 0x14
+                print(Result)
+            case 0x37:   #read diag info
+                print(Result)
+            case 0x38:#control dtcsetting
+                print(Result)
+            case 0x39:#security access
+                print(Result)
+            case 0x3A: #DID ECU OPERATING STATES
+                print(Result)
+            case 0x3B: #DID ACU Configuration
+                print(Result)
+            case 0x3C: #Read driver airbag resistance
+                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+            case 0x3D: #Read PAB Deactivation indicator status
+                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+            case 0x3E: #Read Vehicle speed
+                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append(f"Скорость:{str(0.01*((Result.frame[1].data[4] << 8) + (Result.frame[1].data[5])))} км/ч")
+            case 0x3F:  # Read Battery Voltage
+                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append(f"Считанное напряжение:{str(0.06*(Result.frame[1].data[4]))} В.")
+            case 0x301:  # Read ECU's lifetime timer
+                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nЗначение:{(Result.frame[1].data[3]<<24)+(Result.frame[1].data[4]<<16)+(Result.frame[1].data[5]<<8)+(Result.frame[1].data[6])}")
+                time.sleep(0.02)
+                self.UDS_MSG_BRS.append("После паузы 5 сек.")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nЗначение:{(Result.frame[3].data[3] << 24) + (Result.frame[3].data[4] << 16) + (Result.frame[3].data[5] << 8) + (Result.frame[3].data[6])}")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append(f"Разность:{((Result.frame[3].data[3] << 24) + (Result.frame[3].data[4] << 16) + (Result.frame[3].data[5] << 8) + (Result.frame[3].data[6]))-((Result.frame[1].data[3]<<24)+(Result.frame[1].data[4]<<16)+(Result.frame[1].data[5]<<8)+(Result.frame[1].data[6]))}")
+            case 0x302:  # Read Occupant Input
+                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+
         self.UART.close()
     def run_UDS(self):
         Receiver=threading.Thread(target=self.UDS_handler)
         Receiver.start()
     def SBR_handler(self):
-        self.UART = serial.Serial('COM8', 115200)
+        self.UART = serial.Serial(self.COM_PORT, 115200)
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
-        Command.testNumber = self.SBR_test_selector.currentIndex()+5
+        Command.testNumber = self.SBR_test_selector.currentIndex()+0x41
         Command.Seatbelt_position=self.Seatbelt_selector.currentIndex()+1
         match Command.testNumber:
-            case 5: #Проверка корректности передачи состояний РБ по CAN шине
+            case 0x41: #Проверка корректности передачи состояний РБ по CAN шине
                 Command.VehicleStateExtended=1
-            case 6: #Проверка активации системы при включении зажигания
+            case 0x42: #Проверка активации системы при включении зажигания
                 Command.VehicleStateExtended=0
                 Command.vehicle_speed=0
-            case 7: #Проверка включения 1 уровня тревоги seat belt reminder. Скорость < 20 km/h
+            case 0x43: #Проверка включения 1 уровня тревоги seat belt reminder. Скорость < 20 km/h
                 Command.VehicleStateExtended = 1
                 Command.vehicle_speed = 0
-            case 8: #Проверка включения 2 уровня тревоги seat belt reminder. Скорость > 20 km/h
+            case 0x44: #Проверка включения 2 уровня тревоги seat belt reminder. Скорость > 20 km/h
                 Command.VehicleStateExtended = 1
                 Command.vehicle_speed = 1
-            case 9:  # Проверка отключения сообщения о тревоге по таймауту
+            case 0x45:  # Проверка отключения сообщения о тревоге по таймауту
                 Command.VehicleStateExtended = 1
                 Command.vehicle_speed = 0
-            case 10:  # Проверка обнуления таймаута
+            case 0x46:  # Проверка обнуления таймаута
                 Command.VehicleStateExtended = 1
                 Command.vehicle_speed = 0
-            case 11:  # Проверка отключения тревоги при открытии дверей
+            case 0x47:  # Проверка отключения тревоги при открытии дверей
                 Command.VehicleStateExtended = 1
                 Command.vehicle_speed = 0
         Cmd = Command.SerializeToString()
@@ -995,7 +1077,7 @@ class Ui_MainWindow(object):
         bytes_read = self.UART.read(int(received_len,16))
         Result.ParseFromString(bytes_read)
         match Result.testNumber:
-            case 5:
+            case 0x41:
                 for i in range(0, 2):
                     self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[i].timestamp)}   id:{str(hex(Result.frame[i].id))}   DLC:{str(Result.frame[i].length)}   Data:{str(Result.frame[i].data.hex())}")
                 time.sleep(0.1)
@@ -1031,7 +1113,7 @@ class Ui_MainWindow(object):
                             self.got_res_SBR_brs.append("Success")
                         else:
                             self.got_res_SBR_brs.append("Fail")
-            case 6:
+            case 0x42:
                 self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
                 time.sleep(0.1)
                 match Command.Seatbelt_position:
@@ -1066,7 +1148,7 @@ class Ui_MainWindow(object):
                         else:
                             self.got_res_SBR_brs.append("Fail")
 
-            case 7:
+            case 0x43:
                 self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
                 time.sleep(0.05)
                 match Command.Seatbelt_position:
@@ -1100,7 +1182,7 @@ class Ui_MainWindow(object):
                             self.got_res_SBR_brs.append("Success")
                         else:
                             self.got_res_SBR_brs.append("Fail")
-            case 8:
+            case 0x44:
                 self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
                 time.sleep(0.05)
                 match Command.Seatbelt_position:
@@ -1134,7 +1216,7 @@ class Ui_MainWindow(object):
                             self.got_res_SBR_brs.append("Success")
                         else:
                             self.got_res_SBR_brs.append("Fail")
-            case 9:
+            case 0x45:
                 self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
                 time.sleep(0.05)
                 match Command.Seatbelt_position:
@@ -1179,7 +1261,7 @@ class Ui_MainWindow(object):
                         else:
                             self.got_res_SBR_brs.append("Fail")
 
-            case 10:
+            case 0x46:
                 for i in range(0,2):
                     self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
                 time.sleep(0.05)
@@ -1215,7 +1297,7 @@ class Ui_MainWindow(object):
                             self.got_res_SBR_brs.append("Success")
                         else:
                             self.got_res_SBR_brs.append("Fail")
-            case 11:
+            case 0x47:
                 self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
                 match Command.Seatbelt_position:
                     case 1:
@@ -1260,22 +1342,56 @@ class Ui_MainWindow(object):
         Receiver=threading.Thread(target=self.SBR_handler)
         Receiver.start()
     def Self_diag_handler(self):
-        self.UART = serial.Serial('COM8', 115200)
+        self.UART = serial.Serial(self.COM_PORT, 115200)
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
-        Command.testNumber = self.DIAG_TEST_SELECTOR.currentIndex()+13
+        Command.testNumber = 0x51+self.DIAG_TEST_SELECTOR.currentIndex()
         Command.vehicle_speed = 1
         Cmd = Command.SerializeToString()
-        print(Cmd)
+        #print(Cmd)
         self.UART.write(Cmd)
         received_len = self.UART.read(1).hex()
         bytes_read = self.UART.read(int(received_len, 16))
         Result.ParseFromString(bytes_read)
-        print(Result)
+        #print(Result)
         match Result.testNumber:
-            case 13:
-                print("None")
+            case 0x51:
+                DTC_list=[]
+                Status_Byte=0x09
+                indexes=[]#массив, содержащий позиции элемента 0х09
+                tmp=0
+                '''----------------Парсинг ошибок 0х09 ----------------------------'''
+                for num in range(0,len(Result.frame)):
+                    for index in range(0,len(Result.frame[num].data)):
+                        Status_Byte_index=Result.frame[num].data.find(Status_Byte,index)
+                        if(Status_Byte_index!=tmp):
+                            indexes.append(Status_Byte_index)
+                        tmp=Status_Byte_index
+                    #print(indexes)
+
+                    for i in range(0,len(indexes)):
+                        if(indexes[i]<=4 and indexes[i]!=-1):
+                            DTC=hex(((Result.frame[num].data[indexes[i]+1])<<16)+((Result.frame[num].data[indexes[i]+2])<<8)+(Result.frame[num].data[indexes[i]+3]))
+                            #print(DTC)
+                            DTC_list.append(DTC)
+                        elif(indexes[i]==5):
+                            DTC = hex(((Result.frame[num].data[6]) << 16) + ((Result.frame[num].data[7]) << 8) + (Result.frame[num+1].data[1]))
+                            #print(DTC)
+                            DTC_list.append(DTC)
+                        elif (indexes[i] == 6):#####
+                            DTC = hex(((Result.frame[num].data[7]) << 16) + ((Result.frame[num+1].data[1]) << 8) + (Result.frame[num+1].data[2]))
+                            #print(DTC)
+                            DTC_list.append(DTC)
+                        elif (indexes[i] == 7):
+                            DTC = hex(((Result.frame[num+1].data[1]) << 16) + ((Result.frame[num+1].data[2]) << 8) + (Result.frame[num+1].data[3]))
+                            #print(DTC)
+                            DTC_list.append(DTC)
+                    indexes.clear()
+                for i in range(0,len(DTC_list)):
+                    self.DIAG_ERROR_BRS.append(str(DTC_list[i]))
+                #print(DTC_list)
+                '''----------------------------------------------------------------'''
             case 14:
                 self.ACCEPTED_CAN_MSG_DIAG_BRS.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
                 time.sleep(0.01)
