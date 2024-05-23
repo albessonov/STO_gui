@@ -458,123 +458,87 @@ class Ui_MainWindow(object):
         self.tab = QtWidgets.QWidget()
         self.tab.setObjectName("tab")
         self.groupBox_8 = QtWidgets.QGroupBox(self.tab)
-        self.groupBox_8.setGeometry(QtCore.QRect(0, -10, 441, 831))
+        self.groupBox_8.setGeometry(QtCore.QRect(440, 440, 671, 371))
         self.groupBox_8.setTitle("")
         self.groupBox_8.setObjectName("groupBox_8")
-        self.START_DIAG_BTN = QtWidgets.QPushButton(self.groupBox_8)
-        self.START_DIAG_BTN.setGeometry(QtCore.QRect(30, 60, 361, 41))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.START_DIAG_BTN.setFont(font)
-        self.START_DIAG_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
-        self.START_DIAG_BTN.setObjectName("START_DIAG_BTN")
-        self.DIAG_TEST_SELECTOR = QtWidgets.QComboBox(self.groupBox_8)
-        self.DIAG_TEST_SELECTOR.setGeometry(QtCore.QRect(30, 120, 361, 31))
-        font = QtGui.QFont()
-        font.setPointSize(9)
-        self.DIAG_TEST_SELECTOR.setFont(font)
-        self.DIAG_TEST_SELECTOR.setObjectName("DIAG_TEST_SELECTOR")
-        self.DIAG_TEST_SELECTOR.addItem("")
-        self.DIAG_TEST_SELECTOR.addItem("")
-        self.DIAG_TEST_SELECTOR.addItem("")
-        self.DIAG_TEST_SELECTOR.addItem("")
-        self.DIAG_TEST_SELECTOR.addItem("")
-        self.DIAG_TEST_SELECTOR.addItem("")
-        self.DIAG_TEST_SELECTOR.addItem("")
-        self.DIAG_TEST_SELECTOR.addItem("")
-        self.DIAG_TEST_SELECTOR.addItem("")
-        self.DIAG_TEST_SELECTOR.addItem("")
-        self.EXP_RESULT_DIAG_BRS = QtWidgets.QTextBrowser(self.groupBox_8)
-        self.EXP_RESULT_DIAG_BRS.setGeometry(QtCore.QRect(30, 590, 361, 181))
+        self.DIAG_READ_0x09_BTN = QtWidgets.QPushButton(self.groupBox_8)
+        self.DIAG_READ_0x09_BTN.setGeometry(QtCore.QRect(20, 40, 211, 51))
+        self.DIAG_READ_0x09_BTN.setObjectName("DIAG_READ_0x09_BTN")
+        self.DIAG_CLEAR_DTC_BTN = QtWidgets.QPushButton(self.groupBox_8)
+        self.DIAG_CLEAR_DTC_BTN.setGeometry(QtCore.QRect(440, 40, 211, 51))
+        self.DIAG_CLEAR_DTC_BTN.setObjectName("DIAG_CLEAR_DTC_BTN")
+        self.DIAG_ERRORS_BRS = QtWidgets.QTextBrowser(self.groupBox_8)
+        self.DIAG_ERRORS_BRS.setGeometry(QtCore.QRect(50, 160, 601, 181))
         font = QtGui.QFont()
         font.setPointSize(14)
-        self.EXP_RESULT_DIAG_BRS.setFont(font)
-        self.EXP_RESULT_DIAG_BRS.setObjectName("EXP_RESULT_DIAG_BRS")
-        self.EXP_RES_DIAG_LBL = QtWidgets.QLabel(self.groupBox_8)
-        self.EXP_RES_DIAG_LBL.setGeometry(QtCore.QRect(90, 550, 211, 31))
+        self.DIAG_ERRORS_BRS.setFont(font)
+        self.DIAG_ERRORS_BRS.setObjectName("DIAG_ERRORS_BRS")
+        self.DIAG_ERRORS_LBL = QtWidgets.QLabel(self.groupBox_8)
+        self.DIAG_ERRORS_LBL.setGeometry(QtCore.QRect(100, 120, 211, 41))
         font = QtGui.QFont()
         font.setPointSize(14)
-        self.EXP_RES_DIAG_LBL.setFont(font)
-        self.EXP_RES_DIAG_LBL.setObjectName("EXP_RES_DIAG_LBL")
-        self.DIAG_SB_SELECTOR = QtWidgets.QComboBox(self.groupBox_8)
-        self.DIAG_SB_SELECTOR.setGeometry(QtCore.QRect(30, 330, 361, 31))
-        font = QtGui.QFont()
-        font.setPointSize(9)
-        self.DIAG_SB_SELECTOR.setFont(font)
-        self.DIAG_SB_SELECTOR.setObjectName("comboBox")
-        self.DIAG_SB_SELECTOR.addItem("")
-        self.DIAG_SB_SELECTOR.addItem("")
-        self.DIAG_SB_SELECTOR.addItem("")
-        self.DIAG_SB_SELECTOR.addItem("")
-        self.DIAG_SB_SELECTOR.addItem("")
-        self.DIAG_SB_SELECTOR.addItem("")
-        self.DIAG_SB_SELECTOR.addItem("")
-        self.DIAG_SB_SELECTOR.addItem("")
-        self.label_2 = QtWidgets.QLabel(self.groupBox_8)
-        self.label_2.setGeometry(QtCore.QRect(30, 290, 251, 31))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.label_2.setFont(font)
-        self.label_2.setObjectName("label_2")
+        self.DIAG_ERRORS_LBL.setFont(font)
+        self.DIAG_ERRORS_LBL.setObjectName("DIAG_ERRORS_LBL")
+        self.DIAG_READ_0x08_BTN = QtWidgets.QPushButton(self.groupBox_8)
+        self.DIAG_READ_0x08_BTN.setGeometry(QtCore.QRect(230, 40, 211, 51))
+        self.DIAG_READ_0x08_BTN.setObjectName("DIAG_READ_0x08_BTN")
         self.groupBox_9 = QtWidgets.QGroupBox(self.tab)
-        self.groupBox_9.setGeometry(QtCore.QRect(440, -10, 681, 281))
+        self.groupBox_9.setGeometry(QtCore.QRect(440, 0, 671, 441))
         self.groupBox_9.setTitle("")
         self.groupBox_9.setObjectName("groupBox_9")
-        self.ACCEPTED_CAN_MSG_DIAG_BRS = QtWidgets.QTextBrowser(self.groupBox_9)
-        self.ACCEPTED_CAN_MSG_DIAG_BRS.setGeometry(QtCore.QRect(30, 80, 591, 192))
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.ACCEPTED_CAN_MSG_DIAG_BRS.setFont(font)
-        self.ACCEPTED_CAN_MSG_DIAG_BRS.setObjectName("ACCEPTED_CAN_MSG_DIAG_BRS")
-        self.ACCEPTED_CAN_MSG_DIAG_LBL = QtWidgets.QLabel(self.groupBox_9)
-        self.ACCEPTED_CAN_MSG_DIAG_LBL.setGeometry(QtCore.QRect(30, 50, 251, 31))
-        font = QtGui.QFont()
-        font.setFamily("Yu Gothic UI")
-        font.setPointSize(14)
-        font.setBold(True)
-        font.setWeight(75)
-        self.ACCEPTED_CAN_MSG_DIAG_LBL.setFont(font)
-        self.ACCEPTED_CAN_MSG_DIAG_LBL.setObjectName("ACCEPTED_CAN_MSG_DIAG_LBL")
+        self.DIAG_RESET_BTN = QtWidgets.QPushButton(self.groupBox_9)
+        self.DIAG_RESET_BTN .setGeometry(QtCore.QRect(110, 330, 221, 51))
+        self.DIAG_RESET_BTN .setObjectName("pushButton_5")
+        self.DIAG_VIN0_BTN = QtWidgets.QPushButton(self.groupBox_9)
+        self.DIAG_VIN0_BTN.setGeometry(QtCore.QRect(400, 270, 221, 51))
+        self.DIAG_VIN0_BTN.setObjectName("DIAG_VIN0_BTN")
+        self.DIAG_VIN1_BTN = QtWidgets.QPushButton(self.groupBox_9)
+        self.DIAG_VIN1_BTN.setGeometry(QtCore.QRect(110, 270, 221, 51))
+        self.DIAG_VIN1_BTN.setObjectName("DIAG_VIN1_BTN")
+        self.DIAG_EXTDIAG_BTN = QtWidgets.QPushButton(self.groupBox_9)
+        self.DIAG_EXTDIAG_BTN.setGeometry(QtCore.QRect(400, 330, 221, 51))
+        self.DIAG_EXTDIAG_BTN.setObjectName("DIAG_EXTDIAG_BTN")
+        self.DIAG_ACC_BTN = QtWidgets.QPushButton(self.groupBox_9)
+        self.DIAG_ACC_BTN.setGeometry(QtCore.QRect(400, 210, 221, 51))
+        self.DIAG_ACC_BTN.setObjectName("DIAG_ACC_BTN")
         self.groupBox_10 = QtWidgets.QGroupBox(self.tab)
-        self.groupBox_10.setGeometry(QtCore.QRect(440, 270, 681, 551))
+        self.groupBox_10.setGeometry(QtCore.QRect(0, 0, 441, 441))
         self.groupBox_10.setTitle("")
         self.groupBox_10.setObjectName("groupBox_10")
-        self.DIAG_ERROR_BRS = QtWidgets.QTextBrowser(self.groupBox_10)
-        self.DIAG_ERROR_BRS.setGeometry(QtCore.QRect(240, 90, 391, 41))
+        self.DIAG_UPD_CAN_MSG_BTN = QtWidgets.QPushButton(self.groupBox_10)
+        self.DIAG_UPD_CAN_MSG_BTN.setGeometry(QtCore.QRect(30, 70, 321, 41))
+        self.DIAG_UPD_CAN_MSG_BTN.setObjectName("DIAG_UPD_CAN_MSG_BTN")
+        self.DIAG_CAN_MSG_LBL = QtWidgets.QLabel(self.groupBox_10)
+        self.DIAG_CAN_MSG_LBL.setGeometry(QtCore.QRect(70, 20, 281, 41))
         font = QtGui.QFont()
         font.setPointSize(14)
-        self.DIAG_ERROR_BRS.setFont(font)
-        self.DIAG_ERROR_BRS.setObjectName("DIAG_ERROR_BRS")
-        self.DIAG_RESULT_BRS = QtWidgets.QTextBrowser(self.groupBox_10)
-        self.DIAG_RESULT_BRS.setGeometry(QtCore.QRect(240, 230, 391, 41))
+        self.DIAG_CAN_MSG_LBL.setFont(font)
+        self.DIAG_CAN_MSG_LBL.setObjectName("DIAG_CAN_MSG_LBL")
+        self.checkBox = QtWidgets.QCheckBox(self.groupBox_10)
+        self.checkBox.setGeometry(QtCore.QRect(80, 140, 211, 17))
+        self.checkBox.setObjectName("checkBox")
+        self.checkBox_2 = QtWidgets.QCheckBox(self.groupBox_10)
+        self.checkBox_2.setGeometry(QtCore.QRect(80, 190, 201, 17))
+        self.checkBox_2.setObjectName("checkBox_2")
+        self.checkBox_3 = QtWidgets.QCheckBox(self.groupBox_10)
+        self.checkBox_3.setGeometry(QtCore.QRect(80, 240, 241, 17))
+        self.checkBox_3.setObjectName("checkBox_3")
+        self.DIAG_ACCEPTED_BRS = QtWidgets.QTextBrowser(self.tab)
+        self.DIAG_ACCEPTED_BRS.setGeometry(QtCore.QRect(10, 480, 411, 321))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.DIAG_ACCEPTED_BRS.setFont(font)
+        self.DIAG_ACCEPTED_BRS.setObjectName("DIAG_ACCEPTED_BRS")
+        self.label_2 = QtWidgets.QLabel(self.tab)
+        self.label_2.setGeometry(QtCore.QRect(40, 450, 291, 31))
         font = QtGui.QFont()
         font.setPointSize(14)
-        self.DIAG_RESULT_BRS.setFont(font)
-        self.DIAG_RESULT_BRS.setObjectName("DIAG_RESULT_BRS")
-        self.DIAG_ERROR_LBL = QtWidgets.QLabel(self.groupBox_10)
-        self.DIAG_ERROR_LBL.setGeometry(QtCore.QRect(40, 100, 181, 21))
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.DIAG_ERROR_LBL.setFont(font)
-        self.DIAG_ERROR_LBL.setObjectName("DIAG_ERROR_LBL")
-        self.DIAG_RESULT_LBL = QtWidgets.QLabel(self.groupBox_10)
-        self.DIAG_RESULT_LBL.setGeometry(QtCore.QRect(70, 240, 151, 20))
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.DIAG_RESULT_LBL.setFont(font)
-        self.DIAG_RESULT_LBL.setObjectName("DIAG_RESULT_LBL")
+        self.label_2.setFont(font)
+        self.label_2.setObjectName("label_2")
         self.tabWidget.addTab(self.tab, "")
         MainWindow.setCentralWidget(self.centralwidget)
 
-        self.HighVolatgeWarning = QtWidgets.QMessageBox()
-        self.HighVolatgeWarning.setWindowTitle("Внимание")
-        self.HighVolatgeWarning.setText("Проверьте,что напряжение питания>17,2 В.")
-        self.HighVolatgeWarning.setIcon(QtWidgets.QMessageBox.Information)
 
-        self.LowVolatgeWarning = QtWidgets.QMessageBox()
-        self.LowVolatgeWarning.setWindowTitle("Внимание")
-        self.LowVolatgeWarning.setText("Проверьте,что напряжение питания<8 В.")
-        self.LowVolatgeWarning.setIcon(QtWidgets.QMessageBox.Information)
         self.retranslateUi(MainWindow)
 
         self.tabWidget.setCurrentIndex(0)
@@ -615,14 +579,29 @@ class Ui_MainWindow(object):
         self.acc_selector.currentIndexChanged['int'].connect(self.acc_set_changed) # type: ignore
         self.SBR_test_selector.currentIndexChanged['int'].connect(self.SBR_test_changed) # type: ignore
 
+        self.DIAG_RESET_BTN.clicked.connect(self.run_ECU_reset)
+        self.DIAG_RESET_BTN.clicked.connect(self.DIAG_ACCEPTED_BRS.clear)
 
-        self.DIAG_TEST_SELECTOR.currentIndexChanged['int'].connect(self.DIAG_test_changed)
-        self.DIAG_SB_SELECTOR.currentIndexChanged['int'].connect(self.DIAG_SB_CHANGED)
+        self.DIAG_EXTDIAG_BTN.clicked.connect(self.run_ExtendedDiagnostic)
+        self.DIAG_EXTDIAG_BTN.clicked.connect(self.DIAG_ACCEPTED_BRS.clear)
 
-        self.START_DIAG_BTN.clicked.connect(self.run_Self_diag)
-        self.START_DIAG_BTN.clicked.connect(self.DIAG_RESULT_BRS.clear)
-        self.START_DIAG_BTN.clicked.connect(self.DIAG_ERROR_BRS.clear)
-        self.START_DIAG_BTN.clicked.connect(self.ACCEPTED_CAN_MSG_DIAG_BRS.clear)
+        self.DIAG_VIN0_BTN.clicked.connect(self.run_Write_VIN0)
+        self.DIAG_VIN0_BTN.clicked.connect(self.DIAG_ACCEPTED_BRS.clear)
+
+        self.DIAG_VIN1_BTN.clicked.connect(self.run_Write_VIN1)
+        self.DIAG_VIN1_BTN.clicked.connect(self.DIAG_ACCEPTED_BRS.clear)
+
+        self.DIAG_READ_0x08_BTN.clicked.connect(self.run_Read0x08)
+        self.DIAG_READ_0x08_BTN.clicked.connect(self.DIAG_ERRORS_BRS.clear)
+
+        self.DIAG_READ_0x09_BTN.clicked.connect(self.run_Read0x09)
+        self.DIAG_READ_0x09_BTN.clicked.connect(self.DIAG_ERRORS_BRS.clear)
+
+        self.DIAG_CLEAR_DTC_BTN.clicked.connect(self.run_ClearDTC)
+        self.DIAG_CLEAR_DTC_BTN.clicked.connect(self.DIAG_ERRORS_BRS.clear)
+
+
+
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
 
@@ -692,33 +671,23 @@ class Ui_MainWindow(object):
         self.SB_select_lbl.setText(_translate("MainWindow", "Селектор ремня безопасности"))
 
         self.accepted_SBR_title.setText(_translate("MainWindow", "Ход проверки"))
-        self.exp_res_SBR_brs.setText("При пристёгнутом ремне соответствующий сигнал SafetyBeltState равен 0х02 (SB fastened) \nПри непристёгнутом ремне соответствующий сигнал SafetyBeltState равен 0х01 (SB unfastened)")
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_6), _translate("MainWindow", "Проверка SBR"))
-        self.START_DIAG_BTN.setText(_translate("MainWindow", "Старт"))
-        self.DIAG_TEST_SELECTOR.setItemText(0, _translate("MainWindow", "Проверка изменения состояний выходов пиропатронов"))
-        self.DIAG_TEST_SELECTOR.setItemText(1, _translate("MainWindow", "Проверка диагностики высокого напряжения питания"))
-        self.DIAG_TEST_SELECTOR.setItemText(2, _translate("MainWindow", "Проверка диагностики низкого напряжения питания"))
-        self.DIAG_TEST_SELECTOR.setItemText(3, _translate("MainWindow", "Проверка диагностики отсутствия VIN"))
-        self.DIAG_TEST_SELECTOR.setItemText(4, _translate("MainWindow", "Проверка чтения ACU crash details"))
-        self.DIAG_TEST_SELECTOR.setItemText(5, _translate("MainWindow", "Проверка диагностики получения сообщений по CAN-шине"))
-        self.DIAG_TEST_SELECTOR.setItemText(6, _translate("MainWindow","Проверка изменения состояний выходов кнопки отключения ПБ"))
-        self.DIAG_TEST_SELECTOR.setItemText(7, _translate("MainWindow","Проверка изменения состояний датчика наличия пассажира"))
-        self.DIAG_TEST_SELECTOR.setItemText(8, _translate("MainWindow","Проверка CAN bus-off"))
-        self.DIAG_TEST_SELECTOR.setItemText(9, _translate("MainWindow","Проверка отключения работы алгоритма"))
-        self.DIAG_SB_SELECTOR.setItemText(0, _translate("MainWindow", "Front Airbag Driver"))
-        self.DIAG_SB_SELECTOR.setItemText(1, _translate("MainWindow", "Front Airbag Passenger"))
-        self.DIAG_SB_SELECTOR.setItemText(2, _translate("MainWindow", "Side Airbag Driver"))
-        self.DIAG_SB_SELECTOR.setItemText(3, _translate("MainWindow", "Side Airbag Passenger"))
-        self.DIAG_SB_SELECTOR.setItemText(4, _translate("MainWindow", "Curtain Airbag Driver"))
-        self.DIAG_SB_SELECTOR.setItemText(5, _translate("MainWindow", "Curtain Airbag Passenger"))
-        self.DIAG_SB_SELECTOR.setItemText(6, _translate("MainWindow", "Pretensioner Driver"))
-        self.DIAG_SB_SELECTOR.setItemText(7, _translate("MainWindow", "Pretensioner Passenger"))
-        self.EXP_RES_DIAG_LBL.setText(_translate("MainWindow", "Ожидаемый результат"))
-        self.ACCEPTED_CAN_MSG_DIAG_LBL.setText(_translate("MainWindow", "Принятые CAN-сообщения"))
-        self.DIAG_ERROR_LBL.setText(_translate("MainWindow", "Считанные ошибки"))
-        self.DIAG_RESULT_LBL.setText(_translate("MainWindow", "Результат"))
+        self.DIAG_READ_0x09_BTN.setText(_translate("MainWindow", "Считать DTC 0x09"))
+        self.DIAG_CLEAR_DTC_BTN.setText(_translate("MainWindow", "Очистить DTC"))
+        self.DIAG_ERRORS_LBL.setText(_translate("MainWindow", "Считанные ошибки"))
+        self.DIAG_READ_0x08_BTN.setText(_translate("MainWindow", "Считать DTC 0x08"))
+        self.DIAG_RESET_BTN.setText(_translate("MainWindow", "Перезапустить Блок"))
+        self.DIAG_VIN0_BTN.setText(_translate("MainWindow", "Записать VIN!=0"))
+        self.DIAG_VIN1_BTN.setText(_translate("MainWindow", "Записать VIN=0"))
+        self.DIAG_EXTDIAG_BTN.setText(_translate("MainWindow", "Войти в ExtendedDiagnosticSession"))
+        self.DIAG_ACC_BTN.setText(_translate("MainWindow", "Тест на срабатывание"))
+        self.DIAG_UPD_CAN_MSG_BTN.setText(_translate("MainWindow", "Обновить"))
+        self.DIAG_CAN_MSG_LBL.setText(_translate("MainWindow", "Отправляемые сообщения"))
+        self.checkBox.setText(_translate("MainWindow", "BRAKE_CANHS_R_01(0х5D7)"))
+        self.checkBox_2.setText(_translate("MainWindow", "BCM_CANHS_R_04(0x350)"))
+        self.checkBox_3.setText(_translate("MainWindow", "CLUSTER_CANHS_RNr_01(0x4F8)"))
+        self.label_2.setText(_translate("MainWindow", "Принятые сообщения"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Проверка самодиагностки"))
-        self.EXP_RESULT_DIAG_BRS.setText("Считаны ошибки:\nResistance too high-0x90211b\nResistance too low-0x90211a\nShort to GND-0x902114\nShort to Vbatt-0x902112")
 
     def acc_set_changed(self):
         if self.acc_selector.currentIndex() == 0:
@@ -751,16 +720,29 @@ class Ui_MainWindow(object):
         elif self.UDS_TEST_SELECTOR.currentIndex() == 6:
             self.EXP_UDS_BRS.setText("На экране появились все поддерживаемые DTC и их состояния")
             self.UDS_LED_SELECTOR.setDisabled(1)
+        elif self.UDS_TEST_SELECTOR.currentIndex() == 7:
+            self.EXP_UDS_BRS.setText("На экране появились все поддерживаемые DTC и их состояния")
+            self.UDS_LED_SELECTOR.setDisabled(1)
+        elif self.UDS_TEST_SELECTOR.currentIndex() == 8:
+            self.EXP_UDS_BRS.setText("Блок успешно вошёл в security access")
+            self.UDS_LED_SELECTOR.setDisabled(1)
+        elif self.UDS_TEST_SELECTOR.currentIndex() == 9:
+            self.EXP_UDS_BRS.setText("1) При первом чтении DID последний байт в отете 0х5А \nВизуально убедиться, что диагностический светодиод мигает с частотой 1 Гц\n2) При втором чтении DID последний байт ответа 0хА5\nВизуально убедиться, что диагностический светодиод не мигает")
+            self.UDS_LED_SELECTOR.setDisabled(1)
+        elif self.UDS_TEST_SELECTOR.currentIndex() == 10:
+            self.EXP_UDS_BRS.setText("1)При первом чтении DID последний байт в ответе 0хFF\n2)Импульс на пиропатроне водтеля не задетектирован\nПри втором чтении DID последний байт ответа 0хFF\nЗначение SafetyBeltState изменилось на not monitored")
+            self.UDS_LED_SELECTOR.setDisabled(1)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 11:
             self.EXP_UDS_BRS.setText(f"Отправлено: 03 22 59 10\nПринято: 05 62 59 10 xx xx \nxx-Считанное сопротивление")
+            self.UDS_LED_SELECTOR.setDisabled(1)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 12:
             self.EXP_UDS_BRS.setText(f"Отправлено: 03 22 59 18\nПринято: 04 62 59 10 xx \nxx-Состояние светодиода")
             self.UDS_LED_SELECTOR.setDisabled(1)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 13:
-            self.EXP_UDS_BRS.setText(f"Отправлено: 03 22 C9 21\nПринято: 05 62 C9 21 xx xx\nxx-Считанное значение скорости")
+            self.EXP_UDS_BRS.setText(f"Отправлено: 03 22 C9 21\nПринято: 05 62 C9 21 xx xx\nxx xx-Считанное значение скорости\n Скорость 40км/ч")
             self.UDS_LED_SELECTOR.setDisabled(1)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 14:
-            self.EXP_UDS_BRS.setText("Отправлено: 03 22 C9 53\nПринято: 04 62 C9 53 xx \nxx- Считанное напряжение\nПреобразовать!")
+            self.EXP_UDS_BRS.setText("Отправлено: 03 22 C9 53\nПринято: 04 62 C9 53 xx \nxx- Считанное напряжение")
             self.UDS_LED_SELECTOR.setDisabled(1)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 15:
             self.EXP_UDS_BRS.setText("Отправлено: 03 22 C9 14\nПринято: 07 62 C9 53 xx xx xx xx\nПосле ожидания 5с.\nОтправлено: 03 22 C9 14\nПринято: 07 62 C9 53 xx xx xx xx\nСчитанное значение увеличилось на 5")
@@ -793,57 +775,173 @@ class Ui_MainWindow(object):
             self.exp_res_SBR_brs.setText("Сигнал FrontPassengerSafetyBeltReminder равен 0 (No warning)")
         elif self.SBR_test_selector.currentIndex() == 5:
             self.exp_res_SBR_brs.setText("После обнуления таймаута SafetyBeltReminder равен 0 (No warning)\n После сброса сигнал SafetyBeltReminder  равен 1 (Warning level 1)")
-    def DIAG_test_changed(self):
-        if self.DIAG_TEST_SELECTOR.currentIndex() == 0:
-            self.DIAG_SB_SELECTOR.setDisabled(0)
-        elif self.DIAG_TEST_SELECTOR.currentIndex() == 1:
-            self.EXP_RESULT_DIAG_BRS.setText("Считана ошибка 0x909817")
-            self.DIAG_SB_SELECTOR.setDisabled(1)
-            self.HighVolatgeWarning.exec_()
-        elif self.DIAG_TEST_SELECTOR.currentIndex() == 2:
-            self.EXP_RESULT_DIAG_BRS.setText("Считана ошибка 0x909816")
-            self.DIAG_SB_SELECTOR.setDisabled(1)
-            self.LowVolatgeWarning.exec_()
-        elif self.DIAG_TEST_SELECTOR.currentIndex() == 3:
-            self.EXP_RESULT_DIAG_BRS.setText("Считана ошибка 0x909800")
-            self.DIAG_SB_SELECTOR.setDisabled(1)
-        elif self.DIAG_TEST_SELECTOR.currentIndex() == 4:
-            self.EXP_RESULT_DIAG_BRS.setText("Считана ошибка 0x901400")
-            self.DIAG_SB_SELECTOR.setDisabled(1)
-        elif self.DIAG_TEST_SELECTOR.currentIndex() == 5:
-            self.EXP_RESULT_DIAG_BRS.setText("Считаны ошибки 0хС12187 0xC14087 0xC15587")
-            self.DIAG_SB_SELECTOR.setDisabled(1)
-        elif self.DIAG_TEST_SELECTOR.currentIndex() == 6:
-            self.EXP_RESULT_DIAG_BRS.setText("Считаны ошибки 0х910314 0x910412")
-            self.DIAG_SB_SELECTOR.setDisabled(1)
-        elif self.DIAG_TEST_SELECTOR.currentIndex() == 7:
-            self.EXP_RESULT_DIAG_BRS.setText("Считаны ошибки 0х910514 0x910512")
-            self.DIAG_SB_SELECTOR.setDisabled(1)
-        elif self.DIAG_TEST_SELECTOR.currentIndex() == 8:
-            self.EXP_RESULT_DIAG_BRS.setText("Считана ошибка 0xC07388")
-            self.DIAG_SB_SELECTOR.setDisabled(1)
-        elif self.DIAG_TEST_SELECTOR.currentIndex() == 9:
-            self.EXP_RESULT_DIAG_BRS.setText("На пиропатроне не задетектирован импульс")
-            self.DIAG_SB_SELECTOR.setDisabled(1)
-    def DIAG_SB_CHANGED(self):
-        if self.DIAG_SB_SELECTOR.currentIndex() == 0:
-            self.EXP_RESULT_DIAG_BRS.setText("Считаны ошибки:\nResistance too high-0x90211b\nResistance too low-0x90211a\nShort to GND-0x902114\nShort to Vbatt-0x902112")
-        elif self.DIAG_SB_SELECTOR.currentIndex() == 1:
-            self.EXP_RESULT_DIAG_BRS.setText("Считаны ошибки:\nResistance too high-0x90311b\nResistance too low-0x93211a\nShort to GND-0x903114\nShort to Vbatt-0x903112")
-        elif self.DIAG_SB_SELECTOR.currentIndex() == 2:
-            self.EXP_RESULT_DIAG_BRS.setText("Считаны ошибки:\nResistance too high-0x902a1b\nResistance too low-0x902a1a\nShort to GND-0x902a14\nShort to Vbatt-0x902a12")
-        elif self.DIAG_SB_SELECTOR.currentIndex() == 3:
-            self.EXP_RESULT_DIAG_BRS.setText("Считаны ошибки:\nResistance too high-0x903a1b\nResistance too low-0x903a1a\nShort to GND-0x903a14\nShort to Vbatt-0x903a12")
-        elif self.DIAG_SB_SELECTOR.currentIndex() == 4:
-            self.EXP_RESULT_DIAG_BRS.setText("Считаны ошибки:\nResistance too high-0x90411b\nResistance too low-0x90411a\nShort to GND-0x904114\nShort to Vbatt-0x904112")
-        elif self.DIAG_SB_SELECTOR.currentIndex() == 5:
-            self.EXP_RESULT_DIAG_BRS.setText("Считаны ошибки:\nResistance too high-0x90451b\nResistance too low-0x90451a\nShort to GND-0x904514\nShort to Vbatt-0x904512")
-        elif self.DIAG_SB_SELECTOR.currentIndex() == 6:
-            self.EXP_RESULT_DIAG_BRS.setText("Считаны ошибки:\nResistance too high-0x90911b\nResistance too low-0x90911a\nShort to GND-0x909114\nShort to Vbatt-0x909112")
-        elif self.DIAG_SB_SELECTOR.currentIndex() == 7:
-            self.EXP_RESULT_DIAG_BRS.setText("Считаны ошибки:\nResistance too high-0x90911b\nResistance too low-0x90911a\nShort to GND-0x909114\nShort to Vbatt-0x909112")
+    '''Блок функций используемых для самодиагностики БУ'''
+    def Read0x09(self):
+        self.UART = serial.Serial('COM8', 115200)
+        Command = Messages.TestData()
+        Result = Messages.TestData()
+        Command.method = 0
+        Command.testNumber = 0x51
+        Command = Command.SerializeToString()
+        self.UART.write(Command)
+        received_len = self.UART.read(1).hex()
+        print((int(received_len, 16)))
+        bytes_read = self.UART.read(int(received_len, 16))
+        self.UART.close()
+        Result.ParseFromString(bytes_read)
+        DTC_list = self.parse_UDS_errors(Result, 0x09)
+        for i in range(0,len(DTC_list)):
+            self.DIAG_ERRORS_BRS.append((str(DTC_list[i])))
+    def run_Read0x09(self):
+        Receiver=threading.Thread(target=self.Read0x09)
+        Receiver.start()
+    def Read0x08(self):
+        self.UART = serial.Serial('COM8', 115200)
+        Command = Messages.TestData()
+        Result = Messages.TestData()
+        Command.method = 0
+        Command.testNumber = 0x52
+        Command = Command.SerializeToString()
+        self.UART.write(Command)
+        received_len = self.UART.read(2).hex()
+        print((int(received_len, 16)))
+        bytes_read = self.UART.read(int(received_len, 16))
+        self.UART.close()
+        Result.ParseFromString(bytes_read)
+        DTC_list=self.parse_UDS_errors(Result, 0x08)
+        for i in range(0, len(DTC_list)):
+            self.DIAG_ERRORS_BRS.append((str(DTC_list[i])))
+    def run_Read0x08(self):
+        Receiver=threading.Thread(target=self.Read0x08)
+        Receiver.start()
+    def ClearDTC(self):
+        self.UART = serial.Serial('COM8', 115200)
+        Command = Messages.TestData()
+        Result = Messages.TestData()
+        Command.method = 0
+        Command.testNumber = 0x53
+        Command = Command.SerializeToString()
+        self.UART.write(Command)
+        received_len = self.UART.read(2).hex()
+        print((int(received_len, 16)))
+        bytes_read = self.UART.read(int(received_len, 16))
+        self.UART.close()
+        Result.ParseFromString(bytes_read)
+        self.DIAG_ACCEPTED_BRS.append("Очистка DTC:")
+        self.DIAG_ACCEPTED_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+    def run_ClearDTC(self):
+        Receiver=threading.Thread(target=self.ClearDTC)
+        Receiver.start()
+    def ECU_reset(self):
+        self.DIAG_ACCEPTED_BRS.append("Penis")
+        self.UART = serial.Serial('COM8', 115200)
+        Command = Messages.TestData()
+        Result = Messages.TestData()
+        Command.method = 0
+        Command.testNumber = 0x56
+        Command = Command.SerializeToString()
+        self.UART.write(Command)
+        received_len = self.UART.read(2).hex()
+        print((int(received_len, 16)))
+        bytes_read = self.UART.read(int(received_len, 16))
+        self.UART.close()
+        Result.ParseFromString(bytes_read)
+        print(Result)
+        self.DIAG_ACCEPTED_BRS.append("Перезагрузка блока")
+        time.sleep(0.05)
+        self.DIAG_ACCEPTED_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+    def run_ECU_reset(self):
+        Receiver=threading.Thread(target=self.ECU_reset)
+        Receiver.start()
+    def ExtendedDiagnostic(self):
+        self.UART = serial.Serial('COM8', 115200)
+        Command = Messages.TestData()
+        Result = Messages.TestData()
+        Command.method = 0
+        Command.testNumber = 0x57
+        Command = Command.SerializeToString()
+        self.UART.write(Command)
+        received_len = self.UART.read(2).hex()
+        print((int(received_len, 16)))
+        bytes_read = self.UART.read(int(received_len, 16))
+        self.UART.close()
+        Result.ParseFromString(bytes_read)
+        self.DIAG_ACCEPTED_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+    def run_ExtendedDiagnostic(self):
+        Receiver=threading.Thread(target=self.ExtendedDiagnostic)
+        Receiver.start()
+    def Write_VIN0(self):
+        self.UART = serial.Serial('COM8', 115200)
+        Command = Messages.TestData()
+        Result = Messages.TestData()
+        Command.method = 0
+        Command.testNumber = 0x54
+        Command = Command.SerializeToString()
+        self.UART.write(Command)
+        received_len = self.UART.read(1).hex()
+        print((int(received_len, 16)))
+        bytes_read = self.UART.read(int(received_len, 16))
+        self.UART.close()
+        Result.ParseFromString(bytes_read)
+        self.DIAG_ACCEPTED_BRS.append(
+            f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nОтправлено:{str(Result.frame[3].data.hex())}")
+    def run_Write_VIN0(self):
+        Receiver=threading.Thread(target=self.Write_VIN0)
+        Receiver.start()
+    def Write_VIN1(self):
+        self.UART = serial.Serial('COM8', 115200)
+        Command = Messages.TestData()
+        Result = Messages.TestData()
+        Command.method = 0
+        Command.testNumber = 0x55
+        Command = Command.SerializeToString()
+        self.UART.write(Command)
+        received_len = self.UART.read(1).hex()
+        print((int(received_len, 16)))
+        bytes_read = self.UART.read(int(received_len, 16))
+        self.UART.close()
+        Result.ParseFromString(bytes_read)
+        self.DIAG_ACCEPTED_BRS.append(
+            f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nОтправлено:{str(Result.frame[3].data.hex())}")
+    def run_Write_VIN1(self):
+        Receiver=threading.Thread(target=self.Write_VIN1)
+        Receiver.start()
+    def parse_UDS_errors(self,Result,Status_Byte):
+        '''----------------Парсинг ошибок 0х09 ----------------------------'''
+        DTC_list=[]
+        indexes=[]
+        for num in range(0, len(Result.frame)):
+            for index in range(0, len(Result.frame[num].data)):
+                Status_Byte_index = Result.frame[num].data.find(Status_Byte, index)
+                if (Status_Byte_index != tmp):
+                    indexes.append(Status_Byte_index)
+                tmp = Status_Byte_index
+            # print(indexes)
 
-
+            for i in range(0, len(indexes)):
+                if (indexes[i] <= 4 and indexes[i] != -1):
+                    DTC = hex(((Result.frame[num].data[indexes[i] + 1]) << 16) + (
+                                (Result.frame[num].data[indexes[i] + 2]) << 8) + (
+                              Result.frame[num].data[indexes[i] + 3]))
+                    # print(DTC)
+                    DTC_list.append(DTC)
+                elif (indexes[i] == 5):
+                    DTC = hex(((Result.frame[num].data[6]) << 16) + ((Result.frame[num].data[7]) << 8) + (
+                    Result.frame[num + 1].data[1]))
+                    # print(DTC)
+                    DTC_list.append(DTC)
+                elif (indexes[i] == 6):  #####
+                    DTC = hex(((Result.frame[num].data[7]) << 16) + ((Result.frame[num + 1].data[1]) << 8) + (
+                    Result.frame[num + 1].data[2]))
+                    # print(DTC)
+                    DTC_list.append(DTC)
+                elif (indexes[i] == 7):
+                    DTC = hex(((Result.frame[num + 1].data[1]) << 16) + ((Result.frame[num + 1].data[2]) << 8) + (
+                    Result.frame[num + 1].data[3]))
+                    # print(DTC)
+                    DTC_list.append(DTC)
+            indexes.clear()
+            return DTC_list
     def Test1_handler(self):
         self.UART = serial.Serial('COM8', 115200)
         Command = Messages.TestData()
@@ -969,12 +1067,13 @@ class Ui_MainWindow(object):
             Command.testNumber = 0x302
         if(Command.testNumber==0x32):
             Command.LED=self.UDS_LED_SELECTOR.currentIndex()
+        if(Command.testNumber==0x3E):
+            Command.vehicle_speed=1
         Cmd = Command.SerializeToString()
         self.UART.write(Cmd)
-        received_len = self.UART.read(1).hex()
+        received_len = self.UART.read(2).hex()
         bytes_read = self.UART.read(int(received_len, 16))
         Result.ParseFromString(bytes_read)
-        print(Result)
         match Result.testNumber:
             case 0x31:#ECU reset
                 self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
@@ -1004,21 +1103,117 @@ class Ui_MainWindow(object):
                     self.UDS_MSG_BRS.append("Сообщения по CAN принимаются ")
                 #ПРОВЕРИТЬ FDCAN->PSR И ЕСЛИ ОН МЕНЯЕТ СОСТОЯНИЕ ДОБАВИТЬ В OUTPUT
             case 0x36:#Проверка ClearDiagnosticInformation 0x14
-                print(Result)
+                DTC_list=self.parse_UDS_errors(Result, 0x09)
+                self.UDS_MSG_BRS.append("Считанные ошибки")
+                time.sleep(0.01)
+                for i in range(0,len(DTC_list)):
+                    self.UDS_MSG_BRS.append(str(DTC_list[i]))
+                    time.sleep(0.01)
+                received_len = self.UART.read(2).hex()
+                print(received_len)
+                bytes_read = self.UART.read(int(received_len, 16))
+                Result.ParseFromString(bytes_read)
+                self.UDS_MSG_BRS.append("Очистка кодов ошибок и удаление информации об аварии")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
+                time.sleep(0.01)
+                DTC_list2 = self.parse_UDS_errors(Result, 0x09)
+                self.UDS_MSG_BRS.append("Считанные ошибки")
+                time.sleep(0.01)
+                for i in range(0, len(DTC_list2)):
+                    self.UDS_MSG_BRS.append(str(DTC_list2[i]))
+                    time.sleep(0.01)
             case 0x37:   #read diag info
                 print(Result)
             case 0x38:#control dtcsetting
                 print(Result)
             case 0x39:#security access
-                print(Result)
+                self.UDS_MSG_BRS.append(
+                    f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nОтправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
+                time.sleep(0.02)
+                if(Result.frame[5].data[1]==0x67 and Result.frame[5].data[2]==0x02):
+                    self.UDS_MSG_BRS.append("Блок успешно вошёл в security access")
+                else:
+                    self.UDS_MSG_BRS.append("Ошибка входа в security access")
             case 0x3A: #DID ECU OPERATING STATES
                 print(Result)
+                self.UDS_MSG_BRS.append(
+                    f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nОтправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
+                time.sleep(0.02)
+                if (Result.frame[5].data[1] == 0x67 and Result.frame[5].data[2] == 0x02):
+                    self.UDS_MSG_BRS.append("Блок успешно вошёл в security access\n")
+                else:
+                    self.UDS_MSG_BRS.append("Ошибка входа в security access\n")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append("Чтение DID:")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}\n")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append("Изменение режима работы на Working:")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[8].data.hex())}\nПринято:{str(Result.frame[9].data.hex())}\n")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append("Перезагрузка блока:")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[10].data.hex())}\nПринято:{str(Result.frame[11].data.hex())}\n")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append("Чтение DID:")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[12].data.hex())}\nПринято:{str(Result.frame[13].data.hex())}")
             case 0x3B: #DID ACU Configuration
-                print(Result)
+                self.UDS_MSG_BRS.append(
+                    f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nОтправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
+                time.sleep(0.02)
+                if (Result.frame[5].data[1] == 0x67 and Result.frame[5].data[2] == 0x02):
+                    self.UDS_MSG_BRS.append("Блок успешно вошёл в security access\n")
+                else:
+                    self.UDS_MSG_BRS.append("Ошибка входа в security access\n")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append("Чтение DID:")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append(
+                    f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}\n")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append("Отключение передней подушки:")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[8].data.hex())}\nПринято:{str(Result.frame[9].data.hex())}\n")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append("Перезагрузка блока:")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[10].data.hex())}\nПринято:{str(Result.frame[11].data.hex())}\n")
+                time.sleep(0.01)
+                if(Result.measuredValue[0]==0):
+                    self.UDS_MSG_BRS.append("Импульс на пиропатроне не зарегистрирован\n")
+                else:
+                    self.UDS_MSG_BRS.append("Импульс на пиропатроне зарегистрирован\n")
+                self.UDS_MSG_BRS.append("Чтение DID:")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append(
+                    f"Отправлено:{str(Result.frame[12].data.hex())}\nПринято:{str(Result.frame[13].data.hex())}\n")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append("Отключение ремня безопасности водителя")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append(
+                    f"Отправлено:{str(Result.frame[13].data.hex())}\nПринято:{str(Result.frame[14].data.hex())}\n")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append("Перезагрузка блока:")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[15].data.hex())}\nПринято:{str(Result.frame[16].data.hex())}\n")
+                time.sleep(0.01)
+                self.UDS_MSG_BRS.append(f"Состояние ремня безопасности водителя:")
+                time.sleep(0.01)
+                if(Result.measuredValue[1]==0):
+                    self.UDS_MSG_BRS.append("Not monitored")
+                else:
+                    self.UDS_MSG_BRS.append("Unfastened")
             case 0x3C: #Read driver airbag resistance
                 self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                Resisatnce =0.01*((Result.frame[1].data[4]<<8)+Result.frame[1].data[5])
+                self.UDS_MSG_BRS.append(f"Считанное сопротивление:{str(Resisatnce)} Ом")
             case 0x3D: #Read PAB Deactivation indicator status
                 self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                State=Result.frame[1].data[4]
+                self.UDS_MSG_BRS.append(f"Состояние светодиода:{str(State)}")
             case 0x3E: #Read Vehicle speed
                 self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
                 time.sleep(0.01)
@@ -1026,7 +1221,7 @@ class Ui_MainWindow(object):
             case 0x3F:  # Read Battery Voltage
                 self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
                 time.sleep(0.01)
-                self.UDS_MSG_BRS.append(f"Считанное напряжение:{str(0.06*(Result.frame[1].data[4]))} В.")
+                self.UDS_MSG_BRS.append(f"Считанное напряжение:{str(0.1*(Result.frame[1].data[4]))} В.")
             case 0x301:  # Read ECU's lifetime timer
                 self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nЗначение:{(Result.frame[1].data[3]<<24)+(Result.frame[1].data[4]<<16)+(Result.frame[1].data[5]<<8)+(Result.frame[1].data[6])}")
                 time.sleep(0.02)
@@ -1349,12 +1544,10 @@ class Ui_MainWindow(object):
         Command.testNumber = 0x51+self.DIAG_TEST_SELECTOR.currentIndex()
         Command.vehicle_speed = 1
         Cmd = Command.SerializeToString()
-        #print(Cmd)
         self.UART.write(Cmd)
         received_len = self.UART.read(1).hex()
         bytes_read = self.UART.read(int(received_len, 16))
         Result.ParseFromString(bytes_read)
-        #print(Result)
         match Result.testNumber:
             case 0x51:
                 DTC_list=[]
@@ -1388,6 +1581,7 @@ class Ui_MainWindow(object):
                             #print(DTC)
                             DTC_list.append(DTC)
                     indexes.clear()
+                '''Выводим считанные DTC на экран'''
                 for i in range(0,len(DTC_list)):
                     self.DIAG_ERROR_BRS.append(str(DTC_list[i]))
                 #print(DTC_list)
