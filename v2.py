@@ -17,10 +17,16 @@ import serial
 import threading
 import multiprocessing
 from states import *
-
+from serial.tools import list_ports
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-        self.COM_PORT='COM8'
+        ports = serial.tools.list_ports.comports()
+        print(ports)
+        for port in ports:
+            print(port.device)
+        self.COM_PORT='COM1'
+        self.UART = serial.Serial(self.COM_PORT, 115200)
+        self.UART.close()
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1313, 997)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -68,6 +74,13 @@ class Ui_MainWindow(object):
         font.setPointSize(16)
         self.Initreuult_lbl.setFont(font)
         self.Initreuult_lbl.setObjectName("Initreuult_lbl")
+        self.STOP_BTN_3 = QtWidgets.QPushButton(self.groupBox_2)
+        self.STOP_BTN_3.setGeometry(QtCore.QRect(990, 40, 311, 41))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.STOP_BTN_3.setFont(font)
+        self.STOP_BTN_3.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
+        self.STOP_BTN_3.setObjectName("STOP_BTN_3")
         self.can_msg_brs = QtWidgets.QTextBrowser(self.init_tab)
         self.can_msg_brs.setGeometry(QtCore.QRect(100, 340, 1051, 261))
         font = QtGui.QFont()
@@ -90,7 +103,7 @@ class Ui_MainWindow(object):
         self.groupBox_3.setTitle("")
         self.groupBox_3.setObjectName("groupBox_3")
         self.perod_periodic_btn = QtWidgets.QPushButton(self.groupBox_3)
-        self.perod_periodic_btn.setGeometry(QtCore.QRect(860, 80, 261, 51)) #
+        self.perod_periodic_btn.setGeometry(QtCore.QRect(680, 80, 261, 51)) #
         font = QtGui.QFont()
         font.setPointSize(12)
         self.perod_periodic_btn.setFont(font)
@@ -142,12 +155,19 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.label_7.setFont(font)
         self.label_7.setObjectName("label_7")#
+        self.STOP_BTN_1 = QtWidgets.QPushButton(self.groupBox_3)
+        self.STOP_BTN_1.setGeometry(QtCore.QRect(1000, 80, 261, 51))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.STOP_BTN_1.setFont(font)
+        self.STOP_BTN_1.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
+        self.STOP_BTN_1.setObjectName("STOP_BTN_1")
         self.groupBox_4 = QtWidgets.QGroupBox(self.can_tab)
         self.groupBox_4.setGeometry(QtCore.QRect(0, 430, 1311, 521))
         self.groupBox_4.setTitle("")
         self.groupBox_4.setObjectName("groupBox_4")
         self.start_trig_btn = QtWidgets.QPushButton(self.groupBox_4)
-        self.start_trig_btn.setGeometry(QtCore.QRect(860, 90, 251, 51))
+        self.start_trig_btn.setGeometry(QtCore.QRect(690, 90, 251, 51))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.start_trig_btn.setFont(font)
@@ -201,6 +221,13 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.accepted_trig_lbl.setFont(font)
         self.accepted_trig_lbl.setObjectName("accepted_trig_lbl")
+        self.STOP_BTN_2 = QtWidgets.QPushButton(self.groupBox_4)
+        self.STOP_BTN_2.setGeometry(QtCore.QRect(1020, 90, 251, 51))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.STOP_BTN_2.setFont(font)
+        self.STOP_BTN_2.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
+        self.STOP_BTN_2.setObjectName("STOP_BTN_2")
         self.tabWidget.addTab(self.can_tab, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
@@ -238,7 +265,7 @@ class Ui_MainWindow(object):
         self.groupBox_5.setTitle("")
         self.groupBox_5.setObjectName("groupBox_5")
         self.start_acc_btn = QtWidgets.QPushButton(self.groupBox_5)
-        self.start_acc_btn.setGeometry(QtCore.QRect(340, 20, 301, 41))
+        self.start_acc_btn.setGeometry(QtCore.QRect(30, 20, 301, 41))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.start_acc_btn.setFont(font)
@@ -268,6 +295,13 @@ class Ui_MainWindow(object):
         font.setPointSize(14)
         self.got_res_acc_lbl.setFont(font)
         self.got_res_acc_lbl.setObjectName("got_res_acc_lbl")
+        self.STOP_BTN_4 = QtWidgets.QPushButton(self.groupBox_5)
+        self.STOP_BTN_4.setGeometry(QtCore.QRect(360, 20, 301, 41))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.STOP_BTN_4.setFont(font)
+        self.STOP_BTN_4.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
+        self.STOP_BTN_4.setObjectName("STOP_BTN_4")
         self.CRASHDETECTED_BRS = QtWidgets.QTextBrowser(self.tab_2)
         self.CRASHDETECTED_BRS.setGeometry(QtCore.QRect(60, 410, 551, 171))
         self.CRASHDETECTED_BRS.setObjectName("CRASHDETECTED_BRS")
@@ -302,7 +336,7 @@ class Ui_MainWindow(object):
         self.groupBox_12.setTitle("")
         self.groupBox_12.setObjectName("groupBox_12")#
         self.UDS_RUN_BTN = QtWidgets.QPushButton(self.groupBox_12)
-        self.UDS_RUN_BTN.setGeometry(QtCore.QRect(50, 60, 441, 41))
+        self.UDS_RUN_BTN.setGeometry(QtCore.QRect(50, 30, 441, 41))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.UDS_RUN_BTN.setFont(font)
@@ -351,6 +385,13 @@ class Ui_MainWindow(object):
         font.setWeight(50)
         self.UDS_TEST_LBL.setFont(font)#
         self.UDS_TEST_LBL.setObjectName("UDS_TEST_LBL")
+        self.STOP_BTN_6 = QtWidgets.QPushButton(self.groupBox_12)
+        self.STOP_BTN_6.setGeometry(QtCore.QRect(50, 90, 441, 41))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.STOP_BTN_6.setFont(font)
+        self.STOP_BTN_6.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
+        self.STOP_BTN_6.setObjectName("STOP_BTN_6")
         self.EXP_UDS_BRS = QtWidgets.QTextBrowser(self.tab_3)
         self.EXP_UDS_BRS.setGeometry(QtCore.QRect(20, 460, 541, 331))
         font = QtGui.QFont()
@@ -452,6 +493,13 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.Door_select_lbl.setFont(font)
         self.Door_select_lbl.setObjectName("Door_select_lbl")
+        self.STOP_BTN_5 = QtWidgets.QPushButton(self.groupBox_6)
+        self.STOP_BTN_5.setGeometry(QtCore.QRect(20, 260, 421, 41))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.STOP_BTN_5.setFont(font)
+        self.STOP_BTN_5.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
+        self.STOP_BTN_5.setObjectName("STOP_BTN_5")
         self.acc_SBR_brs = QtWidgets.QTextBrowser(self.tab_6)
         self.acc_SBR_brs.setGeometry(QtCore.QRect(600, 240, 601, 581))
         font = QtGui.QFont()
@@ -575,7 +623,7 @@ class Ui_MainWindow(object):
         self.tab_4 = QtWidgets.QWidget()
         self.tab_4.setObjectName("tab_4")
         self.EDR_READ_BTN = QtWidgets.QPushButton(self.tab_4)
-        self.EDR_READ_BTN.setGeometry(QtCore.QRect(350, 40, 561, 61))
+        self.EDR_READ_BTN.setGeometry(QtCore.QRect(50, 40, 561, 61))
         font = QtGui.QFont()
         font.setPointSize(12)
         font.setBold(True)
@@ -594,6 +642,14 @@ class Ui_MainWindow(object):
         font.setPointSize(16)
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
+        self.STOP_BTN_7 = QtWidgets.QPushButton(self.tab_4)
+        self.STOP_BTN_7.setGeometry(QtCore.QRect(640, 40, 561, 61))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.STOP_BTN_7.setFont(font)
+        self.STOP_BTN_7.setObjectName("STOP_BTN_7")
         self.tabWidget.addTab(self.tab_4, "")
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -666,6 +722,15 @@ class Ui_MainWindow(object):
 
         self.EDR_READ_BTN.clicked.connect(self.run_EDR_read)
         self.EDR_READ_BTN.clicked.connect(self.EDR_READ_BRS.clear)
+
+        self.STOP_BTN_1.clicked.connect(self.close)
+        self.STOP_BTN_2.clicked.connect(self.close)
+        self.STOP_BTN_3.clicked.connect(self.close)
+        self.STOP_BTN_4.clicked.connect(self.close)
+        self.STOP_BTN_5.clicked.connect(self.close)
+        self.STOP_BTN_6.clicked.connect(self.close)
+        self.STOP_BTN_7.clicked.connect(self.close)
+
 
 
 
@@ -763,6 +828,13 @@ class Ui_MainWindow(object):
         self.EDR_READ_BTN.setText(_translate("MainWindow", "Cтарт"))
         self.label_3.setText(_translate("MainWindow", "Считанные данные"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("MainWindow", "Проверка чтения EDR"))
+        self.STOP_BTN_1.setText(_translate("MainWindow", "Стоп"))
+        self.STOP_BTN_2.setText(_translate("MainWindow", "Стоп"))
+        self.STOP_BTN_3.setText(_translate("MainWindow", "Стоп"))
+        self.STOP_BTN_4.setText(_translate("MainWindow", "Стоп"))
+        self.STOP_BTN_5.setText(_translate("MainWindow", "Стоп"))
+        self.STOP_BTN_6.setText(_translate("MainWindow", "Стоп"))
+        self.STOP_BTN_7.setText(_translate("MainWindow", "Стоп"))
 
     def acc_set_changed(self):
         if self.acc_selector.currentIndex() == 0:
@@ -860,7 +932,7 @@ class Ui_MainWindow(object):
             self.exp_res_SBR_brs.setText("После обнуления таймаута SafetyBeltReminder равен 0 (No warning)\n После сброса сигнал SafetyBeltReminder  равен 1 (Warning level 1)")
     '''Блок функций используемых для самодиагностики БУ'''
     def Read0x09(self):
-        self.UART = serial.Serial('COM8', 115200)
+        self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -879,7 +951,7 @@ class Ui_MainWindow(object):
         Receiver=threading.Thread(target=self.Read0x09)
         Receiver.start()
     def Read0x08(self):
-        self.UART = serial.Serial('COM8', 115200)
+        self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -898,7 +970,7 @@ class Ui_MainWindow(object):
         Receiver=threading.Thread(target=self.Read0x08)
         Receiver.start()
     def ClearDTC(self):
-        self.UART = serial.Serial('COM8', 115200)
+        self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -916,8 +988,8 @@ class Ui_MainWindow(object):
         Receiver=threading.Thread(target=self.ClearDTC)
         Receiver.start()
     def ECU_reset(self):
-        self.DIAG_ACCEPTED_BRS.append("Penis")
-        self.UART = serial.Serial('COM8', 115200)
+
+        self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -937,7 +1009,7 @@ class Ui_MainWindow(object):
         Receiver=threading.Thread(target=self.ECU_reset)
         Receiver.start()
     def ExtendedDiagnostic(self):
-        self.UART = serial.Serial('COM8', 115200)
+        self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -954,7 +1026,7 @@ class Ui_MainWindow(object):
         Receiver=threading.Thread(target=self.ExtendedDiagnostic)
         Receiver.start()
     def Write_VIN0(self):
-        self.UART = serial.Serial('COM8', 115200)
+        self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -972,7 +1044,7 @@ class Ui_MainWindow(object):
         Receiver=threading.Thread(target=self.Write_VIN0)
         Receiver.start()
     def Write_VIN1(self):
-        self.UART = serial.Serial('COM8', 115200)
+        self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -991,7 +1063,7 @@ class Ui_MainWindow(object):
         Receiver.start()
 
     def Emulate_crash(self):
-        self.UART = serial.Serial('COM8', 115200)
+        self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -1013,7 +1085,7 @@ class Ui_MainWindow(object):
         Receiver.start()
 
     def Send_periodic(self):
-        self.UART = serial.Serial('COM8', 115200)
+        self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -1075,7 +1147,7 @@ class Ui_MainWindow(object):
         print(DTC_list)
         return DTC_list
     def Test1_handler(self):
-        self.UART = serial.Serial('COM8', 115200)
+        self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -1100,7 +1172,7 @@ class Ui_MainWindow(object):
         Receiver.start()
 
     def Test2_handler(self):
-        self.UART = serial.Serial('COM8', 115200)
+        self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -1125,7 +1197,7 @@ class Ui_MainWindow(object):
         Receiver=threading.Thread(target=self.Test2_handler)
         Receiver.start()
     def Test3_period_handler(self):
-        self.UART = serial.Serial(self.COM_PORT, 115200)
+        self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -1151,7 +1223,7 @@ class Ui_MainWindow(object):
         Receiver=threading.Thread(target=self.Test3_period_handler)
         Receiver.start()
     def Accelerometer_handler(self):
-        self.UART = serial.Serial(self.COM_PORT, 115200)
+        self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -1187,7 +1259,7 @@ class Ui_MainWindow(object):
         Receiver=threading.Thread(target=self.Accelerometer_handler)
         Receiver.start()
     def UDS_handler(self):
-        self.UART = serial.Serial(self.COM_PORT, 115200)
+        self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -1370,7 +1442,7 @@ class Ui_MainWindow(object):
         Receiver=threading.Thread(target=self.UDS_handler)
         Receiver.start()
     def SBR_handler(self):
-        self.UART = serial.Serial(self.COM_PORT, 115200)
+        self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -1669,7 +1741,7 @@ class Ui_MainWindow(object):
         Receiver=threading.Thread(target=self.SBR_handler)
         Receiver.start()
     def EDR_read(self):
-        self.UART = serial.Serial('COM8', 115200)
+        self.UART.open()
         Command = Messages.TestData()
         Command.method = 0
         Command.testNumber = 0x61
@@ -1687,6 +1759,9 @@ class Ui_MainWindow(object):
     def run_Self_diag(self):
         Receiver=threading.Thread(target=self.Self_diag_handler)
         Receiver.start()
+    def close(self):
+        self.UART.close()
+
 
 if __name__ == "__main__":
     import sys
