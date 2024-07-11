@@ -13,25 +13,25 @@ class CrashDetectionOutOfOrder(enum.IntEnum):
     no_Crash_Detection_Out_Of_Order=0b00000000
     Crash_Detection_Out_Of_Order=0b01000000
 class DriverSafetyBeltState(enum.IntEnum):
-    shift=2
+    shift=4
     SB_not_monitored = 0b00000000
     SB_unfastened = 0b00010000
     SB_fastened = 0b00100000
     Unavalible = 0b00110000#
 class FrontPassengerSafetyBeltState(enum.IntEnum):
-    shift=4
+    shift=2
     SB_not_monitored = 0b00000000
     SB_unfastened = 0b00000100
     SB_fastened = 0b00001000
     Unavalible = 0b00001100#
 class SecondRowCenterSafetyBeltState(enum.IntEnum):
-    shift=5
+    shift=1
     SB_not_monitored=0b00000000
     SB_unfastened=0b00000010
     SB_fastened=0b00000100
     Unavalible=0b00000110
 class SecondRowLeftSafetyBeltState(enum.IntEnum):
-    shift=6
+    shift=7
     SB_not_monitored=0b00000000
     SB_unfastened_MSB=0b00000000
     SB_unfastened_LSB=0b10000000
@@ -40,18 +40,19 @@ class SecondRowLeftSafetyBeltState(enum.IntEnum):
     Unavalible_MSB=0b10000001
     Unavalible_LSB=0b10000000
 class SecondRowRightSafetyBeltState(enum.IntEnum):
-    shift=1
+    shift=5
     SB_not_monitored=0b00000000
-    SB_unfastened=0b00100010
+    SB_unfastened=0b00100000
     SB_fastened=0b01000000
     Unavalible=0b01100000
 class DriverSafetyBeltReminder(enum.IntEnum):
+    shift=6
     No_Warning=0b00000000
-    Warning_level_1=0b01000001
-    Warning_level_2=0b10000010
+    Warning_level_1=0b01000000
+    Warning_level_2=0b10000000
     Not_used=0b11000000
 class FrontPassengerSafetyBeltReminder(enum.IntEnum):
-    shift=2
+    shift=4
     No_Warning=0b00000000
     Warning_level_1=0b00010000
     Warning_level_2=0b00100000
@@ -59,8 +60,8 @@ class FrontPassengerSafetyBeltReminder(enum.IntEnum):
 class SecondRowRightSafetyBeltWarning(enum.IntEnum):
     shift=4
     No_Warning=0b00000000
-    Warning_level_1=0b00010100
-    Warning_level_2=0b00101000
+    Warning_level_1=0b00010000
+    Warning_level_2=0b00100000
     Not_used=0b00110000
 class SecondRowCenterSafetyBeltWarning(enum.IntEnum):
     No_Warning=0b00000000
@@ -68,6 +69,7 @@ class SecondRowCenterSafetyBeltWarning(enum.IntEnum):
     Warning_level_2=0b00000010
     Not_used=0b00000011
 class SecondRowLeftSafetyBeltWarning(enum.IntEnum):
+    shift=6
     No_Warning=0b00000000
     Warning_level_1=0b01000000
     Warning_level_2=0b10000000

@@ -15,19 +15,20 @@ EDR_unsupported_decoded = dict()
 LongdV_buf = list()
 LateraldV_buf = list()
 #--------------Precrash data---------------------#
-Vehicle_Speed = list()
-Brake_OnOff = list()
-Engine_Revolutions_Per_Minute = list()
-ABS_activity = list()
-Stability_control = list()
-Steering_Angle = list()
-Yaw_Rate = list()
-Traction_Control_Status = list()
-Cruise_Control_System = list()
-Longitudinal_acceleration_pre_crash = list()
-Lateral_acceleration_pre_crash = list()
-Time = list()
-datalist=list()
+Vehicle_Speed = list([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+Brake_OnOff = list([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+Engine_Revolutions_Per_Minute = list([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+ABS_activity = list([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+Stability_control = list([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+Steering_Angle = list([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+Yaw_Rate = list([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+Traction_Control_Status = list([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+Cruise_Control_System = list([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+Longitudinal_acceleration_pre_crash = list([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+Lateral_acceleration_pre_crash = list([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+Time = list([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+datalist=list([0 for i in range(0,40)])
+print(datalist)
 wnum = 0
 
 
@@ -93,11 +94,14 @@ def to_yaw_rate(val):
 def to_float_100_step(dV):
     return get_val_from_2s_compl(dV, 16)/100
 
+def to_steer_offst(steer_code):
+    return round((steer_code*0.01)-250,2)
+
 def to_dV(dV):
     if dV == 0:
         return 0
     else:
-        return dV/100 - 165.00
+        return round((dV/100 - 165.00),2)
 
 def to_pos_float_100_step(val):
     return val/100
@@ -137,23 +141,52 @@ def to_EDR_state(UDS_val):
             return "User-defined"
         case _:
             return ""
-        
-def to_EDR_ext_state(UDS_val):
+def to_Stability_control(UDS_val):
     match UDS_val:
         case 0:
-            return "Not activated"
+            return "Faulted"
         case 1:
-            return "Actively controlling"
+            return "On"
         case 2:
-            return "Commanded Off"
+            return "0ff"
         case 3:
-            return "Commanded On but not controlling"
-        case 4:
-            return "Fault"
-        case 5:
-            return "User-defined"
+            return "Engaged"
         case _:
             return ""
+def to_ABS_activity(UDS_val):
+    match UDS_val:
+        case 0:
+            return "Faulted"
+        case 1:
+            return "Non Engaged"
+        case 2:
+            return "Engaged"
+        case _:
+            return ""
+        
+def to_Cruise_control(UDS_val):
+    match UDS_val:
+        case 0:
+            return "Actively controlling"
+        case 1:
+            return "Faulted"
+        case 2:
+            return "Off"
+        case 3:
+            return "On, but not controlling"
+        case _:
+            return ""
+def to_Traction_control_status(UDS_val):
+    match UDS_val:
+        case 0:
+            return "Faulted"
+        case 1:
+            return "On"
+        case 2:
+            return "Off"
+        case 3:
+            return "Engaged"
+
         
 def to_precrash_acc(UDS_val):
     return (UDS_val - 15)*0.1
@@ -527,14 +560,14 @@ def Parse_EDR(EDR_buffer):
     for i in range(10, 260, 10):
         #display_str += f" {i}            {round(to_dV(EDR_postcrash_decoded['Longitudinal Delta-V Value'][int(i/10) - 1]),2)}"
         #display_str += f"                  {round(to_dV(EDR_postcrash_decoded['Lateral Delta-V Value'][int(i/10) - 1]),2)}\n"
-        LongdV_buf.append(round(to_dV(EDR_postcrash_decoded['Longitudinal Delta-V Value'][int(i/10) - 1]),2))
-        LateraldV_buf.append(round(to_dV(EDR_postcrash_decoded['Lateral Delta-V Value'][int(i/10) - 1]),2))
-    datalist.append(f"-----------------------------CRASH DATA--------------------------")
-    datalist.append( f"Max Longitudinal Delta-V Value: {to_dV(EDR_decoded['Max Longitudinal Delta-V Value'])}\n")
-    datalist.append( f"Max Longitudinal Delta-V Record Time: {to_pos_float_100_step(EDR_decoded['Max Longitudinal Delta-V Record Time'])}\n")
-    datalist.append( f"Max Lateral Delta-V Value: {to_dV(EDR_decoded['Max Lateral Delta-V Value'])}\n")
-    datalist.append( f"Max Lateral Delta-V Record Time: {to_pos_float_100_step(EDR_decoded['Max Lateral Delta-V Record Time'])}\n")
-    datalist.append( f"Time for maximum delta-V, resultant: {to_pos_float_100_step(EDR_decoded['Time for maximum delta-V, resultant'])}\n")
+        LongdV_buf.insert(int(i/10) - 1,(round(to_dV(EDR_postcrash_decoded['Longitudinal Delta-V Value'][int(i/10) - 1]),2)))
+        LateraldV_buf.insert(int(i/10) - 1,(round(to_dV(EDR_postcrash_decoded['Lateral Delta-V Value'][int(i/10) - 1]),2)))
+    datalist.insert( 0,(f"-----------------------------CRASH DATA--------------------------"))
+    datalist.insert(1,( f"Max Longitudinal Delta-V Value: {to_dV(EDR_decoded['Max Longitudinal Delta-V Value'])}\n"))
+    datalist.insert( 2,( f"Max Longitudinal Delta-V Record Time: {to_pos_float_100_step(EDR_decoded['Max Longitudinal Delta-V Record Time'])}\n"))
+    datalist.insert( 3,( f"Max Lateral Delta-V Value: {to_dV(EDR_decoded['Max Lateral Delta-V Value'])}\n"))
+    datalist.insert( 4,( f"Max Lateral Delta-V Record Time: {to_pos_float_100_step(EDR_decoded['Max Lateral Delta-V Record Time'])}\n"))
+    datalist.insert( 5,( f"Time for maximum delta-V, resultant: {to_pos_float_100_step(EDR_decoded['Time for maximum delta-V, resultant'])}\n"))
 
 
 
@@ -545,67 +578,83 @@ def Parse_EDR(EDR_buffer):
     #'''
     for i in range(11):
         Time.append(f"{(i/2)-5.0}")
-        Vehicle_Speed.append(f"{EDR_precrash_arr_decoded['Vehicle Speed'][i]}")
-        Brake_OnOff.append(f"{to_brake_state(EDR_precrash_arr_decoded['Brake On/Off'][i])}")
-        Engine_Revolutions_Per_Minute.append(f"{to_eng_rpm(EDR_precrash_arr_decoded['Engine Revolutions Per Minute'][i])}")
-        ABS_activity.append( f"{to_EDR_state(EDR_precrash_arr_decoded['ABS activity'][i])}")
-        Stability_control.append( f"{to_EDR_state(EDR_precrash_arr_decoded['Stability control'][i])}")
-        Steering_Angle.append( f"{to_float_100_step(EDR_precrash_arr_decoded['Steering Angle'][i])}")
-        Yaw_Rate.append( f"{to_yaw_rate(EDR_precrash_arr_decoded['Yaw Rate'][i])}")
-        Traction_Control_Status.append( f"{to_EDR_ext_state(EDR_precrash_arr_decoded['Traction Control Status'][i])}")
+        Vehicle_Speed.insert(i, (f"{EDR_precrash_arr_decoded['Vehicle Speed'][i]}"))
+        Brake_OnOff.insert(i,(f"{to_brake_state(EDR_precrash_arr_decoded['Brake On/Off'][i])}"))
+        Engine_Revolutions_Per_Minute.insert(i,(f"{to_eng_rpm(EDR_precrash_arr_decoded['Engine Revolutions Per Minute'][i])}"))
+        ABS_activity.insert(i, (f"{to_ABS_activity(EDR_precrash_arr_decoded['ABS activity'][i])}"))
+        Stability_control.insert(i,( f"{to_Stability_control(EDR_precrash_arr_decoded['Stability control'][i])}"))
+        Steering_Angle.insert(i,( f"{to_steer_offst(EDR_precrash_arr_decoded['Steering Angle'][i])}"))
+        Yaw_Rate.insert(i,( f"{to_yaw_rate(EDR_precrash_arr_decoded['Yaw Rate'][i])}"))
+        Traction_Control_Status.insert(i,( f"{to_Traction_control_status(EDR_precrash_arr_decoded['Traction Control Status'][i])}"))
         #display_str += f"           {to_EDR_ext_state(EDR_precrash_arr_decoded['Automatic Emergency Braking System Status'][i])}"
-        Cruise_Control_System.append( f"{to_EDR_ext_state(EDR_precrash_arr_decoded['Cruise Control System'][i])}")
-        Longitudinal_acceleration_pre_crash.append( f"{to_precrash_acc(EDR_precrash_arr_decoded['Longitudinal acceleration (pre-crash)'][i])}")
-        Lateral_acceleration_pre_crash.append( f"{to_precrash_acc(EDR_precrash_arr_decoded['Lateral acceleration (pre-crash)'][i])}\n\n")
+        Cruise_Control_System.insert(i,( f"{to_Cruise_control(EDR_precrash_arr_decoded['Cruise Control System'][i])}"))
+        Longitudinal_acceleration_pre_crash.insert(i,( f"{to_precrash_acc(EDR_precrash_arr_decoded['Longitudinal acceleration (pre-crash)'][i])}"))
+        Lateral_acceleration_pre_crash.insert(i,( f"{to_precrash_acc(EDR_precrash_arr_decoded['Lateral acceleration (pre-crash)'][i])}\n\n"))
 
-    datalist.append( f"-----------------------------SINGLE DATA--------------------------")
-    datalist.append( f"Ignition cycle, crash: {EDR_decoded['Ignition cycle, crash']}\n")
-    datalist.append( f"Ignition cycle, download: {EDR_decoded['Ignition cycle, download']}\n")
-    datalist.append( f"Driver Seat Belt Status: {to_SBS(EDR_decoded['Driver SBS'])}\n")
-    datalist.append( f"Airbag warning lamp: {to_lamp_state(EDR_decoded['Airbag warning lamp status'])}\n")
-    datalist.append( f"Deployment Time of Driver Frontal Airbag: {to_ttf(EDR_decoded['Deployment Time of Driver Frontal Airbag'])}\n")
-    datalist.append( f"Deployment Time of First RawPassenger Frontal Airbag: {to_ttf(EDR_decoded['Deployment Time of First RawPassenger Frontal Airbag'])}\n")
-    datalist.append( f"Event Data Record Complete Status: {to_EDR_rec_st(EDR_decoded['Complete file recorded'])}\n")
-    datalist.append( f"Safety belt status, front passenger: {to_SBS(EDR_decoded['Safety belt status, front passenger'])}\n")
-    datalist.append( f"Passenger air bag suppression status, front: {to_ingibit_st(EDR_decoded['Passenger air bag suppression status, front'])}\n")
-    datalist.append( f"Side air bag deployment, time to deploy, driver: {to_ttf(EDR_decoded['Side air bag deployment, time to deploy, driver'])}\n")
-    datalist.append( f"Side air bag deployment, time to deploy, front passenger: {to_ttf(EDR_decoded['Side air bag deployment, time to deploy, front passenger'])}\n")
-    datalist.append( f"Side curtain/tube air bag deployment, time to deploy, driver side: {to_ttf(EDR_decoded['Side curtain/tube air bag deployment, time to deploy, driver side'])}\n")
-    datalist.append( f"Side curtain/tube air bag deployment, time to deploy, passenger side: {to_ttf(EDR_decoded['Side curtain/tube air bag deployment, time to deploy, passenger side'])}\n")
-    datalist.append( f"Pretensioner deployment, time to fire, driver: {to_ttf(EDR_decoded['Pretensioner deployment, time to fire, driver'])}\n")
-    datalist.append( f"Pretensioner deployment, time to fire, front passenger: {to_ttf(EDR_decoded['Pretensioner deployment, time to fire, front passenger'])}\n")
-    datalist.append( f"Safety belt status, rear right passenger: {to_SBS(EDR_decoded['Safety belt status, rear right passenger'])}\n")
-    datalist.append( f"Safety belt status, rear centre passenger: {to_SBS(EDR_decoded['Safety belt status, rear centre passenger'])}\n")
-    datalist.append( f"Safety belt status, rear left passenger: {to_SBS(EDR_decoded['Safety belt status, rear left passenger'])}\n")
+    datalist.insert(6,( f"-----------------------------SINGLE DATA--------------------------"))
+    datalist.insert(7,( f"Ignition cycle, crash: {EDR_decoded['Ignition cycle, crash']}\n"))
+    datalist.insert(8,( f"Ignition cycle, download: {EDR_decoded['Ignition cycle, download']}\n"))
+    datalist.insert(9,( f"Driver Seat Belt Status: {to_SBS(EDR_decoded['Driver SBS'])}\n"))
+    datalist.insert(10,( f"Airbag warning lamp: {to_lamp_state(EDR_decoded['Airbag warning lamp status'])}\n"))
+    datalist.insert(11,( f"Deployment Time of Driver Frontal Airbag: {to_ttf(EDR_decoded['Deployment Time of Driver Frontal Airbag'])}\n"))
+    datalist.insert(12,( f"Deployment Time of First RawPassenger Frontal Airbag: {to_ttf(EDR_decoded['Deployment Time of First RawPassenger Frontal Airbag'])}\n"))
+    datalist.insert(13,( f"Event Data Record Complete Status: {to_EDR_rec_st(EDR_decoded['Complete file recorded'])}\n"))
+    datalist.insert(14,( f"Safety belt status, front passenger: {to_SBS(EDR_decoded['Safety belt status, front passenger'])}\n"))
+    datalist.insert(15,( f"Passenger air bag suppression status, front: {to_ingibit_st(EDR_decoded['Passenger air bag suppression status, front'])}\n"))
+    datalist.insert(16,( f"Side air bag deployment, time to deploy, driver: {to_ttf(EDR_decoded['Side air bag deployment, time to deploy, driver'])}\n"))
+    datalist.insert(17,( f"Side air bag deployment, time to deploy, front passenger: {to_ttf(EDR_decoded['Side air bag deployment, time to deploy, front passenger'])}\n"))
+    datalist.insert(18,( f"Side curtain/tube air bag deployment, time to deploy, driver side: {to_ttf(EDR_decoded['Side curtain/tube air bag deployment, time to deploy, driver side'])}\n"))
+    datalist.insert(19,( f"Side curtain/tube air bag deployment, time to deploy, passenger side: {to_ttf(EDR_decoded['Side curtain/tube air bag deployment, time to deploy, passenger side'])}\n"))
+    datalist.insert(20,( f"Pretensioner deployment, time to fire, driver: {to_ttf(EDR_decoded['Pretensioner deployment, time to fire, driver'])}\n"))
+    datalist.insert(21,( f"Pretensioner deployment, time to fire, front passenger: {to_ttf(EDR_decoded['Pretensioner deployment, time to fire, front passenger'])}\n"))
+    datalist.insert(22,( f"Safety belt status, rear right passenger: {to_SBS(EDR_decoded['Safety belt status, rear right passenger'])}\n"))
+    datalist.insert(23,( f"Safety belt status, rear centre passenger: {to_SBS(EDR_decoded['Safety belt status, rear centre passenger'])}\n"))
+    datalist.insert(24,( f"Safety belt status, rear left passenger: {to_SBS(EDR_decoded['Safety belt status, rear left passenger'])}\n"))
     #display_str += f"Tyre Pressure Monitoring System (TPMS) Warning Lamp Status: {to_TPMS_st(EDR_decoded['Safety belt status, rear left passenger'])}\n"
 
     #display_str += f"Accelerator Pedal Position, Percentage of Full Range: {EDR_decoded['Safety belt status, rear left passenger']}\n"
     #display_str += f"Brake Pedal Position: {EDR_decoded['Safety belt status, rear left passenger']}\n"
 
 
-    datalist.append( f"-----------------------------UNSUPPORTED DATA--------------------------")
-    datalist.append( f"Engine throttle, %\n")
-    datalist.append( f"Multi-event crash, number of events\n")
-    datalist.append( f"Time from event 1 to 2\n")
-    datalist.append(f"Lateral acceleration (post-crash)\n")
-    datalist.append( f"Longitudinal acceleration (post-crash)\n")
-    datalist.append( f"Normal acceleration (post-crash)\n")
-    datalist.append(f"Vehicle roll angle\n")
-    datalist.append( f"Vehicle roll rate\n")
-    datalist.append( f"Seat track position switch, driver\n")
-    datalist.append( f"Seat track position switch, front passenger\n")
-    datalist.append( f"Occupant size classification, driver\n")
-    datalist.append( f"Occupant size classification, front passenger\n")
-    datalist.append( f"Tyre Pressure Monitoring System (TPMS) Warning Lamp Status\n")
-    datalist.append( f"Advanced emergency braking system status AEB\n")
+    datalist.insert(25,( f"-----------------------------UNSUPPORTED DATA--------------------------"))
+    datalist.insert(26,( f"Engine throttle, %\n"))
+    datalist.insert(27,( f"Multi-event crash, number of events\n"))
+    datalist.insert(28,( f"Time from event 1 to 2\n"))
+    datalist.insert(29,(f"Lateral acceleration (post-crash)\n"))
+    datalist.insert(30,( f"Longitudinal acceleration (post-crash)\n"))
+    datalist.insert(31,( f"Normal acceleration (post-crash)\n"))
+    datalist.insert(32,(f"Vehicle roll angle\n"))
+    datalist.insert(33,( f"Vehicle roll rate\n"))
+    datalist.insert(34,( f"Seat track position switch, driver\n"))
+    datalist.insert(35,( f"Seat track position switch, front passenger\n"))
+    datalist.insert(36,( f"Occupant size classification, driver\n"))
+    datalist.insert(37,( f"Occupant size classification, front passenger\n"))
+    datalist.insert(38,( f"Tyre Pressure Monitoring System (TPMS) Warning Lamp Status\n"))
+    datalist.insert(39,( f"Advanced emergency braking system status AEB\n"))
+    EDR_buffer=bytearray(EDR_buffer)
+    EDR_buffer.clear()
 
 
     return ([LongdV_buf,LateraldV_buf,Time,Vehicle_Speed,Brake_OnOff,Engine_Revolutions_Per_Minute,ABS_activity,Stability_control,Steering_Angle,Yaw_Rate,Traction_Control_Status,Cruise_Control_System,Longitudinal_acceleration_pre_crash,Lateral_acceleration_pre_crash,datalist])
-#print(EDR_postcrash_decoded)
-#print(EDR_precrash_arr_decoded)
-#print(EDR_decoded)
+LongdV_buf.clear()
+LateraldV_buf.clear()
+Time.clear()
+Vehicle_Speed.clear()
+Brake_OnOff.clear()
+Engine_Revolutions_Per_Minute.clear()
+ABS_activity.clear()
+Stability_control.clear()
+Steering_Angle.clear()
+Yaw_Rate.clear()
+Traction_Control_Status.clear()
+Cruise_Control_System.clear()
+Longitudinal_acceleration_pre_crash.clear()
+Lateral_acceleration_pre_crash.clear()
+datalist.clear()
+EDR_postcrash_decoded.clear()
+EDR_precrash_arr_decoded.clear()
+EDR_decoded.clear()
 
-#bus.shutdown()
 
 
 
