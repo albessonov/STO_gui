@@ -3187,11 +3187,11 @@ class Ui_MainWindow(object):
         print(Command)
         self.UART.write(Command)
         time.sleep(0.5)
-        self.UART.close()
+        #self.UART.close()
 
-        appHex = HexOp(self.file)
-        appHex.readHex()
-        hexsize = appHex.getHexZise()
+
+        hexarr=readHex(self.file)
+        hexsize = getHexZise(hexarr)
         print(hexsize)
 
         requestDownload2[1] = (hexsize & 0xFF0000) >> 16
@@ -3200,31 +3200,30 @@ class Ui_MainWindow(object):
         UDScheckStartCRC2[2] = ((hexsize + 0x18000) & 0xFF0000) >> 16
         UDScheckStartCRC2[3] = ((hexsize + 0x18000) & 0x00FF00) >> 8
         UDScheckStartCRC2[4] = ((hexsize + 0x18000) & 0x0000FF)
-        UARTDriver = UARTHandler(self.COM_PORT)
 
         while True:
-            #UARTDriver.UART_send(eraseFlash1, 3)
-            #UARTDriver.UART_send(eraseFlash2, 3)
-            #UARTDriver.UART_send(requestFlashEraseRes, 4)
+            UART_send(self.UART,eraseFlash1, 3)
+            UART_send(self.UART,eraseFlash2, 3)
+            UART_send(self.UART,requestFlashEraseRes, 4)
             time.sleep(3)
-            UARTDriver.UART_send(requestDownload1, 3)
+            UART_send(self.UART,requestDownload1, 3)
             time.sleep(2)
-            UARTDriver.UART_send(requestDownload2, 1)
+            UART_send(self.UART,requestDownload2, 1)
             time.sleep(1)
             # send data
-            for j in range(math.floor(appHex.getHexZise() / 0x800)):
-                UARTDriver.sendFlashPage(0x800)
-            UARTDriver.sendFlashPage(appHex.getHexZise() % 0x800)
+            for j in range(math.floor(getHexZise(hexarr) / 0x800)):
+                sendFlashPage(self.UART,0x800)
+            sendFlashPage(self.UART,getHexZise(hexarr) % 0x800)
 
             # stop sending
-            UARTDriver.UART_send(requestTranferExit, 4)
+            UART_send(self.UART,requestTranferExit, 4)
 
             # Calculate and chack CRC32
-            crc = appHex.CalculateHexCRC32(0x08018000, 0x08018000 + hexsize)
-            if (UARTDriver.determineCRC(crc)[1] == 0x00):
+            crc = CalculateHexCRC32(0x08018000, 0x08018000 + hexsize)
+            if (determineCRC(self.UART,crc)[1] == 0x00):
                 break
 
-        UARTDriver.stopUART()
+        stopUART(self.UART)
     def Reprogrammer_run(self):
         Receiver = threading.Thread(target=self.Reprogrammer)
         Receiver.start()
@@ -3269,156 +3268,8 @@ class Ui_MainWindow(object):
             self.file=file
             self.pushButton_3.setEnabled(True)
 
-    class HexOp():
-        def __init__(self, filename):
-            self.file = filename
-            self._byte_cnt = 0
-            self._bytesCntInString = 32
-            self._CRC32_POLY = 0xEDB88320
-            self._flashOffset = 0x08018000
-            self._byte_cnt = 5
-
-        def readHex(self):
-            with open(self.file, 'rb') as f:
-                _hexdata = codecs.decode(f.read().hex(), 'hex').decode("utf-8")  # to string
-            self.hexarr = re.split(r'[\r&\n&:]', _hexdata)
-            self.hexarr[:] = [hexstr[8:(8+int(hexstr[0:2], 16)*2)] for hexstr in self.hexarr if hexstr != '' and hexstr[6:8] == '00']
-           # self.hexarr.pop(0)  # delete first string - not contain flash data
-            #self.hexarr.pop(-1)
-            #self.hexarr.pop(-1)
-            print(self.hexarr[-1])
-            #print(self.hexarr)
-
-        def getNextByte(self):
-            #self._byte_cnt=5
-            bytePtrInStr = (self._byte_cnt - int(self._byte_cnt / self._bytesCntInString) * self._bytesCntInString)
-            hexstr = self.hexarr[int(self._byte_cnt / self._bytesCntInString)][bytePtrInStr:bytePtrInStr + 2]
-            #hexstr=hexstr.encode('utf-8')
-            self._byte_cnt += 2
-            if(hexstr=='0'):
-                hexstr='00'
-            if (hexstr == '1'):
-                hexstr = '01'
-            if (hexstr == '2'):
-                hexstr = '02'
-            if (hexstr == '3'):
-                hexstr = '03'
-            if (hexstr == '4'):
-                hexstr = '04'
-            if (hexstr == '5'):
-                hexstr = '05'
-            if (hexstr == '6'):
-                hexstr = '06'
-            if (hexstr == '7'):
-                hexstr = '07'
-            if (hexstr == '8'):
-                hexstr = '08'
-            if (hexstr == '9'):
-                hexstr = '09'
-            if (hexstr == 'A'):
-                hexstr = '0A'
-            if (hexstr == 'B'):
-                hexstr = '0B'
-            if (hexstr == 'C'):
-                hexstr = '0C'
-            if (hexstr == 'D'):
-                hexstr = '0D'
-            if (hexstr == 'E'):
-                hexstr = '0E'
-            if (hexstr == 'F'):
-                hexstr = '0F'
-            val = int.from_bytes(bytes.fromhex(hexstr), "big")
-            return val  # hexstr.encode().hex()
-
-        def getHexZise(self):
-            return len(self.hexarr) * 16
-
-        def CalculateHexCRC32(self, startAddr, endAddr):
-            temp_crc = 0xFFFFFFFF
-            # temp_crc = 0
-            startAddr -= self._flashOffset
-            endAddr -= self._flashOffset
-            self._byte_cnt = 0
-            print(endAddr)
-            while startAddr < endAddr:
-                temp_crc = temp_crc ^ self.getNextByte()
-                for _ in range(0, 8):
-                    mask = -(temp_crc & 1)
-                    temp_crc = (temp_crc >> 1) ^ (self._CRC32_POLY & mask)
-                print(hex(temp_crc))
-                startAddr += 1
-
-            return ~temp_crc
 
 
-    class UARTHandler():
-        def __init__(self,port):
-            self.UART=serial.Serial(port,115200)
-
-
-        def UART_send(self, request,responseSize):
-            resp = 0
-            self.UART.write(request)
-            time.sleep(1)
-            resp = self.UART.read(responseSize)#size?
-            print(f"Resp: {resp}")
-            return resp
-
-
-        def UART_send_program(self, req):
-            self.UART.write(req)
-            time.sleep(0.10)  # >50 ms
-            print(f"{req}")
-
-
-
-        def UART_send_fisrt_program(self, req):
-            while True:
-                self.UART.write(req)
-                print(f"{req}")
-                time.sleep(0.1)
-                resp = self.UART.read(3)  # Wait FCF
-                if (resp[0] == 0x30):
-                    break
-            return
-
-        def sendFlashPage(self, page_size):
-            transferDataRefFirst[0] = 0x10 | ((page_size & 0xF00) >> 8)
-            transferDataRefFirst[1] = (page_size & 0xFF) + 2
-            transferDataRefFirst[2] = 0x36
-            transferDataRefFirst[3] = 0x00 if ((transferDataRefFirst[3] + 1) > 0xFF) else (transferDataRefFirst[3] + 1)
-            transferDataRefFirst[4] = appHex.getNextByte()
-            transferDataRefFirst[5] = appHex.getNextByte()
-            transferDataRefFirst[6] = appHex.getNextByte()
-            transferDataRefFirst[7] = appHex.getNextByte()
-            transferDataRefConsec[0] = 0x20
-            self.UART_send_fisrt_program(transferDataRefFirst)
-            for _ in range(math.floor((page_size-4)/7)):
-                transferDataRefConsec[0] = 0x20 if ((transferDataRefConsec[0] + 1) > 0x2F) else (
-                            transferDataRefConsec[0] + 1)
-                for i in range(1, 8):
-                    transferDataRefConsec[i] = appHex.getNextByte()
-                self.UART_send_program(transferDataRefConsec)
-
-            resp = self.UART.read(8)
-            print(f"Resp to Download: {resp}")
-
-        def determineCRC(self, crc):
-            UDScheckStartCRC2[5] = (crc & 0xFF000000) >> 24
-            UDScheckStartCRC2[6] = (crc & 0x00FF0000) >> 16
-            UDScheckStartCRC2[7] = (crc & 0x0000FF00) >> 8
-            UDScheckStartCRC3[1] = (crc & 0x000000FF)
-            self.UART.write(UDScheckStartCRC1)
-            self.UART.write(UDScheckStartCRC2)
-            self.UART.write(UDScheckStartCRC3)
-            while True:
-                self.UART.write(UDScheckCRCRes,8)
-                res=self.UART.read(8)
-                if (res[1] == 0x31):
-                    return res
-
-        def stopUART(self):
-            self.UART.close()
 
 if __name__ == "__main__":
     import sys
