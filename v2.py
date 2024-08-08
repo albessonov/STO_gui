@@ -21,8 +21,9 @@ import serial
 import threading
 from states import *
 from serial.tools import list_ports
-from EDR_settings import *
-from Reprogram import *
+#from EDR_settings import *
+from Reprogramm import *
+import math
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -33,10 +34,9 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
-        self.COM_PORT="COM9"
-        self.UART=serial.Serial(self.COM_PORT)
+        self.COM_PORT=None
+        self.UART=None
         self.file=None
-        self.UART.close()
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
@@ -931,24 +931,6 @@ class Ui_MainWindow(object):
         self.DIAG_SPEED_SELECTOR_2.setFont(font)
         self.DIAG_SPEED_SELECTOR_2.setObjectName("DIAG_SPEED_SELECTOR_2")
         self.gridLayout_14.addWidget(self.DIAG_SPEED_SELECTOR_2, 10, 0, 1, 1)
-        self.DIAG_0x350_CHECK = QtWidgets.QCheckBox(self.groupBox_10)
-        font = QtGui.QFont()
-        font.setPointSize(9)
-        self.DIAG_0x350_CHECK.setFont(font)
-        self.DIAG_0x350_CHECK.setObjectName("DIAG_0x350_CHECK")
-        self.gridLayout_14.addWidget(self.DIAG_0x350_CHECK, 9, 0, 1, 1)
-        self.DIAG_0x4F8_CHECK = QtWidgets.QCheckBox(self.groupBox_10)
-        font = QtGui.QFont()
-        font.setPointSize(9)
-        self.DIAG_0x4F8_CHECK.setFont(font)
-        self.DIAG_0x4F8_CHECK.setObjectName("DIAG_0x4F8_CHECK")
-        self.gridLayout_14.addWidget(self.DIAG_0x4F8_CHECK, 9, 2, 1, 1)
-        self.DIAG_0x5D7_CHECK = QtWidgets.QCheckBox(self.groupBox_10)
-        font = QtGui.QFont()
-        font.setPointSize(9)
-        self.DIAG_0x5D7_CHECK.setFont(font)
-        self.DIAG_0x5D7_CHECK.setObjectName("DIAG_0x5D7_CHECK")
-        self.gridLayout_14.addWidget(self.DIAG_0x5D7_CHECK, 9, 1, 1, 1)
         self.gridLayout_21.addWidget(self.groupBox_10, 1, 1, 1, 1)
         self.tabWidget.addTab(self.tab, "")
         self.tab_4 = QtWidgets.QWidget()
@@ -990,7 +972,7 @@ class Ui_MainWindow(object):
         self.Crash_data_table.setFont(font)
         self.Crash_data_table.setObjectName("Crash_data_table")
         self.Crash_data_table.setColumnCount(3)
-        self.Crash_data_table.setRowCount(25)
+        self.Crash_data_table.setRowCount(30)
         item = QtWidgets.QTableWidgetItem()
         self.Crash_data_table.setVerticalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
@@ -1042,14 +1024,25 @@ class Ui_MainWindow(object):
         item = QtWidgets.QTableWidgetItem()
         self.Crash_data_table.setVerticalHeaderItem(24, item)
         item = QtWidgets.QTableWidgetItem()
+        self.Crash_data_table.setVerticalHeaderItem(25, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Crash_data_table.setVerticalHeaderItem(26, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Crash_data_table.setVerticalHeaderItem(27, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Crash_data_table.setVerticalHeaderItem(28, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Crash_data_table.setVerticalHeaderItem(29, item)
+        item = QtWidgets.QTableWidgetItem()
         self.Crash_data_table.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
         self.Crash_data_table.setHorizontalHeaderItem(1, item)
         item = QtWidgets.QTableWidgetItem()
         self.Crash_data_table.setHorizontalHeaderItem(2, item)
         for i in range(0,3):
-            self.Crash_data_table.setColumnWidth(i,115)
+            self.Crash_data_table.setColumnWidth(i,110)
         self.Crash_data_table.setColumnWidth(0, 70)
+        self.Crash_data_table.setColumnWidth(1, 100)
         self.horizontalLayout_2.addWidget(self.Crash_data_table)
         self.gridLayout_22.addWidget(self.groupBox_16, 1, 0, 2, 1)
         self.groupBox_17 = QtWidgets.QGroupBox(self.tab_4)
@@ -1176,28 +1169,51 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.tab_4, "")
         self.tab_5 = QtWidgets.QWidget()
         self.tab_5.setObjectName("tab_5")
-        self.groupBox_24 = QtWidgets.QGroupBox(self.tab_5)
-        self.groupBox_24.setGeometry(QtCore.QRect(430, 280, 921, 201))
-        self.groupBox_24.setObjectName("groupBox_24")
-        self.gridLayout_27 = QtWidgets.QGridLayout(self.groupBox_24)
-        self.gridLayout_27.setObjectName("gridLayout_27")
-        self.toolButton = QtWidgets.QToolButton(self.groupBox_24)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../free-icon-open-folder-5082617.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.toolButton.setIcon(icon)
+        self.gridLayout_28 = QtWidgets.QGridLayout(self.tab_5)
+        self.gridLayout_28.setObjectName("gridLayout_28")
+        self.toolButton = QtWidgets.QToolButton(self.tab_5)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.toolButton.sizePolicy().hasHeightForWidth())
+        self.toolButton.setSizePolicy(sizePolicy)
+        self.toolButton.setMinimumSize(QtCore.QSize(50, 50))
         self.toolButton.setObjectName("toolButton")
-        self.gridLayout_27.addWidget(self.toolButton, 0, 0, 1, 1)
-        self.textBrowser_2 = QtWidgets.QTextBrowser(self.groupBox_24)
-        self.textBrowser_2.setObjectName("textBrowser_2")
-        self.gridLayout_27.addWidget(self.textBrowser_2, 0, 1, 1, 1)
-        self.progressBar = QtWidgets.QProgressBar(self.groupBox_24)
-        self.progressBar.setProperty("value", 0)
+        self.toolButton.setIcon(QtGui.QIcon("reprogramming_icon.png"))
+        self.gridLayout_28.addWidget(self.toolButton, 0, 0, 1, 1)
+        self.pushButton_3 = QtWidgets.QPushButton(self.tab_5)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton_3.sizePolicy().hasHeightForWidth())
+        self.pushButton_3.setSizePolicy(sizePolicy)
+        self.pushButton_3.setMinimumSize(QtCore.QSize(50, 60))
+        self.pushButton_3.setObjectName("pushButton")
+        self.pushButton_3.setFont(font)
+        self.gridLayout_28.addWidget(self.pushButton_3, 1, 1, 1, 1)
+        self.progressBar = QtWidgets.QProgressBar(self.tab_5)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.progressBar.sizePolicy().hasHeightForWidth())
+        self.progressBar.setSizePolicy(sizePolicy)
+        self.progressBar.setMinimumSize(QtCore.QSize(0, 50))
         self.progressBar.setObjectName("progressBar")
-        self.gridLayout_27.addWidget(self.progressBar, 2, 1, 1, 1)
-        self.pushButton_3 = QtWidgets.QPushButton(self.groupBox_24)
-        self.pushButton_3.setObjectName("pushButton_3")
-        self.pushButton_3.setText("Начать")
-        self.gridLayout_27.addWidget(self.pushButton_3, 1, 1, 1, 1)
+        self.gridLayout_28.addWidget(self.progressBar, 2, 1, 1, 1)
+        self.textBrowser_2 = QtWidgets.QTextBrowser(self.tab_5)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.textBrowser_2.sizePolicy().hasHeightForWidth())
+        self.textBrowser_2.setSizePolicy(sizePolicy)
+        self.textBrowser_2.setMinimumSize(QtCore.QSize(0, 10))
+        self.textBrowser_2.setObjectName("textBrowser_2")
+        self.textBrowser_2.setFont(font)
+        self.gridLayout_28.addWidget(self.textBrowser_2, 0, 1, 1, 1)
+        self.LOG_BRS = QtWidgets.QTextBrowser(self.tab_5)
+        self.LOG_BRS.setObjectName("LOG_BRS")
+        self.LOG_BRS.setFont(font)
+        self.gridLayout_28.addWidget(self.LOG_BRS, 3, 1, 1, 1)
         self.tabWidget.addTab(self.tab_5, "")
         self.Settings = QtWidgets.QWidget()
         self.Settings.setObjectName("Settings")
@@ -1219,10 +1235,14 @@ class Ui_MainWindow(object):
         ports = serial.tools.list_ports.comports()
         for port in ports:
             portlist.append(port.device)
-        print(portlist)
+        #print(portlist)
         for i in range(0,len(portlist)):
             self.COM_PORT_SELECTOR.addItem(portlist[i])
-        self.COM_PORT=portlist[0]
+        if(len(portlist)>0):
+            self.COM_PORT=portlist[0]
+            print(self.COM_PORT)
+            self.UART=serial.Serial(self.COM_PORT)
+            self.UART.close()
         self.gridLayout_26.addWidget(self.COM_PORT_BRS, 2, 0, 1, 1)
         self.tabWidget.addTab(self.Settings, "")
         self.gridLayout.addWidget(self.tabWidget, 0, 0, 1, 1)
@@ -1230,6 +1250,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.tabWidget.setCurrentIndex(0)
+        self.UDS_LED_SELECTOR.setDisabled(True)
         self.Run_Init_btn.clicked.connect(self.run_test1)
         self.Run_Init_btn.clicked.connect(self.inittime_brs.clear)
         self.Run_Init_btn.clicked.connect(self.initresult_brs.clear)
@@ -1367,10 +1388,32 @@ class Ui_MainWindow(object):
         self.COM_PORT_CONNECT_BTN.clicked.connect(self.CheckConnection_run)
         self.COM_PORT_CONNECT_BTN.clicked.connect(self.COM_PORT_BRS.clear)
 
+        self.toolButton.clicked.connect(self.textBrowser_2.clear)
         self.toolButton.clicked.connect(self.on_click)
         self.pushButton_3.clicked.connect(self.Reprogrammer_run)
+        self.pushButton_3.clicked.connect(self.LOG_BRS.clear)
 
-
+        self.start_SBR_btn.setDisabled(True)
+        self.start_acc_btn.setDisabled(True)
+        self.DIAG_ACC_BTN.setDisabled(True)
+        self.Run_Init_btn.setDisabled(True)
+        self.CHECK_CRASH_DETECTION_BTN.setDisabled(True)
+        self.DIAG_ACU_BTN.setDisabled(True)
+        self.UDS_RUN_BTN.setDisabled(True)
+        self.EDR_settings_btn.setDisabled(True)
+        self.perod_periodic_btn.setDisabled(True)
+        self.start_trig_btn.setDisabled(True)
+        self.DIAG_CLEAR_DTC_BTN.setDisabled(True)
+        self.DIAG_ACC_BTN.setDisabled(True)
+        self.DIAG_READ_0x08_BTN.setDisabled(True)
+        self.DIAG_READ_0x09_BTN.setDisabled(True)
+        self.DIAG_EXTDIAG_BTN.setDisabled(True)
+        self.DIAG_VIN0_BTN.setDisabled(True)
+        self.DIAG_VIN1_BTN.setDisabled(True)
+        self.DIAG_RESET_BTN.setDisabled(True)
+        self.EDR_READ_BTN.setDisabled(True)
+        self.START_VALID_AB_BTN.setDisabled(True)
+        self.toolButton.setDisabled(True)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
 
@@ -1456,11 +1499,8 @@ class Ui_MainWindow(object):
         self.DIAG_VIN1_BTN.setText(_translate("MainWindow", "Записать VIN=0"))
         self.DIAG_EXTDIAG_BTN.setText(_translate("MainWindow", "Войти в ExtendedDiagnosticSession"))
         self.DIAG_ACC_BTN.setText(_translate("MainWindow", "Провести тест на срабатывание"))
-        self.DIAG_UPD_CAN_MSG_BTN.setText(_translate("MainWindow", "Начать отправку"))
+        self.DIAG_UPD_CAN_MSG_BTN.setText(_translate("MainWindow", "Обновить данные"))
         self.DIAG_CAN_MSG_LBL.setText(_translate("MainWindow", "Отправляемые сообщения"))
-        self.DIAG_0x5D7_CHECK.setText(_translate("MainWindow", "BRAKE_CANHS_R_01(0х5D7)"))
-        self.DIAG_0x350_CHECK.setText(_translate("MainWindow", "BCM_CANHS_R_04(0x350)"))
-        self.DIAG_0x4F8_CHECK.setText(_translate("MainWindow", "CLUSTER_CANHS_RNr_01(0x4F8)"))
         self.DIAG_SPEED_SELECTOR.setItemText(0, _translate("MainWindow", "15 км/ч"))
         self.DIAG_SPEED_SELECTOR.setItemText(1, _translate("MainWindow", "40 км/ч"))
         self.DIAG_DIAGENABLE_SELECTOR.setItemText(0, _translate("MainWindow", "0"))
@@ -1483,6 +1523,7 @@ class Ui_MainWindow(object):
         self.groupBox_17.setTitle(_translate("MainWindow", "Precrash data"))
         self.groupBox_18.setTitle(_translate("MainWindow", "Other supproted data"))
         self.groupBox_16.setTitle(_translate("MainWindow", "Crash data"))
+        self.pushButton_3.setText("Начать перепрошивку")
         self.STOP_BTN_1.setText(_translate("MainWindow", "Стоп"))
         self.STOP_BTN_2.setText(_translate("MainWindow", "Стоп"))
         self.STOP_BTN_3.setText(_translate("MainWindow", "Стоп"))
@@ -1644,7 +1685,7 @@ class Ui_MainWindow(object):
             self.EXP_UDS_BRS.setText("Отправлено: 03 22 C9 53\nПринято: 04 62 C9 53 xx \nxx- Считанное напряжение")
             self.UDS_LED_SELECTOR.setDisabled(1)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 16:
-            self.EXP_UDS_BRS.setText("Отправлено: 03 22 C9 14\nПринято: 07 62 C9 53 xx xx xx xx\nПосле ожидания 5с.\nОтправлено: 03 22 C9 14\nПринято: 07 62 C9 53 xx xx xx xx\nСчитанное значение увеличилось на 5")
+            self.EXP_UDS_BRS.setText("Отправлено: 03 22 C9 14\nПринято: 07 62 C9 14 xx xx xx xx\nПосле ожидания 5с.\nОтправлено: 03 22 C9 14\nПринято: 07 62 C9 14 xx xx xx xx\nСчитанное значение увеличилось на 5")
             self.UDS_LED_SELECTOR.setDisabled(1)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 17:
             self.EXP_UDS_BRS.setText("Отправлено: 03 22 C9 57\nПринято: 05 62 C9 57 xx xx\nxx xx -Состояние РБ и кнопки отключения ПБ\nУбедиться, что считанное состояние соответствует реальному")
@@ -1942,19 +1983,17 @@ class Ui_MainWindow(object):
         Command.method = 0
         Command.testNumber = 0x59
         Command.DIAG_SEND_0x5D7=self.DIAG_0x5D7_CHECK.isChecked()
-        if(Command.DIAG_SEND_0x5D7!=0):
-            Command.vehicle_speed=self.DIAG_SPEED_SELECTOR.currentIndex()
+        Command.vehicle_speed=self.DIAG_SPEED_SELECTOR.currentIndex()
         Command.DIAG_SEND_0x350 = self.DIAG_0x350_CHECK.isChecked()
-        if(Command.DIAG_SEND_0x350!=0):
-            Command.GenDiagEnable =self.DIAG_DIAGENABLE_SELECTOR.currentIndex()
+        Command.GenDiagEnable =self.DIAG_DIAGENABLE_SELECTOR.currentIndex()
         Command.DIAG_SEND_0x4F8 = self.DIAG_0x4F8_CHECK.isChecked()
         Command = Command.SerializeToString()
         self.UART.write(Command)
         self.UART.close()
 
-    '''def run_Send_periodic(self):
-        Receiver = threading.Thread(target=self.Emulate_crash)
-        Receiver.start()'''
+    def LOG_print(self,text):
+        self.LOG_BRS.append(text)
+
     def parse_UDS_errors(self,Result,Status_Byte):
         '''----------------Парсинг ошибок 0х09 ----------------------------'''
         DTC_list=[]
@@ -1976,19 +2015,17 @@ class Ui_MainWindow(object):
                               Result.frame[num].data[indexes[i] -1]))
                     print(DTC)
                     DTC_list.append(int(DTC,16))
-                elif (indexes[i] == 3):
-                    DTC = hex(((Result.frame[num-1].data[7]) << 16) + ((Result.frame[num].data[1]) << 8) + (
-                    Result.frame[num].data[2]))
+                elif (indexes[i] == 3 and num>0):
+                    DTC = hex(((Result.frame[num-1].data[7]) << 16) + ((Result.frame[num].data[1]) << 8) + (Result.frame[num].data[2]))
                     print(DTC)
                     DTC_list.append(int(DTC,16))
-                elif (indexes[i] == 2):
+                elif (indexes[i] == 2 and num>0):
                     DTC = hex(((Result.frame[num-1].data[6]) << 16) + ((Result.frame[num-1].data[7]) << 8) + (
                     Result.frame[num].data[1]))
                     print(DTC)
                     DTC_list.append(int(DTC,16))
-                elif (indexes[i] == 1 ):#and num!=length-1):  #####
-                    DTC = hex(((Result.frame[num-1].data[5]) << 16) + ((Result.frame[num -1].data[6]) << 8) + (
-                    Result.frame[num-1].data[7]))
+                elif (indexes[i] == 1 and num>0):#and num!=length-1):  #####
+                    DTC = hex(((Result.frame[num-1].data[5]) << 16) + ((Result.frame[num -1].data[6]) << 8) + (Result.frame[num-1].data[7]))
                     print(DTC)
                     DTC_list.append(int(DTC,16))
                 '''elif (indexes[i] == 7):
@@ -2003,7 +2040,6 @@ class Ui_MainWindow(object):
             print(hex(DTC_list[i]))
         return DTC_list
     def match_DTC(self,dtc):
-
         match int(dtc,16):
             case int(DTC.Vehicle_option_fault):
                 return str("Vehicle option fault")
@@ -2383,15 +2419,15 @@ class Ui_MainWindow(object):
             if(Command.accDataNumber==1 or Command.accDataNumber==2 or Command.accDataNumber==3 or Command.accDataNumber==7 or Command.accDataNumber==8):
                 self.got_res_brs.append(f"TTF DriverAirbag={Result.measuredValue[0]/1000}\nTTF PassengerAirbag={Result.measuredValue[1]/1000}\nTTF DriverPretensioner={Result.measuredValue[2]/1000}\nTTF PassengerPretensioner={Result.measuredValue[3]/1000}\nTTF DriverSideAirbag={Result.measuredValue[4]/1000}\nTTF PassengerSideAirbag={Result.measuredValue[5]/1000}\nTTF DriverCurtainAirbag={Result.measuredValue[6]/1000}")
                 time.sleep(0.02)
-                if(self.checkTTF(TTF_DAB,Result.measuredValue[0]/1000)==1 and self.checkTTF(TTF_PAB,Result.measuredValue[1]/1000)==1 and self.checkTTF(TTF_DPT,Result.measuredValue[2]/1000)==1 and self.checkTTF(TTF_PPT,Result.measuredValue[3]/1000)==1 and self.checkTTF(TTF_DSAB,Result.measuredValue[4]/1000)==1 and self.checkTTF(TTF_PSAB,Result.measuredValue[5]/1000)==1 and self.checkTTF(TTF_DCAB,Result.measuredValue[2]/1000)==1):
+                if(self.checkTTF(TTF_DAB,Result.measuredValue[0]/1000)==1 and self.checkTTF(TTF_PAB,Result.measuredValue[1]/1000)==1 and self.checkTTF(TTF_DPT,Result.measuredValue[2]/1000)==1 and self.checkTTF(TTF_PPT,Result.measuredValue[3]/1000)==1 and self.checkTTF(TTF_DSAB,Result.measuredValue[4]/1000)==1 and self.checkTTF(TTF_PSAB,Result.measuredValue[5]/1000)==1 and self.checkTTF(TTF_DCAB,Result.measuredValue[6]/1000)==1):
                     self.got_res_brs.append("Success")
                 else:
                     self.got_res_brs.append("Fail")
             elif (Command.accDataNumber==4 or Command.accDataNumber==5 or Command.accDataNumber==6):
                 if(Result.measuredValue[0]/1000==0 and Result.measuredValue[1]/1000==0 and Result.measuredValue[2]/1000==0 and Result.measuredValue[3]/1000==0 and Result.measuredValue[4]/1000==0 and Result.measuredValue[5]/1000==0 and Result.measuredValue[6]/1000==0):
                     self.got_res_brs.append("Success, СНБП не сработала")
-            else:
-                self.got_res_brs.append("Fail, СНБП сработала")
+                else:
+                    self.got_res_brs.append("Fail, СНБП сработала")
         self.UART.close()
         self.STOP_BTN_4.setEnabled(False)
         time.sleep(1)
@@ -2417,8 +2453,6 @@ class Ui_MainWindow(object):
             Command.testNumber=0x303
         if(Command.testNumber==0x32):
             Command.LED=self.UDS_LED_SELECTOR.currentIndex()
-        if(Command.testNumber==0x3E):
-            Command.vehicle_speed=1
         Cmd = Command.SerializeToString()
         self.UART.write(Cmd)
         received_len = self.UART.read(2).hex()
@@ -2503,6 +2537,7 @@ class Ui_MainWindow(object):
                             if(self.match_DTC(hex(DTC_list3[i]))!=None):
                                 self.UDS_MSG_BRS.append(f"{str(hex(DTC_list3[i]))}:{self.match_DTC(hex(DTC_list3[i]))} Status:Supported")
                                 time.sleep(0.05)
+                        print("1")
                 case 0x38:#control dtcsetting
                     self.UDS_MSG_BRS.append("Очистка DTC:")
                     time.sleep(0.02)
@@ -2551,14 +2586,9 @@ class Ui_MainWindow(object):
                     else:
                         self.UDS_MSG_BRS.append("Ошибка входа в security access")
                 case 0x3A: #DID ECU OPERATING STATES
-                    print(Result)
-                    self.UDS_MSG_BRS.append(
-                        f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nОтправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
-                    time.sleep(0.02)
-                    if (Result.frame[5].data[1] == 0x67 and Result.frame[5].data[2] == 0x02):
-                        self.UDS_MSG_BRS.append("Блок успешно вошёл в security access\n")
-                    else:
-                        self.UDS_MSG_BRS.append("Ошибка входа в security access\n")
+                    self.UDS_MSG_BRS.append("Вход в расширенную диагностическую сессию:")
+                    time.sleep(0.01)
+                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\n")
                     time.sleep(0.01)
                     time.sleep(0.01)
                     self.UDS_MSG_BRS.append("Изменение режима работы на Working:")
@@ -2573,17 +2603,10 @@ class Ui_MainWindow(object):
                     time.sleep(0.01)
                     self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[10].data.hex())}\nПринято:{str(Result.frame[11].data.hex())}")
                 case 0x3B:  # DID ECU OPERATING STATES
-                    print(Result)
-                    self.UDS_MSG_BRS.append(
-                        f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nОтправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
+                    self.UDS_MSG_BRS.append("Вход в SecurityAccess:")
+                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nОтправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
                     time.sleep(0.02)
-                    if (Result.frame[5].data[1] == 0x67 and Result.frame[5].data[2] == 0x02):
-                        self.UDS_MSG_BRS.append("Блок успешно вошёл в security access\n")
-                    else:
-                        self.UDS_MSG_BRS.append("Ошибка входа в security access\n")
-                    time.sleep(0.01)
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append("Изменение режима работы на Plant:")
+                    self.UDS_MSG_BRS.append("\nИзменение режима работы на Plant:")
                     time.sleep(0.01)
                     self.UDS_MSG_BRS.append(
                         f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}\n")
@@ -3134,50 +3157,51 @@ class Ui_MainWindow(object):
         Command = Command.SerializeToString()
         self.UART.write(Command)
         received_len = self.UART.read(2).hex()
-        print(received_len)
-        bytes_read = self.UART.read(int(received_len, 16))
-        f = open('EDR2.txt', 'w')
-        for index in bytes_read:
-            f.write(str(hex(bytes_read[index]))+' ')
-        Result = Parse_EDR(bytes_read)
-        print(Result)
-        for i in range(10, 260, 10):
-            self.Crash_data_table.setItem(int(i / 10) -1, 0, QtWidgets.QTableWidgetItem(f"{i}"))
-            self.Crash_data_table.setItem(int(i / 10) - 1, 1, QtWidgets.QTableWidgetItem(f"{Result[0][int(i/10) - 1]}"))
-            self.Crash_data_table.setItem(int(i / 10) - 1, 2, QtWidgets.QTableWidgetItem(f"{Result[1][int(i/10) - 1]}"))
-        for i in range(11):
-            self.Precrash_data_table.setItem(i, 0, QtWidgets.QTableWidgetItem(f"{Result[2][i]}"))
-            self.Precrash_data_table.setItem(i , 1, QtWidgets.QTableWidgetItem(f"{Result[3][i]}"))
-            self.Precrash_data_table.setItem(i, 2, QtWidgets.QTableWidgetItem(f"{Result[4][i]}"))
-            self.Precrash_data_table.setItem(i, 3, QtWidgets.QTableWidgetItem(f"{Result[5][i]}"))
-            self.Precrash_data_table.setItem(i, 4, QtWidgets.QTableWidgetItem(f"{Result[6][i]}"))
-            self.Precrash_data_table.setItem(i, 5, QtWidgets.QTableWidgetItem(f"{Result[7][i]}"))
-            self.Precrash_data_table.setItem(i, 6, QtWidgets.QTableWidgetItem(f"{Result[8][i]}"))
-            self.Precrash_data_table.setItem(i, 7, QtWidgets.QTableWidgetItem(f"{Result[9][i]}"))
-            self.Precrash_data_table.setItem(i, 8, QtWidgets.QTableWidgetItem(f"{Result[10][i]}"))
-            self.Precrash_data_table.setItem(i, 9, QtWidgets.QTableWidgetItem(f"{Result[11][i]}"))
-            self.Precrash_data_table.setItem(i, 10, QtWidgets.QTableWidgetItem(f"{Result[12][i]}"))
-            self.Precrash_data_table.setItem(i, 11, QtWidgets.QTableWidgetItem(f"{Result[13][i]}"))
-        for i in range(0,40):#?
-            listWidgetItem = QtWidgets.QListWidgetItem(f"{Result[14][i]}")
-            self.EDR_OTHER_DATA_BRS.addItem(listWidgetItem)
-        Result.clear()
-        print(Result)
-        bytes_read=bytearray(bytes_read)
-        for i in range(0,len(bytes_read)):
-            bytes_read[i]=0
-        self.UART.flush()
-        self.UART.close()
+        if(received_len!=''):
+            print(received_len)
+            bytes_read = self.UART.read(int(received_len, 16))
+            '''f = open('EDR2.txt', 'w')
+            for index in bytes_read:
+                f.write(str(hex(bytes_read[index]))+' ')'''
+            Result = Parse_EDR(bytes_read)
+            print(Result)
+            for i in range(10, 260, 10):
+                self.Crash_data_table.setItem(int(i / 10) -1, 0, QtWidgets.QTableWidgetItem(f"{i}"))
+                self.Crash_data_table.setItem(int(i / 10) - 1, 1, QtWidgets.QTableWidgetItem(f"{Result[0][int(i/10) - 1]}"))
+                self.Crash_data_table.setItem(int(i / 10) - 1, 2, QtWidgets.QTableWidgetItem(f"{Result[1][int(i/10) - 1]}"))
+            for i in range(11):
+                self.Precrash_data_table.setItem(i, 0, QtWidgets.QTableWidgetItem(f"{Result[2][i]}"))
+                self.Precrash_data_table.setItem(i , 1, QtWidgets.QTableWidgetItem(f"{Result[3][i]}"))
+                self.Precrash_data_table.setItem(i, 2, QtWidgets.QTableWidgetItem(f"{Result[4][i]}"))
+                self.Precrash_data_table.setItem(i, 3, QtWidgets.QTableWidgetItem(f"{Result[5][i]}"))
+                self.Precrash_data_table.setItem(i, 4, QtWidgets.QTableWidgetItem(f"{Result[6][i]}"))
+                self.Precrash_data_table.setItem(i, 5, QtWidgets.QTableWidgetItem(f"{Result[7][i]}"))
+                self.Precrash_data_table.setItem(i, 6, QtWidgets.QTableWidgetItem(f"{Result[8][i]}"))
+                self.Precrash_data_table.setItem(i, 7, QtWidgets.QTableWidgetItem(f"{Result[9][i]}"))
+                self.Precrash_data_table.setItem(i, 8, QtWidgets.QTableWidgetItem(f"{Result[10][i]}"))
+                self.Precrash_data_table.setItem(i, 9, QtWidgets.QTableWidgetItem(f"{Result[11][i]}"))
+                self.Precrash_data_table.setItem(i, 10, QtWidgets.QTableWidgetItem(f"{Result[12][i]}"))
+                self.Precrash_data_table.setItem(i, 11, QtWidgets.QTableWidgetItem(f"{Result[13][i]}"))
+            for i in range(0,40):#?
+                listWidgetItem = QtWidgets.QListWidgetItem(f"{Result[14][i]}")
+                self.EDR_OTHER_DATA_BRS.addItem(listWidgetItem)
+            Result.clear()
+            print(Result)
+            bytes_read=bytearray(bytes_read)
+            for i in range(0,len(bytes_read)):
+                bytes_read[i]=0
+            self.UART.flush()
+            self.UART.close()
         self.EDR_READ_BTN.setEnabled(True)
         self.STOP_BTN_7.setEnabled(False)
 
     def run_EDR_read(self):
         Receiver = threading.Thread(target=self.EDR_read)
         Receiver.start()
-    def run_Self_diag(self):
-        Receiver=threading.Thread(target=self.Self_diag_handler)
-        Receiver.start()
     def Reprogrammer(self):
+        self.pushButton_3.setDisabled(True)
+        self.toolButton.setDisabled(True)
+        self.progressBar.setValue(0)
         self.UART.open()
         Command = Messages.TestData()
         Command.method = 0
@@ -3186,44 +3210,57 @@ class Ui_MainWindow(object):
         Command = Command.SerializeToString()
         print(Command)
         self.UART.write(Command)
-        time.sleep(0.5)
-        #self.UART.close()
-
-
-        hexarr=readHex(self.file)
-        hexsize = getHexZise(hexarr)
+        self.UART.close()
+        #time.sleep(0.5)
+        appHex = HexOp(self.file)
+        appHex.readHex()
+        hexsize = appHex.getHexZise()
         print(hexsize)
-
         requestDownload2[1] = (hexsize & 0xFF0000) >> 16
         requestDownload2[2] = (hexsize & 0x00FF00) >> 8
         requestDownload2[3] = (hexsize & 0x0000FF)
         UDScheckStartCRC2[2] = ((hexsize + 0x18000) & 0xFF0000) >> 16
         UDScheckStartCRC2[3] = ((hexsize + 0x18000) & 0x00FF00) >> 8
         UDScheckStartCRC2[4] = ((hexsize + 0x18000) & 0x0000FF)
-
+        UARTDriver = UART_Transmitter(self.COM_PORT,self.progressBar,appHex)
+        self.LOG_print(UARTDriver.receive_status_message())
+        time.sleep(1)
+        self.progressBar.setValue(1)
+        time.sleep(2)
+        self.progressBar.setValue(2)
+        time.sleep(2.5)
+        self.progressBar.setValue(3)
+        self.LOG_print(UARTDriver.receive_status_message())
         while True:
-            UART_send(self.UART,eraseFlash1, 3)
-            UART_send(self.UART,eraseFlash2, 3)
-            UART_send(self.UART,requestFlashEraseRes, 4)
-            time.sleep(3)
-            UART_send(self.UART,requestDownload1, 3)
-            time.sleep(2)
-            UART_send(self.UART,requestDownload2, 1)
-            time.sleep(1)
-            # send data
-            for j in range(math.floor(getHexZise(hexarr) / 0x800)):
-                sendFlashPage(self.UART,0x800)
-            sendFlashPage(self.UART,getHexZise(hexarr) % 0x800)
-
-            # stop sending
-            UART_send(self.UART,requestTranferExit, 4)
+            self.LOG_print(UARTDriver.receive_status_message())
+            UARTDriver.requestDownload()
+            self.LOG_print(UARTDriver.receive_status_message())
+            self.LOG_print(UARTDriver.receive_status_message())
+            UARTDriver.transmitProgramm()
 
             # Calculate and chack CRC32
-            crc = CalculateHexCRC32(0x08018000, 0x08018000 + hexsize)
-            if (determineCRC(self.UART,crc)[1] == 0x00):
-                break
+            self.LOG_print(UARTDriver.receive_status_message())
+            self.LOG_print(UARTDriver.receive_status_message())
+            crc = appHex.CalculateHexCRC32(0x08018000, 0x08018000 + hexsize)
 
-        stopUART(self.UART)
+            UARTDriver.determineCRC(crc)
+            self.LOG_print(UARTDriver.receive_status_message())
+            '''while True:
+                CRCresponse=UARTDriver.read(2)
+                if(CRCresponse[1]==0x71):
+                    break'''
+            break
+
+        #self.LOG_print(UARTDriver.receive_status_message())
+        time.sleep(3)
+        appHex.clear()
+        self.LOG_print(UARTDriver.receive_status_message())
+        UARTDriver.stopUART()
+        time.sleep(0.2)
+        self.progressBar.setValue(100)
+        self.pushButton_3.setEnabled(True)
+        self.toolButton.setEnabled(True)
+
     def Reprogrammer_run(self):
         Receiver = threading.Thread(target=self.Reprogrammer)
         Receiver.start()
@@ -3244,10 +3281,32 @@ class Ui_MainWindow(object):
         #print(bytes_read)
         if(bytes_read[0]==0xBB):
             self.COM_PORT_BRS.append("Связь с СТО установлена")
+            self.start_SBR_btn.setEnabled(True)
+            self.start_acc_btn.setEnabled(True)
+            self.DIAG_ACC_BTN.setEnabled(True)
+            self.Run_Init_btn.setEnabled(True)
+            self.CHECK_CRASH_DETECTION_BTN.setEnabled(True)
+            self.DIAG_ACU_BTN.setEnabled(True)
+            self.UDS_RUN_BTN.setEnabled(True)
+            self.EDR_settings_btn.setEnabled(True)
+            self.perod_periodic_btn.setEnabled(True)
+            self.start_trig_btn.setEnabled(True)
+            self.DIAG_CLEAR_DTC_BTN.setEnabled(True)
+            self.DIAG_ACC_BTN.setEnabled(True)
+            self.DIAG_READ_0x08_BTN.setEnabled(True)
+            self.DIAG_READ_0x09_BTN.setEnabled(True)
+            self.DIAG_EXTDIAG_BTN.setEnabled(True)
+            self.DIAG_VIN0_BTN.setEnabled(True)
+            self.DIAG_VIN1_BTN.setEnabled(True)
+            self.DIAG_RESET_BTN.setEnabled(True)
+            self.EDR_READ_BTN.setEnabled(True)
+            self.START_VALID_AB_BTN.setEnabled(True)
+            self.toolButton.setEnabled(True)
         else:
             self.COM_PORT_BRS.append("Ошибка подключения.Попробуйте ещё раз")
         self.UART.timeout=300
         self.UART.close()
+
 
     def CheckConnection_run(self):
         Receiver = threading.Thread(target=self.CheckConnection)
