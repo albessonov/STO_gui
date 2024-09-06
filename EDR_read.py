@@ -12,8 +12,8 @@ EDR_precrash_arr_decoded = dict()
 EDR_decoded = dict()
 EDR_unsupported_decoded = dict()
 #------------------Crash data----------------------#
-LongdV_buf = list()
-LateraldV_buf = list()
+LongdV_buf = list([0 for i in range(0,30)])
+LateraldV_buf = list([0 for i in range(0,30)])
 #--------------Precrash data---------------------#
 Vehicle_Speed = list([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 Brake_OnOff = list([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
@@ -75,9 +75,9 @@ def get_single_data(word_num, datalen, EDR_name,EDR_buffer):
 
 def get_dV(word_num, EDR_name,EDR_buffer):
     EDR_dv_buf = []
-    for i in range(word_num, word_num + 50, 2):
+    for i in range(word_num, word_num + 60, 2):
         EDR_dv_buf.append(((EDR_buffer[i+1] << 8) + EDR_buffer[i]))
-    word_num += 50
+    word_num += 60
     EDR_postcrash_decoded.update([(EDR_name, EDR_dv_buf)])
     print(word_num)
     return word_num
@@ -188,15 +188,24 @@ def to_Traction_control_status(UDS_val):
             return "Engaged"
 
         
-def to_precrash_acc(UDS_val):
-    return (UDS_val - 15)*0.1
+def to_precrash_long_acc(UDS_val):
+    if(UDS_val<15):
+        return round((UDS_val - 16)*0.1, 1)
+    else:
+        return round((UDS_val - 15) * 0.1, 1)
+
+def to_precrash_lat_acc(UDS_val):
+    if (UDS_val < 10):
+        return round((UDS_val - 11)*0.1, 1)
+    else:
+        return round((UDS_val - 10)*0.1, 1)
         
 def to_SBS(UDS_val):
     match UDS_val:
         case 1:
-            return "Bucled"
-        case 0:
             return "Unbucled"
+        case 0:
+            return "Bucled"
         case _:
             return ""
         
@@ -557,7 +566,7 @@ def Parse_EDR(EDR_buffer):
     #--------------------------CRASH DATA--------------------------
     #Time, ms:   Long dV, km/h:  Lateral dV, km/h:
     #'''
-    for i in range(10, 260, 10):
+    for i in range(10, 310, 10):
         #display_str += f" {i}            {round(to_dV(EDR_postcrash_decoded['Longitudinal Delta-V Value'][int(i/10) - 1]),2)}"
         #display_str += f"                  {round(to_dV(EDR_postcrash_decoded['Lateral Delta-V Value'][int(i/10) - 1]),2)}\n"
         LongdV_buf.insert(int(i/10) - 1,(round(to_dV(EDR_postcrash_decoded['Longitudinal Delta-V Value'][int(i/10) - 1]),2)))
@@ -588,8 +597,8 @@ def Parse_EDR(EDR_buffer):
         Traction_Control_Status.insert(i,( f"{to_Traction_control_status(EDR_precrash_arr_decoded['Traction Control Status'][i])}"))
         #display_str += f"           {to_EDR_ext_state(EDR_precrash_arr_decoded['Automatic Emergency Braking System Status'][i])}"
         Cruise_Control_System.insert(i,( f"{to_Cruise_control(EDR_precrash_arr_decoded['Cruise Control System'][i])}"))
-        Longitudinal_acceleration_pre_crash.insert(i,( f"{to_precrash_acc(EDR_precrash_arr_decoded['Longitudinal acceleration (pre-crash)'][i])}"))
-        Lateral_acceleration_pre_crash.insert(i,( f"{to_precrash_acc(EDR_precrash_arr_decoded['Lateral acceleration (pre-crash)'][i])}\n\n"))
+        Longitudinal_acceleration_pre_crash.insert(i,( f"{to_precrash_long_acc(EDR_precrash_arr_decoded['Longitudinal acceleration (pre-crash)'][i])}"))
+        Lateral_acceleration_pre_crash.insert(i,( f"{to_precrash_lat_acc(EDR_precrash_arr_decoded['Lateral acceleration (pre-crash)'][i])}\n\n"))
 
     datalist.insert(6,( f"-----------------------------SINGLE DATA--------------------------"))
     datalist.insert(7,( f"Ignition cycle, crash: {EDR_decoded['Ignition cycle, crash']}\n"))

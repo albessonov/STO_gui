@@ -10,7 +10,8 @@ import time
 #
 #
 # le unless you know what you are doing.
-
+from io import StringIO
+import faulthandler
 from EDR_read import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 import codecs
@@ -23,6 +24,8 @@ from states import *
 from serial.tools import list_ports
 #from EDR_settings import *
 from Reprogramm import *
+import os
+import subprocess
 import math
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -34,6 +37,14 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
+        MainWindow.setWindowIcon(QtGui.QIcon("main_icon.ico"))
+        font_id = QtGui.QFontDatabase.addApplicationFont("D:/STO_gui/font/DS-DIGI.ttf")
+        font_families = QtGui.QFontDatabase.applicationFontFamilies(font_id)
+        if font_families:
+            # Устанавливаем загруженный шрифт для QLabel
+            my_font = QtGui.QFont(font_families[0])
+        #else:
+            #my_font = "Arial"  # Задаем запасной шрифт, если не удалось загрузить
         self.COM_PORT=None
         self.UART=None
         self.file=None
@@ -43,6 +54,9 @@ class Ui_MainWindow(object):
         self.gridLayout.setObjectName("gridLayout")
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName("tabWidget")
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.tabWidget.setFont(font)
         self.init_tab = QtWidgets.QWidget()
         self.init_tab.setObjectName("init_tab")
         self.gridLayout_8 = QtWidgets.QGridLayout(self.init_tab)
@@ -56,6 +70,7 @@ class Ui_MainWindow(object):
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.VALIDAB_BRS = QtWidgets.QTextBrowser(self.groupBox_13)
         self.VALIDAB_BRS.setObjectName("VALIDAB_BRS")
+        self.VALIDAB_BRS.setFont(font)
         self.gridLayout_2.addWidget(self.VALIDAB_BRS, 2, 0, 1, 2)
         self.STOP_BTN_8 = QtWidgets.QPushButton(self.groupBox_13)
         self.STOP_BTN_8.setMinimumSize(QtCore.QSize(0, 55))
@@ -110,7 +125,7 @@ class Ui_MainWindow(object):
         self.inittime_brs.setSizePolicy(sizePolicy)
         self.inittime_brs.setMinimumSize(QtCore.QSize(0, 30))
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(16)
         self.inittime_brs.setFont(font)
         self.inittime_brs.setObjectName("inittime_brs")
         self.gridLayout_3.addWidget(self.inittime_brs, 3, 1, 1, 1)
@@ -129,7 +144,7 @@ class Ui_MainWindow(object):
         self.gridLayout_3.addWidget(self.Initreuult_lbl, 2, 2, 1, 1)
         self.initresult_brs = QtWidgets.QTextBrowser(self.groupBox_2)
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(16)
         self.initresult_brs.setFont(font)
         self.initresult_brs.setObjectName("initresult_brs")
         self.gridLayout_3.addWidget(self.initresult_brs, 3, 2, 1, 1)
@@ -388,6 +403,9 @@ class Ui_MainWindow(object):
         self.gridLayout_10.setObjectName("gridLayout_10")
         self.CRASHDETECTED_BRS = QtWidgets.QTextBrowser(self.groupBox_20)
         self.CRASHDETECTED_BRS.setObjectName("CRASHDETECTED_BRS")
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.CRASHDETECTED_BRS.setFont(font)
         self.gridLayout_10.addWidget(self.CRASHDETECTED_BRS, 0, 0, 1, 1)
         self.gridLayout_25.addWidget(self.groupBox_20, 1, 0, 1, 1)
         self.groupBox = QtWidgets.QGroupBox(self.tab_2)
@@ -425,6 +443,7 @@ class Ui_MainWindow(object):
         self.acc_selector.addItem("Задний удар о жёсткий барьер 100% перекрытие")
         self.acc_selector.addItem("Боковой удар об упругий барьер скорость 15 км/ч 100% перекрытие")
         self.acc_selector.addItem("Боковой удар об упругий барьер скорость 50 км/ч 100% перекрытие")
+        self.acc_selector.addItem("Боковой удар об упругий барьер скорость 25 км/ч 100% перекрытие")
         self.gridLayout_6.addWidget(self.acc_selector, 5, 0, 1, 1)
         self.AIRBAG_OFF_btn = QtWidgets.QRadioButton(self.groupBox)
         font = QtGui.QFont()
@@ -578,7 +597,7 @@ class Ui_MainWindow(object):
         self.acc_SBR_brs.setObjectName("acc_SBR_brs")
         self.verticalLayout_2.addWidget(self.acc_SBR_brs)
         self.horizontalLayout_3.addWidget(self.groupBox_22)
-        self.tabWidget.addTab(self.tab_6, "")
+        #self.tabWidget.addTab(self.tab_6, "")
         self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setObjectName("tab_3")
         self.gridLayout_20 = QtWidgets.QGridLayout(self.tab_3)
@@ -644,7 +663,20 @@ class Ui_MainWindow(object):
         self.UDS_LED_SELECTOR.addItem("Включение светодиода отключения ПБ")
         self.UDS_LED_SELECTOR.addItem("Отключение светодиода отключения ПБ")
         self.UDS_LED_SELECTOR.addItem("Проверка subfunction Return control to ECU")
-        self.gridLayout_18.addWidget(self.UDS_LED_SELECTOR, 6, 0, 1, 1)
+        self.gridLayout_18.addWidget(self.UDS_LED_SELECTOR, 9, 0, 1, 1)
+        self.UDS_NRC_SELECTOR=QtWidgets.QComboBox(self.groupBox_12)
+        self.UDS_NRC_SELECTOR.setFont(font)
+        self.UDS_NRC_SELECTOR.addItem("No NRC")
+        self.UDS_NRC_SELECTOR.addItem("0x12-Subfunction not supported")
+        self.UDS_NRC_SELECTOR.addItem("0x13-Invalid message length/format")
+        #self.UDS_NRC_SELECTOR.addItem("NRC2")
+        self.gridLayout_18.addWidget(self.UDS_NRC_SELECTOR, 6, 0, 1, 1)
+        self.UDS_NRC_LBL=QtWidgets.QLabel(self.groupBox_12)
+        font=QtGui.QFont()
+        font.setPointSize(14)
+        self.UDS_NRC_LBL.setFont(font)
+        self.UDS_NRC_LBL.setText("NRC")
+        self.gridLayout_18.addWidget(self.UDS_NRC_LBL, 5, 0, 1, 1)
         self.label_4 = QtWidgets.QLabel(self.groupBox_12)
         font = QtGui.QFont()
         font.setPointSize(14)
@@ -690,6 +722,212 @@ class Ui_MainWindow(object):
         self.gridLayout_19.addWidget(self.EXP_UDS_LBL, 0, 0, 1, 1)
         self.gridLayout_20.addWidget(self.groupBox_19, 1, 0, 1, 1)
         self.tabWidget.addTab(self.tab_3, "")
+        self.SNAPSHOT_TAB = QtWidgets.QWidget()
+        self.SNAPSHOT_TAB.setObjectName("SNAPSHOT_TAB")
+        self.gridLayout_243 = QtWidgets.QGridLayout(self.SNAPSHOT_TAB)
+        self.gridLayout_243.setObjectName("gridLayout_243")
+        self.groupBox11 = QtWidgets.QGroupBox(self.SNAPSHOT_TAB)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.groupBox11.sizePolicy().hasHeightForWidth())
+        self.groupBox11.setSizePolicy(sizePolicy)
+        self.groupBox11.setMinimumSize(QtCore.QSize(55, 55))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.groupBox11.setFont(font)
+        self.groupBox11.setObjectName("groupBox")
+        self.gridLayout_511 = QtWidgets.QGridLayout(self.groupBox11)
+        self.gridLayout_511.setObjectName("gridLayout_511")
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        self.snap_brs = QtWidgets.QTextBrowser(self.groupBox11)
+        self.snap_brs.setFont(font)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(1)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.snap_brs.sizePolicy().hasHeightForWidth())
+        self.snap_brs.setSizePolicy(sizePolicy)
+        self.snap_brs.setObjectName("snap_brs")
+        self.gridLayout_511.addWidget(self.snap_brs, 0, 0, 1, 1)
+        self.gridLayout_243.addWidget(self.groupBox11, 2, 0, 1, 1)
+        self.groupBox_243 = QtWidgets.QGroupBox(self.SNAPSHOT_TAB)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.groupBox_243.sizePolicy().hasHeightForWidth())
+        self.groupBox_243.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.groupBox_243.setFont(font)
+        self.groupBox_243.setObjectName("groupBox_243")
+        self.gridLayout_412 = QtWidgets.QGridLayout(self.groupBox_243)
+        self.gridLayout_412.setObjectName("gridLayout_412")
+        self.lcdNumber_4 = QtWidgets.QTextBrowser(self.groupBox_243)
+        #self.lcdNumber_4.setDigitCount(8)
+        self.lcdNumber_4.setObjectName("lcdNumber_4")
+        font = QtGui.QFont()
+        font.setPointSize(52)
+        self.lcdNumber_4.setFont(font)
+        self.gridLayout_412.addWidget(self.lcdNumber_4, 4, 1, 1, 3)
+        self.stat_snap = QtWidgets.QLabel(self.groupBox_243)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.stat_snap.sizePolicy().hasHeightForWidth())
+        self.stat_snap.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.stat_snap.setFont(font)
+        self.stat_snap.setObjectName("stat_snap")
+        self.gridLayout_412.addWidget(self.stat_snap, 2, 0, 1, 1)
+        self.speed_snap = QtWidgets.QLabel(self.groupBox_243)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.speed_snap.setFont(font)
+        self.speed_snap.setObjectName("speed_snap")
+        self.gridLayout_412.addWidget(self.speed_snap, 3, 0, 1, 1)
+        self.lcdNumber_3 = QtWidgets.QTextBrowser(self.groupBox_243)
+        self.lcdNumber_3.setObjectName("lcdNumber_3")
+        font = QtGui.QFont()
+        font.setPointSize(52)
+        self.lcdNumber_3.setFont(font)
+        self.gridLayout_412.addWidget(self.lcdNumber_3, 5, 1, 1, 3)
+        self.errctr_snpa = QtWidgets.QLabel(self.groupBox_243)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.errctr_snpa.setFont(font)
+        self.errctr_snpa.setObjectName("errctr_snpa")
+        self.gridLayout_412.addWidget(self.errctr_snpa, 6, 0, 1, 1)
+        self.lifetime_snap = QtWidgets.QLabel(self.groupBox_243)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.lifetime_snap.setFont(font)
+        self.lifetime_snap.setObjectName("lifetime_snap")
+        self.gridLayout_412.addWidget(self.lifetime_snap, 4, 0, 1, 1)
+        self.probeg_snap = QtWidgets.QLabel(self.groupBox_243)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.probeg_snap.setFont(font)
+        self.probeg_snap.setObjectName("probeg_snap")
+        self.gridLayout_412.addWidget(self.probeg_snap, 5, 0, 1, 1)
+        self.status_brs = QtWidgets.QTextBrowser(self.groupBox_243)
+        self.status_brs.setMaximumSize(1000,150)
+        self.status_brs.setObjectName("lcdNumber")
+        self.status_brs.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
+        font = QtGui.QFont()
+        font.setPointSize(52)
+        self.status_brs.setFont(font)
+        self.gridLayout_412.addWidget(self.status_brs, 2, 1, 1, 3)
+        self.lcdNumber_2 = QtWidgets.QTextBrowser(self.groupBox_243)
+#        self.lcdNumber_2.setDigitCount(8)
+        self.lcdNumber_2.setObjectName("lcdNumber_2")
+        self.lcdNumber_2.setFont(font)
+        self.gridLayout_412.addWidget(self.lcdNumber_2, 3, 1, 1, 3)
+        self.lcdNumber_5 = QtWidgets.QTextBrowser(self.groupBox_243)
+#        self.lcdNumber_5.setDigitCount(8)
+        self.lcdNumber_5.setObjectName("lcdNumber_5")
+        self.lcdNumber_5.setFont(font)
+        self.gridLayout_412.addWidget(self.lcdNumber_5, 6, 1, 1, 3)
+        self.gridLayout_243.addWidget(self.groupBox_243, 2, 1, 1, 1)
+        self.SNAP_GROUP = QtWidgets.QGroupBox(self.SNAPSHOT_TAB)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.SNAP_GROUP.sizePolicy().hasHeightForWidth())
+        self.SNAP_GROUP.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.SNAP_GROUP.setFont(font)
+        self.SNAP_GROUP.setObjectName("SNAP_GROUP")
+        self.gridLayout_311 = QtWidgets.QGridLayout(self.SNAP_GROUP)
+        self.gridLayout_311.setObjectName("gridLayout_3")
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_311.addItem(spacerItem, 7, 1, 1, 1)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_311.addItem(spacerItem1, 6, 1, 1, 1)
+        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_311.addItem(spacerItem2, 0, 1, 1, 1)
+        self.read_snap_btn = QtWidgets.QPushButton(self.SNAP_GROUP)
+        self.read_snap_btn.setMinimumSize(QtCore.QSize(0, 60))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.read_snap_btn.setFont(font)
+        self.read_snap_btn.setObjectName("read_snap_btn")
+        self.gridLayout_311.addWidget(self.read_snap_btn, 13, 0, 1, 2)
+        spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_311.addItem(spacerItem3, 4, 1, 1, 1)
+        spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_311.addItem(spacerItem4, 8, 1, 1, 1)
+        spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_311.addItem(spacerItem5, 3, 1, 1, 1)
+        spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_311.addItem(spacerItem6, 1, 1, 1, 1)
+        spacerItem7 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_311.addItem(spacerItem7, 2, 1, 1, 1)
+        spacerItem8 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_311.addItem(spacerItem8, 5, 1, 1, 1)
+        self.snap_sel_1_lbl = QtWidgets.QLabel(self.SNAP_GROUP)
+        self.snap_sel_1_lbl.setFont(font)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.snap_sel_1_lbl.sizePolicy().hasHeightForWidth())
+        self.snap_sel_1_lbl.setSizePolicy(sizePolicy)
+        self.snap_sel_1_lbl.setMinimumSize(QtCore.QSize(0, 10))
+        self.snap_sel_1_lbl.setObjectName("snap_sel_1_lbl")
+        self.gridLayout_311.addWidget(self.snap_sel_1_lbl, 1, 0, 1, 1)
+        self.snap_sel_1 = QtWidgets.QComboBox(self.SNAP_GROUP)
+        self.snap_sel_1.setFont(font)
+        self.snap_sel_1.setMinimumSize(QtCore.QSize(0, 35))
+        self.snap_sel_1.setObjectName("snap_sel_1")
+        self.snap_sel_1.addItem("ACU")
+        self.snap_sel_1.addItem("VIN")
+        self.snap_sel_1.addItem("ECU supply voltage")
+        self.snap_sel_1.addItem("Airbag igniter")
+        self.snap_sel_1.addItem("Front Airbag Driver")
+        self.snap_sel_1.addItem("Front Airbag Passenger")
+        self.snap_sel_1.addItem("Pretensioner Driver")
+        self.snap_sel_1.addItem("Pretensioner Passenger")
+        self.snap_sel_1.addItem("Side Airbag Driver")
+        self.snap_sel_1.addItem("Side Airbag Passenger")
+        self.snap_sel_1.addItem("Side Satellite Driver")
+        self.snap_sel_1.addItem("Side Satellite Passenger")
+        self.snap_sel_1.addItem("Curtain Airbag Driver")
+        self.snap_sel_1.addItem("Curtain Airbag Passenger")
+        self.snap_sel_1.addItem("Airbag disabled lamp")
+        self.snap_sel_1.addItem("ENS")
+        self.snap_sel_1.addItem("PBS_OSWI")
+        self.snap_sel_1.addItem("Passenger Airbag Cutoff switch")
+        self.snap_sel_1.addItem("Passenger Presence sensor")
+        self.snap_sel_1.addItem("Lost CAN communication")
+
+
+
+
+
+
+
+        self.gridLayout_311.addWidget(self.snap_sel_1, 2, 0, 1, 1)
+        self.snap_sel_2_lbl = QtWidgets.QLabel(self.SNAP_GROUP)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.snap_sel_2_lbl.sizePolicy().hasHeightForWidth())
+        self.snap_sel_2_lbl.setSizePolicy(sizePolicy)
+        self.snap_sel_2_lbl.setObjectName("snap_sel_2_lbl")
+        self.snap_sel_2_lbl.setFont(font)
+        self.gridLayout_311.addWidget(self.snap_sel_2_lbl, 4, 0, 1, 1)
+        self.snap_sel_2 = QtWidgets.QComboBox(self.SNAP_GROUP)
+        self.snap_sel_2.setMinimumSize(QtCore.QSize(0, 35))
+        self.snap_sel_2.setObjectName("snap_sel_2")
+        self.snap_sel_2.setFont(font)
+        self.snap_sel_2.addItem("Internal Module Fault")
+        self.snap_sel_2.addItem("ECU Reuse exceeded")
+        self.snap_sel_2.addItem("Crash stored in memory")
+        self.gridLayout_311.addWidget(self.snap_sel_2, 5, 0, 1, 1)
+        self.gridLayout_243.addWidget(self.SNAP_GROUP, 0, 0, 1, 2)
+        self.tabWidget.addTab(self.SNAPSHOT_TAB, "")
         self.tab = QtWidgets.QWidget()
         self.tab.setObjectName("tab")
         self.gridLayout_21 = QtWidgets.QGridLayout(self.tab)
@@ -716,18 +954,6 @@ class Ui_MainWindow(object):
         self.DIAG_VIN1_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.DIAG_VIN1_BTN.setObjectName("DIAG_VIN1_BTN")
         self.gridLayout_16.addWidget(self.DIAG_VIN1_BTN, 0, 0, 1, 1)
-        self.DIAG_ACC_BTN = QtWidgets.QPushButton(self.groupBox_9)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.DIAG_ACC_BTN.sizePolicy().hasHeightForWidth())
-        self.DIAG_ACC_BTN.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.DIAG_ACC_BTN.setFont(font)
-        self.DIAG_ACC_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
-        self.DIAG_ACC_BTN.setObjectName("DIAG_ACC_BTN")
-        self.gridLayout_16.addWidget(self.DIAG_ACC_BTN, 0, 1, 1, 1)
         self.DIAG_VIN0_BTN = QtWidgets.QPushButton(self.groupBox_9)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
@@ -787,7 +1013,7 @@ class Ui_MainWindow(object):
         self.CHECK_CRASH_DETECTION_BTN.setFont(font)
         self.CHECK_CRASH_DETECTION_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.CHECK_CRASH_DETECTION_BTN.setObjectName("CHECK_CRASH_DETECTION_BTN")
-        self.gridLayout_16.addWidget(self.CHECK_CRASH_DETECTION_BTN, 3, 1, 1, 1)
+        self.gridLayout_16.addWidget(self.CHECK_CRASH_DETECTION_BTN, 0, 1, 1, 1)
         self.gridLayout_21.addWidget(self.groupBox_9, 0, 2, 2, 1)
         self.groupBox_8 = QtWidgets.QGroupBox(self.tab)
         self.groupBox_8.setLayoutDirection(QtCore.Qt.LeftToRight)
@@ -882,24 +1108,41 @@ class Ui_MainWindow(object):
         self.groupBox_10.setObjectName("groupBox_10")
         self.gridLayout_14 = QtWidgets.QGridLayout(self.groupBox_10)
         self.gridLayout_14.setObjectName("gridLayout_14")
-        self.DIAG_SPEED_SELECTOR = QtWidgets.QComboBox(self.groupBox_10)
+        self.DIAG_SPEED_SELECTOR = QtWidgets.QSlider(self.groupBox_10)
+        self.DIAG_SPEED_SELECTOR.setOrientation(1)  # Установка ориентации (1 - вертикально, 0 - горизонтально)
+        self.DIAG_SPEED_SELECTOR.setRange(0, 25500)  # Установка диапазона от 0 до 100
+        self.DIAG_SPEED_SELECTOR.setValue(0)  # Установка начального значения
+        self.DIAG_SPEED_SELECTOR.setTickInterval(1)
         font = QtGui.QFont()
         font.setPointSize(11)
         self.DIAG_SPEED_SELECTOR.setFont(font)
         self.DIAG_SPEED_SELECTOR.setObjectName("DIAG_SPEED_SELECTOR")
-        self.DIAG_SPEED_SELECTOR.addItem("")
-        self.DIAG_SPEED_SELECTOR.addItem("")
         self.gridLayout_14.addWidget(self.DIAG_SPEED_SELECTOR, 11, 0, 1, 3)
+
+        self.DIAG_MILEAGE_SELECTOR = QtWidgets.QSlider(self.groupBox_10)
+        self.DIAG_MILEAGE_SELECTOR.setOrientation(1)  # Установка ориентации (1 - вертикально, 0 - горизонтально)
+        self.DIAG_MILEAGE_SELECTOR.setRange(0, 268435454)  # Установка диапазона от 0 до 100
+        self.DIAG_MILEAGE_SELECTOR.setValue(0)  # Установка начального значения
+        self.DIAG_MILEAGE_SELECTOR.setTickInterval(1)
+        self.DIAG_MILEAGE_SELECTOR.setFont(font)
+        self.DIAG_MILEAGE_SELECTOR.setObjectName("DIAG_MILEAGE_SELECTOR")
+        self.gridLayout_14.addWidget(self.DIAG_MILEAGE_SELECTOR, 13, 0, 1, 3)
+
+        self.DIAG_MILEAGE_SELECTOR_2 = QtWidgets.QLabel(self.groupBox_10)
+        self.DIAG_MILEAGE_SELECTOR_2.setFont(font)
+        self.DIAG_MILEAGE_SELECTOR_2.setObjectName("DIAG_SPEED_SELECTOR_2")
+        self.gridLayout_14.addWidget(self.DIAG_MILEAGE_SELECTOR_2, 12, 0, 1, 1)
+
+        self.DIAG_MILEAGE_SELECTOR_2.setText('Отправляемый пробег:')
+
         self.DIAG_DIAGENABLE_SELECTOR_2 = QtWidgets.QLabel(self.groupBox_10)
         font = QtGui.QFont()
         font.setPointSize(11)
         self.DIAG_DIAGENABLE_SELECTOR_2.setFont(font)
         self.DIAG_DIAGENABLE_SELECTOR_2.setObjectName("DIAG_DIAGENABLE_SELECTOR_2")
-        self.gridLayout_14.addWidget(self.DIAG_DIAGENABLE_SELECTOR_2, 12, 0, 1, 1)
+        self.gridLayout_14.addWidget(self.DIAG_DIAGENABLE_SELECTOR_2, 15, 0, 1, 1)
         self.DIAG_UPD_CAN_MSG_BTN = QtWidgets.QPushButton(self.groupBox_10)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.DIAG_UPD_CAN_MSG_BTN.sizePolicy().hasHeightForWidth())
         self.DIAG_UPD_CAN_MSG_BTN.setSizePolicy(sizePolicy)
         self.DIAG_UPD_CAN_MSG_BTN.setMaximumSize(QtCore.QSize(474, 70))
@@ -908,7 +1151,20 @@ class Ui_MainWindow(object):
         self.DIAG_UPD_CAN_MSG_BTN.setFont(font)
         self.DIAG_UPD_CAN_MSG_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.DIAG_UPD_CAN_MSG_BTN.setObjectName("DIAG_UPD_CAN_MSG_BTN")
-        self.gridLayout_14.addWidget(self.DIAG_UPD_CAN_MSG_BTN, 3, 1, 1, 1)
+
+        self.DIAG_STOP_CAN_MSG_BTN = QtWidgets.QPushButton(self.groupBox_10)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHeightForWidth(self.DIAG_STOP_CAN_MSG_BTN.sizePolicy().hasHeightForWidth())
+        self.DIAG_STOP_CAN_MSG_BTN.setSizePolicy(sizePolicy)
+        self.DIAG_STOP_CAN_MSG_BTN.setMaximumSize(QtCore.QSize(474, 70))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.DIAG_STOP_CAN_MSG_BTN.setFont(font)
+        self.DIAG_STOP_CAN_MSG_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
+        self.DIAG_STOP_CAN_MSG_BTN.setObjectName("DIAG_UPD_CAN_MSG_BTN")
+        self.gridLayout_14.addWidget(self.DIAG_STOP_CAN_MSG_BTN, 5, 0, 1, 1)
+
+        self.gridLayout_14.addWidget(self.DIAG_UPD_CAN_MSG_BTN, 4, 0, 1, 1)
         self.DIAG_CAN_MSG_LBL = QtWidgets.QLabel(self.groupBox_10)
         font = QtGui.QFont()
         font.setPointSize(14)
@@ -924,7 +1180,7 @@ class Ui_MainWindow(object):
         self.DIAG_DIAGENABLE_SELECTOR.addItem("")
         self.DIAG_DIAGENABLE_SELECTOR.addItem("")
         self.DIAG_DIAGENABLE_SELECTOR.addItem("")
-        self.gridLayout_14.addWidget(self.DIAG_DIAGENABLE_SELECTOR, 13, 0, 1, 3)
+        self.gridLayout_14.addWidget(self.DIAG_DIAGENABLE_SELECTOR, 17, 0, 1, 3)
         self.DIAG_SPEED_SELECTOR_2 = QtWidgets.QLabel(self.groupBox_10)
         font = QtGui.QFont()
         font.setPointSize(11)
@@ -1167,11 +1423,417 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.EDR_settings_btn)
         self.gridLayout_22.addWidget(self.groupBox_15, 0, 0, 1, 2)
         self.tabWidget.addTab(self.tab_4, "")
-        self.tab_5 = QtWidgets.QWidget()
-        self.tab_5.setObjectName("tab_5")
-        self.gridLayout_28 = QtWidgets.QGridLayout(self.tab_5)
-        self.gridLayout_28.setObjectName("gridLayout_28")
-        self.toolButton = QtWidgets.QToolButton(self.tab_5)
+        self.params_tab = QtWidgets.QWidget()
+        self.params_tab.setObjectName("params_tab")
+        self.gridLayout_2 = QtWidgets.QGridLayout(self.params_tab)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.groupBoxA = QtWidgets.QGroupBox(self.params_tab)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.groupBoxA.sizePolicy().hasHeightForWidth())
+        self.groupBoxA.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(13)
+        self.groupBoxA.setFont(font)
+        self.groupBoxA.setObjectName("groupBoxA")
+        self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBoxA)
+        self.gridLayout_3.setObjectName("gridLayout_3")
+        self.LimitSxSyfront_input = QtWidgets.QSpinBox(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.LimitSxSyfront_input.setFont(font)
+        self.LimitSxSyfront_input.setMaximum(65535)
+        self.LimitSxSyfront_input.setObjectName("LimitSxSyfront_input")
+        self.gridLayout_3.addWidget(self.LimitSxSyfront_input, 3, 1, 1, 1)
+        self.LimitAresfront_input = QtWidgets.QSpinBox(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.LimitAresfront_input.setFont(font)
+        self.LimitAresfront_input.setMaximum(65535)
+        self.LimitAresfront_input.setObjectName("LimitAresfront_input")
+        self.gridLayout_3.addWidget(self.LimitAresfront_input, 1, 1, 1, 1)
+        self.Tcalc_input = QtWidgets.QSpinBox(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.Tcalc_input.setFont(font)
+        self.Tcalc_input.setMaximum(255)
+        self.Tcalc_input.setObjectName("Tcalc_input")
+        self.gridLayout_3.addWidget(self.Tcalc_input, 9, 1, 1, 1)
+        self.Sresimpact_side_input = QtWidgets.QSpinBox(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.Sresimpact_side_input.setFont(font)
+        self.Sresimpact_side_input.setMaximum(65535)
+        self.Sresimpact_side_input.setObjectName("Sresimpact_side_input")
+        self.gridLayout_3.addWidget(self.Sresimpact_side_input, 14, 1, 1, 1)
+        self.Sresimpactfront_input = QtWidgets.QSpinBox(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.Sresimpactfront_input.setFont(font)
+        self.Sresimpactfront_input.setMaximum(65535)
+        self.Sresimpactfront_input.setObjectName("Sresimpactfront_input")
+        self.gridLayout_3.addWidget(self.Sresimpactfront_input, 13, 1, 1, 1)
+        self.LimitSxSyfront_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.LimitSxSyfront_lbl.setFont(font)
+        self.LimitSxSyfront_lbl.setObjectName("LimitSxSyfront_lbl")
+        self.gridLayout_3.addWidget(self.LimitSxSyfront_lbl, 3, 0, 1, 1)
+        self.LimitAresfront_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.LimitAresfront_lbl.setFont(font)
+        self.LimitAresfront_lbl.setObjectName("LimitAresfront_lbl")
+        self.gridLayout_3.addWidget(self.LimitAresfront_lbl, 1, 0, 1, 1)
+        self.LimitSresside_input = QtWidgets.QSpinBox(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.LimitSresside_input.setFont(font)
+        self.LimitSresside_input.setMaximum(65535)
+        self.LimitSresside_input.setObjectName("LimitSresside_input")
+        self.gridLayout_3.addWidget(self.LimitSresside_input, 8, 1, 1, 1)
+        self.Sresimpactfront_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.Sresimpactfront_lbl.setFont(font)
+        self.Sresimpactfront_lbl.setObjectName("Sresimpactfront_lbl")
+        self.gridLayout_3.addWidget(self.Sresimpactfront_lbl, 13, 0, 1, 1)
+        self.Sresimpactside_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.Sresimpactside_lbl.setFont(font)
+        self.Sresimpactside_lbl.setObjectName("Sresimpactside_lbl")
+        self.gridLayout_3.addWidget(self.Sresimpactside_lbl, 14, 0, 1, 1)
+        self.Time_to_stop_calc_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.Time_to_stop_calc_lbl.setFont(font)
+        self.Time_to_stop_calc_lbl.setObjectName("Time_to_stop_calc_lbl")
+        self.gridLayout_3.addWidget(self.Time_to_stop_calc_lbl, 12, 0, 1, 1)
+        self.Tcalc_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.Tcalc_lbl.setFont(font)
+        self.Tcalc_lbl.setObjectName("Tcalc_lbl")
+        self.gridLayout_3.addWidget(self.Tcalc_lbl, 9, 0, 1, 1)
+        self.LimitSresside_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.LimitSresside_lbl.setFont(font)
+        self.LimitSresside_lbl.setObjectName("LimitSresside_lbl")
+        self.gridLayout_3.addWidget(self.LimitSresside_lbl, 8, 0, 1, 1)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_3.addItem(spacerItem, 3, 2, 1, 1)
+        self.defined_params_lbl = QtWidgets.QLabel(self.groupBoxA)
+        self.defined_params_lbl.setObjectName("defined_params_lbl")
+        self.gridLayout_3.addWidget(self.defined_params_lbl, 16, 0, 1, 1)
+        self.Timetostopcalc_input = QtWidgets.QSpinBox(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.Timetostopcalc_input.setFont(font)
+        self.Timetostopcalc_input.setMaximum(255)
+        self.Timetostopcalc_input.setObjectName("Timetostopcalc_input")
+        self.gridLayout_3.addWidget(self.Timetostopcalc_input, 12, 1, 1, 1)
+        self.LimitSresfront_input = QtWidgets.QSpinBox(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.LimitSresfront_input.setFont(font)
+        self.LimitSresfront_input.setMaximum(65535)
+        self.LimitSresfront_input.setObjectName("LimitSresfront_input")
+        self.gridLayout_3.addWidget(self.LimitSresfront_input, 6, 1, 1, 1)
+        self.LimitSxSyside_input = QtWidgets.QSpinBox(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.LimitSxSyside_input.setFont(font)
+        self.LimitSxSyside_input.setMaximum(65535)
+        self.LimitSxSyside_input.setObjectName("LimitSxSyside_input")
+        self.gridLayout_3.addWidget(self.LimitSxSyside_input, 4, 1, 1, 1)
+        self.LimitSxSyside_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.LimitSxSyside_lbl.setFont(font)
+        self.LimitSxSyside_lbl.setObjectName("LimitSxSyside_lbl")
+        self.gridLayout_3.addWidget(self.LimitSxSyside_lbl, 4, 0, 1, 1)
+        self.deltaAres_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.deltaAres_lbl.setFont(font)
+        self.deltaAres_lbl.setObjectName("deltaAres_lbl")
+        self.gridLayout_3.addWidget(self.deltaAres_lbl, 11, 0, 1, 1)
+        self.deltaAres_input = QtWidgets.QSpinBox(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.deltaAres_input.setFont(font)
+        self.deltaAres_input.setMaximum(255)
+        self.deltaAres_input.setObjectName("deltaAres_input")
+        self.gridLayout_3.addWidget(self.deltaAres_input, 11, 1, 1, 1)
+        self.Tcalc2_lbl = QtWidgets.QLabel(self.groupBoxA)
+        self.Tcalc2_lbl.setObjectName("Tcalc2_lbl")
+        self.gridLayout_3.addWidget(self.Tcalc2_lbl, 10, 0, 1, 1)
+        self.LimitAresside_input = QtWidgets.QSpinBox(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.LimitAresside_input.setFont(font)
+        self.LimitAresside_input.setMaximum(65535)
+        self.LimitAresside_input.setObjectName("LimitAresside_input")
+        self.gridLayout_3.addWidget(self.LimitAresside_input, 2, 1, 1, 1)
+        self.LimitAresside_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.LimitAresside_lbl.setFont(font)
+        self.LimitAresside_lbl.setObjectName("LimitAresside_lbl")
+        self.gridLayout_3.addWidget(self.LimitAresside_lbl, 2, 0, 1, 1)
+        self.LimitSresfront_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.LimitSresfront_lbl.setFont(font)
+        self.LimitSresfront_lbl.setObjectName("LimitSresfront_lbl")
+        self.gridLayout_3.addWidget(self.LimitSresfront_lbl, 6, 0, 1, 1)
+        self.Tcalc2_input = QtWidgets.QSpinBox(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.Tcalc2_input.setFont(font)
+        self.Tcalc2_input.setObjectName("Tcalc2_input")
+        self.gridLayout_3.addWidget(self.Tcalc2_input, 10, 1, 1, 1)
+        self.defined_params_selector = QtWidgets.QComboBox(self.groupBoxA)
+        self.defined_params_selector.setObjectName("defined_params_selector")
+        self.gridLayout_3.addWidget(self.defined_params_selector, 17, 0, 1, 1)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.gridLayout_3.addItem(spacerItem1, 15, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.groupBoxA, 0, 0, 1, 1)
+        self.groupBox143 = QtWidgets.QGroupBox(self.params_tab)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.groupBox143.sizePolicy().hasHeightForWidth())
+        self.groupBox143.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.groupBox143.setFont(font)
+        self.groupBox143.setObjectName("groupBox143")
+        self.gridLayout_4 = QtWidgets.QGridLayout(self.groupBox143)
+        self.gridLayout_4.setObjectName("gridLayout_4")
+        self.PARAM_RESULT_BRS = QtWidgets.QTextBrowser(self.groupBox143)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(10)
+        sizePolicy.setHeightForWidth(self.PARAM_RESULT_BRS.sizePolicy().hasHeightForWidth())
+        self.PARAM_RESULT_BRS.setSizePolicy(sizePolicy)
+        self.PARAM_RESULT_BRS.setObjectName("PARAM_RESULT_BRS")
+        self.gridLayout_4.addWidget(self.PARAM_RESULT_BRS, 1, 1, 6, 1)
+        self.UPDATE_PARAMS_BTN = QtWidgets.QPushButton(self.groupBox143)
+        self.UPDATE_PARAMS_BTN.setEnabled(True)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.UPDATE_PARAMS_BTN.sizePolicy().hasHeightForWidth())
+        self.UPDATE_PARAMS_BTN.setSizePolicy(sizePolicy)
+        self.UPDATE_PARAMS_BTN.setMinimumSize(QtCore.QSize(0, 83))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.UPDATE_PARAMS_BTN.setFont(font)
+        self.UPDATE_PARAMS_BTN.setObjectName("UPDATE_PARAMS_BTN")
+        self.gridLayout_4.addWidget(self.UPDATE_PARAMS_BTN, 1, 0, 1, 1)
+        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum,
+                                            QtWidgets.QSizePolicy.MinimumExpanding)
+        self.gridLayout_4.addItem(spacerItem2, 3, 0, 1, 1)
+        self.PARAM_RESULT_LBL = QtWidgets.QLabel(self.groupBox143)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.PARAM_RESULT_LBL.sizePolicy().hasHeightForWidth())
+        self.PARAM_RESULT_LBL.setSizePolicy(sizePolicy)
+        self.PARAM_RESULT_LBL.setMinimumSize(QtCore.QSize(0, 10))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.PARAM_RESULT_LBL.setFont(font)
+        self.PARAM_RESULT_LBL.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        self.PARAM_RESULT_LBL.setObjectName("PARAM_RESULT_LBL")
+        self.gridLayout_4.addWidget(self.PARAM_RESULT_LBL, 0, 1, 1, 1)
+        self.read_params_btn = QtWidgets.QPushButton(self.groupBox143)
+        self.read_params_btn.setMinimumSize(QtCore.QSize(0, 83))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.read_params_btn.setFont(font)
+        self.read_params_btn.setObjectName("read_params_btn")
+        self.gridLayout_4.addWidget(self.read_params_btn, 2, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.groupBox143, 1, 0, 1, 1)
+        self.groupBox_2666 = QtWidgets.QGroupBox(self.params_tab)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.groupBox_2666.setFont(font)
+        self.groupBox_2666.setObjectName("groupBox_2666")
+        self.gridLayout_5 = QtWidgets.QGridLayout(self.groupBox_2666)
+        self.gridLayout_5.setObjectName("gridLayout_5")
+        self.run_single_test_btn = QtWidgets.QPushButton(self.groupBox_2666)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.run_single_test_btn.setFont(font)
+        self.run_single_test_btn.setObjectName("run_single_test_btn")
+        self.gridLayout_5.addWidget(self.run_single_test_btn, 2, 0, 1, 1)
+        self.data_selector_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.data_selector_lbl.setFont(font)
+        self.data_selector_lbl.setObjectName("data_selector_lbl")
+        self.gridLayout_5.addWidget(self.data_selector_lbl, 0, 0, 1, 1)
+        self.data_selector = QtWidgets.QComboBox(self.groupBox_2666)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.data_selector.setFont(font)
+        self.data_selector.setObjectName("data_selector")
+        self.gridLayout_5.addWidget(self.data_selector, 1, 0, 1, 1)
+        spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.gridLayout_5.addItem(spacerItem3, 3, 0, 1, 1)
+        self.single_test_result_brs = QtWidgets.QTextBrowser(self.groupBox_2666)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.single_test_result_brs.sizePolicy().hasHeightForWidth())
+        self.single_test_result_brs.setSizePolicy(sizePolicy)
+        self.single_test_result_brs.setMinimumSize(QtCore.QSize(700, 0))
+        self.single_test_result_brs.setObjectName("single_test_result_brs")
+        self.gridLayout_5.addWidget(self.single_test_result_brs, 1, 1, 4, 1)
+        self.single_test_result_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.single_test_result_lbl.setAlignment(QtCore.Qt.AlignCenter)
+        self.single_test_result_lbl.setObjectName("single_test_result_lbl")
+        self.gridLayout_5.addWidget(self.single_test_result_lbl, 0, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.groupBox_2666, 0, 2, 1, 1)
+        self.groupBox_2A = QtWidgets.QGroupBox(self.params_tab)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.groupBox_2A.setFont(font)
+        self.groupBox_2A.setObjectName("groupBox_2A")
+        self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_2A)
+        self.gridLayout_6.setObjectName("gridLayout_6")
+        self.FIRE = QtWidgets.QCheckBox(self.groupBox_2A)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.FIRE.setFont(font)
+        self.FIRE.setObjectName("FIRE")
+        self.gridLayout_6.addWidget(self.FIRE, 5, 1, 1, 1)
+        self.multitest_result_brs = QtWidgets.QLabel(self.groupBox_2A)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.multitest_result_brs.sizePolicy().hasHeightForWidth())
+        self.multitest_result_brs.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(13)
+        self.multitest_result_brs.setFont(font)
+        self.multitest_result_brs.setObjectName("multitest_result_brs")
+        self.gridLayout_6.addWidget(self.multitest_result_brs, 1, 6, 1, 1)
+        self.export_results_btn = QtWidgets.QPushButton(self.groupBox_2A)
+        self.export_results_btn.setMinimumSize(QtCore.QSize(0, 55))
+        self.export_results_btn.setObjectName("export_results_btn")
+        self.gridLayout_6.addWidget(self.export_results_btn, 10, 6, 1, 1)
+        self.XGF_lbl = QtWidgets.QLabel(self.groupBox_2A)
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.XGF_lbl.setFont(font)
+        self.XGF_lbl.setObjectName("XGF_lbl")
+        self.gridLayout_6.addWidget(self.XGF_lbl, 1, 1, 1, 1)
+        self.EXP = QtWidgets.QCheckBox(self.groupBox_2A)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.EXP.setFont(font)
+        self.EXP.setObjectName("EXP")
+        self.gridLayout_6.addWidget(self.EXP, 9, 1, 1, 1)
+        self.MISUSE = QtWidgets.QCheckBox(self.groupBox_2A)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.MISUSE.setFont(font)
+        self.MISUSE.setObjectName("MISUSE")
+        self.gridLayout_6.addWidget(self.MISUSE, 6, 1, 1, 1)
+        self.PARAMS_PROCESS_BRS = QtWidgets.QTextBrowser(self.groupBox_2A)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(50)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.PARAMS_PROCESS_BRS.sizePolicy().hasHeightForWidth())
+        self.PARAMS_PROCESS_BRS.setSizePolicy(sizePolicy)
+        self.PARAMS_PROCESS_BRS.setMinimumSize(QtCore.QSize(700, 500))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.PARAMS_PROCESS_BRS.setFont(font)
+        self.PARAMS_PROCESS_BRS.setObjectName("PARAMS_PROCESS_BRS")
+        self.gridLayout_6.addWidget(self.PARAMS_PROCESS_BRS, 0, 6, 1, 1)
+        self.CHECK_PARAM_VALID_BTN = QtWidgets.QPushButton(self.groupBox_2A)
+        self.CHECK_PARAM_VALID_BTN.setMinimumSize(QtCore.QSize(0, 55))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.CHECK_PARAM_VALID_BTN.setFont(font)
+        self.CHECK_PARAM_VALID_BTN.setObjectName("CHECK_PARAM_VALID_BTN")
+        self.gridLayout_6.addWidget(self.CHECK_PARAM_VALID_BTN, 0, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.groupBox_2A, 1, 2, 1, 1)
+        self.tabWidget.addTab(self.params_tab, "")
+        self.reprogramming_tab = QtWidgets.QWidget()
+        self.reprogramming_tab.setObjectName("reprogramming_tab")
+        self.gridLayout_2 = QtWidgets.QGridLayout(self.reprogramming_tab)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.groupBox1565 = QtWidgets.QGroupBox(self.reprogramming_tab)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.groupBox1565.sizePolicy().hasHeightForWidth())
+        self.groupBox1565.setSizePolicy(sizePolicy)
+        self.groupBox1565.setMinimumSize(QtCore.QSize(0, 200))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.groupBox1565.setFont(font)
+        self.groupBox1565.setObjectName("groupBox1565")
+        self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox1565)
+        self.gridLayout_3.setObjectName("gridLayout_3")
+        self.STO_VER_BTN = QtWidgets.QPushButton(self.groupBox1565)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.STO_VER_BTN.sizePolicy().hasHeightForWidth())
+        self.STO_VER_BTN.setSizePolicy(sizePolicy)
+        self.STO_VER_BTN.setObjectName("STO_VER_BTN")
+        self.gridLayout_3.addWidget(self.STO_VER_BTN, 0, 2, 1, 1)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_3.addItem(spacerItem, 2, 2, 1, 1)
+        self.ACC_VER_BTN = QtWidgets.QPushButton(self.groupBox1565)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.ACC_VER_BTN.sizePolicy().hasHeightForWidth())
+        self.ACC_VER_BTN.setSizePolicy(sizePolicy)
+        self.ACC_VER_BTN.setMinimumSize(QtCore.QSize(0, 30))
+        self.ACC_VER_BTN.setObjectName("ACC_VER_BTN")
+        self.gridLayout_3.addWidget(self.ACC_VER_BTN, 1, 2, 1, 1)
+        self.VER_LOG_BRS = QtWidgets.QTextBrowser(self.groupBox1565)
+        self.VER_LOG_BRS.setObjectName("VER_LOG_BRS")
+        self.gridLayout_3.addWidget(self.VER_LOG_BRS, 0, 6, 3, 1)
+        self.gridLayout_2.addWidget(self.groupBox1565, 3, 0, 1, 1)
+        self.groupBox_23456789 = QtWidgets.QGroupBox(self.reprogramming_tab)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.groupBox_23456789.setFont(font)
+        self.groupBox_23456789.setObjectName("groupBox_23456789")
+        self.gridLayout_4 = QtWidgets.QGridLayout(self.groupBox_23456789)
+        self.gridLayout_4.setObjectName("gridLayout_4")
+        self.progressBar = QtWidgets.QProgressBar(self.groupBox_23456789)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.progressBar.sizePolicy().hasHeightForWidth())
+        self.progressBar.setSizePolicy(sizePolicy)
+        self.progressBar.setMinimumSize(QtCore.QSize(0, 50))
+        self.progressBar.setProperty("value", 0)
+        self.progressBar.setObjectName("progressBar")
+        self.gridLayout_4.addWidget(self.progressBar, 3, 1, 1, 2)
+        self.textBrowser_2 = QtWidgets.QTextBrowser(self.groupBox_23456789)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.textBrowser_2.sizePolicy().hasHeightForWidth())
+        self.textBrowser_2.setSizePolicy(sizePolicy)
+        self.textBrowser_2.setMinimumSize(QtCore.QSize(0, 10))
+        self.textBrowser_2.setObjectName("textBrowser_2")
+        self.gridLayout_4.addWidget(self.textBrowser_2, 1, 2, 1, 1)
+        self.toolButton = QtWidgets.QToolButton(self.groupBox_23456789)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -1180,41 +1842,24 @@ class Ui_MainWindow(object):
         self.toolButton.setMinimumSize(QtCore.QSize(50, 50))
         self.toolButton.setObjectName("toolButton")
         self.toolButton.setIcon(QtGui.QIcon("reprogramming_icon.png"))
-        self.gridLayout_28.addWidget(self.toolButton, 0, 0, 1, 1)
-        self.pushButton_3 = QtWidgets.QPushButton(self.tab_5)
+        self.gridLayout_4.addWidget(self.toolButton, 1, 1, 1, 1)
+        self.pushButton_3 = QtWidgets.QPushButton(self.groupBox_23456789)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.pushButton_3.sizePolicy().hasHeightForWidth())
         self.pushButton_3.setSizePolicy(sizePolicy)
         self.pushButton_3.setMinimumSize(QtCore.QSize(50, 60))
-        self.pushButton_3.setObjectName("pushButton")
+        font = QtGui.QFont()
+        font.setPointSize(14)
         self.pushButton_3.setFont(font)
-        self.gridLayout_28.addWidget(self.pushButton_3, 1, 1, 1, 1)
-        self.progressBar = QtWidgets.QProgressBar(self.tab_5)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.progressBar.sizePolicy().hasHeightForWidth())
-        self.progressBar.setSizePolicy(sizePolicy)
-        self.progressBar.setMinimumSize(QtCore.QSize(0, 50))
-        self.progressBar.setObjectName("progressBar")
-        self.gridLayout_28.addWidget(self.progressBar, 2, 1, 1, 1)
-        self.textBrowser_2 = QtWidgets.QTextBrowser(self.tab_5)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.textBrowser_2.sizePolicy().hasHeightForWidth())
-        self.textBrowser_2.setSizePolicy(sizePolicy)
-        self.textBrowser_2.setMinimumSize(QtCore.QSize(0, 10))
-        self.textBrowser_2.setObjectName("textBrowser_2")
-        self.textBrowser_2.setFont(font)
-        self.gridLayout_28.addWidget(self.textBrowser_2, 0, 1, 1, 1)
-        self.LOG_BRS = QtWidgets.QTextBrowser(self.tab_5)
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.gridLayout_4.addWidget(self.pushButton_3, 2, 1, 1, 2)
+        self.LOG_BRS = QtWidgets.QTextBrowser(self.groupBox_23456789)
         self.LOG_BRS.setObjectName("LOG_BRS")
-        self.LOG_BRS.setFont(font)
-        self.gridLayout_28.addWidget(self.LOG_BRS, 3, 1, 1, 1)
-        self.tabWidget.addTab(self.tab_5, "")
+        self.gridLayout_4.addWidget(self.LOG_BRS, 4, 1, 1, 2)
+        self.gridLayout_2.addWidget(self.groupBox_23456789, 1, 0, 2, 1)
+        self.tabWidget.addTab(self.reprogramming_tab, "")
         self.Settings = QtWidgets.QWidget()
         self.Settings.setObjectName("Settings")
         self.groupBox_21 = QtWidgets.QGroupBox(self.Settings)
@@ -1241,7 +1886,7 @@ class Ui_MainWindow(object):
         if(len(portlist)>0):
             self.COM_PORT=portlist[0]
             print(self.COM_PORT)
-            self.UART=serial.Serial(self.COM_PORT)
+            self.UART=serial.Serial(self.COM_PORT,115200)
             self.UART.close()
         self.gridLayout_26.addWidget(self.COM_PORT_BRS, 2, 0, 1, 1)
         self.tabWidget.addTab(self.Settings, "")
@@ -1286,6 +1931,9 @@ class Ui_MainWindow(object):
         self.UDS_LED_SELECTOR.currentIndexChanged['int'].connect(self.UDS_LED_changed)
         self.UDS_LED_SELECTOR.currentIndexChanged['int'].connect(self.UDS_MSG_BRS.clear)
 
+        self.UDS_NRC_SELECTOR.currentIndexChanged['int'].connect(self.NRC_CHANGED)
+        self.UDS_NRC_SELECTOR.currentIndexChanged['int'].connect(self.UDS_MSG_BRS.clear)
+
         self.start_SBR_btn.clicked.connect(self.run_SBR)
         self.start_SBR_btn.clicked.connect(self.acc_SBR_brs.clear)
         self.start_SBR_btn.clicked.connect(self.got_res_SBR_brs.clear)
@@ -1322,11 +1970,11 @@ class Ui_MainWindow(object):
         self.DIAG_CLEAR_DTC_BTN.clicked.connect(self.DIAG_ACCEPTED_BRS.clear)
         self.DIAG_CLEAR_DTC_BTN.clicked.connect(lambda: self.DIAG_CLEAR_DTC_BTN.setDisabled(True))
 
-        self.DIAG_ACC_BTN.clicked.connect(self.run_Emulate_crash)
-        self.DIAG_ACC_BTN.clicked.connect(self.DIAG_ACCEPTED_BRS.clear)
-        self.DIAG_ACC_BTN.clicked.connect(lambda: self.DIAG_ACC_BTN.setDisabled(True))
+        self.CHECK_PARAM_VALID_BTN.clicked.connect(self.run_model_all)
 
         self.DIAG_UPD_CAN_MSG_BTN.clicked.connect(self.Send_periodic)
+
+        self.DIAG_STOP_CAN_MSG_BTN.clicked.connect(self.Stop_Send_periodic)
 
         self.DIAG_ACU_BTN.clicked.connect(self.run_Write_ACU)
         self.DIAG_ACU_BTN.clicked.connect(self.DIAG_ACCEPTED_BRS.clear)
@@ -1339,6 +1987,14 @@ class Ui_MainWindow(object):
         self.CHECK_CRASH_DETECTION_BTN.clicked.connect(self.run_Check_CD)
         self.CHECK_CRASH_DETECTION_BTN.clicked.connect(self.DIAG_ACCEPTED_BRS.clear)
         self.CHECK_CRASH_DETECTION_BTN.clicked.connect(lambda: self.CHECK_CRASH_DETECTION_BTN.setDisabled(True))
+
+        self.read_snap_btn.clicked.connect(self.run_snap_handler)
+        self.read_snap_btn.clicked.connect(self.snap_brs.clear)
+        self.read_snap_btn.clicked.connect(self.status_brs.clear)
+        self.read_snap_btn.clicked.connect(self.lcdNumber_2.clear)
+        self.read_snap_btn.clicked.connect(self.lcdNumber_3.clear)
+        self.read_snap_btn.clicked.connect(self.lcdNumber_4.clear)
+        self.read_snap_btn.clicked.connect(self.lcdNumber_5.clear)
 
         self.STOP_BTN_1.clicked.connect(self.close)
         self.STOP_BTN_1.clicked.connect(lambda: self.perod_periodic_btn.setDisabled(False))
@@ -1374,7 +2030,7 @@ class Ui_MainWindow(object):
         self.STOP_BTN_7.clicked.connect(lambda: self.EDR_READ_BTN.setDisabled(False))
         self.STOP_BTN_7.setDisabled(True)
 
-        self.EDR_settings_btn.clicked.connect(self.show_dialog)
+
 
         self.STOP_BTN_8.clicked.connect(self.close)
         self.STOP_BTN_8.clicked.connect(lambda: self.START_VALID_AB_BTN.setDisabled(False))
@@ -1383,6 +2039,12 @@ class Ui_MainWindow(object):
         self.START_VALID_AB_BTN.clicked.connect(self.run_ValidAB)
         self.START_VALID_AB_BTN.clicked.connect(self.VALIDAB_BRS.clear)
         self.START_VALID_AB_BTN.clicked.connect(lambda: self.START_VALID_AB_BTN.setDisabled(True))
+
+        self.UPDATE_PARAMS_BTN.clicked.connect(self.run_update_params)
+        self.UPDATE_PARAMS_BTN.clicked.connect(self.PARAM_RESULT_BRS.clear)
+
+        self.read_params_btn.clicked.connect(self.run_read_params)
+        self.read_params_btn.clicked.connect(self.PARAM_RESULT_BRS.clear)
 
         self.COM_PORT_SELECTOR.currentIndexChanged['int'].connect(self.COM_port_changed)
         self.COM_PORT_CONNECT_BTN.clicked.connect(self.CheckConnection_run)
@@ -1393,9 +2055,17 @@ class Ui_MainWindow(object):
         self.pushButton_3.clicked.connect(self.Reprogrammer_run)
         self.pushButton_3.clicked.connect(self.LOG_BRS.clear)
 
+        self.DIAG_SPEED_SELECTOR.valueChanged[int].connect(self.update_speed_label)
+        self.DIAG_MILEAGE_SELECTOR.valueChanged[int].connect(self.update_mileage_label)
+
+        self.snap_sel_1.currentTextChanged.connect(self.snap_changed)
+
+        self.defined_params_selector.currentIndexChanged.connect(self.XGF_or_XGE)
+        self.STO_VER_BTN.clicked.connect(lambda:self.run_Config_version(1))
+        self.ACC_VER_BTN.clicked.connect(lambda:self.run_Config_version(2))
+
         self.start_SBR_btn.setDisabled(True)
         self.start_acc_btn.setDisabled(True)
-        self.DIAG_ACC_BTN.setDisabled(True)
         self.Run_Init_btn.setDisabled(True)
         self.CHECK_CRASH_DETECTION_BTN.setDisabled(True)
         self.DIAG_ACU_BTN.setDisabled(True)
@@ -1404,7 +2074,6 @@ class Ui_MainWindow(object):
         self.perod_periodic_btn.setDisabled(True)
         self.start_trig_btn.setDisabled(True)
         self.DIAG_CLEAR_DTC_BTN.setDisabled(True)
-        self.DIAG_ACC_BTN.setDisabled(True)
         self.DIAG_READ_0x08_BTN.setDisabled(True)
         self.DIAG_READ_0x09_BTN.setDisabled(True)
         self.DIAG_EXTDIAG_BTN.setDisabled(True)
@@ -1414,6 +2083,10 @@ class Ui_MainWindow(object):
         self.EDR_READ_BTN.setDisabled(True)
         self.START_VALID_AB_BTN.setDisabled(True)
         self.toolButton.setDisabled(True)
+        self.DIAG_UPD_CAN_MSG_BTN.setDisabled(True)
+        self.DIAG_STOP_CAN_MSG_BTN.setDisabled(True)
+        self.read_snap_btn.setDisabled(True)
+        self.UPDATE_PARAMS_BTN.setDisabled(True)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
 
@@ -1445,6 +2118,20 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.can_tab),
                                   _translate("MainWindow", "Проверка периода CAN"))
         self.groupBox.setTitle(_translate("MainWindow", "Параметры испытания"))
+        self.groupBox11.setTitle(_translate("MainWindow", "Ход чтения"))
+        self.groupBox_243.setTitle(_translate("MainWindow", "Считанные данные"))
+        self.stat_snap.setText(_translate("MainWindow", "Cтатус ошибки"))
+        self.speed_snap.setText(_translate("MainWindow", "Скорость"))
+        self.errctr_snpa.setText(_translate("MainWindow", "Значение DTC occurence counter"))
+        self.lifetime_snap.setText(_translate("MainWindow", "Значение lifetime timer"))
+        self.probeg_snap.setText(_translate("MainWindow", "Пробег"))
+        self.SNAP_GROUP.setTitle(_translate("MainWindow", "Выбор snapshot"))
+        self.read_snap_btn.setText(_translate("MainWindow", "Прочитать Snapshot"))
+        self.snap_sel_1_lbl.setText(_translate("MainWindow", "Блок"))
+        self.snap_sel_2_lbl.setText(_translate("MainWindow", "Ошибка"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.SNAPSHOT_TAB),
+                                  _translate("MainWindow", "Проверка чтения snapshot"))
+        self.read_params_btn.setText("Прочитать текущие параметры")
         self.AIRBAG_OFF_btn.setText(_translate("MainWindow", "Отключить ПБ переднего пассажира"))
         self.acc_selector_lbl.setText(_translate("MainWindow", "Выбор набора ускорений"))
         self.start_acc_btn.setText(_translate("MainWindow", "Старт"))
@@ -1485,9 +2172,9 @@ class Ui_MainWindow(object):
         self.Seatbelt_selector.setItemText(2, _translate("MainWindow", "Центральный Задний пассажир"))
         self.Seatbelt_selector.setItemText(3, _translate("MainWindow", "Правый задний пассажир"))
         self.Seatbelt_selector.setItemText(4, _translate("MainWindow", "Левый задний пассажир"))
-
+        self.PARAM_RESULT_LBL.setText(_translate("MainWindow", "Результат"))
         self.SB_select_lbl.setText(_translate("MainWindow", "Селектор ремня безопасности"))
-
+        self.CHECK_PARAM_VALID_BTN.setText(_translate("MainWindow", "Проверить валидность параметров"))
         self.accepted_SBR_title.setText(_translate("MainWindow", "Ход проверки"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_6), _translate("MainWindow", "Проверка SBR"))
         self.DIAG_READ_0x09_BTN.setText(_translate("MainWindow", "Считать DTC 0x09"))
@@ -1498,11 +2185,8 @@ class Ui_MainWindow(object):
         self.DIAG_VIN0_BTN.setText(_translate("MainWindow", "Записать VIN!=0"))
         self.DIAG_VIN1_BTN.setText(_translate("MainWindow", "Записать VIN=0"))
         self.DIAG_EXTDIAG_BTN.setText(_translate("MainWindow", "Войти в ExtendedDiagnosticSession"))
-        self.DIAG_ACC_BTN.setText(_translate("MainWindow", "Провести тест на срабатывание"))
         self.DIAG_UPD_CAN_MSG_BTN.setText(_translate("MainWindow", "Обновить данные"))
         self.DIAG_CAN_MSG_LBL.setText(_translate("MainWindow", "Отправляемые сообщения"))
-        self.DIAG_SPEED_SELECTOR.setItemText(0, _translate("MainWindow", "15 км/ч"))
-        self.DIAG_SPEED_SELECTOR.setItemText(1, _translate("MainWindow", "40 км/ч"))
         self.DIAG_DIAGENABLE_SELECTOR.setItemText(0, _translate("MainWindow", "0"))
         self.DIAG_DIAGENABLE_SELECTOR.setItemText(1, _translate("MainWindow", "1"))
         self.DIAG_DIAGENABLE_SELECTOR.setItemText(2, _translate("MainWindow", "2"))
@@ -1516,7 +2200,7 @@ class Ui_MainWindow(object):
         self.EDR_READ_BTN.setText(_translate("MainWindow", "Cтарт"))
         self.label_3.setText(_translate("MainWindow", "Измерение периода CAN-сообщения 0x023"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("MainWindow", "Проверка чтения EDR"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("MainWindow", "Перепрошивка БУ СНПБ"))
+        #self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("MainWindow", "Перепрошивка БУ СНПБ"))
         self.EDR_settings_btn.setText("Изменить отправляемые данные")
         self.COM_PORT_CONNECT_BTN.setText(_translate("MainWindow", "Подключиться"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.Settings), _translate("MainWindow", "Настройки"))
@@ -1524,6 +2208,42 @@ class Ui_MainWindow(object):
         self.groupBox_18.setTitle(_translate("MainWindow", "Other supproted data"))
         self.groupBox_16.setTitle(_translate("MainWindow", "Crash data"))
         self.pushButton_3.setText("Начать перепрошивку")
+        #self.LimitAy_lbl.setText(_translate("MainWindow", "Limit Ay (m/s\u00B2)"))
+        self.LimitSresside_lbl.setText(_translate("MainWindow", "Limit Sres side (10\u207b\u2076 m)"))
+        self.LimitAresfront_lbl.setText(_translate("MainWindow", "Limit Ares front (10\u207b\u00b9 m/s\u00B2)"))
+        self.LimitSxSyfront_lbl.setText(_translate("MainWindow", "Limit Sx,Sy front (10\u207b\u2076 m)"))
+        self.Time_to_stop_calc_lbl.setText(_translate("MainWindow", "Time to stop calculation (ms)"))
+        self.Tcalc_lbl.setText(_translate("MainWindow", "T calc front (ms)"))
+        self.Tcalc2_lbl.setText(_translate("MainWindow", "T calc side (ms"))
+        self.Sresimpactside_lbl.setText(_translate("MainWindow", "Sres impact side (10\u207b\u2076 m)"))
+        self.groupBox143.setTitle(_translate("MainWindow", "Работа с БУ СНПБ"))
+        self.UPDATE_PARAMS_BTN.setText(_translate("MainWindow", "Загрузить параметры"))
+        self.PARAM_RESULT_LBL.setText(_translate("MainWindow", "Результат"))
+        self.read_params_btn.setText(_translate("MainWindow", "Считать параметры"))
+        self.groupBox_2666.setTitle(_translate("MainWindow", "Проверка модели"))
+        self.run_single_test_btn.setText(_translate("MainWindow", "Запуск"))
+        self.data_selector_lbl.setText(_translate("MainWindow", "Выбор набора данных"))
+        self.single_test_result_lbl.setText(_translate("MainWindow", "Результаты теста"))
+        self.groupBox_2A.setTitle(_translate("MainWindow", "Прохождение всех тестов"))
+        self.MISUSE.setText(_translate("MainWindow", "Misuse"))
+        self.FIRE.setText(_translate("MainWindow", "Fire"))
+        self.EXP.setText(_translate("MainWindow", "Exp"))
+        self.CHECK_PARAM_VALID_BTN.setText(_translate("MainWindow", "Cтарт"))
+        self.XGF_lbl.setText(_translate("MainWindow", "XGF"))
+        self.multitest_result_brs.setText(_translate("MainWindow", "Результаты"))
+        self.export_results_btn.setText(_translate("MainWindow", "Открыть файл с результатами"))
+        self.LimitAresside_lbl.setText(_translate("MainWindow", "Limit Ares side (10\u207b\u00b9 m/s\u00B2)"))
+        self.Sresimpactfront_lbl.setText(_translate("MainWindow", "Sres impact front (10\u207b\u2076 m)"))
+       # self.PARAMS_PROCESS_LBL.setText(_translate("MainWindow", "Ход обновления"))
+        #self.LimitAx_lbl.setText(_translate("MainWindow", "Limit Ax (m/s\u00B2)"))
+        self.deltaAres_lbl.setText(_translate("MainWindow", "delta Ares (m/s\u00B2)"))
+        self.LimitSxSyside_lbl.setText(_translate("MainWindow", "Limit Sx,Sy side (10\u207b\u2076 m)"))
+        self.LimitSresfront_lbl.setText(_translate("MainWindow", "Limit Sres front (10\u207b\u2076 m)"))
+        self.defined_params_lbl.setText(_translate("MainWindow", "Готовые наборы параметров"))
+
+        self.DIAG_STOP_CAN_MSG_BTN.setText("Остановить отправку")
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.params_tab),
+                                  _translate("MainWindow", "Изменение параметров модели"))
         self.STOP_BTN_1.setText(_translate("MainWindow", "Стоп"))
         self.STOP_BTN_2.setText(_translate("MainWindow", "Стоп"))
         self.STOP_BTN_3.setText(_translate("MainWindow", "Стоп"))
@@ -1532,6 +2252,9 @@ class Ui_MainWindow(object):
         self.STOP_BTN_6.setText(_translate("MainWindow", "Стоп"))
         self.STOP_BTN_7.setText(_translate("MainWindow", "Стоп"))
         self.STOP_BTN_8.setText(_translate("MainWindow", "Стоп"))
+        self.defined_params_selector.addItem("Пользовательские параметры")
+        self.defined_params_selector.addItem("XGF")
+        self.defined_params_selector.addItem("XGE")
         item = self.Crash_data_table.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", " "))
         item = self.Crash_data_table.verticalHeaderItem(1)
@@ -1613,6 +2336,11 @@ class Ui_MainWindow(object):
         item = self.Precrash_data_table.horizontalHeaderItem(11)
         item.setText(_translate("MainWindow", "Lateral acc,g"))
         self.groupBox_20.setTitle(_translate("MainWindow", "Отслеживание сигнала CrashDetected"))
+        self.groupBox1565.setTitle(_translate("MainWindow", "Конфигурация БУ СНПБ"))
+        self.STO_VER_BTN.setText(_translate("MainWindow", "СТО"))
+        self.ACC_VER_BTN.setText(_translate("MainWindow", "ВНУТРЕННИЙ АКСЕЛЕРОМЕТР"))
+        self.groupBox_23456789.setTitle(_translate("MainWindow", "Перепрошивка БУ СНПБ"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.reprogramming_tab), _translate("MainWindow", "Перепрошивка БУ СНПБ"))
         self.EXP_UDS_BRS.setText("Отправлено: 02 11 01\nПринято: 02 51 01\nДиагностический светодиод моргает")
         self.exp_res_SBR_brs.setText(
             "При пристёгнутом ремне соответствующий сигнал SafetyBeltState равен 0х02 (SB fastened) \nПри непристёгнутом ремне соответствующий сигнал SafetyBeltState равен 0х01 (SB unfastened)")
@@ -1633,63 +2361,305 @@ class Ui_MainWindow(object):
         elif self.acc_selector.currentIndex() == 6:
             self.exp_res_acc_brs.setText("TTF DriverAirbag=0 мс\nTTF PassengerAirbag=0 мс\nTTF DriverPretensioner=7 мс\nTTF PassengerPretensioner=7 мс\nTTF DriverSideAirbag=7 мс\nTTF PassengerSideAirbag=7 мс\nTTF DriverCurtainAirbag=7 мс\n")
         elif self.acc_selector.currentIndex() == 7:
-            self.exp_res_acc_brs.setText("TTF DriverAirbag=0 мс\nTTF PassengerAirbag=0 мс\nTTF DriverPretensioner=7 мс\nTTF PassengerPretensioner=7 мс\nTTF DriverSideAirbag=7 мс\nTTF PassengerSideAirbag=7 мс\nTTF DriverCurtainAirbag=7 мс\n")
-
+            self.exp_res_acc_brs.setText("TTF DriverAirbag=0 мс\nTTF PassengerAirbag=0 мс\nTTF DriverPretensioner=22 мс\nTTF PassengerPretensioner=22 мс\nTTF DriverSideAirbag=22 мс\nTTF PassengerSideAirbag=22 мс\nTTF DriverCurtainAirbag=22 мс\n")
+    def NRC_CHANGED(self):
+        match self.UDS_TEST_SELECTOR.currentIndex():
+            case 0:
+                match self.UDS_NRC_SELECTOR.currentIndex():
+                    case 0:
+                        self.EXP_UDS_BRS.setText("Отправлено: 02 11 01\nПринято: 02 51 01\nДиагностический светодиод моргает")
+                    case 1:
+                        self.EXP_UDS_BRS.setText("Отправлено: 02 11 06\nПринято:03 7F 11 12\n")
+                    case 2:
+                        self.EXP_UDS_BRS.setText("Отправлено: 01 11\nПринято:03 7F 11 13\n")
+            case 1:
+                match self.UDS_NRC_SELECTOR.currentIndex():
+                    case 0:
+                        self.UDS_LED_SELECTOR.setDisabled(0)
+                        self.EXP_UDS_BRS.setText("Блок успешно вошёл в SecurityAccess\nОтправлено: 05 2F 38 01 03 00\nПринято: 05 6F 38 01 03 00")
+                    case 1:
+                        self.UDS_LED_SELECTOR.setDisabled(1)
+                        self.EXP_UDS_BRS.setText("Отправлено: 03 2F 38 01 \nПринято: 03 7F 2F 13")
+                    case 2:
+                        self.UDS_LED_SELECTOR.setDisabled(1)
+                        self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 01 03 00\nПринято: 03 7F 2F 22\n")
+                    case 3:
+                        self.UDS_LED_SELECTOR.setDisabled(1)
+                        self.EXP_UDS_BRS.setText("Блок успешно вошёл в SecurityAccess\nОтправлено: 05 2F 38 01 03 08\nПринято: 03 7F 2F 31")
+                    case 4:
+                        self.UDS_LED_SELECTOR.setDisabled(1)
+                        self.EXP_UDS_BRS.setText("Блок успешно вошёл в диагностическую сессию\nОтправлено: 05 2F 38 01 03 00\nПринято: 03 7F 2F 33")
+            case 2:
+                match self.UDS_NRC_SELECTOR.currentIndex():
+                    case 0:
+                        self.EXP_UDS_BRS.setText("Отправлено: 02 3E 00\nПринято: 02 7E 00")
+                    case 1:
+                        self.EXP_UDS_BRS.setText("Отправлено: 02 3E 01 \nПринято: 03 7F 3E 12")
+                    case 2:
+                        self.EXP_UDS_BRS.setText("Отправлено: 01 3E \nПринято: 03 7F 3E 13")
+            case 3:
+                match self.UDS_NRC_SELECTOR.currentIndex():
+                    case 0:
+                        self.EXP_UDS_BRS.setText("Блок успешно вошёл в диагностическую сессию\nОтправлено: 03 28 01 01\nПринято: 02 68 01\nСообщения по CAN не принимаются\nОтправлено: 03 28 00 01\nПринято: 02 68 00\nСообщения по CAN принимаются")
+                    case 1:
+                        self.EXP_UDS_BRS.setText("Блок успешно вошёл в диагностическую сессию\nОтправлено: 03 28 04 01\nПринято: 03 7F 28 12")
+                    case 2:
+                        self.EXP_UDS_BRS.setText("Отправлено: 02 28 01 \nПринято: 03 7F 28 13")
+                    case 3:
+                        self.EXP_UDS_BRS.setText("Отправлено: 03 28 01 01\nПринято: 03 7F 28 22")
+                    case 4:
+                        self.EXP_UDS_BRS.setText("Блок успешно вошёл в диагностическую сессию\nОтправлено: 03 28 01 04 \nПринято: 03 7F 28 31")
+            case 5:
+                match self.UDS_NRC_SELECTOR.currentIndex():
+                    case 0:
+                        self.EXP_UDS_BRS.setText("Коды ошибок стёрлись")
+                    case 1:
+                        self.EXP_UDS_BRS.setText("Отправлено: 03 14 FF FF\nПринято: 03 7F 14 13")
+                    #case 2:
+                        #self.EXP_UDS_BRS.setText("Отправлено: 02 28 01 \nПринято: 03 7F 28 13")
+                    case 2:
+                        self.EXP_UDS_BRS.setText("Отправлено: 04 14 00 00 00\nПринято: 03 7F 14 31")
+            case 6:
+                match self.UDS_NRC_SELECTOR.currentIndex():
+                    case 0:
+                        self.EXP_UDS_BRS.setText("На экране появились все поддерживаемы DTC и их состояния")
+                    case 1:
+                        self.EXP_UDS_BRS.setText("Отправлено: 02 19 0F \nПринято: 03 7F 19 12")
+                    case 2:
+                        self.EXP_UDS_BRS.setText("Отправлено: 01 19 \nПринято: 03 7F 19 13")
+                    case 3:
+                        self.EXP_UDS_BRS.setText("Отправлено: 03 19 01 10\nПринято: 03 7F 19 31")
+            case 8:
+                match self.UDS_NRC_SELECTOR.currentIndex():
+                    case 0:
+                        self.EXP_UDS_BRS.setText("Блок успешно вошёл в SecurityAccess")
+                    case 1:
+                        self.EXP_UDS_BRS.setText("Блок успешно вошёл в диагностическую сессию\nОтправлено: 03 27 03 10 \nПринято: 03 7F 27 12")
+                    case 2:
+                        self.EXP_UDS_BRS.setText("Отправлено: 01 27 01 00 \nПринято: 03 7F 27 13")
+                    case 3:
+                        self.EXP_UDS_BRS.setText("Отправлено: 03 27 01 00\nПринято: 03 7F 27 22")
+                    case 4:
+                        self.EXP_UDS_BRS.setText("Отправлено: 03 27 01 00\nПринято: 03 7F 27 22")
+                    case 4:
+                        self.EXP_UDS_BRS.setText("После нескольких неудачных попыток входа принято: 03 7F 27 37")
+            case 9:
+                match self.UDS_NRC_SELECTOR.currentIndex():
+                    case 0:
+                        self.EXP_UDS_BRS.setText("При чтении DID последний байт ответа 0хА5\nВизуально убедиться, что диагностический светодиод не моргает")
+                    case 1:
+                        self.EXP_UDS_BRS.setText("Отправлено: 02 22 d1\nПринято: 03 7F 22 13")
+                    case 2:
+                        self.EXP_UDS_BRS.setText("Отправлено: 03 22 FF FF\nПринято: 03 7F 22 31")
+                    case 3:
+                        self.EXP_UDS_BRS.setText("Отправлено: 02 2E D1\nПринято: 03 7F 22 13")
+                    case 4:
+                        self.EXP_UDS_BRS.setText("Отправлено: 04 2E FF FF FF\nПринято: 03 7F 22 31")
+                    case 5:
+                        self.EXP_UDS_BRS.setText("Отправлено: 03 22 D1 00\nПринято: 03 7F 22 33")
     def UDS_test_changed(self):
         if self.UDS_TEST_SELECTOR.currentIndex() == 0:
             self.EXP_UDS_BRS.setText("Отправлено: 02 11 01\nПринято: 02 51 01\nДиагностический светодиод моргает")
             self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_NRC_SELECTOR.setEnabled(True)
+            self.UDS_NRC_SELECTOR.clear()
+            self.UDS_NRC_SELECTOR.addItem("No NRC")
+            self.UDS_NRC_SELECTOR.addItem("0x12-Subfunction not supported")
+            self.UDS_NRC_SELECTOR.addItem("0x13-Invalid message length/format")
         elif self.UDS_TEST_SELECTOR.currentIndex() == 1:
-            self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 01 03 00\nПринято: 05 6F 38 01 03 00")
+            self.EXP_UDS_BRS.setText("Блок успешно вошёл в SecurityAccess\nОтправлено: 05 2F 38 01 03 00\nПринято: 05 6F 38 01 03 00")
             self.UDS_LED_SELECTOR.setDisabled(0)
+            self.UDS_NRC_SELECTOR.setEnabled(True)
+            self.UDS_NRC_SELECTOR.clear()
+            self.UDS_NRC_SELECTOR.addItem("No NRC")
+            self.UDS_NRC_SELECTOR.addItem("0x13-Invalid message length/format")
+            self.UDS_NRC_SELECTOR.addItem("0x22-Conditions not correct")
+            self.UDS_NRC_SELECTOR.addItem("0x31-Request out of range")
+            self.UDS_NRC_SELECTOR.addItem("0x33-Security access denied")
         elif self.UDS_TEST_SELECTOR.currentIndex() == 2:
             self.EXP_UDS_BRS.setText("Отправлено: 02 3E 00\nПринято: 02 7E 00")
             self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_NRC_SELECTOR.setEnabled(True)
+            self.UDS_NRC_SELECTOR.clear()
+            self.UDS_NRC_SELECTOR.addItem("No NRC")
+            self.UDS_NRC_SELECTOR.addItem("0x12-Subfunction not supported")
+            self.UDS_NRC_SELECTOR.addItem("0x13-Invalid message length/format")
         elif self.UDS_TEST_SELECTOR.currentIndex() == 3:
             self.EXP_UDS_BRS.setText("Отправлено: 03 28 01 01\nПринято: 02 68 01\nСообщения по CAN не принимаются\nОтправлено: 03 28 00 01\nПринято: 02 68 00\nСообщения по CAN принимаются")
             self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_NRC_SELECTOR.setEnabled(True)
+            self.UDS_NRC_SELECTOR.clear()
+            self.UDS_NRC_SELECTOR.addItem("No NRC")
+            self.UDS_NRC_SELECTOR.addItem("0x12-Subfunction not supported")
+            self.UDS_NRC_SELECTOR.addItem("0x13-Invalid message length/format")
+            self.UDS_NRC_SELECTOR.addItem("0x22-Conditions not correct")
+            self.UDS_NRC_SELECTOR.addItem("0x31-Request out of range")
         elif self.UDS_TEST_SELECTOR.currentIndex() == 4:
             self.EXP_UDS_BRS.setText("Отправлено: 03 28 03 03\nПринято: 02 68 03\nСообщения по CAN не принимаются и не передаются")
             self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_NRC_SELECTOR.setEnabled(False)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 5:
             self.EXP_UDS_BRS.setText("Коды ошибок стёрлись")
             self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_NRC_SELECTOR.setEnabled(True)
+            self.UDS_NRC_SELECTOR.clear()
+            self.UDS_NRC_SELECTOR.addItem("No NRC")
+            self.UDS_NRC_SELECTOR.addItem("0x13-Invalid message length/format")
+            #self.UDS_NRC_SELECTOR.addItem("0x22-Conditions not correct")
+            self.UDS_NRC_SELECTOR.addItem("0x31-Request out of range")
         elif self.UDS_TEST_SELECTOR.currentIndex() == 6:
             self.EXP_UDS_BRS.setText("На экране появились все поддерживаемые DTC и их состояния")
             self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_NRC_SELECTOR.setEnabled(True)
+            self.UDS_NRC_SELECTOR.clear()
+            self.UDS_NRC_SELECTOR.addItem("No NRC")
+            self.UDS_NRC_SELECTOR.addItem("0x12-Subfunction not supported")
+            self.UDS_NRC_SELECTOR.addItem("0x13-Invalid message length/format")
+            self.UDS_NRC_SELECTOR.addItem("0x31-Request out of range")
         elif self.UDS_TEST_SELECTOR.currentIndex() == 7:
             self.EXP_UDS_BRS.setText("После отключения самодиагностики не считан DTC 0xc14087(Lost communication with uBCM)\nПосле включения самодиагностики считан DTC 0xc14087(Lost communication with uBCM)")
             self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_NRC_SELECTOR.setEnabled(True)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 8:
             self.EXP_UDS_BRS.setText("Блок успешно вошёл в security access")
             self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_NRC_SELECTOR.setEnabled(True)
+            self.UDS_NRC_SELECTOR.clear()
+            self.UDS_NRC_SELECTOR.addItem("No NRC")
+            self.UDS_NRC_SELECTOR.addItem("Request seed: 0x12-Subfunction not supported")
+            self.UDS_NRC_SELECTOR.addItem("Request seed: 0x13-Invalid message length/format")
+            self.UDS_NRC_SELECTOR.addItem("Request seed: 0x22-Conditions not correct")
+            self.UDS_NRC_SELECTOR.addItem("Request seed: 0x37-Required time delay has not expired")
+            self.UDS_NRC_SELECTOR.addItem("Send key: 0x12-Subfunction not supported")
+            self.UDS_NRC_SELECTOR.addItem("Send key: 0x13-Invalid message length/format")
+            self.UDS_NRC_SELECTOR.addItem("Send key: 0x24-Request sequence error")
+            self.UDS_NRC_SELECTOR.addItem("Send key: 0x35-Invalid Key")
+            self.UDS_NRC_SELECTOR.addItem("Send key: 0x36-Exceeded number of attempts")
+
         elif self.UDS_TEST_SELECTOR.currentIndex() == 9:
             self.EXP_UDS_BRS.setText("При чтении DID последний байт ответа 0хА5\nВизуально убедиться, что диагностический светодиод не моргает")
             self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_NRC_SELECTOR.setEnabled(True)
+            self.UDS_NRC_SELECTOR.clear()
+            self.UDS_NRC_SELECTOR.addItem("No NRC")
+            self.UDS_NRC_SELECTOR.addItem("Read Data: 0x13-Invalid message length/format")
+            self.UDS_NRC_SELECTOR.addItem("Read Data: 0x31-Request out of range")
+            self.UDS_NRC_SELECTOR.addItem("Write Data: 0x13-Invalid message length/format")
+            self.UDS_NRC_SELECTOR.addItem("Write Data: 0x31-Request out of range")
+            self.UDS_NRC_SELECTOR.addItem("Write Data: 0x33-Security access denied")
+
         elif self.UDS_TEST_SELECTOR.currentIndex() == 10:
             self.EXP_UDS_BRS.setText("При чтении DID последний байт ответа 0х5A\nВизуально убедиться, что диагностический светодиод моргает с частотой 1Гц")
             self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_NRC_SELECTOR.setEnabled(False)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 11:
             self.EXP_UDS_BRS.setText("1)При первом чтении DID 0xE180 последний байт в ответе 0хFF\n2)Импульс на пиропатроне водтеля не задетектирован\n3)При чтении DID 0xE180 после перезагрузки последний байт ответа 0хFE\n4)При первом чтениии DID 0xE182 последний байт ответа 0xFF\n5)При чтениии DID 0xE182 после перезагрузки последний байт ответа 0xFE\n6)Состояния ремня безопасности водителя изменилось на not monitored")
             self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_NRC_SELECTOR.setEnabled(False)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 12:
             self.EXP_UDS_BRS.setText(f"Отправлено: 03 22 59 10\nПринято: 05 62 59 10 xx xx \nxx-Считанное сопротивление")
             self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_NRC_SELECTOR.setEnabled(False)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 13:
             self.EXP_UDS_BRS.setText(f"Отправлено: 03 22 59 18\nПринято: 04 62 59 10 xx \nxx-Состояние светодиода")
             self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_NRC_SELECTOR.setEnabled(False)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 14:
             self.EXP_UDS_BRS.setText(f"Отправлено: 03 22 C9 21\nПринято: 05 62 C9 21 xx xx\nxx xx-Считанное значение скорости\n")
             self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_NRC_SELECTOR.setEnabled(False)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 15:
             self.EXP_UDS_BRS.setText("Отправлено: 03 22 C9 53\nПринято: 04 62 C9 53 xx \nxx- Считанное напряжение")
             self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_NRC_SELECTOR.setEnabled(False)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 16:
             self.EXP_UDS_BRS.setText("Отправлено: 03 22 C9 14\nПринято: 07 62 C9 14 xx xx xx xx\nПосле ожидания 5с.\nОтправлено: 03 22 C9 14\nПринято: 07 62 C9 14 xx xx xx xx\nСчитанное значение увеличилось на 5")
             self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_NRC_SELECTOR.setEnabled(False)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 17:
             self.EXP_UDS_BRS.setText("Отправлено: 03 22 C9 57\nПринято: 05 62 C9 57 xx xx\nxx xx -Состояние РБ и кнопки отключения ПБ\nУбедиться, что считанное состояние соответствует реальному")
             self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_NRC_SELECTOR.setEnabled(False)
+        elif self.UDS_TEST_SELECTOR.currentIndex() == 18:
+            self.EXP_UDS_BRS.setText("Отправлено: 06 19 04 90 18 00 01\nПринято: 10 1A 59 04 90 18 00 SS\nОтправлено: 30 00 00\nПринято: 21 01 04 С9 21 XX XX C9\nПринято: 22 14 YY YY YY C9 18 ZZ\nПринято: 23 ZZ ZZ ZZ C9 19 LL\nSS-Статус ошибки\nXX XX-Скорость\nYY YY YY-Значение lifetime timer\nZZ ZZ ZZ ZZ - Пробег\nLL -Значение DTC occurrence counter")
+            self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_NRC_SELECTOR.setEnabled(False)
+        elif self.UDS_TEST_SELECTOR.currentIndex() == 19:
+            self.EXP_UDS_BRS.setText("Отправлено: 06 19 04 С1 21 87 01\nПринято: 10 1A 59 04 С1 21 87 SS\nОтправлено: 30 00 00\nПринято: 21 01 04 С9 21 XX XX C9\nПринято: 22 14 YY YY YY C9 18 ZZ\nПринято: 23 ZZ ZZ ZZ C9 19 LL\nSS-Статус ошибки\nXX XX-Скорость\nYY YY YY-Значение lifetime timer\nZZ ZZ ZZ ZZ - Пробег\nLL -Значение DTC occurrence counter")
+            self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_NRC_SELECTOR.setEnabled(False)
+        elif self.UDS_TEST_SELECTOR.currentIndex() == 20:
+            self.EXP_UDS_BRS.setText("Отправлено: 06 19 04 90 91 1B 01\nПринято: 10 1A 59 04 90 91 1B SS\nОтправлено: 30 00 00\nПринято: 21 01 04 С9 21 XX XX C9\nПринято: 22 14 YY YY YY C9 18 ZZ\nПринято: 23 ZZ ZZ ZZ C9 19 LL\nSS-Статус ошибки\nXX XX-Скорость\nYY YY YY-Значение lifetime timer\nZZ ZZ ZZ ZZ - Пробег\nLL -Значение DTC occurrence counter")
+            self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_NRC_SELECTOR.setEnabled(False)
+    def XGF_or_XGE(self):
+        match(self.defined_params_selector.currentIndex()):
+            case 0:
+                self.LimitAresfront_input.setEnabled(True)
+                self.LimitAresside_input.setEnabled(True)
+                self.LimitSxSyside_input.setEnabled(True)
+                self.LimitSxSyfront_input.setEnabled(True)
+                self.LimitSresside_input.setEnabled(True)
+                self.LimitSresfront_input.setEnabled(True)
+                self.deltaAres_input.setEnabled(True)
+                self.Tcalc_input.setEnabled(True)
+                self.Tcalc2_input.setEnabled(True)
+                self.Timetostopcalc_input.setEnabled(True)
+                self.Sresimpactfront_input.setEnabled(True)
+                self.Sresimpact_side_input.setEnabled(True)
+            case 1:
+
+                self.LimitAresfront_input.setValue(330)
+                self.LimitAresfront_input.setEnabled(False)
+                self.LimitAresside_input.setValue(200)
+                self.LimitAresside_input.setEnabled(False)
+                self.LimitSxSyside_input.setValue(100)
+                self.LimitSxSyside_input.setEnabled(False)
+                self.LimitSxSyfront_input.setValue(120)
+                self.LimitSxSyfront_input.setEnabled(False)
+                self.LimitSresside_input.setValue(155)
+                self.LimitSresside_input.setEnabled(False)
+                self.LimitSresfront_input.setValue(190)
+                self.LimitSresfront_input.setEnabled(False)
+                self.deltaAres_input.setValue(6)
+                self.deltaAres_input.setEnabled(False)
+                self.Tcalc_input.setValue(3)
+                self.Tcalc_input.setEnabled(False)
+                self.Tcalc2_input.setValue(3)
+                self.Tcalc2_input.setEnabled(False)
+                self.Timetostopcalc_input.setValue(180)
+                self.Timetostopcalc_input.setEnabled(False)
+                self.Sresimpactfront_input.setValue(190)
+                self.Sresimpactfront_input.setEnabled(False)
+                self.Sresimpact_side_input.setValue(160)
+                self.Sresimpact_side_input.setEnabled(False)
+            case 2:
+                self.LimitAresfront_input.setValue(0)
+                self.LimitAresfront_input.setEnabled(False)
+                self.LimitAresside_input.setValue(0)
+                self.LimitAresside_input.setEnabled(False)
+                self.LimitSxSyside_input.setValue(0)
+                self.LimitSxSyside_input.setEnabled(False)
+                self.LimitSxSyfront_input.setValue(0)
+                self.LimitSxSyfront_input.setEnabled(False)
+                self.LimitSresside_input.setValue(0)
+                self.LimitSresside_input.setEnabled(False)
+                self.LimitSresfront_input.setValue(0)
+                self.LimitSresfront_input.setEnabled(False)
+                self.deltaAres_input.setValue(0)
+                self.deltaAres_input.setEnabled(False)
+                self.Tcalc_input.setValue(0)
+                self.Tcalc_input.setEnabled(False)
+                self.Tcalc2_input.setValue(0)
+                self.Tcalc2_input.setEnabled(False)
+                self.Timetostopcalc_input.setValue(0)
+                self.Timetostopcalc_input.setEnabled(False)
+                self.Sresimpactfront_input.setValue(0)
+                self.Sresimpactfront_input.setEnabled(False)
+                self.Sresimpact_side_input.setValue(0)
+                self.Sresimpact_side_input.setEnabled(False)
+
+
     def UDS_LED_changed(self):
         if self.UDS_LED_SELECTOR.currentIndex() == 0:
             self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 01 03 00\nПринято: 05 6F 38 01 03 00\nДиагностический светодиод загорелся")
@@ -1724,6 +2694,107 @@ class Ui_MainWindow(object):
             self.exp_res_SBR_brs.setText("При отсутствии пассажира:PassengerPresenceState: 0x1\nПри наличии пассажира PassengerPresenceState: 0x2")
         elif self.SBR_test_selector.currentIndex() == 9:
             self.exp_res_SBR_brs.setText("При отключенной ПБ сигнал PassengerAIRBAG_Inhibition равен 1\nПри включенной ПБ сигнал PassengerAIRBAG_Inhibition равен 0")
+    def snap_changed(self):
+        match self.snap_sel_1.currentIndex():
+            case 0:
+                self.snap_sel_2.clear()
+                self.snap_sel_2.addItem("Internal Module Fault")
+                self.snap_sel_2.addItem("ECU Reuse exceeded")
+                self.snap_sel_2.addItem("Crash stored in memory")
+            case 1:
+                self.snap_sel_2.clear()
+                self.snap_sel_2.addItem("VIN absence")
+            case 2:
+                self.snap_sel_2.clear()
+                self.snap_sel_2.addItem("Vbatt too high")
+                self.snap_sel_2.addItem("Vbatt too low")
+            case 3:
+                self.snap_sel_2.clear()
+                self.snap_sel_2.addItem("Squib-to-squib short")
+            case 4:
+                self.snap_sel_2.clear()
+                self.snap_sel_2.addItem("Resistance too high")
+                self.snap_sel_2.addItem("Resistance too low")
+                self.snap_sel_2.addItem("Short to GND")
+                self.snap_sel_2.addItem("Short to Vbatt")
+            case 5:
+                self.snap_sel_2.clear()
+                self.snap_sel_2.addItem("Resistance too high")
+                self.snap_sel_2.addItem("Resistance too low")
+                self.snap_sel_2.addItem("Short to GND")
+                self.snap_sel_2.addItem("Short to Vbatt")
+            case 6:
+                self.snap_sel_2.clear()
+                self.snap_sel_2.addItem("Resistance too high")
+                self.snap_sel_2.addItem("Resistance too low")
+                self.snap_sel_2.addItem("Short to GND")
+                self.snap_sel_2.addItem("Short to Vbatt")
+            case 7:
+                self.snap_sel_2.clear()
+                self.snap_sel_2.addItem("Resistance too high")
+                self.snap_sel_2.addItem("Resistance too low")
+                self.snap_sel_2.addItem("Short to GND")
+                self.snap_sel_2.addItem("Short to Vbatt")
+            case 8:
+                self.snap_sel_2.clear()
+                self.snap_sel_2.addItem("Resistance too high")
+                self.snap_sel_2.addItem("Resistance too low")
+                self.snap_sel_2.addItem("Short to GND")
+                self.snap_sel_2.addItem("Short to Vbatt")
+            case 9:
+                self.snap_sel_2.clear()
+                self.snap_sel_2.addItem("Resistance too high")
+                self.snap_sel_2.addItem("Resistance too low")
+                self.snap_sel_2.addItem("Short to GND")
+                self.snap_sel_2.addItem("Short to Vbatt")
+            case 10:
+                self.snap_sel_2.clear()
+                self.snap_sel_2.addItem("Short to GND or battery")
+                self.snap_sel_2.addItem("Internal fault")
+                self.snap_sel_2.addItem("Commication error")
+            case 11:
+                self.snap_sel_2.clear()
+                self.snap_sel_2.addItem("Short to GND or battery")
+                self.snap_sel_2.addItem("Internal fault")
+                self.snap_sel_2.addItem("Commication error")
+            case 12:
+                self.snap_sel_2.clear()
+                self.snap_sel_2.addItem("Resistance too high")
+                self.snap_sel_2.addItem("Resistance too low")
+                self.snap_sel_2.addItem("Short to GND")
+                self.snap_sel_2.addItem("Short to Vbatt")
+            case 13:
+                self.snap_sel_2.clear()
+                self.snap_sel_2.addItem("Resistance too high")
+                self.snap_sel_2.addItem("Resistance too low")
+                self.snap_sel_2.addItem("Short to GND")
+                self.snap_sel_2.addItem("Short to Vbatt")
+            case 14:
+                self.snap_sel_2.clear()
+                self.snap_sel_2.addItem("Short to Vbatt")
+                self.snap_sel_2.addItem("Open/short to ground")
+            case 15:
+                self.snap_sel_2.clear()
+                self.snap_sel_2.addItem("Short to Vbatt")
+                self.snap_sel_2.addItem("Open/short to ground")
+            case 16:
+                self.snap_sel_2.clear()
+                self.snap_sel_2.addItem("Short to Vbatt")
+                self.snap_sel_2.addItem("Open/short to ground")
+            case 17:
+                self.snap_sel_2.clear()
+                self.snap_sel_2.addItem("Short to GND")
+                self.snap_sel_2.addItem("Open/short to Vbatt")
+            case 18:
+                self.snap_sel_2.clear()
+                self.snap_sel_2.addItem("Short to GND")
+                self.snap_sel_2.addItem("Open/short Vbatt")
+            case 19:
+                self.snap_sel_2.clear()
+                self.snap_sel_2.addItem("CAN Bus-off")
+                self.snap_sel_2.addItem("Lost communication with ABS/ESC (0x5D7)")
+                self.snap_sel_2.addItem("Lost communication with uBCM (0x350)")
+                self.snap_sel_2.addItem("Lost communication with Cluster (0x4F8)")
 
     def COM_port_changed(self):
         self.COM_PORT=self.COM_PORT_SELECTOR.currentText()
@@ -1950,7 +3021,7 @@ class Ui_MainWindow(object):
         Receiver=threading.Thread(target=self.Write_VIN1)
         Receiver.start()
 
-    def Emulate_crash(self):
+    '''def Emulate_crash(self):
         self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
@@ -1974,7 +3045,7 @@ class Ui_MainWindow(object):
         self.DIAG_ACC_BTN.setEnabled(True)
     def run_Emulate_crash(self):
         Receiver=threading.Thread(target=self.Emulate_crash)
-        Receiver.start()
+        Receiver.start()'''
 
     def Send_periodic(self):
         self.UART.open()
@@ -1982,14 +3053,23 @@ class Ui_MainWindow(object):
         Result = Messages.TestData()
         Command.method = 0
         Command.testNumber = 0x59
-        Command.DIAG_SEND_0x5D7=self.DIAG_0x5D7_CHECK.isChecked()
-        Command.vehicle_speed=self.DIAG_SPEED_SELECTOR.currentIndex()
-        Command.DIAG_SEND_0x350 = self.DIAG_0x350_CHECK.isChecked()
-        Command.GenDiagEnable =self.DIAG_DIAGENABLE_SELECTOR.currentIndex()
-        Command.DIAG_SEND_0x4F8 = self.DIAG_0x4F8_CHECK.isChecked()
+        Command.vehicle_speed=self.DIAG_SPEED_SELECTOR.value()
+        Command.mileage=self.DIAG_MILEAGE_SELECTOR.value()
+        Command.GenDiagEnable=self.DIAG_DIAGENABLE_SELECTOR.currentIndex()
         Command = Command.SerializeToString()
         self.UART.write(Command)
         self.UART.close()
+
+    def Stop_Send_periodic(self):
+        self.UART.open()
+        Command = Messages.TestData()
+        Result = Messages.TestData()
+        Command.method = 0
+        Command.testNumber = 0x58
+        Command = Command.SerializeToString()
+        self.UART.write(Command)
+        self.UART.close()
+
 
     def LOG_print(self,text):
         self.LOG_BRS.append(text)
@@ -2309,7 +3389,7 @@ class Ui_MainWindow(object):
         Result = Messages.TestData()
         Command.method = 0
         Command.testNumber = 0x13
-        Command.accDataNumber=2
+        Command.accDataNumber=1
         Command = Command.SerializeToString()
         self.UART.write(Command)
         received_len=self.UART.read(2).hex()
@@ -2399,6 +3479,14 @@ class Ui_MainWindow(object):
             TTF_DSAB = 7
             TTF_PSAB = 7
             TTF_DCAB = 7
+        elif (Command.accDataNumber == 8):
+            TTF_DAB = 0
+            TTF_PAB = 0
+            TTF_DPT = 22
+            TTF_PPT = 22
+            TTF_DSAB = 22
+            TTF_PSAB = 22
+            TTF_DCAB = 22
         Cmd = Command.SerializeToString()
         self.UART.write(Cmd)
         received_len=self.UART.read(2).hex()
@@ -2416,21 +3504,17 @@ class Ui_MainWindow(object):
             time.sleep(0.02)
             self.CRASHDETECTED_BRS.append(f"До столкновения:{(Result.frame[0].data[0]&0b10000000)>>7} ({self.matchCrashDetected((Result.frame[0].data[0]&0b10000000)>>7)})\nПосле столкновения:{(Result.frame[1].data[0]&0b10000000)>>7} ({self.matchCrashDetected(int((Result.frame[1].data[0]&0b10000000)>>7))})")
             time.sleep(0.02)
-            if(Command.accDataNumber==1 or Command.accDataNumber==2 or Command.accDataNumber==3 or Command.accDataNumber==7 or Command.accDataNumber==8):
-                self.got_res_brs.append(f"TTF DriverAirbag={Result.measuredValue[0]/1000}\nTTF PassengerAirbag={Result.measuredValue[1]/1000}\nTTF DriverPretensioner={Result.measuredValue[2]/1000}\nTTF PassengerPretensioner={Result.measuredValue[3]/1000}\nTTF DriverSideAirbag={Result.measuredValue[4]/1000}\nTTF PassengerSideAirbag={Result.measuredValue[5]/1000}\nTTF DriverCurtainAirbag={Result.measuredValue[6]/1000}")
-                time.sleep(0.02)
-                if(self.checkTTF(TTF_DAB,Result.measuredValue[0]/1000)==1 and self.checkTTF(TTF_PAB,Result.measuredValue[1]/1000)==1 and self.checkTTF(TTF_DPT,Result.measuredValue[2]/1000)==1 and self.checkTTF(TTF_PPT,Result.measuredValue[3]/1000)==1 and self.checkTTF(TTF_DSAB,Result.measuredValue[4]/1000)==1 and self.checkTTF(TTF_PSAB,Result.measuredValue[5]/1000)==1 and self.checkTTF(TTF_DCAB,Result.measuredValue[6]/1000)==1):
-                    self.got_res_brs.append("Success")
-                else:
-                    self.got_res_brs.append("Fail")
-            elif (Command.accDataNumber==4 or Command.accDataNumber==5 or Command.accDataNumber==6):
-                if(Result.measuredValue[0]/1000==0 and Result.measuredValue[1]/1000==0 and Result.measuredValue[2]/1000==0 and Result.measuredValue[3]/1000==0 and Result.measuredValue[4]/1000==0 and Result.measuredValue[5]/1000==0 and Result.measuredValue[6]/1000==0):
-                    self.got_res_brs.append("Success, СНБП не сработала")
-                else:
-                    self.got_res_brs.append("Fail, СНБП сработала")
+
+            self.got_res_brs.append(f"TTF DriverAirbag={Result.measuredValue[0]/1000}\nTTF PassengerAirbag={Result.measuredValue[1]/1000}\nTTF DriverPretensioner={Result.measuredValue[2]/1000}\nTTF PassengerPretensioner={Result.measuredValue[3]/1000}\nTTF DriverSideAirbag={Result.measuredValue[4]/1000}\nTTF PassengerSideAirbag={Result.measuredValue[5]/1000}\nTTF DriverCurtainAirbag={Result.measuredValue[6]/1000}")
+            time.sleep(0.02)
+            if(self.checkTTF(TTF_DAB,Result.measuredValue[0]/1000)==1 and self.checkTTF(TTF_PAB,Result.measuredValue[1]/1000)==1 and self.checkTTF(TTF_DPT,Result.measuredValue[2]/1000)==1 and self.checkTTF(TTF_PPT,Result.measuredValue[3]/1000)==1 and self.checkTTF(TTF_DSAB,Result.measuredValue[4]/1000)==1 and self.checkTTF(TTF_PSAB,Result.measuredValue[5]/1000)==1 and self.checkTTF(TTF_DCAB,Result.measuredValue[6]/1000)==1):
+                self.got_res_brs.append("Success")
+            else:
+                self.got_res_brs.append("Fail")
+
         self.UART.close()
         self.STOP_BTN_4.setEnabled(False)
-        time.sleep(1)
+        time.sleep(5)
         self.start_acc_btn.setEnabled(True)
 
 
@@ -2449,10 +3533,17 @@ class Ui_MainWindow(object):
             Command.testNumber = 0x301
         elif (self.UDS_TEST_SELECTOR.currentIndex() == 16):
             Command.testNumber = 0x302
-        else:
+        elif(self.UDS_TEST_SELECTOR.currentIndex() == 17):
             Command.testNumber=0x303
+        elif (self.UDS_TEST_SELECTOR.currentIndex() == 18):
+            Command.testNumber = 0x304
+        elif (self.UDS_TEST_SELECTOR.currentIndex() == 19):
+            Command.testNumber = 0x305
+        elif (self.UDS_TEST_SELECTOR.currentIndex() == 20):
+            Command.testNumber = 0x306
         if(Command.testNumber==0x32):
             Command.LED=self.UDS_LED_SELECTOR.currentIndex()
+        Command.UDS_NRC = self.UDS_NRC_SELECTOR.currentIndex()
         Cmd = Command.SerializeToString()
         self.UART.write(Cmd)
         received_len = self.UART.read(2).hex()
@@ -2465,79 +3556,153 @@ class Ui_MainWindow(object):
                 case 0x31:  #ECU reset
                     self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
                 case 0x32:  #InputOutputControlByIdentifier
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}")
+                    match Command.UDS_NRC:
+                        case 0:
+                            self.UDS_MSG_BRS.append(
+                                f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nОтправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
+                            time.sleep(0.02)
+                            if (Result.frame[5].data[1] == 0x67 and Result.frame[5].data[2] == 0x02):
+                                self.UDS_MSG_BRS.append("Блок успешно вошёл в security access")
+                            else:
+                                self.UDS_MSG_BRS.append("Ошибка входа в security access")
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}")
+                        case 1:
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                        case 2:
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                        case 3:
+                            self.UDS_MSG_BRS.append(
+                                f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nОтправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
+                            time.sleep(0.02)
+                            if (Result.frame[5].data[1] == 0x67 and Result.frame[5].data[2] == 0x02):
+                                self.UDS_MSG_BRS.append("Блок успешно вошёл в security access")
+                            else:
+                                self.UDS_MSG_BRS.append("Ошибка входа в security access")
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}")
+                        case 4:
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                            time.sleep(0.02)
+                            if(Result.frame[1].data[1]==0x50):
+                                self.UDS_MSG_BRS.append("Блок успешно вошёл в диагностическую сессию")
+                            else:
+                                self.UDS_MSG_BRS.append("Ошибка входа в диагностическую сессию")
+                            time.sleep(0.02)
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
                 case 0x33:  #Проверка Tester Present 0x3E
                     self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
                 case 0x34:  #Проверка CommunicationControl 0x28 disable tx
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                    time.sleep(0.01)
-                    if(Result.measuredValue[0]==0):
-                        self.UDS_MSG_BRS.append("Сообщения по CAN не принимаются ")
-                    else:
-                        self.UDS_MSG_BRS.append("Сообщения по CAN принимаются ")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
-                    time.sleep(0.01)
-                    if (Result.measuredValue[1] == 0):
-                        self.UDS_MSG_BRS.append("Сообщения по CAN не принимаются ")
-                    else:
-                        self.UDS_MSG_BRS.append("Сообщения по CAN принимаются ")
+                    match Command.UDS_NRC:
+                        case 0:
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                            time.sleep(0.01)
+                            if(Result.measuredValue[0]==0):
+                                self.UDS_MSG_BRS.append("Сообщения по CAN не принимаются ")
+                            else:
+                                self.UDS_MSG_BRS.append("Сообщения по CAN принимаются ")
+                            time.sleep(0.01)
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
+                            time.sleep(0.01)
+                            if (Result.measuredValue[1] == 0):
+                                self.UDS_MSG_BRS.append("Сообщения по CAN не принимаются ")
+                            else:
+                                self.UDS_MSG_BRS.append("Сообщения по CAN принимаются ")
+                        case 1:
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                            time.sleep(0.02)
+                            if(Result.frame[1].data[1]==0x50):
+                                self.UDS_MSG_BRS.append("Блок успешно вошёл в диагностическую сессию")
+                            else:
+                                self.UDS_MSG_BRS.append("Ошибка входа  в диагностическую сессию")
+                            time.sleep(0.02)
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
+                        case 2:
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                        case 3:
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                        case 4:
+                            self.UDS_MSG_BRS.append(
+                                f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                            time.sleep(0.02)
+                            if (Result.frame[1].data[1] == 0x50):
+                                self.UDS_MSG_BRS.append("Блок успешно вошёл в диагностическую сессию")
+                            else:
+                                self.UDS_MSG_BRS.append("Ошибка входа  в диагностическую сессию")
+                            time.sleep(0.02)
+                            self.UDS_MSG_BRS.append(
+                                f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
+
                 case 0x35: #Проверка CommunicationControl 0x28 disable tx,rx
                     self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
                     time.sleep(0.01)
-                    if (Result.measuredValue[0] > 0):
+                    if (Result.measuredValue[0] == 0):
                         self.UDS_MSG_BRS.append("Сообщения по CAN не принимаются и не передаются ")
                     else:
                         self.UDS_MSG_BRS.append("Сообщения по CAN принимаются")
                     #ПРОВЕРИТЬ FDCAN->PSR И ЕСЛИ ОН МЕНЯЕТ СОСТОЯНИЕ ДОБАВИТЬ В OUTPUT
                 case 0x36:#Проверка ClearDiagnosticInformation 0x14
-                    DTC_list=self.parse_UDS_errors(Result, 0x09)
-                    self.UDS_MSG_BRS.append("Считанные ошибки:\n")
-                    time.sleep(0.1)
-                    for i in range(1, len(DTC_list)):
-                        self.UDS_MSG_BRS.append(f"{str(hex(DTC_list[i]))}:{self.match_DTC(hex(DTC_list[i]))}")
-                        time.sleep(0.1)
-                    received_len = self.UART.read(2).hex()
-                    print(received_len)
-                    bytes_read = self.UART.read(int(received_len, 16))
-                    Result.ParseFromString(bytes_read)
-                    self.UDS_MSG_BRS.append("Очистка кодов ошибок и удаление информации об аварии")
-                    time.sleep(0.1)
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
-                    time.sleep(0.1)
-                    received_len = self.UART.read(2).hex()
-                    print(received_len)
-                    bytes_read = self.UART.read(int(received_len, 16))
-                    Result.ParseFromString(bytes_read)
-                    DTC_list2= self.parse_UDS_errors(Result, 0x09)
-                    self.UDS_MSG_BRS.append("Считанные ошибки:\n")
-                    if(len(Result.frame[0].data)<8):
-                        self.UDS_MSG_BRS.append("None")
-                    else:
-                        time.sleep(0.01)
-                        for i in range(1, len(DTC_list2)):
-                            self.UDS_MSG_BRS.append(f"{str(hex(DTC_list2[i]))}:{self.match_DTC(hex(DTC_list2[i]))}")
+                    match(Command.UDS_NRC):
+                        case 0:
+                            DTC_list=self.parse_UDS_errors(Result, 0x09)
+                            self.UDS_MSG_BRS.append("Считанные ошибки:\n")
                             time.sleep(0.1)
+                            for i in range(1, len(DTC_list)):
+                                self.UDS_MSG_BRS.append(f"{str(hex(DTC_list[i]))}:{self.match_DTC(hex(DTC_list[i]))}")
+                                time.sleep(0.1)
+                            received_len = self.UART.read(2).hex()
+                            print(received_len)
+                            bytes_read = self.UART.read(int(received_len, 16))
+                            Result.ParseFromString(bytes_read)
+                            self.UDS_MSG_BRS.append("\nОчистка кодов ошибок и удаление информации об аварии")
+                            time.sleep(0.1)
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
+                            time.sleep(0.1)
+                            received_len = self.UART.read(2).hex()
+                            print(received_len)
+                            bytes_read = self.UART.read(int(received_len, 16))
+                            Result.ParseFromString(bytes_read)
+                            DTC_list2= self.parse_UDS_errors(Result, 0x09)
+                            self.UDS_MSG_BRS.append("\nСчитанные ошибки:\n")
+                            if(len(Result.frame[0].data)<8):
+                                self.UDS_MSG_BRS.append("None")
+                            else:
+                                time.sleep(0.01)
+                                for i in range(1, len(DTC_list2)):
+                                    self.UDS_MSG_BRS.append(f"{str(hex(DTC_list2[i]))}:{self.match_DTC(hex(DTC_list2[i]))}")
+                                    time.sleep(0.1)
+                        case 1:
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                        case 2:
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+
                 case 0x37:   #read supported dtc
-                    if (len(Result.frame[0].data) < 8):
-                        self.UDS_MSG_BRS.append("No DTC found")
-                    else:
-                        DTC_list1 = self.parse_UDS_errors(Result, 0x09)
-                        for i in range(0, len(DTC_list1)):
-                            if (self.match_DTC(hex(DTC_list1[i])) != None):
-                                self.UDS_MSG_BRS.append(f"{str(hex(DTC_list1[i]))}:{self.match_DTC(hex(DTC_list1[i]))} Status:Active")
-                                time.sleep(0.05)
-                        DTC_list2 = self.parse_UDS_errors(Result, 0x08)
-                        for i in range(0, len(DTC_list2)):
-                            if (self.match_DTC(hex(DTC_list2[i])) != None):
-                                self.UDS_MSG_BRS.append(f"{str(hex(DTC_list2[i]))}:{self.match_DTC(hex(DTC_list2[i]))} Status:0x08")
-                                time.sleep(0.05)
-                        DTC_list3 = self.parse_UDS_errors(Result, 0x00)
-                        for i in range(0, len(DTC_list3)):
-                            if(self.match_DTC(hex(DTC_list3[i]))!=None):
-                                self.UDS_MSG_BRS.append(f"{str(hex(DTC_list3[i]))}:{self.match_DTC(hex(DTC_list3[i]))} Status:Supported")
-                                time.sleep(0.05)
-                        print("1")
+                    match (Command.UDS_NRC):
+                        case 0:
+                            if (len(Result.frame[0].data) < 8):
+                                self.UDS_MSG_BRS.append("No DTC found")
+                            else:
+                                DTC_list1 = self.parse_UDS_errors(Result, 0x09)
+                                for i in range(0, len(DTC_list1)):
+                                    if (self.match_DTC(hex(DTC_list1[i])) != None):
+                                        self.UDS_MSG_BRS.append(f"{str(hex(DTC_list1[i]))}:{self.match_DTC(hex(DTC_list1[i]))} Status:Active")
+                                        time.sleep(0.05)
+                                DTC_list2 = self.parse_UDS_errors(Result, 0x08)
+                                for i in range(0, len(DTC_list2)):
+                                    if (self.match_DTC(hex(DTC_list2[i])) != None):
+                                        self.UDS_MSG_BRS.append(f"{str(hex(DTC_list2[i]))}:{self.match_DTC(hex(DTC_list2[i]))} Status:0x08")
+                                        time.sleep(0.05)
+                                DTC_list3 = self.parse_UDS_errors(Result, 0x00)
+                                for i in range(0, len(DTC_list3)):
+                                    if(self.match_DTC(hex(DTC_list3[i]))!=None):
+                                        self.UDS_MSG_BRS.append(f"{str(hex(DTC_list3[i]))}:{self.match_DTC(hex(DTC_list3[i]))} Status:Supported")
+                                        time.sleep(0.05)
+                                print("1")
+                        case 1:
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                        case 2:
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                        case 3:
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+
                 case 0x38:#control dtcsetting
                     self.UDS_MSG_BRS.append("Очистка DTC:")
                     time.sleep(0.02)
@@ -2563,8 +3728,7 @@ class Ui_MainWindow(object):
                     Result.ParseFromString(bytes_read)
                     self.UDS_MSG_BRS.append("\nВключение самодиагностики")
                     time.sleep(0.02)
-                    self.UDS_MSG_BRS.append(
-                        f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\n")
+                    self.UDS_MSG_BRS.append( f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\n")
                     received_len = self.UART.read(2).hex()
                     bytes_read = self.UART.read(int(received_len, 16))
                     Result.ParseFromString(bytes_read)
@@ -2579,12 +3743,75 @@ class Ui_MainWindow(object):
                     else:
                         self.UDS_MSG_BRS.append("NO ACTIVE DTC")
                 case 0x39:#security access
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nОтправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
-                    time.sleep(0.02)
-                    if(Result.frame[5].data[1]==0x67 and Result.frame[5].data[2]==0x02):
-                        self.UDS_MSG_BRS.append("Блок успешно вошёл в security access")
-                    else:
-                        self.UDS_MSG_BRS.append("Ошибка входа в security access")
+                    match (Command.UDS_NRC):
+                        case 0:
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nОтправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
+                            time.sleep(0.02)
+                            if(Result.frame[5].data[1]==0x67 and Result.frame[5].data[2]==0x02):
+                                self.UDS_MSG_BRS.append("Блок успешно вошёл в security access")
+                            else:
+                                self.UDS_MSG_BRS.append("Ошибка входа в security access")
+                        case 1:
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\n")
+                            time.sleep(0.02)
+                            if(Result.frame[1].data[1]==0x50):
+                                self.UDS_MSG_BRS.append("Блок успешно вошёл в диагностическую сессию")
+                            else:
+                                self.UDS_MSG_BRS.append("Ошибка входа в диагностическую сессию")
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\n")
+                        case 2:
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\n")
+                        case 3:
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                        case 4:
+                            for i in range(0,13):
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2*i].data.hex())}\nПринято:{str(Result.frame[2*i+1].data.hex())}")
+                                time.sleep(0.02)
+                        case 5:
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                            time.sleep(0.02)
+                            if (Result.frame[1].data[1] == 0x50):
+                                self.UDS_MSG_BRS.append("Блок успешно вошёл в диагностическую сессию")
+                            else:
+                                self.UDS_MSG_BRS.append("Ошибка входа в диагностическую сессию")
+                            time.sleep(0.02)
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
+                            time.sleep(0.02)
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
+                        case 6:
+                            self.UDS_MSG_BRS.append(
+                                f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                        case 7:
+                            self.UDS_MSG_BRS.append(
+                                f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                            time.sleep(0.02)
+                            if (Result.frame[1].data[1] == 0x50):
+                                self.UDS_MSG_BRS.append("Блок успешно вошёл в диагностическую сессию")
+                            else:
+                                self.UDS_MSG_BRS.append("Ошибка входа в диагностическую сессию")
+                            time.sleep(0.02)
+                            self.UDS_MSG_BRS.append(
+                                f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
+                        case 8:
+                            self.UDS_MSG_BRS.append(
+                                f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                            time.sleep(0.02)
+                            if (Result.frame[1].data[1] == 0x50):
+                                self.UDS_MSG_BRS.append("Блок успешно вошёл в диагностическую сессию")
+                            else:
+                                self.UDS_MSG_BRS.append("Ошибка входа в диагностическую сессию")
+                            time.sleep(0.02)
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
+                            time.sleep(0.02)
+                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
+                        case 9:
+                            for i in range(0,7):
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2*i].data.hex())}\nПринято:{str(Result.frame[2*i+1].data.hex())}")
+                                time.sleep(0.02)
+
+
+
+
                 case 0x3A: #DID ECU OPERATING STATES
                     self.UDS_MSG_BRS.append("Вход в расширенную диагностическую сессию:")
                     time.sleep(0.01)
@@ -2703,7 +3930,7 @@ class Ui_MainWindow(object):
                 case 0x3F: #Read Vehicle speed
                     self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
                     time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(f"Скорость:{str(100*0.01*((Result.frame[1].data[4] << 8) + (Result.frame[1].data[5])))} км/ч")
+                    self.UDS_MSG_BRS.append(f"Скорость:{str(int((100*0.01*((Result.frame[1].data[4] << 8) + (Result.frame[1].data[5])))))} км/ч")
                 case 0x301:  # Read Battery Voltage
                     self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
                     time.sleep(0.01)
@@ -2749,12 +3976,216 @@ class Ui_MainWindow(object):
                     else:
                         self.UDS_MSG_BRS.append("ПБ отключена")
                     time.sleep(0.01)
+                    '''case 0x304:
+                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nПринято:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
+                    time.sleep(0.02)
+                    if(Result.frame[1].data[7]==0x09):
+                        self.UDS_MSG_BRS.append("Статус: Активна")
+                    else:
+                        self.UDS_MSG_BRS.append("Статус: Нективна")
+                    time.sleep(0.02)
+                    self.UDS_MSG_BRS.append(f"Cкорость:{float(((Result.frame[3].data[5]<<8)+(Result.frame[3].data[6]))*0.01)} км/ч")
+                    self.UDS_MSG_BRS.append(f"Значение lifetime timer:{int(((Result.frame[4].data[2] << 16) + (Result.frame[4].data[3]<<8)+(Result.frame[4].data[4]))*5 )} мин.")
+                    self.UDS_MSG_BRS.append(f"Значение DTC occurence counter::{int((Result.frame[5].data[6]))}")'''
 
+            #bytes_read.clear()
         self.UDS_RUN_BTN.setEnabled(True)
         self.STOP_BTN_6.setEnabled(False)
         self.UART.close()
     def run_UDS(self):
         Receiver=threading.Thread(target=self.UDS_handler)
+        Receiver.start()
+    def snap_handler(self):
+
+        self.UART.open()
+        Command = Messages.TestData()
+        Result = Messages.TestData()
+        Command.method = 0
+        Command.testNumber=0x304
+        match(self.snap_sel_1.currentIndex()):
+            case 0:
+                match (self.snap_sel_2.currentIndex()):
+                    case 0:
+                        Command.UDS_snap = 1
+                    case 1:
+                        Command.UDS_snap = 2
+                    case 2:
+                        Command.UDS_snap = 3
+            case 1:
+                Command.UDS_snap=4
+            case 2:
+                match (self.snap_sel_2.currentIndex()):
+                    case 0:
+                        Command.UDS_snap = 5
+                    case 1:
+                        Command.UDS_snap = 6
+            case 3:
+                Command.UDS_snap=7
+            case 4:
+                match (self.snap_sel_2.currentIndex()):
+                    case 0:
+                        Command.UDS_snap = 8
+                    case 1:
+                        Command.UDS_snap = 9
+                    case 2:
+                        Command.UDS_snap = 10
+                    case 3:
+                        Command.UDS_snap = 11
+            case 5:
+                match (self.snap_sel_2.currentIndex()):
+                    case 0:
+                        Command.UDS_snap = 12
+                    case 1:
+                        Command.UDS_snap = 13
+                    case 2:
+                        Command.UDS_snap = 14
+                    case 3:
+                        Command.UDS_snap = 15
+            case 6:
+                match (self.snap_sel_2.currentIndex()):
+                    case 0:
+                        Command.UDS_snap = 16
+                    case 1:
+                        Command.UDS_snap = 17
+                    case 2:
+                        Command.UDS_snap = 18
+                    case 3:
+                        Command.UDS_snap = 19
+            case 7:
+                match (self.snap_sel_2.currentIndex()):
+                    case 0:
+                        Command.UDS_snap = 20
+                    case 1:
+                        Command.UDS_snap = 21
+                    case 2:
+                        Command.UDS_snap = 22
+                    case 3:
+                        Command.UDS_snap = 23
+            case 8:
+                match (self.snap_sel_2.currentIndex()):
+                    case 0:
+                        Command.UDS_snap = 24
+                    case 1:
+                        Command.UDS_snap = 25
+                    case 2:
+                        Command.UDS_snap = 26
+                    case 3:
+                        Command.UDS_snap = 27
+            case 9:
+                match (self.snap_sel_2.currentIndex()):
+                    case 0:
+                        Command.UDS_snap = 28
+                    case 1:
+                        Command.UDS_snap = 29
+                    case 2:
+                        Command.UDS_snap = 30
+                    case 3:
+                        Command.UDS_snap = 31
+            case 10:
+                match (self.snap_sel_2.currentIndex()):
+                    case 0:
+                        Command.UDS_snap = 32
+                    case 1:
+                        Command.UDS_snap = 33
+                    case 2:
+                        Command.UDS_snap = 34
+
+            case 11:
+                match (self.snap_sel_2.currentIndex()):
+                    case 0:
+                        Command.UDS_snap = 35
+                    case 1:
+                        Command.UDS_snap = 36
+                    case 2:
+                        Command.UDS_snap = 37
+            case 12:
+                match (self.snap_sel_2.currentIndex()):
+                    case 0:
+                        Command.UDS_snap = 38
+                    case 1:
+                        Command.UDS_snap = 39
+                    case 2:
+                        Command.UDS_snap = 40
+                    case 3:
+                        Command.UDS_snap = 41
+            case 13:
+                match (self.snap_sel_2.currentIndex()):
+                    case 0:
+                        Command.UDS_snap = 42
+                    case 1:
+                        Command.UDS_snap = 43
+                    case 2:
+                        Command.UDS_snap = 44
+                    case 3:
+                        Command.UDS_snap = 45
+            case 14:
+                match (self.snap_sel_2.currentIndex()):
+                    case 0:
+                        Command.UDS_snap = 46
+                    case 1:
+                        Command.UDS_snap = 47
+            case 15:
+                match (self.snap_sel_2.currentIndex()):
+                    case 0:
+                        Command.UDS_snap = 48
+                    case 1:
+                        Command.UDS_snap = 49
+            case 16:
+                match (self.snap_sel_2.currentIndex()):
+                    case 0:
+                        Command.UDS_snap = 50
+                    case 1:
+                        Command.UDS_snap = 51
+            case 17:
+                match (self.snap_sel_2.currentIndex()):
+                    case 0:
+                        Command.UDS_snap = 52
+                    case 1:
+                        Command.UDS_snap = 53
+            case 18:
+                match (self.snap_sel_2.currentIndex()):
+                    case 0:
+                        Command.UDS_snap = 54
+                    case 1:
+                        Command.UDS_snap = 55
+            case 19:
+                match (self.snap_sel_2.currentIndex()):
+                    case 0:
+                        Command.UDS_snap = 56
+                    case 1:
+                        Command.UDS_snap = 57
+                    case 2:
+                        Command.UDS_snap = 58
+                    case 3:
+                        Command.UDS_snap = 59
+
+        Cmd = Command.SerializeToString()
+        self.UART.write(Cmd)
+        received_len = self.UART.read(2).hex()
+        if (received_len == ''):
+            self.snap_brs.append("Остановлено")
+        else:
+            bytes_read = self.UART.read(int(received_len, 16))
+            Result.ParseFromString(bytes_read)
+
+        self.snap_brs.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nПринято:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
+        time.sleep(0.2)
+        if (Result.frame[1].data[7] == 0x09):
+            self.status_brs.append("ACTIVE")
+        else:
+            self.status_brs.append("INACTIVE")
+        time.sleep(0.2)
+        self.lcdNumber_2.append(f"{float(((Result.frame[3].data[5] << 8) + (Result.frame[3].data[6])) * 0.01)}")
+        time.sleep(0.2)
+        self.lcdNumber_3.append(f"{int(((Result.frame[4].data[7] << 24)+(Result.frame[5].data[1] << 16) + (Result.frame[5].data[2] << 8) + (Result.frame[5].data[3] >>4)) * 0.01)}")
+        time.sleep(0.2)
+        self.lcdNumber_4.append(f"{int(((Result.frame[4].data[2] << 16) + (Result.frame[4].data[3] << 8) + (Result.frame[4].data[4])) * 5)}  ")
+        time.sleep(0.2)
+        self.lcdNumber_5.append(f"{int((Result.frame[5].data[6]))}")
+        self.UART.close()
+
+    def run_snap_handler(self):
+        Receiver = threading.Thread(target=self.snap_handler)
         Receiver.start()
     def SBR_handler(self):
         self.UART.open()
@@ -3198,7 +4629,118 @@ class Ui_MainWindow(object):
     def run_EDR_read(self):
         Receiver = threading.Thread(target=self.EDR_read)
         Receiver.start()
+    def update_params(self):
+        self.UPDATE_PARAMS_BTN.setDisabled(True)
+        self.UART.open()
+        Command = Messages.TestData()
+        Result = Messages.TestData()
+        Command.method = 0
+        Command.testNumber = 0x90
+        Command = Command.SerializeToString()
+        self.UART.write(Command)
+
+        Limit_Ares_front = self.LimitAresfront_input.value()
+        print(hex(Limit_Ares_front))
+
+        Limit_Sx_Sy_front = self.LimitSxSyfront_input.value()
+        print(hex(Limit_Sx_Sy_front))
+
+        Limit_Sres_front = self.LimitSresfront_input.value()
+        print(hex(Limit_Sres_front))
+
+        delta_Ares = self.deltaAres_input.value()
+        print(hex(delta_Ares))
+
+        Limit_Ares_side = self.LimitAresside_input.value()
+        print(hex(Limit_Ares_side))
+
+        Limit_Sx_Sy_side = self.LimitSxSyside_input.value()
+        print(hex(Limit_Sx_Sy_side))
+
+        Limit_Sres_side = self.LimitSresside_input.value()
+        print(hex(Limit_Sres_side))
+
+        T_calc_front = self.Tcalc_input.value()
+        print(hex(T_calc_front))
+
+        T_calc_side = self.Tcalc2_input.value()
+        print(hex(T_calc_side))
+
+        Time_to_stop_calc = self.Timetostopcalc_input.value()
+        print(hex(Time_to_stop_calc))
+
+        Sres_impact_front = self.Sresimpactfront_input.value()
+        print(hex(Sres_impact_front))
+
+        Sres_impact_side = self.Sresimpact_side_input.value()
+        print(hex(Sres_impact_side))
+        PARAMS_ARRAY=bytearray([(Limit_Ares_front>>8)&0xff,(Limit_Ares_front)&0xff,(Limit_Ares_side)>>8&0xff,(Limit_Ares_side)&0xff,(Limit_Sx_Sy_front>>8)&0xff,(Limit_Sx_Sy_front)&0xff,(Limit_Sx_Sy_side>>8)&0xff,(Limit_Sx_Sy_side)&0xff,(Limit_Sres_front>>8)&0xff,Limit_Sres_front&0xff,(Limit_Sres_side>>8)&0xff,Limit_Sres_side&0xff,T_calc_front,T_calc_side,Time_to_stop_calc,(Sres_impact_front>>8)&0xff,(Sres_impact_front)&0xff,(Sres_impact_side>>8)&0xff,(Sres_impact_side)&0xff,delta_Ares])
+        print(PARAMS_ARRAY)
+        time.sleep(1)
+        self.UART.write(PARAMS_ARRAY)
+        received_len = self.UART.read(2).hex()
+        if (received_len == ''):
+            self.got_res_SBR_brs.append("Остановлено")
+        else:
+            bytes_read = self.UART.read(int(received_len, 16))
+            Result.ParseFromString(bytes_read)
+            if((hex(Result.frame[1].data[1])=='0x6e'and hex(Result.frame[3].data[1])=='0x6e'and hex(Result.frame[5].data[1])=='0x6e'and hex(Result.frame[7].data[1])=='0x6e'and hex(Result.frame[9].data[1])=='0x6e'and hex(Result.frame[11].data[1])=='0x6e'and hex(Result.frame[13].data[1])=='0x6e'and hex(Result.frame[15].data[1])=='0x6e'and hex(Result.frame[1].data[1])=='0x6e'and hex(Result.frame[17].data[1])=='0x6e'and hex(Result.frame[19].data[1])=='0x6e'and hex(Result.frame[21].data[1])=='0x6e'and hex(Result.frame[23].data[1])=='0x6e')):
+                self.PARAM_RESULT_BRS.append("Успешное обновление")
+            else:
+                self.PARAM_RESULT_BRS.append("Ошибка обновления параметров")
+            for i in range(0,12):
+                self.PARAM_RESULT_BRS.append(f"Отправлено:{str(Result.frame[2*i].data.hex())}\nПринято:{str(Result.frame[2*i+1].data.hex())}")
+                time.sleep(0.02)
+        self.UART.close()
+        self.UPDATE_PARAMS_BTN.setEnabled(True)
+    def run_update_params(self):
+        Receiver = threading.Thread(target=self.update_params)
+        Receiver.start()
+    def read_params(self):
+        self.UART.open()
+        Command = Messages.TestData()
+        Result = Messages.TestData()
+        Command.method = 0
+        Command.testNumber = 0x91
+        Command = Command.SerializeToString()
+        self.UART.write(Command)
+        received_len = self.UART.read(2).hex()
+        if (received_len == ''):
+            self.got_res_SBR_brs.append("Остановлено")
+        else:
+            bytes_read = self.UART.read(int(received_len, 16))
+            Result.ParseFromString(bytes_read)
+            self.PARAM_RESULT_BRS.append(f"Limit Ares front:{(int((Result.frame[1].data[4])<<8)+int(Result.frame[1].data[5]))*0.1}")
+            time.sleep(0.02)
+            self.PARAM_RESULT_BRS.append(f"Limit Ares side:{(int((Result.frame[3].data[4])<<8)+int(Result.frame[3].data[5]))*0.1}")
+            time.sleep(0.02)
+            self.PARAM_RESULT_BRS.append(f"Limit Sx,Sy front:{round((((Result.frame[5].data[4])<<8)+int(Result.frame[5].data[5]))*0.000001 ,6)}")
+            time.sleep(0.02)
+            self.PARAM_RESULT_BRS.append(f"Limit Sx,Sy side:{round((((Result.frame[7].data[4])<<8)+int(Result.frame[7].data[5]))*0.000001 ,6)}")
+            time.sleep(0.02)
+            self.PARAM_RESULT_BRS.append(f"Limit Sres front:{round((((Result.frame[9].data[4])<<8)+int(Result.frame[9].data[5]))*0.000001 ,6)}")
+            time.sleep(0.02)
+            self.PARAM_RESULT_BRS.append(f"Limit Sres side:{round((((Result.frame[11].data[4])<<8)+int(Result.frame[11].data[5]))*0.000001 ,6)}")
+            time.sleep(0.02)
+            self.PARAM_RESULT_BRS.append(f"T calc front:{(int(Result.frame[13].data[4]))}")
+            time.sleep(0.02)
+            self.PARAM_RESULT_BRS.append(f"T calc side:{(int(Result.frame[15].data[4]))}")
+            time.sleep(0.02)
+            self.PARAM_RESULT_BRS.append(f"Time to stop calculation:{(int(Result.frame[17].data[4]))}")
+            time.sleep(0.02)
+            self.PARAM_RESULT_BRS.append(f"Sres impact front:{round((((Result.frame[19].data[4])<<8)+int(Result.frame[19].data[5]))*0.000001 ,6)}")
+            time.sleep(0.02)
+            self.PARAM_RESULT_BRS.append(f"Sres impact side:{round((((Result.frame[21].data[4])<<8)+int(Result.frame[21].data[5]))*0.000001 ,6)}")
+            time.sleep(0.02)
+            self.PARAM_RESULT_BRS.append(f"Delta Ares:{(int(Result.frame[23].data[4]))}")
+            time.sleep(0.02)
+        self.UART.close()
+
+    def run_read_params(self):
+        Receiver = threading.Thread(target=self.read_params)
+        Receiver.start()
     def Reprogrammer(self):
+        faulthandler.enable()
         self.pushButton_3.setDisabled(True)
         self.toolButton.setDisabled(True)
         self.progressBar.setValue(0)
@@ -3206,9 +4748,9 @@ class Ui_MainWindow(object):
         Command = Messages.TestData()
         Command.method = 0
         Command.testNumber = 0x88
-        print(hex(Command.testNumber))
+
         Command = Command.SerializeToString()
-        print(Command)
+
         self.UART.write(Command)
         self.UART.close()
         #time.sleep(0.5)
@@ -3258,8 +4800,11 @@ class Ui_MainWindow(object):
         UARTDriver.stopUART()
         time.sleep(0.2)
         self.progressBar.setValue(100)
+#        time.sleep(0.3)
         self.pushButton_3.setEnabled(True)
+#        time.sleep(0.3)
         self.toolButton.setEnabled(True)
+        faulthandler.disable()
 
     def Reprogrammer_run(self):
         Receiver = threading.Thread(target=self.Reprogrammer)
@@ -3283,7 +4828,6 @@ class Ui_MainWindow(object):
             self.COM_PORT_BRS.append("Связь с СТО установлена")
             self.start_SBR_btn.setEnabled(True)
             self.start_acc_btn.setEnabled(True)
-            self.DIAG_ACC_BTN.setEnabled(True)
             self.Run_Init_btn.setEnabled(True)
             self.CHECK_CRASH_DETECTION_BTN.setEnabled(True)
             self.DIAG_ACU_BTN.setEnabled(True)
@@ -3292,7 +4836,6 @@ class Ui_MainWindow(object):
             self.perod_periodic_btn.setEnabled(True)
             self.start_trig_btn.setEnabled(True)
             self.DIAG_CLEAR_DTC_BTN.setEnabled(True)
-            self.DIAG_ACC_BTN.setEnabled(True)
             self.DIAG_READ_0x08_BTN.setEnabled(True)
             self.DIAG_READ_0x09_BTN.setEnabled(True)
             self.DIAG_EXTDIAG_BTN.setEnabled(True)
@@ -3302,6 +4845,10 @@ class Ui_MainWindow(object):
             self.EDR_READ_BTN.setEnabled(True)
             self.START_VALID_AB_BTN.setEnabled(True)
             self.toolButton.setEnabled(True)
+            self.DIAG_UPD_CAN_MSG_BTN.setEnabled(True)
+            self.DIAG_STOP_CAN_MSG_BTN.setEnabled(True)
+            self.read_snap_btn.setEnabled(True)
+            self.UPDATE_PARAMS_BTN.setEnabled(True)
         else:
             self.COM_PORT_BRS.append("Ошибка подключения.Попробуйте ещё раз")
         self.UART.timeout=300
@@ -3311,14 +4858,43 @@ class Ui_MainWindow(object):
     def CheckConnection_run(self):
         Receiver = threading.Thread(target=self.CheckConnection)
         Receiver.start()
-    def show_dialog(self):
-        self.Dialog = QtWidgets.QDialog()
-        self.ui = Ui_Dialog()
-        self.ui.setupUi(self.Dialog)
-        self.Dialog.show()
-    def show_dialog_run(self):
-        Receiver = threading.Thread(target=self.show_dialog)
+    def run_model_all(self):
+        absolute_path = os.path.dirname(__file__)
+        relative_path = "model/test"
+        tmp_stdout = sys.stdout
+        result = StringIO()
+        sys.stdout = result
+        full_path = os.path.join(absolute_path, relative_path)
+        proc=subprocess.Popen([full_path, "input_file.txt", "res2.txt"],stdout=subprocess.PIPE)
+        time.sleep(3)
+        while True:
+            line = proc.stdout.readline()
+            self.PARAMS_PROCESS_BRS.append(line.decode("utf-8"))
+            if not line:
+                break
+    def Config_version(self,ver):
+        self.UART.open()
+        Command = Messages.TestData()
+        Result = Messages.TestData()
+        Command.method = 0
+        if ver == 1:
+            Command.testNumber = 0x92
+        else:
+            Command.testNumber = 0x93
+        Command = Command.SerializeToString()
+        self.UART.write(Command)
+        received_len = self.UART.read(2).hex()
+        bytes_read = self.UART.read(int(received_len, 16))
+        self.UART.close()
+        Result.ParseFromString(bytes_read)
+        self.VER_LOG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+        self.VER_LOG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
+        self.UART.close()
+
+    def run_Config_version(self, ver):
+        Receiver = threading.Thread(target=self.Config_version,args=(ver,))
         Receiver.start()
+
     def on_click(self):
         file, _ = QtWidgets.QFileDialog.getOpenFileName(self.tab_5, 'Open File', './', " (*.hex)")
         if file:
@@ -3326,6 +4902,20 @@ class Ui_MainWindow(object):
             self.textBrowser_2.append(file)
             self.file=file
             self.pushButton_3.setEnabled(True)
+
+    def is_number(self, s):
+        try:
+            float(s)
+            return True
+        except ValueError:
+            return False
+
+    def update_speed_label(self, value):
+        # Обновляем текст метки с учетом шага 0.1
+        self.DIAG_SPEED_SELECTOR_2.setText(f"Отправляемая скорость: {value / 100:.1f}")
+    def update_mileage_label(self, value):
+        # Обновляем текст метки с учетом шага 0.1
+        self.DIAG_MILEAGE_SELECTOR_2.setText(f"Отправляемый пробег: {int(value/100)} км")
 
 
 
