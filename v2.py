@@ -27,7 +27,7 @@ from Reprogramm import *
 import os
 import subprocess
 import sys
-import random
+import csv
 import time
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -437,17 +437,19 @@ class Ui_MainWindow(object):
         self.acc_selector.setSizePolicy(sizePolicy)
         self.acc_selector.setMaximumSize(QtCore.QSize(16777215, 45))
         font = QtGui.QFont()
-        font.setPointSize(10)
+        font.setPointSize(13)
         self.acc_selector.setFont(font)
         self.acc_selector.setObjectName("acc_selector")
-        self.acc_selector.addItem("Передний удар о жёсткий барьер скорость 50 км/ч 100% перекрытие")
-        self.acc_selector.addItem("Передний удар об упругий барьер скорость 64 км/ч 40% перекрытие")
-        self.acc_selector.addItem("Передний удар об упругий барьер скорость 56 км/ч 40% перекрытие")
-        self.acc_selector.addItem("Передний удар о жёсткий барьер скорость 15 км/ч 40% перекрытие")
-        self.acc_selector.addItem("Задний удар о жёсткий барьер 100% перекрытие")
-        self.acc_selector.addItem("Боковой удар об упругий барьер скорость 15 км/ч 100% перекрытие")
-        self.acc_selector.addItem("Боковой удар об упругий барьер скорость 50 км/ч 100% перекрытие")
-        self.acc_selector.addItem("Боковой удар об упругий барьер скорость 25 км/ч 100% перекрытие")
+        folder_path = 'acceleration_synthesis\Generated_acc'
+        # Перебираем все файлы в указанной папке
+        print(os.listdir(folder_path))
+        file = open("acceleration_buffers.txt", "w")
+        for filename in os.listdir(folder_path):
+            if filename.startswith("~$"):
+                continue
+            if filename.endswith('.csv'):  # Проверяем, что файл имеет расширение .csv
+                file_path = os.path.join(folder_path, filename)
+                self.acc_selector.addItem(filename.replace(".csv",""))
         self.gridLayout_6.addWidget(self.acc_selector, 5, 0, 1, 1)
         self.AIRBAG_OFF_btn = QtWidgets.QRadioButton(self.groupBox)
         font = QtGui.QFont()
@@ -3461,98 +3463,78 @@ class Ui_MainWindow(object):
         Command.testNumber = 0x22
         Command.accDataNumber=self.acc_selector.currentIndex()+1
         Command.AIRBAG_OFF=self.AIRBAG_OFF_btn.isChecked()
-        if (Command.accDataNumber == 1):
-            TTF_DAB = 12
-            TTF_PAB = 12
-            TTF_DPT = 10
-            TTF_PPT = 10
-            TTF_DSAB = 0
-            TTF_PSAB = 0
-            TTF_DCAB = 0
-        elif (Command.accDataNumber == 2):
-            TTF_DAB = 35
-            TTF_PAB = 30
-            TTF_DPT = 20
-            TTF_PPT = 20
-            TTF_DSAB = 0
-            TTF_PSAB = 0
-            TTF_DCAB = 0
-        elif (Command.accDataNumber == 3):
-            TTF_DAB = 35
-            TTF_PAB = 30
-            TTF_DPT = 20
-            TTF_PPT = 20
-            TTF_DSAB = 0
-            TTF_PSAB = 0
-            TTF_DCAB = 0
-        elif (Command.accDataNumber == 4):
-            TTF_DAB = 0
-            TTF_PAB = 0
-            TTF_DPT = 0
-            TTF_PPT = 0
-            TTF_DSAB = 0
-            TTF_PSAB = 0
-            TTF_DCAB = 0
-        elif (Command.accDataNumber == 5):
-            TTF_DAB = 0
-            TTF_PAB = 0
-            TTF_DPT = 0
-            TTF_PPT = 0
-            TTF_DSAB = 0
-            TTF_PSAB = 0
-            TTF_DCAB = 0
-        elif (Command.accDataNumber == 6):
-            TTF_DAB = 0
-            TTF_PAB = 0
-            TTF_DPT = 0
-            TTF_PPT = 0
-            TTF_DSAB = 0
-            TTF_PSAB = 0
-            TTF_DCAB = 0
-        elif (Command.accDataNumber == 7):
-            TTF_DAB = 0
-            TTF_PAB = 0
-            TTF_DPT = 7
-            TTF_PPT = 7
-            TTF_DSAB = 7
-            TTF_PSAB = 7
-            TTF_DCAB = 7
-        elif (Command.accDataNumber == 8):
-            TTF_DAB = 0
-            TTF_PAB = 0
-            TTF_DPT = 22
-            TTF_PPT = 22
-            TTF_DSAB = 22
-            TTF_PSAB = 22
-            TTF_DCAB = 22
+        accX=[]
+        accY=[]
+        X_new=[]
+        Y_new=[]
+        length=[]
+        i=0
+        self.accfile=self.acc_selector.currentText()+'.csv'
+        os.chdir("acceleration_synthesis")
+        os.chdir("Generated_acc")
+        with open(self.accfile, mode='r') as file:
+            csvFile = csv.reader(file)
+            for lines in csvFile:
+                try:
+                    accX.insert(i, int(lines[0].split(';')[0], 16))
+                    accY.insert(i, int(lines[0].split(';')[1], 16))
+                    i += 1
+                except:
+                    pass
+            accX.pop(0)
+            accY.pop(0)
+        for i in range(0, len(accY)):
+            X_new.insert(4*i,(accX[i] & 0xFF000000) >> 24)
+            X_new.insert(4*i+1,(accX[i] & 0x00FF0000) >> 16)
+            X_new.insert(4*i+2,(accX[i] & 0x0000FF00) >> 8)
+            X_new.insert(4*i+3, accX[i] & 0x000000FF)
+            Y_new.insert(4*i,(accY[i] & 0xFF000000) >> 24)
+            Y_new.insert(4*i+1,(accY[i] & 0x00FF0000) >> 16)
+            Y_new.insert(4*i+2,(accY[i] & 0x0000FF00) >> 8)
+            Y_new.insert(4*i+3,accY[i] & 0x000000FF)
+        X_new = bytearray(X_new)
+        Y_new = bytearray(Y_new)
         Cmd = Command.SerializeToString()
         self.UART.write(Cmd)
-        received_len=self.UART.read(2).hex()
-        if (received_len == ''):
-            self.got_res_brs.append("Остановлено")
-        else:
-            bytes_read = self.UART.read(int(received_len,16))
-            Result.ParseFromString(bytes_read)
-            print(Result.frame[0].data,Result.frame[1].data)
-            self.CRASHDETECTED_BRS.append(
-                f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
-            time.sleep(0.02)
-            self.CRASHDETECTED_BRS.append(
-                f"Timestamp:{str(Result.frame[1].timestamp)}   id:{str(hex(Result.frame[1].id))}   DLC:{str(Result.frame[1].length)}   Data:{str(Result.frame[1].data.hex())}")
-            time.sleep(0.02)
-            self.CRASHDETECTED_BRS.append(f"До столкновения:{(Result.frame[0].data[0]&0b10000000)>>7} ({self.matchCrashDetected((Result.frame[0].data[0]&0b10000000)>>7)})\nПосле столкновения:{(Result.frame[1].data[0]&0b10000000)>>7} ({self.matchCrashDetected(int((Result.frame[1].data[0]&0b10000000)>>7))})")
-            time.sleep(0.02)
-
-            self.got_res_brs.append(f"TTF DriverAirbag={Result.measuredValue[0]/1000}\nTTF PassengerAirbag={Result.measuredValue[1]/1000}\nTTF DriverPretensioner={Result.measuredValue[2]/1000}\nTTF PassengerPretensioner={Result.measuredValue[3]/1000}\nTTF DriverSideAirbag={Result.measuredValue[4]/1000}\nTTF PassengerSideAirbag={Result.measuredValue[5]/1000}\nTTF DriverCurtainAirbag={Result.measuredValue[6]/1000}")
-            time.sleep(0.02)
-            if(self.checkTTF(TTF_DAB,Result.measuredValue[0]/1000)==1 and self.checkTTF(TTF_PAB,Result.measuredValue[1]/1000)==1 and self.checkTTF(TTF_DPT,Result.measuredValue[2]/1000)==1 and self.checkTTF(TTF_PPT,Result.measuredValue[3]/1000)==1 and self.checkTTF(TTF_DSAB,Result.measuredValue[4]/1000)==1 and self.checkTTF(TTF_PSAB,Result.measuredValue[5]/1000)==1 and self.checkTTF(TTF_DCAB,Result.measuredValue[6]/1000)==1):
-                self.got_res_brs.append("Success")
+        length.insert(0,(len(X_new) >> 8) & 0xff)
+        length.insert(1,(len(X_new)) & 0xff)
+        length = bytearray(length)
+        time.sleep(2)
+        self.UART.flushInput()
+        self.UART.flushOutput()
+        self.UART.write(length)
+        bytes_read=self.UART.read(2)
+        if(bytes_read==length):
+            self.UART.write(X_new)
+            time.sleep(0.5)
+            time.sleep(0.5)
+            self.UART.write(Y_new)
+            received_len=self.UART.read(2).hex()
+            if (received_len == ''):
+                self.got_res_brs.append("Остановлено")
             else:
-                self.got_res_brs.append("Fail")
+                bytes_read = self.UART.read(int(received_len,16))
+                Result.ParseFromString(bytes_read)
+                self.CRASHDETECTED_BRS.append(
+                    f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
+                time.sleep(0.02)
+                self.CRASHDETECTED_BRS.append(
+                    f"Timestamp:{str(Result.frame[1].timestamp)}   id:{str(hex(Result.frame[1].id))}   DLC:{str(Result.frame[1].length)}   Data:{str(Result.frame[1].data.hex())}")
+                time.sleep(0.02)
+                self.CRASHDETECTED_BRS.append(f"До столкновения:{(Result.frame[0].data[0]&0b10000000)>>7} ({self.matchCrashDetected((Result.frame[0].data[0]&0b10000000)>>7)})\nПосле столкновения:{(Result.frame[1].data[0]&0b10000000)>>7} ({self.matchCrashDetected(int((Result.frame[1].data[0]&0b10000000)>>7))})")
+                time.sleep(0.02)
 
+                self.got_res_brs.append(f"TTF DriverAirbag={Result.measuredValue[0]/1000}\nTTF PassengerAirbag={Result.measuredValue[1]/1000}\nTTF DriverPretensioner={Result.measuredValue[2]/1000}\nTTF PassengerPretensioner={Result.measuredValue[3]/1000}\nTTF DriverSideAirbag={Result.measuredValue[4]/1000}\nTTF PassengerSideAirbag={Result.measuredValue[5]/1000}\nTTF DriverCurtainAirbag={Result.measuredValue[6]/1000}")
+                time.sleep(0.02)
+                #if(self.checkTTF(TTF_DAB,Result.measuredValue[0]/1000)==1 and self.checkTTF(TTF_PAB,Result.measuredValue[1]/1000)==1 and self.checkTTF(TTF_DPT,Result.measuredValue[2]/1000)==1 and self.checkTTF(TTF_PPT,Result.measuredValue[3]/1000)==1 and self.checkTTF(TTF_DSAB,Result.measuredValue[4]/1000)==1 and self.checkTTF(TTF_PSAB,Result.measuredValue[5]/1000)==1 and self.checkTTF(TTF_DCAB,Result.measuredValue[6]/1000)==1):
+                 #   self.got_res_brs.append("Success")
+               # else:
+                    #self.got_res_brs.append("Fail")
         self.UART.close()
         self.STOP_BTN_4.setEnabled(False)
         time.sleep(0.1)
+        os.chdir("..")
+        os.chdir("..")
         self.start_acc_btn.setEnabled(True)
 
 
@@ -4758,32 +4740,35 @@ class Ui_MainWindow(object):
         if (received_len == ''):
             self.got_res_SBR_brs.append("Остановлено")
         else:
-            bytes_read = self.UART.read(int(received_len, 16))
-            Result.ParseFromString(bytes_read)
-            self.PARAM_RESULT_BRS.append(f"Limit Ares front (10\u207b\u00b9 m/s\u00B2):{(int((Result.frame[1].data[4])<<8)+int(Result.frame[1].data[5]))}")
-            time.sleep(0.02)
-            self.PARAM_RESULT_BRS.append(f"Limit Ares side (10\u207b\u00b9 m/s\u00B2):{(int((Result.frame[3].data[4])<<8)+int(Result.frame[3].data[5]))}")
-            time.sleep(0.02)
-            self.PARAM_RESULT_BRS.append(f"Limit Sx,Sy front (10\u207b\u2076 m):{round((((Result.frame[5].data[4])<<8)+int(Result.frame[5].data[5])) ,0)}")
-            time.sleep(0.02)
-            self.PARAM_RESULT_BRS.append(f"Limit Sx,Sy side (10\u207b\u2076 m):{round((((Result.frame[7].data[4])<<8)+int(Result.frame[7].data[5])) ,0)}")
-            time.sleep(0.02)
-            self.PARAM_RESULT_BRS.append(f"Limit Sres front (10\u207b\u2076 m):{round((((Result.frame[9].data[4])<<8)+int(Result.frame[9].data[5])) ,0)}")
-            time.sleep(0.02)
-            self.PARAM_RESULT_BRS.append(f"Limit Sres side (10\u207b\u2076 m):{round((((Result.frame[11].data[4])<<8)+int(Result.frame[11].data[5])) ,0)}")
-            time.sleep(0.02)
-            self.PARAM_RESULT_BRS.append(f"T calc front (ms):{(int(Result.frame[13].data[4]))}")
-            time.sleep(0.02)
-            self.PARAM_RESULT_BRS.append(f"T calc side(ms):{(int(Result.frame[15].data[4]))}")
-            time.sleep(0.02)
-            self.PARAM_RESULT_BRS.append(f"Time to stop calculation(ms):{(int(Result.frame[17].data[4]))}")
-            time.sleep(0.02)
-            self.PARAM_RESULT_BRS.append(f"Sres impact front (10\u207b\u2076 m):{round((((Result.frame[19].data[4])<<8)+int(Result.frame[19].data[5])) ,0)}")
-            time.sleep(0.02)
-            self.PARAM_RESULT_BRS.append(f"Sres impact side (10\u207b\u2076 m):{round((((Result.frame[21].data[4])<<8)+int(Result.frame[21].data[5])) ,0)}")
-            time.sleep(0.02)
-            self.PARAM_RESULT_BRS.append(f"Delta Ares(m/s\u00B2):{(int(Result.frame[23].data[4]))}")
-            time.sleep(0.02)
+            try:
+                bytes_read = self.UART.read(int(received_len, 16))
+                Result.ParseFromString(bytes_read)
+                self.PARAM_RESULT_BRS.append(f"Limit Ares front (10\u207b\u00b9 m/s\u00B2):{(int((Result.frame[1].data[4])<<8)+int(Result.frame[1].data[5]))}")
+                time.sleep(0.02)
+                self.PARAM_RESULT_BRS.append(f"Limit Ares side (10\u207b\u00b9 m/s\u00B2):{(int((Result.frame[3].data[4])<<8)+int(Result.frame[3].data[5]))}")
+                time.sleep(0.02)
+                self.PARAM_RESULT_BRS.append(f"Limit Sx,Sy front (10\u207b\u2076 m):{round((((Result.frame[5].data[4])<<8)+int(Result.frame[5].data[5])) ,0)}")
+                time.sleep(0.02)
+                self.PARAM_RESULT_BRS.append(f"Limit Sx,Sy side (10\u207b\u2076 m):{round((((Result.frame[7].data[4])<<8)+int(Result.frame[7].data[5])) ,0)}")
+                time.sleep(0.02)
+                self.PARAM_RESULT_BRS.append(f"Limit Sres front (10\u207b\u2076 m):{round((((Result.frame[9].data[4])<<8)+int(Result.frame[9].data[5])) ,0)}")
+                time.sleep(0.02)
+                self.PARAM_RESULT_BRS.append(f"Limit Sres side (10\u207b\u2076 m):{round((((Result.frame[11].data[4])<<8)+int(Result.frame[11].data[5])) ,0)}")
+                time.sleep(0.02)
+                self.PARAM_RESULT_BRS.append(f"T calc front (ms):{(int(Result.frame[13].data[4]))}")
+                time.sleep(0.02)
+                self.PARAM_RESULT_BRS.append(f"T calc side(ms):{(int(Result.frame[15].data[4]))}")
+                time.sleep(0.02)
+                self.PARAM_RESULT_BRS.append(f"Time to stop calculation(ms):{(int(Result.frame[17].data[4]))}")
+                time.sleep(0.02)
+                self.PARAM_RESULT_BRS.append(f"Sres impact front (10\u207b\u2076 m):{round((((Result.frame[19].data[4])<<8)+int(Result.frame[19].data[5])) ,0)}")
+                time.sleep(0.02)
+                self.PARAM_RESULT_BRS.append(f"Sres impact side (10\u207b\u2076 m):{round((((Result.frame[21].data[4])<<8)+int(Result.frame[21].data[5])) ,0)}")
+                time.sleep(0.02)
+                self.PARAM_RESULT_BRS.append(f"Delta Ares(m/s\u00B2):{(int(Result.frame[23].data[4]))}")
+                time.sleep(0.02)
+            except:
+                self.PARAM_RESULT_BRS.append("Ошибка чтения парметров. Попробуйте ещё раз")
         self.UART.close()
 
     def run_read_params(self):
@@ -4915,9 +4900,9 @@ class Ui_MainWindow(object):
         absolute_path = os.path.dirname(__file__)
         relative_path = "pillows_2024_09_04\\lib\\test.exe"
         full_path = os.path.join(absolute_path, relative_path)
-        print(full_path)
+        #print(full_path)
         params=tests.get(self.data_selector.currentText())
-        print(params)
+        #print(params)
         is_single_test = 1
         inc_fire_tests = 1
         inc_misuse_tests = 1
@@ -4931,7 +4916,7 @@ class Ui_MainWindow(object):
 
         proc = subprocess.Popen(
             [full_path, "D:\STO_gui\params.txt" , str(is_single_test), str(inc_fire_tests), str(inc_misuse_tests),
-             str(inc_exp_tests), str(single_test_type), str(single_fold_num), str(single_testnum), "D:\STO_gui\pillows_2024_09_04\lib\yres.txt"],
+             str(inc_exp_tests), str(single_test_type), str(single_fold_num), str(single_testnum), "D:\STO_gui\pillows_2024_09_04\lib\yres.txt"],#поменять зависимости
             stdout=subprocess.PIPE)
         time.sleep(3)
         sys.stdout = tmp_stdout
@@ -5120,17 +5105,19 @@ class Ui_MainWindow(object):
         Command = Command.SerializeToString()
         self.UART.write(Command)
         received_len = self.UART.read(2).hex()
-        bytes_read = self.UART.read(int(received_len, 16))
-        self.UART.close()
-        Result.ParseFromString(bytes_read)
-        self.VER_LOG_BRS.append("Вход в Security access:\n")
-        self.VER_LOG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-        self.VER_LOG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
-        self.VER_LOG_BRS.append(f"Отправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}\n")
-        self.VER_LOG_BRS.append("Изменение режима:\n")
-        self.VER_LOG_BRS.append(f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}\n")
-        self.VER_LOG_BRS.append("Перезагрузка:")
-        self.VER_LOG_BRS.append(f"Отправлено:{str(Result.frame[8].data.hex())}\nПринято:{str(Result.frame[9].data.hex())}")
+        try:
+            bytes_read = self.UART.read(int(received_len, 16))
+            Result.ParseFromString(bytes_read)
+            self.VER_LOG_BRS.append("Вход в Security access:\n")
+            self.VER_LOG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+            self.VER_LOG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
+            self.VER_LOG_BRS.append(f"Отправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}\n")
+            self.VER_LOG_BRS.append("Изменение режима:\n")
+            self.VER_LOG_BRS.append(f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}\n")
+            self.VER_LOG_BRS.append("Перезагрузка:")
+            self.VER_LOG_BRS.append(f"Отправлено:{str(Result.frame[8].data.hex())}\nПринято:{str(Result.frame[9].data.hex())}")
+        except:
+            self.VER_LOG_BRS.append("Ошибка конфигурации. Перезапустите СТО и попробуйте ещё раз:\n")
         self.UART.close()
         self.ACC_VER_BTN.setEnabled(True)
         time.sleep(0.02)
