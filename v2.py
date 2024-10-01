@@ -22,31 +22,29 @@ import serial
 import threading
 from states import *
 from serial.tools import list_ports
-#from EDR_settings import *
 from Reprogramm import *
 import os
 import subprocess
 import sys
 import csv
 import time
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
-        MainWindow.resize(1871, 1219)
+        MainWindow.resize(1200, 800)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
+        os.chdir('icons')
         MainWindow.setWindowIcon(QtGui.QIcon("main_icon.ico"))
-        font_id = QtGui.QFontDatabase.addApplicationFont("D:/STO_gui/font/DS-DIGI.ttf")
-        font_families = QtGui.QFontDatabase.applicationFontFamilies(font_id)
-        if font_families:
-            # Устанавливаем загруженный шрифт для QLabel
-            my_font = QtGui.QFont(font_families[0])
-        #else:
-            #my_font = "Arial"  # Задаем запасной шрифт, если не удалось загрузить
+        os.chdir('..')
+        os.chdir('pillows')
+        os.chdir('..')
         self.COM_PORT=None
         self.UART=None
         self.file=None
@@ -442,8 +440,6 @@ class Ui_MainWindow(object):
         self.acc_selector.setObjectName("acc_selector")
         folder_path = 'acceleration_synthesis\Generated_acc'
         # Перебираем все файлы в указанной папке
-        print(os.listdir(folder_path))
-        file = open("acceleration_buffers.txt", "w")
         for filename in os.listdir(folder_path):
             if filename.startswith("~$"):
                 continue
@@ -467,6 +463,7 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         self.acc_selector_lbl.setFont(font)
         self.acc_selector_lbl.setObjectName("acc_selector_lbl")
+        self.acc_set_changed()
         self.gridLayout_6.addWidget(self.acc_selector_lbl, 4, 0, 1, 1)
         self.STOP_BTN_4 = QtWidgets.QPushButton(self.groupBox)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Fixed)
@@ -652,23 +649,14 @@ class Ui_MainWindow(object):
         self.UDS_TEST_SELECTOR.addItem("Проверка записи DID ECU Operating States(Working mode)")
         self.UDS_TEST_SELECTOR.addItem("Проверка записи DID ECU Operating States(Plant mode)")
         self.UDS_TEST_SELECTOR.addItem("Проверка записи DID ACU configuration")
-        self.UDS_TEST_SELECTOR.addItem("Проверка чтения Driver Airbag Resistance")
-        self.UDS_TEST_SELECTOR.addItem("Проверка чтения PAB Deactivation Indicator Status")
-        self.UDS_TEST_SELECTOR.addItem("Проверка чтения Vehicle speed")
-        self.UDS_TEST_SELECTOR.addItem("Проверка чтения Battery Voltage")
-        self.UDS_TEST_SELECTOR.addItem("Проверка чтения ECU's lifetime timer")
-        self.UDS_TEST_SELECTOR.addItem("Проверка чтения Occupant Input")
+        self.UDS_TEST_SELECTOR.addItem("Проверка чтения DID")
+
         self.gridLayout_18.addWidget(self.UDS_TEST_SELECTOR, 4, 0, 1, 1)
         self.UDS_LED_SELECTOR = QtWidgets.QComboBox(self.groupBox_12)
         font = QtGui.QFont()
         font.setPointSize(11)
         self.UDS_LED_SELECTOR.setFont(font)
         self.UDS_LED_SELECTOR.setObjectName("UDS_LED_SELECTOR")
-        self.UDS_LED_SELECTOR.addItem("Включение диагностического светодиода")
-        self.UDS_LED_SELECTOR.addItem("Отключение диагностического светодиода")
-        self.UDS_LED_SELECTOR.addItem("Включение светодиода отключения ПБ")
-        self.UDS_LED_SELECTOR.addItem("Отключение светодиода отключения ПБ")
-        self.UDS_LED_SELECTOR.addItem("Проверка subfunction Return control to ECU")
         self.gridLayout_18.addWidget(self.UDS_LED_SELECTOR, 9, 0, 1, 1)
         self.UDS_NRC_SELECTOR=QtWidgets.QComboBox(self.groupBox_12)
         self.UDS_NRC_SELECTOR.setFont(font)
@@ -783,13 +771,13 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.stat_snap.sizePolicy().hasHeightForWidth())
         self.stat_snap.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(20)
         self.stat_snap.setFont(font)
         self.stat_snap.setObjectName("stat_snap")
         self.gridLayout_412.addWidget(self.stat_snap, 2, 0, 1, 1)
         self.speed_snap = QtWidgets.QLabel(self.groupBox_243)
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(20)
         self.speed_snap.setFont(font)
         self.speed_snap.setObjectName("speed_snap")
         self.gridLayout_412.addWidget(self.speed_snap, 3, 0, 1, 1)
@@ -801,19 +789,19 @@ class Ui_MainWindow(object):
         self.gridLayout_412.addWidget(self.lcdNumber_3, 5, 1, 1, 3)
         self.errctr_snpa = QtWidgets.QLabel(self.groupBox_243)
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(20)
         self.errctr_snpa.setFont(font)
         self.errctr_snpa.setObjectName("errctr_snpa")
         self.gridLayout_412.addWidget(self.errctr_snpa, 6, 0, 1, 1)
         self.lifetime_snap = QtWidgets.QLabel(self.groupBox_243)
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(20)
         self.lifetime_snap.setFont(font)
         self.lifetime_snap.setObjectName("lifetime_snap")
         self.gridLayout_412.addWidget(self.lifetime_snap, 4, 0, 1, 1)
         self.probeg_snap = QtWidgets.QLabel(self.groupBox_243)
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(20)
         self.probeg_snap.setFont(font)
         self.probeg_snap.setObjectName("probeg_snap")
         self.gridLayout_412.addWidget(self.probeg_snap, 5, 0, 1, 1)
@@ -991,18 +979,6 @@ class Ui_MainWindow(object):
         self.DIAG_RESET_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.DIAG_RESET_BTN.setObjectName("DIAG_RESET_BTN")
         self.gridLayout_16.addWidget(self.DIAG_RESET_BTN, 1, 1, 1, 1)
-        self.DIAG_ACU_BTN = QtWidgets.QPushButton(self.groupBox_9)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.DIAG_ACU_BTN.sizePolicy().hasHeightForWidth())
-        self.DIAG_ACU_BTN.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.DIAG_ACU_BTN.setFont(font)
-        self.DIAG_ACU_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
-        self.DIAG_ACU_BTN.setObjectName("DIAG_ACU_BTN")
-        self.gridLayout_16.addWidget(self.DIAG_ACU_BTN, 2, 0, 1, 1)
         self.CHECK_CRASH_DETECTION_BTN = QtWidgets.QPushButton(self.groupBox_9)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
@@ -1190,42 +1166,154 @@ class Ui_MainWindow(object):
         self.gridLayout_14.addWidget(self.DIAG_SPEED_SELECTOR_2, 10, 0, 1, 1)
         self.gridLayout_21.addWidget(self.groupBox_10, 1, 1, 1, 1)
         self.tabWidget.addTab(self.tab, "")
-        self.tab_4 = QtWidgets.QWidget()
-        self.tab_4.setObjectName("tab_4")
-        self.gridLayout_22 = QtWidgets.QGridLayout(self.tab_4)
-        self.gridLayout_22.setObjectName("gridLayout_22")
-        self.groupBox_18 = QtWidgets.QGroupBox(self.tab_4)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(8)
+        self.EDR_tab = QtWidgets.QWidget()
+        self.EDR_tab.setObjectName("EDR_tab")
+        self.gridLayout_5 = QtWidgets.QGridLayout(self.EDR_tab)
+        self.gridLayout_5.setObjectName("gridLayout_5")
+        self.groupBox_11223344 = QtWidgets.QGroupBox(self.EDR_tab)
+        self.groupBox_11223344.setTitle("")
+        self.groupBox_11223344.setObjectName("groupBox_11223344")
+        self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_11223344)
+        self.gridLayout_3.setObjectName("gridLayout_3")
+        self.groupBox = QtWidgets.QGroupBox(self.groupBox_11223344)
+        self.groupBox.setMaximumSize(QtCore.QSize(16777215, 200))
+        self.groupBox.setTitle("")
+        self.groupBox.setObjectName("groupBox")
+        self.gridLayout_4 = QtWidgets.QGridLayout(self.groupBox)
+        self.gridLayout_4.setObjectName("gridLayout_4")
+        self.EDR_STOP_BTN = QtWidgets.QPushButton(self.groupBox)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.groupBox_18.sizePolicy().hasHeightForWidth())
-        self.groupBox_18.setSizePolicy(sizePolicy)
+        sizePolicy.setHeightForWidth(self.EDR_STOP_BTN.sizePolicy().hasHeightForWidth())
+        self.EDR_STOP_BTN.setSizePolicy(sizePolicy)
+        self.EDR_STOP_BTN.setMaximumSize(QtCore.QSize(16777215, 100))
         font = QtGui.QFont()
         font.setPointSize(12)
-        self.groupBox_18.setFont(font)
-        self.groupBox_18.setObjectName("groupBox_18")
-        self.gridLayout_24 = QtWidgets.QGridLayout(self.groupBox_18)
-        self.gridLayout_24.setObjectName("gridLayout_24")
-        self.EDR_OTHER_DATA_BRS = QtWidgets.QListWidget(self.groupBox_18)
-        self.EDR_OTHER_DATA_BRS.setObjectName("EDR_OTHER_DATA_BRS")
-        self.gridLayout_24.addWidget(self.EDR_OTHER_DATA_BRS, 0, 0, 1, 1)
-        self.gridLayout_22.addWidget(self.groupBox_18, 2, 1, 1, 1)
-        self.groupBox_16 = QtWidgets.QGroupBox(self.tab_4)
+        self.EDR_STOP_BTN.setFont(font)
+        self.EDR_STOP_BTN.setObjectName("EDR_STOP_BTN")
+        self.gridLayout_4.addWidget(self.EDR_STOP_BTN, 0, 3, 1, 1)
+        self.EDR1_BTN = QtWidgets.QPushButton(self.groupBox)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.EDR1_BTN.sizePolicy().hasHeightForWidth())
+        self.EDR1_BTN.setSizePolicy(sizePolicy)
+        self.EDR1_BTN.setMinimumSize(QtCore.QSize(0, 50))
+        self.EDR1_BTN.setMaximumSize(QtCore.QSize(16777215, 50))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.EDR1_BTN.setFont(font)
+        self.EDR1_BTN.setObjectName("EDR1_BTN")
+        self.gridLayout_4.addWidget(self.EDR1_BTN, 0, 2, 1, 1)
+        self.EDR3_BTN = QtWidgets.QPushButton(self.groupBox)
+        self.EDR3_BTN.setMinimumSize(QtCore.QSize(0, 50))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.EDR3_BTN.setFont(font)
+        self.EDR3_BTN.setObjectName("EDR3_BTN")
+        self.gridLayout_4.addWidget(self.EDR3_BTN, 2, 2, 1, 1)
+        self.EDR2_BTN = QtWidgets.QPushButton(self.groupBox)
+        self.EDR2_BTN.setMinimumSize(QtCore.QSize(0, 50))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.EDR2_BTN.setFont(font)
+        self.EDR2_BTN.setObjectName("EDR2_BTN")
+        self.gridLayout_4.addWidget(self.EDR2_BTN, 1, 2, 1, 1)
+        self.READ_NUM_BTN = QtWidgets.QPushButton(self.groupBox)
+        self.READ_NUM_BTN.setMinimumSize(QtCore.QSize(0, 50))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.READ_NUM_BTN.setFont(font)
+        self.READ_NUM_BTN.setObjectName("READ_NUM_BTN")
+        self.gridLayout_4.addWidget(self.READ_NUM_BTN, 1, 3, 1, 1)
+        self.gridLayout_3.addWidget(self.groupBox, 0, 0, 1, 3)
+        self.groupBox_17 = QtWidgets.QGroupBox(self.groupBox_11223344)
+        self.groupBox_17.setMaximumSize(QtCore.QSize(16777215, 500))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.groupBox_17.setFont(font)
+        self.groupBox_17.setObjectName("groupBox_17")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.groupBox_17)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.Precrash_data_table = QtWidgets.QTableWidget(self.groupBox_17)
+        self.Precrash_data_table.setMaximumSize(QtCore.QSize(6666, 6666))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.Precrash_data_table.setFont(font)
+        self.Precrash_data_table.setShowGrid(True)
+        self.Precrash_data_table.setGridStyle(QtCore.Qt.SolidLine)
+        self.Precrash_data_table.setWordWrap(True)
+        self.Precrash_data_table.setCornerButtonEnabled(True)
+        self.Precrash_data_table.setObjectName("Precrash_data_table")
+        self.Precrash_data_table.setColumnCount(12)
+        self.Precrash_data_table.setRowCount(11)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setVerticalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setVerticalHeaderItem(1, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setVerticalHeaderItem(2, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setVerticalHeaderItem(3, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setVerticalHeaderItem(4, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setVerticalHeaderItem(5, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setVerticalHeaderItem(6, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setVerticalHeaderItem(7, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setVerticalHeaderItem(8, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setVerticalHeaderItem(9, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setVerticalHeaderItem(10, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setHorizontalHeaderItem(1, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setHorizontalHeaderItem(2, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setHorizontalHeaderItem(3, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setHorizontalHeaderItem(4, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setHorizontalHeaderItem(5, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setHorizontalHeaderItem(6, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setHorizontalHeaderItem(7, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setHorizontalHeaderItem(8, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setHorizontalHeaderItem(9, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setHorizontalHeaderItem(10, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.Precrash_data_table.setHorizontalHeaderItem(11, item)
+        self.horizontalLayout_2.addWidget(self.Precrash_data_table)
+        self.gridLayout_3.addWidget(self.groupBox_17, 1, 1, 1, 2)
+        self.groupBox_16 = QtWidgets.QGroupBox(self.groupBox_11223344)
+        self.groupBox_16.setMinimumSize(QtCore.QSize(330, 0))
+        self.groupBox_16.setMaximumSize(QtCore.QSize(66666, 16777215))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.groupBox_16.setFont(font)
         self.groupBox_16.setObjectName("groupBox_16")
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.groupBox_16)
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.groupBox_16)
+        self.verticalLayout.setObjectName("verticalLayout")
         self.Crash_data_table = QtWidgets.QTableWidget(self.groupBox_16)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.Crash_data_table.sizePolicy().hasHeightForWidth())
         self.Crash_data_table.setSizePolicy(sizePolicy)
-        self.Crash_data_table.setMinimumSize(QtCore.QSize(320, 980))
+        self.Crash_data_table.setMaximumSize(QtCore.QSize(6666, 66666))
         font = QtGui.QFont()
-        font.setPointSize(9)
+        font.setPointSize(10)
         self.Crash_data_table.setFont(font)
         self.Crash_data_table.setObjectName("Crash_data_table")
         self.Crash_data_table.setColumnCount(3)
@@ -1296,326 +1384,304 @@ class Ui_MainWindow(object):
         self.Crash_data_table.setHorizontalHeaderItem(1, item)
         item = QtWidgets.QTableWidgetItem()
         self.Crash_data_table.setHorizontalHeaderItem(2, item)
-        for i in range(0,3):
-            self.Crash_data_table.setColumnWidth(i,110)
-        self.Crash_data_table.setColumnWidth(0, 70)
-        self.Crash_data_table.setColumnWidth(1, 100)
-        self.horizontalLayout_2.addWidget(self.Crash_data_table)
-        self.gridLayout_22.addWidget(self.groupBox_16, 1, 0, 2, 1)
-        self.groupBox_17 = QtWidgets.QGroupBox(self.tab_4)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.groupBox_17.sizePolicy().hasHeightForWidth())
-        self.groupBox_17.setSizePolicy(sizePolicy)
+        self.verticalLayout.addWidget(self.Crash_data_table)
+        self.gridLayout_3.addWidget(self.groupBox_16, 1, 0, 3, 1)
+        self.groupBox_18 = QtWidgets.QGroupBox(self.groupBox_11223344)
+        self.groupBox_18.setMinimumSize(QtCore.QSize(0, 1))
+        self.groupBox_18.setMaximumSize(QtCore.QSize(16777215, 600))
         font = QtGui.QFont()
         font.setPointSize(12)
-        self.groupBox_17.setFont(font)
-        self.groupBox_17.setObjectName("groupBox_17")
-        self.gridLayout_23 = QtWidgets.QGridLayout(self.groupBox_17)
-        self.gridLayout_23.setObjectName("gridLayout_23")
-        self.Precrash_data_table = QtWidgets.QTableWidget(self.groupBox_17)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.Precrash_data_table.sizePolicy().hasHeightForWidth())
-        self.Precrash_data_table.setSizePolicy(sizePolicy)
-        self.Precrash_data_table.setMinimumSize(QtCore.QSize(1510, 450))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.Precrash_data_table.setFont(font)
-        self.Precrash_data_table.setObjectName("Precrash_data_table")
-        self.Precrash_data_table.setColumnCount(12)
-        self.Precrash_data_table.setRowCount(11)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setVerticalHeaderItem(0, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setVerticalHeaderItem(1, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setVerticalHeaderItem(2, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setVerticalHeaderItem(3, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setVerticalHeaderItem(4, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setVerticalHeaderItem(5, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setVerticalHeaderItem(6, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setVerticalHeaderItem(7, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setVerticalHeaderItem(8, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setVerticalHeaderItem(9, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setVerticalHeaderItem(10, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setHorizontalHeaderItem(0, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setHorizontalHeaderItem(1, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setHorizontalHeaderItem(2, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setHorizontalHeaderItem(3, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setHorizontalHeaderItem(4, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setHorizontalHeaderItem(5, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setHorizontalHeaderItem(6, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setHorizontalHeaderItem(7, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setHorizontalHeaderItem(8, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setHorizontalHeaderItem(9, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setHorizontalHeaderItem(10, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Precrash_data_table.setHorizontalHeaderItem(11, item)
-        self.Precrash_data_table.setColumnWidth(0,70)
-        self.Precrash_data_table.setColumnWidth(1, 116)
-        self.Precrash_data_table.setColumnWidth(5, 130)
-        self.Precrash_data_table.setColumnWidth(7, 90)
-        self.Precrash_data_table.setColumnWidth(8, 190)
-        self.Precrash_data_table.setColumnWidth(9, 190)
-        self.Precrash_data_table.setColumnWidth(3, 100)
-        self.Precrash_data_table.setColumnWidth(10, 120)
-        self.Precrash_data_table.setColumnWidth(11, 120)
-        self.gridLayout_23.addWidget(self.Precrash_data_table, 0, 0, 1, 1)
-        self.gridLayout_22.addWidget(self.groupBox_17, 1, 1, 1, 1)
-        self.groupBox_15 = QtWidgets.QGroupBox(self.tab_4)
-        self.groupBox_15.setTitle("")
-        self.groupBox_15.setObjectName("groupBox_15")
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self.groupBox_15)
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.EDR_READ_BTN = QtWidgets.QPushButton(self.groupBox_15)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.EDR_READ_BTN.sizePolicy().hasHeightForWidth())
-        self.EDR_READ_BTN.setSizePolicy(sizePolicy)
-        self.EDR_READ_BTN.setMinimumSize(QtCore.QSize(0, 50))
-        self.EDR_READ_BTN.setMaximumSize(QtCore.QSize(16777215, 100))
-        self.EDR_READ_BTN.setSizeIncrement(QtCore.QSize(20, 600))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        font.setBold(False)
-        font.setWeight(50)
-        self.EDR_READ_BTN.setFont(font)
-        self.EDR_READ_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
-        self.EDR_READ_BTN.setObjectName("EDR_READ_BTN")
-        self.horizontalLayout.addWidget(self.EDR_READ_BTN)
-        self.STOP_BTN_7 = QtWidgets.QPushButton(self.groupBox_15)
-        self.STOP_BTN_7.setMinimumSize(QtCore.QSize(0, 50))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.STOP_BTN_7.setFont(font)
-        self.STOP_BTN_7.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
-        self.STOP_BTN_7.setObjectName("STOP_BTN_7")
-        self.horizontalLayout.addWidget(self.STOP_BTN_7)
-        self.EDR_settings_btn = QtWidgets.QPushButton(self.groupBox_15)
-        self.EDR_settings_btn.setMinimumSize(QtCore.QSize(0, 50))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.EDR_settings_btn.setFont(font)
-        self.EDR_settings_btn.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
-        self.EDR_settings_btn.setObjectName("EDR_settings_btn")
-        self.horizontalLayout.addWidget(self.EDR_settings_btn)
-        self.gridLayout_22.addWidget(self.groupBox_15, 0, 0, 1, 2)
-        self.tabWidget.addTab(self.tab_4, "")
+        self.groupBox_18.setFont(font)
+        self.groupBox_18.setObjectName("groupBox_18")
+        self.gridLayout_2 = QtWidgets.QGridLayout(self.groupBox_18)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.EDR_OTHER_DATA_BRS = QtWidgets.QListWidget(self.groupBox_18)
+        self.EDR_OTHER_DATA_BRS.setMaximumSize(QtCore.QSize(16777215, 6666))
+        self.EDR_OTHER_DATA_BRS.setObjectName("EDR_OTHER_DATA_BRS")
+        self.gridLayout_2.addWidget(self.EDR_OTHER_DATA_BRS, 0, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.groupBox_18, 2, 2, 2, 1)
+        self.gridLayout_5.addWidget(self.groupBox_11223344, 0, 0, 1, 1)
+        self.Crash_data_table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
+        self.Precrash_data_table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
+        self.tabWidget.addTab(self.EDR_tab, "")
         self.params_tab = QtWidgets.QWidget()
         self.params_tab.setObjectName("params_tab")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.params_tab)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.groupBoxA = QtWidgets.QGroupBox(self.params_tab)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.groupBoxA.sizePolicy().hasHeightForWidth())
         self.groupBoxA.setSizePolicy(sizePolicy)
+        self.groupBoxA.setMinimumSize(QtCore.QSize(500, 0))
         font = QtGui.QFont()
         font.setPointSize(13)
         self.groupBoxA.setFont(font)
         self.groupBoxA.setObjectName("groupBoxA")
         self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBoxA)
         self.gridLayout_3.setObjectName("gridLayout_3")
-        self.LimitSxSyfront_input = QtWidgets.QSpinBox(self.groupBoxA)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.LimitSxSyfront_input.setFont(font)
-        self.LimitSxSyfront_input.setMaximum(65535)
-        self.LimitSxSyfront_input.setObjectName("LimitSxSyfront_input")
-        self.gridLayout_3.addWidget(self.LimitSxSyfront_input, 3, 1, 1, 1)
-        self.LimitAresfront_input = QtWidgets.QSpinBox(self.groupBoxA)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.LimitAresfront_input.setFont(font)
-        self.LimitAresfront_input.setMaximum(65535)
-        self.LimitAresfront_input.setObjectName("LimitAresfront_input")
-        self.gridLayout_3.addWidget(self.LimitAresfront_input, 1, 1, 1, 1)
-        self.Tcalc_input = QtWidgets.QSpinBox(self.groupBoxA)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.Tcalc_input.setFont(font)
-        self.Tcalc_input.setMaximum(255)
-        self.Tcalc_input.setObjectName("Tcalc_input")
-        self.gridLayout_3.addWidget(self.Tcalc_input, 9, 1, 1, 1)
+        self.defined_params_selector = QtWidgets.QComboBox(self.groupBoxA)
+        self.defined_params_selector.setObjectName("defined_params_selector")
+        self.gridLayout_3.addWidget(self.defined_params_selector, 1, 0, 1, 1)
+        self.defined_params_lbl = QtWidgets.QLabel(self.groupBoxA)
+        self.defined_params_lbl.setObjectName("defined_params_lbl")
+        self.gridLayout_3.addWidget(self.defined_params_lbl, 0, 0, 1, 1)
         self.Sresimpact_side_input = QtWidgets.QSpinBox(self.groupBoxA)
         font = QtGui.QFont()
         font.setPointSize(12)
         self.Sresimpact_side_input.setFont(font)
         self.Sresimpact_side_input.setMaximum(65535)
         self.Sresimpact_side_input.setObjectName("Sresimpact_side_input")
-        self.gridLayout_3.addWidget(self.Sresimpact_side_input, 14, 1, 1, 1)
+        self.gridLayout_3.addWidget(self.Sresimpact_side_input, 16, 1, 1, 1)
+        self.LimitSxSyfront_input = QtWidgets.QSpinBox(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.LimitSxSyfront_input.setFont(font)
+        self.LimitSxSyfront_input.setMaximum(65535)
+        self.LimitSxSyfront_input.setObjectName("LimitSxSyfront_input")
+        self.gridLayout_3.addWidget(self.LimitSxSyfront_input, 5, 1, 1, 1)
+        self.Tcalc_input = QtWidgets.QSpinBox(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.Tcalc_input.setFont(font)
+        self.Tcalc_input.setMaximum(255)
+        self.Tcalc_input.setObjectName("Tcalc_input")
+        self.gridLayout_3.addWidget(self.Tcalc_input, 11, 1, 1, 1)
         self.Sresimpactfront_input = QtWidgets.QSpinBox(self.groupBoxA)
         font = QtGui.QFont()
         font.setPointSize(12)
         self.Sresimpactfront_input.setFont(font)
         self.Sresimpactfront_input.setMaximum(65535)
         self.Sresimpactfront_input.setObjectName("Sresimpactfront_input")
-        self.gridLayout_3.addWidget(self.Sresimpactfront_input, 13, 1, 1, 1)
-        self.LimitSxSyfront_lbl = QtWidgets.QLabel(self.groupBoxA)
+        self.gridLayout_3.addWidget(self.Sresimpactfront_input, 15, 1, 1, 1)
+        self.LimitAresfront_input = QtWidgets.QSpinBox(self.groupBoxA)
         font = QtGui.QFont()
-        font.setPointSize(14)
-        self.LimitSxSyfront_lbl.setFont(font)
-        self.LimitSxSyfront_lbl.setObjectName("LimitSxSyfront_lbl")
-        self.gridLayout_3.addWidget(self.LimitSxSyfront_lbl, 3, 0, 1, 1)
+        font.setPointSize(12)
+        self.LimitAresfront_input.setFont(font)
+        self.LimitAresfront_input.setMaximum(65535)
+        self.LimitAresfront_input.setObjectName("LimitAresfront_input")
+        self.gridLayout_3.addWidget(self.LimitAresfront_input, 3, 1, 1, 1)
         self.LimitAresfront_lbl = QtWidgets.QLabel(self.groupBoxA)
         font = QtGui.QFont()
         font.setPointSize(14)
         self.LimitAresfront_lbl.setFont(font)
         self.LimitAresfront_lbl.setObjectName("LimitAresfront_lbl")
-        self.gridLayout_3.addWidget(self.LimitAresfront_lbl, 1, 0, 1, 1)
-        self.LimitSresside_input = QtWidgets.QSpinBox(self.groupBoxA)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.LimitSresside_input.setFont(font)
-        self.LimitSresside_input.setMaximum(65535)
-        self.LimitSresside_input.setObjectName("LimitSresside_input")
-        self.gridLayout_3.addWidget(self.LimitSresside_input, 8, 1, 1, 1)
-        self.Sresimpactfront_lbl = QtWidgets.QLabel(self.groupBoxA)
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.Sresimpactfront_lbl.setFont(font)
-        self.Sresimpactfront_lbl.setObjectName("Sresimpactfront_lbl")
-        self.gridLayout_3.addWidget(self.Sresimpactfront_lbl, 13, 0, 1, 1)
-        self.Sresimpactside_lbl = QtWidgets.QLabel(self.groupBoxA)
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.Sresimpactside_lbl.setFont(font)
-        self.Sresimpactside_lbl.setObjectName("Sresimpactside_lbl")
-        self.gridLayout_3.addWidget(self.Sresimpactside_lbl, 14, 0, 1, 1)
-        self.Time_to_stop_calc_lbl = QtWidgets.QLabel(self.groupBoxA)
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.Time_to_stop_calc_lbl.setFont(font)
-        self.Time_to_stop_calc_lbl.setObjectName("Time_to_stop_calc_lbl")
-        self.gridLayout_3.addWidget(self.Time_to_stop_calc_lbl, 12, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.LimitAresfront_lbl, 3, 0, 1, 1)
         self.Tcalc_lbl = QtWidgets.QLabel(self.groupBoxA)
         font = QtGui.QFont()
         font.setPointSize(14)
         self.Tcalc_lbl.setFont(font)
         self.Tcalc_lbl.setObjectName("Tcalc_lbl")
-        self.gridLayout_3.addWidget(self.Tcalc_lbl, 9, 0, 1, 1)
-        self.LimitSresside_lbl = QtWidgets.QLabel(self.groupBoxA)
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.LimitSresside_lbl.setFont(font)
-        self.LimitSresside_lbl.setObjectName("LimitSresside_lbl")
-        self.gridLayout_3.addWidget(self.LimitSresside_lbl, 8, 0, 1, 1)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
-        self.gridLayout_3.addItem(spacerItem, 3, 2, 1, 1)
-        self.defined_params_lbl = QtWidgets.QLabel(self.groupBoxA)
-        self.defined_params_lbl.setObjectName("defined_params_lbl")
-        self.gridLayout_3.addWidget(self.defined_params_lbl, 16, 0, 1, 1)
-        self.Timetostopcalc_input = QtWidgets.QSpinBox(self.groupBoxA)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.Timetostopcalc_input.setFont(font)
-        self.Timetostopcalc_input.setMaximum(255)
-        self.Timetostopcalc_input.setObjectName("Timetostopcalc_input")
-        self.gridLayout_3.addWidget(self.Timetostopcalc_input, 12, 1, 1, 1)
+        self.gridLayout_3.addWidget(self.Tcalc_lbl, 11, 0, 1, 1)
         self.LimitSresfront_input = QtWidgets.QSpinBox(self.groupBoxA)
         font = QtGui.QFont()
         font.setPointSize(12)
         self.LimitSresfront_input.setFont(font)
         self.LimitSresfront_input.setMaximum(65535)
         self.LimitSresfront_input.setObjectName("LimitSresfront_input")
-        self.gridLayout_3.addWidget(self.LimitSresfront_input, 6, 1, 1, 1)
+        self.gridLayout_3.addWidget(self.LimitSresfront_input, 8, 1, 1, 1)
+        self.Sresimpactfront_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.Sresimpactfront_lbl.setFont(font)
+        self.Sresimpactfront_lbl.setObjectName("Sresimpactfront_lbl")
+        self.gridLayout_3.addWidget(self.Sresimpactfront_lbl, 15, 0, 1, 1)
+        self.Sresimpactside_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.Sresimpactside_lbl.setFont(font)
+        self.Sresimpactside_lbl.setObjectName("Sresimpactside_lbl")
+        self.gridLayout_3.addWidget(self.Sresimpactside_lbl, 16, 0, 1, 1)
+        self.LimitSxSyfront_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.LimitSxSyfront_lbl.setFont(font)
+        self.LimitSxSyfront_lbl.setObjectName("LimitSxSyfront_lbl")
+        self.gridLayout_3.addWidget(self.LimitSxSyfront_lbl, 5, 0, 1, 1)
+        self.LimitSxSyside_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.LimitSxSyside_lbl.setFont(font)
+        self.LimitSxSyside_lbl.setObjectName("LimitSxSyside_lbl")
+        self.gridLayout_3.addWidget(self.LimitSxSyside_lbl, 6, 0, 1, 1)
+        self.Time_to_stop_calc_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.Time_to_stop_calc_lbl.setFont(font)
+        self.Time_to_stop_calc_lbl.setObjectName("Time_to_stop_calc_lbl")
+        self.gridLayout_3.addWidget(self.Time_to_stop_calc_lbl, 14, 0, 1, 1)
+        self.LimitSresside_input = QtWidgets.QSpinBox(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.LimitSresside_input.setFont(font)
+        self.LimitSresside_input.setMaximum(65535)
+        self.LimitSresside_input.setObjectName("LimitSresside_input")
+        self.gridLayout_3.addWidget(self.LimitSresside_input, 10, 1, 1, 1)
         self.LimitSxSyside_input = QtWidgets.QSpinBox(self.groupBoxA)
         font = QtGui.QFont()
         font.setPointSize(12)
         self.LimitSxSyside_input.setFont(font)
         self.LimitSxSyside_input.setMaximum(65535)
         self.LimitSxSyside_input.setObjectName("LimitSxSyside_input")
-        self.gridLayout_3.addWidget(self.LimitSxSyside_input, 4, 1, 1, 1)
-        self.LimitSxSyside_lbl = QtWidgets.QLabel(self.groupBoxA)
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.LimitSxSyside_lbl.setFont(font)
-        self.LimitSxSyside_lbl.setObjectName("LimitSxSyside_lbl")
-        self.gridLayout_3.addWidget(self.LimitSxSyside_lbl, 4, 0, 1, 1)
-        self.deltaAres_lbl = QtWidgets.QLabel(self.groupBoxA)
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.deltaAres_lbl.setFont(font)
-        self.deltaAres_lbl.setObjectName("deltaAres_lbl")
-        self.gridLayout_3.addWidget(self.deltaAres_lbl, 11, 0, 1, 1)
-        self.deltaAres_input = QtWidgets.QSpinBox(self.groupBoxA)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.deltaAres_input.setFont(font)
-        self.deltaAres_input.setMaximum(255)
-        self.deltaAres_input.setObjectName("deltaAres_input")
-        self.gridLayout_3.addWidget(self.deltaAres_input, 11, 1, 1, 1)
-        self.Tcalc2_lbl = QtWidgets.QLabel(self.groupBoxA)
-        self.Tcalc2_lbl.setObjectName("Tcalc2_lbl")
-        self.gridLayout_3.addWidget(self.Tcalc2_lbl, 10, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.LimitSxSyside_input, 6, 1, 1, 1)
         self.LimitAresside_input = QtWidgets.QSpinBox(self.groupBoxA)
         font = QtGui.QFont()
         font.setPointSize(12)
         self.LimitAresside_input.setFont(font)
         self.LimitAresside_input.setMaximum(65535)
         self.LimitAresside_input.setObjectName("LimitAresside_input")
-        self.gridLayout_3.addWidget(self.LimitAresside_input, 2, 1, 1, 1)
+        self.gridLayout_3.addWidget(self.LimitAresside_input, 4, 1, 1, 1)
+        self.deltaAres_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.deltaAres_lbl.setFont(font)
+        self.deltaAres_lbl.setObjectName("deltaAres_lbl")
+        self.gridLayout_3.addWidget(self.deltaAres_lbl, 13, 0, 1, 1)
+        self.Timetostopcalc_input = QtWidgets.QSpinBox(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.Timetostopcalc_input.setFont(font)
+        self.Timetostopcalc_input.setMaximum(255)
+        self.Timetostopcalc_input.setObjectName("Timetostopcalc_input")
+        self.gridLayout_3.addWidget(self.Timetostopcalc_input, 14, 1, 1, 1)
+        self.LimitSresside_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.LimitSresside_lbl.setFont(font)
+        self.LimitSresside_lbl.setObjectName("LimitSresside_lbl")
+        self.gridLayout_3.addWidget(self.LimitSresside_lbl, 10, 0, 1, 1)
+        self.deltaAres_input = QtWidgets.QSpinBox(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.deltaAres_input.setFont(font)
+        self.deltaAres_input.setMaximum(255)
+        self.deltaAres_input.setObjectName("deltaAres_input")
+        self.gridLayout_3.addWidget(self.deltaAres_input, 13, 1, 1, 1)
         self.LimitAresside_lbl = QtWidgets.QLabel(self.groupBoxA)
         font = QtGui.QFont()
         font.setPointSize(14)
         self.LimitAresside_lbl.setFont(font)
         self.LimitAresside_lbl.setObjectName("LimitAresside_lbl")
-        self.gridLayout_3.addWidget(self.LimitAresside_lbl, 2, 0, 1, 1)
-        self.LimitSresfront_lbl = QtWidgets.QLabel(self.groupBoxA)
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.LimitSresfront_lbl.setFont(font)
-        self.LimitSresfront_lbl.setObjectName("LimitSresfront_lbl")
-        self.gridLayout_3.addWidget(self.LimitSresfront_lbl, 6, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.LimitAresside_lbl, 4, 0, 1, 1)
+        self.Tcalc2_lbl = QtWidgets.QLabel(self.groupBoxA)
+        self.Tcalc2_lbl.setObjectName("Tcalc2_lbl")
+        self.gridLayout_3.addWidget(self.Tcalc2_lbl, 12, 0, 1, 1)
+        self.LOGS_LBL = QtWidgets.QLabel(self.groupBoxA)
+        self.LOGS_LBL.setObjectName("LOGS_LBL")
+        self.gridLayout_3.addWidget(self.LOGS_LBL, 2, 2, 1, 1)
         self.Tcalc2_input = QtWidgets.QSpinBox(self.groupBoxA)
         font = QtGui.QFont()
         font.setPointSize(12)
         self.Tcalc2_input.setFont(font)
         self.Tcalc2_input.setObjectName("Tcalc2_input")
-        self.Tcalc2_input.setMaximum(255)
-        self.gridLayout_3.addWidget(self.Tcalc2_input, 10, 1, 1, 1)
-        self.defined_params_selector = QtWidgets.QComboBox(self.groupBoxA)
-        self.defined_params_selector.setObjectName("defined_params_selector")
-        self.gridLayout_3.addWidget(self.defined_params_selector, 17, 0, 1, 1)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout_3.addItem(spacerItem1, 15, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.Tcalc2_input, 12, 1, 1, 1)
+        self.LimitSresfront_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.LimitSresfront_lbl.setFont(font)
+        self.LimitSresfront_lbl.setObjectName("LimitSresfront_lbl")
+        self.gridLayout_3.addWidget(self.LimitSresfront_lbl, 8, 0, 1, 1)
+        self.save_params_btn = QtWidgets.QPushButton(self.groupBoxA)
+        self.save_params_btn.setCheckable(False)
+        self.save_params_btn.setAutoRepeat(False)
+        self.save_params_btn.setObjectName("save_params_btn")
+        self.gridLayout_3.addWidget(self.save_params_btn, 0, 2, 2, 1)
+        self.groupBox = QtWidgets.QGroupBox(self.groupBoxA)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
+        self.groupBox.setSizePolicy(sizePolicy)
+        self.groupBox.setTitle("")
+        self.groupBox.setObjectName("groupBox")
+        self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox)
+        self.gridLayout_6.setObjectName("gridLayout_6")
+        self.read_params_btn = QtWidgets.QPushButton(self.groupBox)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.read_params_btn.setFont(font)
+        self.read_params_btn.setObjectName("read_params_btn")
+        self.gridLayout_6.addWidget(self.read_params_btn, 0, 1, 1, 1)
+        self.UPDATE_PARAMS_BTN = QtWidgets.QPushButton(self.groupBox)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.UPDATE_PARAMS_BTN.setFont(font)
+        self.UPDATE_PARAMS_BTN.setObjectName("UPDATE_PARAMS_BTN")
+        self.gridLayout_6.addWidget(self.UPDATE_PARAMS_BTN, 0, 0, 1, 1)
+        self.UPDATE_PARAMS_LOCAL_BTN = QtWidgets.QPushButton(self.groupBox)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.UPDATE_PARAMS_LOCAL_BTN.setFont(font)
+        self.UPDATE_PARAMS_LOCAL_BTN.setObjectName("UPDATE_PARAMS_LOCAL_BTN")
+        self.gridLayout_6.addWidget(self.UPDATE_PARAMS_LOCAL_BTN, 1, 0, 1, 1)
+        self.read_params_local_btn = QtWidgets.QPushButton(self.groupBox)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.read_params_local_btn.setFont(font)
+        self.read_params_local_btn.setObjectName("read_params_local_btn")
+        self.gridLayout_6.addWidget(self.read_params_local_btn, 1, 1, 1, 1)
+        self.gridLayout_3.addWidget(self.groupBox, 17, 0, 2, 3)
+        self.PARAM_RESULT_BRS_2 = QtWidgets.QTextBrowser(self.groupBoxA)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding,
+                                           QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.PARAM_RESULT_BRS_2.sizePolicy().hasHeightForWidth())
+        self.PARAM_RESULT_BRS_2.setSizePolicy(sizePolicy)
+        self.PARAM_RESULT_BRS_2.setObjectName("PARAM_RESULT_BRS_2")
+        self.gridLayout_3.addWidget(self.PARAM_RESULT_BRS_2, 3, 2, 13, 1)
         self.gridLayout_2.addWidget(self.groupBoxA, 0, 0, 1, 1)
         self.groupBox143 = QtWidgets.QGroupBox(self.params_tab)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.groupBox143.sizePolicy().hasHeightForWidth())
         self.groupBox143.setSizePolicy(sizePolicy)
+        self.groupBox143.setMinimumSize(QtCore.QSize(500, 0))
         font = QtGui.QFont()
         font.setPointSize(14)
         self.groupBox143.setFont(font)
         self.groupBox143.setObjectName("groupBox143")
         self.gridLayout_4 = QtWidgets.QGridLayout(self.groupBox143)
         self.gridLayout_4.setObjectName("gridLayout_4")
+        self.export_results_btn = QtWidgets.QPushButton(self.groupBox143)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.export_results_btn.sizePolicy().hasHeightForWidth())
+        self.export_results_btn.setSizePolicy(sizePolicy)
+        self.export_results_btn.setMinimumSize(QtCore.QSize(0, 83))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.export_results_btn.setFont(font)
+        self.export_results_btn.setObjectName("export_results_btn")
+        self.gridLayout_4.addWidget(self.export_results_btn, 5, 0, 1, 1)
+        self.model_test_selector = QtWidgets.QComboBox(self.groupBox143)
+        self.model_test_selector.setObjectName("model_test_selector")
+        self.gridLayout_4.addWidget(self.model_test_selector, 1, 0, 1, 1)
+        self.run_single_test_btn = QtWidgets.QPushButton(self.groupBox143)
+        self.run_single_test_btn.setEnabled(True)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.run_single_test_btn.sizePolicy().hasHeightForWidth())
+        self.run_single_test_btn.setSizePolicy(sizePolicy)
+        self.run_single_test_btn.setMinimumSize(QtCore.QSize(0, 83))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.run_single_test_btn.setFont(font)
+        self.run_single_test_btn.setObjectName("run_single_test_btn")
+        self.gridLayout_4.addWidget(self.run_single_test_btn, 4, 0, 1, 1)
+        self.CHECK_PARAM_VALID_BTN = QtWidgets.QPushButton(self.groupBox143)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.CHECK_PARAM_VALID_BTN.sizePolicy().hasHeightForWidth())
+        self.CHECK_PARAM_VALID_BTN.setSizePolicy(sizePolicy)
+        self.CHECK_PARAM_VALID_BTN.setMinimumSize(QtCore.QSize(0, 83))
+        self.CHECK_PARAM_VALID_BTN.setObjectName("CHECK_PARAM_VALID_BTN")
+        self.gridLayout_4.addWidget(self.CHECK_PARAM_VALID_BTN, 6, 0, 1, 1)
         self.PARAM_RESULT_BRS = QtWidgets.QTextBrowser(self.groupBox143)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -1623,211 +1689,137 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.PARAM_RESULT_BRS.sizePolicy().hasHeightForWidth())
         self.PARAM_RESULT_BRS.setSizePolicy(sizePolicy)
         self.PARAM_RESULT_BRS.setObjectName("PARAM_RESULT_BRS")
-        self.gridLayout_4.addWidget(self.PARAM_RESULT_BRS, 1, 1, 6, 1)
-        self.UPDATE_PARAMS_BTN = QtWidgets.QPushButton(self.groupBox143)
-        self.UPDATE_PARAMS_BTN.setEnabled(True)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.UPDATE_PARAMS_BTN.sizePolicy().hasHeightForWidth())
-        self.UPDATE_PARAMS_BTN.setSizePolicy(sizePolicy)
-        self.UPDATE_PARAMS_BTN.setMinimumSize(QtCore.QSize(0, 83))
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.UPDATE_PARAMS_BTN.setFont(font)
-        self.UPDATE_PARAMS_BTN.setObjectName("UPDATE_PARAMS_BTN")
-        self.gridLayout_4.addWidget(self.UPDATE_PARAMS_BTN, 1, 0, 1, 1)
-        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum,
-                                            QtWidgets.QSizePolicy.MinimumExpanding)
-        self.gridLayout_4.addItem(spacerItem2, 3, 0, 1, 1)
-        self.PARAM_RESULT_LBL = QtWidgets.QLabel(self.groupBox143)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.PARAM_RESULT_LBL.sizePolicy().hasHeightForWidth())
-        self.PARAM_RESULT_LBL.setSizePolicy(sizePolicy)
-        self.PARAM_RESULT_LBL.setMinimumSize(QtCore.QSize(0, 10))
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.PARAM_RESULT_LBL.setFont(font)
-        self.PARAM_RESULT_LBL.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
-        self.PARAM_RESULT_LBL.setObjectName("PARAM_RESULT_LBL")
-        self.gridLayout_4.addWidget(self.PARAM_RESULT_LBL, 0, 1, 1, 1)
-        self.read_params_btn = QtWidgets.QPushButton(self.groupBox143)
-        self.read_params_btn.setMinimumSize(QtCore.QSize(0, 83))
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.read_params_btn.setFont(font)
-        self.read_params_btn.setObjectName("read_params_btn")
-        self.gridLayout_4.addWidget(self.read_params_btn, 2, 0, 1, 1)
+        self.gridLayout_4.addWidget(self.PARAM_RESULT_BRS, 0, 1, 7, 1)
         self.gridLayout_2.addWidget(self.groupBox143, 1, 0, 1, 1)
         self.groupBox_2666 = QtWidgets.QGroupBox(self.params_tab)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.groupBox_2666.sizePolicy().hasHeightForWidth())
+        self.groupBox_2666.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setPointSize(14)
         self.groupBox_2666.setFont(font)
         self.groupBox_2666.setObjectName("groupBox_2666")
         self.gridLayout_5 = QtWidgets.QGridLayout(self.groupBox_2666)
         self.gridLayout_5.setObjectName("gridLayout_5")
-        self.run_single_test_btn = QtWidgets.QPushButton(self.groupBox_2666)
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.run_single_test_btn.setFont(font)
-        self.run_single_test_btn.setObjectName("run_single_test_btn")
-        self.gridLayout_5.addWidget(self.run_single_test_btn, 2, 0, 1, 1)
+        self.tendmin_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.tendmin_lbl.setObjectName("tendmin_lbl")
+        self.gridLayout_5.addWidget(self.tendmin_lbl, 13, 0, 1, 1)
+        self.tstmax_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.tstmax_lbl.setObjectName("tstmax_lbl")
+        self.gridLayout_5.addWidget(self.tstmax_lbl, 2, 0, 1, 1)
+        self.t2_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.t2_lbl.setObjectName("t2_lbl")
+        self.gridLayout_5.addWidget(self.t2_lbl, 8, 0, 1, 1)
+        self.tstmin_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.tstmin_lbl.setObjectName("tstmin_lbl")
+        self.gridLayout_5.addWidget(self.tstmin_lbl, 3, 0, 1, 1)
+        self.tstart_min_input = QtWidgets.QSpinBox(self.groupBox_2666)
+        self.tstart_min_input.setObjectName("tstart_min_input")
+        self.gridLayout_5.addWidget(self.tstart_min_input, 3, 1, 1, 1)
+        self.canvas = PlotCanvas(self)
+        self.gridLayout_5.addWidget(self.canvas, 0, 0, 1, 3)
+        self.aresrange_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.aresrange_lbl.setObjectName("aresrange_lbl")
+        self.gridLayout_5.addWidget(self.aresrange_lbl, 16, 0, 1, 1)
+        self.tstart_max_input = QtWidgets.QSpinBox(self.groupBox_2666)
+        self.tstart_max_input.setObjectName("tstart_max_input")
+        self.gridLayout_5.addWidget(self.tstart_max_input, 2, 1, 1, 1)
+        self.limitares_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.limitares_lbl.setObjectName("limitares_lbl")
+        self.gridLayout_5.addWidget(self.limitares_lbl, 17, 0, 1, 1)
+        self.t1_input = QtWidgets.QSpinBox(self.groupBox_2666)
+        self.t1_input.setObjectName("t1_input")
+        self.gridLayout_5.addWidget(self.t1_input, 5, 1, 1, 1)
+        self.t3_input = QtWidgets.QSpinBox(self.groupBox_2666)
+        self.t3_input.setObjectName("t3_input")
+        self.gridLayout_5.addWidget(self.t3_input, 9, 1, 1, 1)
+        self.limit_ares_input = QtWidgets.QSpinBox(self.groupBox_2666)
+        self.limit_ares_input.setObjectName("limit_ares_input")
+        self.gridLayout_5.addWidget(self.limit_ares_input, 17, 1, 1, 1)
+        self.t2_input = QtWidgets.QSpinBox(self.groupBox_2666)
+        self.t2_input.setObjectName("t2_input")
+        self.gridLayout_5.addWidget(self.t2_input, 8, 1, 1, 1)
+        self.tendmax_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.tendmax_lbl.setObjectName("tendmax_lbl")
+        self.gridLayout_5.addWidget(self.tendmax_lbl, 15, 0, 1, 1)
+        self.tend_max_input = QtWidgets.QSpinBox(self.groupBox_2666)
+        self.tend_max_input.setObjectName("tend_max_input")
+        self.gridLayout_5.addWidget(self.tend_max_input, 15, 1, 1, 1)
+        self.t4_input = QtWidgets.QSpinBox(self.groupBox_2666)
+        self.t4_input.setObjectName("t4_input")
+        self.gridLayout_5.addWidget(self.t4_input, 11, 1, 1, 1)
+        self.t3_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.t3_lbl.setObjectName("t3_lbl")
+        self.gridLayout_5.addWidget(self.t3_lbl, 9, 0, 1, 1)
+        self.t4_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.t4_lbl.setObjectName("t4_lbl")
+        self.gridLayout_5.addWidget(self.t4_lbl, 11, 0, 1, 1)
+        self.t1_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.t1_lbl.setObjectName("t1_lbl")
+        self.gridLayout_5.addWidget(self.t1_lbl, 5, 0, 1, 1)
+        self.tend_min_input = QtWidgets.QSpinBox(self.groupBox_2666)
+        self.tend_min_input.setObjectName("tend_min_input")
+        self.gridLayout_5.addWidget(self.tend_min_input, 13, 1, 1, 1)
+        self.sideinput = QtWidgets.QComboBox(self.groupBox_2666)
+        self.sideinput.setObjectName("comboBox")
+        self.sideinput.addItem("")
+        self.sideinput.addItem("")
+        self.sideinput.addItem("")
+        self.sideinput.addItem("")
+        self.gridLayout_5.addWidget(self.sideinput, 20, 1, 1, 1)
+        self.timebeforecollis_input = QtWidgets.QSpinBox(self.groupBox_2666)
+        self.timebeforecollis_input.setObjectName("timebeforecollis_input")
+        self.gridLayout_5.addWidget(self.timebeforecollis_input, 19, 1, 1, 1)
+        self.timestep_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.timestep_lbl.setObjectName("timestep_lbl")
+        self.gridLayout_5.addWidget(self.timestep_lbl, 18, 0, 1, 1)
+        self.timebeforecoll_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.timebeforecoll_lbl.setObjectName("timebeforecoll_lbl")
+        self.gridLayout_5.addWidget(self.timebeforecoll_lbl, 19, 0, 1, 1)
+        self.timestep_input = QtWidgets.QDoubleSpinBox(self.groupBox_2666)
+        self.timestep_input.setObjectName("timestep_input")
+        self.gridLayout_5.addWidget(self.timestep_input, 18, 1, 1, 1)
+        self.collside_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.collside_lbl.setObjectName("collside_lbl")
+        self.gridLayout_5.addWidget(self.collside_lbl, 20, 0, 1, 1)
+        self.syntez_btn = QtWidgets.QPushButton(self.groupBox_2666)
+        self.syntez_btn.setObjectName("syntez_btn")
+        self.gridLayout_5.addWidget(self.syntez_btn, 23, 0, 1, 3)
+        self.ares_range_input = QtWidgets.QSpinBox(self.groupBox_2666)
+        self.ares_range_input.setObjectName("ares_range_input")
+        self.gridLayout_5.addWidget(self.ares_range_input, 16, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.groupBox_2666, 0, 2, 2, 1)
+        self.tstart_min_input.setMaximum(1000)
+        self.tstart_max_input.setMaximum(1000)
+        self.t1_input.setMaximum(1000)
+        self.t2_input.setMaximum(1000)
+        self.t3_input.setMaximum(1000)
+        self.t4_input.setMaximum(1000)
+        self.tend_min_input.setMaximum(1000)
+        self.tend_max_input.setMaximum(1000)
+        self.limit_ares_input.setMaximum(100)
+        self.ares_range_input.setMaximum(100)
+        self.timestep_input.setMaximum(1)
 
-        self.update_testparams_btn = QtWidgets.QPushButton(self.groupBox_2666)
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.update_testparams_btn.setFont(font)
-        self.update_testparams_btn.setObjectName("update_testparams_btn")
-        self.gridLayout_5.addWidget(self.update_testparams_btn, 3, 0, 1, 1)
-        self.update_testparams_btn.setText("Обновить параметры модели")
-
-        self.data_selector_lbl = QtWidgets.QLabel(self.groupBox_2666)
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.data_selector_lbl.setFont(font)
-        self.data_selector_lbl.setObjectName("data_selector_lbl")
-        self.gridLayout_5.addWidget(self.data_selector_lbl, 0, 0, 1, 1)
-        self.data_selector = QtWidgets.QComboBox(self.groupBox_2666)
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.data_selector.setFont(font)
-        self.data_selector.setObjectName("data_selector")
-        #self.data_selector.addItem(f"{tests.[0]}")
-        keys=(tests.keys())
-        for key in keys:
-            self.data_selector.addItem(key)
-        self.gridLayout_5.addWidget(self.data_selector, 1, 0, 1, 1)
-        spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout_5.addItem(spacerItem3, 3, 0, 1, 1)
-        self.single_test_result_brs = QtWidgets.QTextBrowser(self.groupBox_2666)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.single_test_result_brs.sizePolicy().hasHeightForWidth())
-        self.single_test_result_brs.setSizePolicy(sizePolicy)
-        self.single_test_result_brs.setMinimumSize(QtCore.QSize(700, 0))
-        self.single_test_result_brs.setObjectName("single_test_result_brs")
-        self.gridLayout_5.addWidget(self.single_test_result_brs, 1, 1, 4, 1)
-        self.single_test_result_lbl = QtWidgets.QLabel(self.groupBox_2666)
-        self.single_test_result_lbl.setAlignment(QtCore.Qt.AlignCenter)
-        self.single_test_result_lbl.setObjectName("single_test_result_lbl")
-        self.gridLayout_5.addWidget(self.single_test_result_lbl, 0, 1, 1, 1)
-        self.gridLayout_2.addWidget(self.groupBox_2666, 0, 2, 1, 1)
-        self.groupBox_2A = QtWidgets.QGroupBox(self.params_tab)
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.groupBox_2A.setFont(font)
-        self.groupBox_2A.setObjectName("groupBox_2A")
-        self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_2A)
-        self.gridLayout_6.setObjectName("gridLayout_6")
-        self.FIRE = QtWidgets.QCheckBox(self.groupBox_2A)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.FIRE.setFont(font)
-        self.FIRE.setObjectName("FIRE")
-        self.gridLayout_6.addWidget(self.FIRE, 5, 1, 1, 1)
-        self.multitest_result_brs = QtWidgets.QLabel(self.groupBox_2A)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.multitest_result_brs.sizePolicy().hasHeightForWidth())
-        self.multitest_result_brs.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
-        font.setPointSize(13)
-        self.multitest_result_brs.setFont(font)
-        self.multitest_result_brs.setObjectName("multitest_result_brs")
-        self.gridLayout_6.addWidget(self.multitest_result_brs, 1, 6, 1, 1)
-        self.export_results_btn = QtWidgets.QPushButton(self.groupBox_2A)
-        self.export_results_btn.setMinimumSize(QtCore.QSize(0, 55))
-        self.export_results_btn.setObjectName("export_results_btn")
-        self.gridLayout_6.addWidget(self.export_results_btn, 10, 6, 1, 1)
-        self.XGF_lbl = QtWidgets.QLabel(self.groupBox_2A)
-        font = QtGui.QFont()
-        font.setPointSize(20)
-        self.XGF_lbl.setFont(font)
-        self.XGF_lbl.setObjectName("XGF_lbl")
-        self.gridLayout_6.addWidget(self.XGF_lbl, 1, 1, 1, 1)
-        self.EXP = QtWidgets.QCheckBox(self.groupBox_2A)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.EXP.setFont(font)
-        self.EXP.setObjectName("EXP")
-        self.gridLayout_6.addWidget(self.EXP, 9, 1, 1, 1)
-        self.MISUSE = QtWidgets.QCheckBox(self.groupBox_2A)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.MISUSE.setFont(font)
-        self.MISUSE.setObjectName("MISUSE")
-        self.gridLayout_6.addWidget(self.MISUSE, 6, 1, 1, 1)
-        self.PARAMS_PROCESS_BRS = QtWidgets.QTextBrowser(self.groupBox_2A)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(50)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.PARAMS_PROCESS_BRS.sizePolicy().hasHeightForWidth())
-        self.PARAMS_PROCESS_BRS.setSizePolicy(sizePolicy)
-        self.PARAMS_PROCESS_BRS.setMinimumSize(QtCore.QSize(700, 500))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.PARAMS_PROCESS_BRS.setFont(font)
-        self.PARAMS_PROCESS_BRS.setObjectName("PARAMS_PROCESS_BRS")
-        self.gridLayout_6.addWidget(self.PARAMS_PROCESS_BRS, 0, 6, 1, 1)
-        self.CHECK_PARAM_VALID_BTN = QtWidgets.QPushButton(self.groupBox_2A)
-        self.CHECK_PARAM_VALID_BTN.setMinimumSize(QtCore.QSize(0, 55))
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.CHECK_PARAM_VALID_BTN.setFont(font)
-        self.CHECK_PARAM_VALID_BTN.setObjectName("CHECK_PARAM_VALID_BTN")
-        self.gridLayout_6.addWidget(self.CHECK_PARAM_VALID_BTN, 0, 1, 1, 1)
-        self.gridLayout_2.addWidget(self.groupBox_2A, 1, 2, 1, 1)
+        self.tstart_min_input.setValue(4)
+        self.tstart_max_input.setValue(0)
+        self.t1_input.setValue(15)
+        self.t2_input.setValue(25)
+        self.t3_input.setValue(65)
+        self.t4_input.setValue(85)
+        self.tend_min_input.setValue(97)
+        self.tend_max_input.setValue(109)
+        self.limit_ares_input.setValue(20)
+        self.ares_range_input.setValue(80)
+        self.timestep_input.setValue(0.5)
+        self.canvas.plot(self.tstart_min_input.value(), self.t1_input.value(), self.tstart_max_input.value(), self.t2_input.value(), self.t3_input.value(), self.t4_input.value(),self.limit_ares_input.value(),self.ares_range_input.value(), self.tend_min_input.value(), self.tend_max_input.value())
         self.tabWidget.addTab(self.params_tab, "")
         self.reprogramming_tab = QtWidgets.QWidget()
         self.reprogramming_tab.setObjectName("reprogramming_tab")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.reprogramming_tab)
         self.gridLayout_2.setObjectName("gridLayout_2")
-        self.groupBox1565 = QtWidgets.QGroupBox(self.reprogramming_tab)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.groupBox1565.sizePolicy().hasHeightForWidth())
-        self.groupBox1565.setSizePolicy(sizePolicy)
-        self.groupBox1565.setMinimumSize(QtCore.QSize(0, 200))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.groupBox1565.setFont(font)
-        self.groupBox1565.setObjectName("groupBox1565")
-        self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox1565)
-        self.gridLayout_3.setObjectName("gridLayout_3")
-        self.STO_VER_BTN = QtWidgets.QPushButton(self.groupBox1565)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.STO_VER_BTN.sizePolicy().hasHeightForWidth())
-        self.STO_VER_BTN.setSizePolicy(sizePolicy)
-        self.STO_VER_BTN.setObjectName("STO_VER_BTN")
-        self.gridLayout_3.addWidget(self.STO_VER_BTN, 0, 2, 1, 1)
-        self.ACC_VER_BTN = QtWidgets.QPushButton(self.groupBox1565)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.ACC_VER_BTN.sizePolicy().hasHeightForWidth())
-        self.ACC_VER_BTN.setSizePolicy(sizePolicy)
-        self.ACC_VER_BTN.setMinimumSize(QtCore.QSize(0, 30))
-        self.ACC_VER_BTN.setObjectName("ACC_VER_BTN")
-        self.gridLayout_3.addWidget(self.ACC_VER_BTN, 1, 2, 1, 1)
-        self.VER_LOG_BRS = QtWidgets.QTextBrowser(self.groupBox1565)
-        self.VER_LOG_BRS.setObjectName("VER_LOG_BRS")
-        self.gridLayout_3.addWidget(self.VER_LOG_BRS, 0, 6, 3, 1)
-        self.Manufacture_mode_btn = QtWidgets.QPushButton(self.groupBox1565)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.Manufacture_mode_btn.sizePolicy().hasHeightForWidth())
-        self.Manufacture_mode_btn.setSizePolicy(sizePolicy)
-        self.Manufacture_mode_btn.setObjectName("Manufacture_mode_btn")
-        self.gridLayout_3.addWidget(self.Manufacture_mode_btn, 2, 2, 1, 1)
-        self.gridLayout_2.addWidget(self.groupBox1565, 3, 0, 1, 1)
         self.groupBox_23456789 = QtWidgets.QGroupBox(self.reprogramming_tab)
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -1844,26 +1836,10 @@ class Ui_MainWindow(object):
         self.progressBar.setMinimumSize(QtCore.QSize(0, 50))
         self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName("progressBar")
-        self.gridLayout_4.addWidget(self.progressBar, 3, 1, 1, 2)
-        self.textBrowser_2 = QtWidgets.QTextBrowser(self.groupBox_23456789)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.textBrowser_2.sizePolicy().hasHeightForWidth())
-        self.textBrowser_2.setSizePolicy(sizePolicy)
-        self.textBrowser_2.setMinimumSize(QtCore.QSize(0, 10))
-        self.textBrowser_2.setObjectName("textBrowser_2")
-        self.gridLayout_4.addWidget(self.textBrowser_2, 1, 2, 1, 1)
-        self.toolButton = QtWidgets.QToolButton(self.groupBox_23456789)
-        self.toolButton.setIcon(QtGui.QIcon("reprogramming_icon.png"))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.toolButton.sizePolicy().hasHeightForWidth())
-        self.toolButton.setSizePolicy(sizePolicy)
-        self.toolButton.setMinimumSize(QtCore.QSize(50, 50))
-        self.toolButton.setObjectName("toolButton")
-        self.gridLayout_4.addWidget(self.toolButton, 1, 1, 1, 1)
+        self.gridLayout_4.addWidget(self.progressBar, 2, 1, 1, 2)
+        self.LOG_BRS = QtWidgets.QTextBrowser(self.groupBox_23456789)
+        self.LOG_BRS.setObjectName("LOG_BRS")
+        self.gridLayout_4.addWidget(self.LOG_BRS, 3, 1, 1, 2)
         self.pushButton_3 = QtWidgets.QPushButton(self.groupBox_23456789)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
@@ -1875,11 +1851,159 @@ class Ui_MainWindow(object):
         font.setPointSize(14)
         self.pushButton_3.setFont(font)
         self.pushButton_3.setObjectName("pushButton_3")
-        self.gridLayout_4.addWidget(self.pushButton_3, 2, 1, 1, 2)
-        self.LOG_BRS = QtWidgets.QTextBrowser(self.groupBox_23456789)
-        self.LOG_BRS.setObjectName("LOG_BRS")
-        self.gridLayout_4.addWidget(self.LOG_BRS, 4, 1, 1, 2)
+        self.gridLayout_4.addWidget(self.pushButton_3, 1, 1, 1, 2)
+        self.toolButton = QtWidgets.QToolButton(self.groupBox_23456789)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.toolButton.sizePolicy().hasHeightForWidth())
+        self.toolButton.setSizePolicy(sizePolicy)
+        self.toolButton.setMinimumSize(QtCore.QSize(50, 50))
+        os.chdir('icons')
+        self.toolButton.setIcon(QtGui.QIcon("reprogramming_icon.png"))
+        os.chdir('..')
+        self.gridLayout_4.addWidget(self.toolButton, 0, 1, 1, 1)
+        self.textBrowser_2 = QtWidgets.QTextBrowser(self.groupBox_23456789)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.textBrowser_2.sizePolicy().hasHeightForWidth())
+        self.textBrowser_2.setSizePolicy(sizePolicy)
+        self.textBrowser_2.setMinimumSize(QtCore.QSize(0, 150))
+        self.textBrowser_2.setObjectName("textBrowser_2")
+        self.gridLayout_4.addWidget(self.textBrowser_2, 0, 2, 1, 1)
         self.gridLayout_2.addWidget(self.groupBox_23456789, 1, 0, 2, 1)
+        self.groupBox1565 = QtWidgets.QGroupBox(self.reprogramming_tab)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.groupBox1565.sizePolicy().hasHeightForWidth())
+        self.groupBox1565.setSizePolicy(sizePolicy)
+        self.groupBox1565.setMinimumSize(QtCore.QSize(0, 200))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.groupBox1565.setFont(font)
+        self.groupBox1565.setObjectName("groupBox1565")
+        self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox1565)
+        self.gridLayout_3.setObjectName("gridLayout_3")
+        self.ACC_VER_BTN = QtWidgets.QPushButton(self.groupBox1565)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.ACC_VER_BTN.sizePolicy().hasHeightForWidth())
+        self.ACC_VER_BTN.setSizePolicy(sizePolicy)
+        self.ACC_VER_BTN.setMinimumSize(QtCore.QSize(0, 50))
+        self.ACC_VER_BTN.setObjectName("ACC_VER_BTN")
+        self.gridLayout_3.addWidget(self.ACC_VER_BTN, 4, 2, 3, 1)
+        self.VER_LOG_BRS = QtWidgets.QTextBrowser(self.groupBox1565)
+        self.VER_LOG_BRS.setObjectName("VER_LOG_BRS")
+        self.gridLayout_3.addWidget(self.VER_LOG_BRS, 0, 7, 15, 1)
+        self.acu_gb = QtWidgets.QGroupBox(self.groupBox1565)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.acu_gb.sizePolicy().hasHeightForWidth())
+        self.acu_gb.setSizePolicy(sizePolicy)
+        self.acu_gb.setObjectName("acu_gb")
+        self.gridLayout_5 = QtWidgets.QGridLayout(self.acu_gb)
+        self.gridLayout_5.setObjectName("gridLayout_5")
+        self.RLSB_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.RLSB_EN.setObjectName("RLSB_EN")
+        self.gridLayout_5.addWidget(self.RLSB_EN, 6, 3, 1, 1)
+        self.RCSB_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.RCSB_EN.setObjectName("RCSB_EN")
+        self.gridLayout_5.addWidget(self.RCSB_EN, 5, 3, 1, 1)
+        self.RRSB_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.RRSB_EN.setObjectName("RRSB_EN")
+        self.gridLayout_5.addWidget(self.RRSB_EN, 3, 3, 1, 1)
+        self.PADI_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.PADI_EN.setObjectName("PADI_EN")
+        self.gridLayout_5.addWidget(self.PADI_EN, 2, 1, 1, 1)
+        self.PSAB_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.PSAB_EN.setObjectName("PSAB_EN")
+        self.gridLayout_5.addWidget(self.PSAB_EN, 5, 2, 1, 1)
+        self.DSAB_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.DSAB_EN.setObjectName("DSAB_EN")
+        self.gridLayout_5.addWidget(self.DSAB_EN, 3, 2, 1, 1)
+        self.DSB_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.DSB_EN.setObjectName("DSB_EN")
+        self.gridLayout_5.addWidget(self.DSB_EN, 6, 2, 1, 1)
+        self.PSB_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.PSB_EN.setObjectName("PSB_EN")
+        self.gridLayout_5.addWidget(self.PSB_EN, 2, 3, 1, 1)
+        self.PPS_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.PPS_EN.setObjectName("PPS_EN")
+        self.gridLayout_5.addWidget(self.PPS_EN, 5, 1, 1, 1)
+        self.DAB_EN = QtWidgets.QCheckBox(self.acu_gb)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.DAB_EN.sizePolicy().hasHeightForWidth())
+        self.DAB_EN.setSizePolicy(sizePolicy)
+        self.DAB_EN.setMinimumSize(QtCore.QSize(20, 0))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.DAB_EN.setFont(font)
+        self.DAB_EN.setObjectName("DAB_EN")
+        self.gridLayout_5.addWidget(self.DAB_EN, 2, 0, 1, 1)
+        self.PADS_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.PADS_EN.setObjectName("PADS_EN")
+        self.gridLayout_5.addWidget(self.PADS_EN, 3, 1, 1, 1)
+        self.DPT_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.DPT_EN.setMinimumSize(QtCore.QSize(20, 0))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.DPT_EN.setFont(font)
+        self.DPT_EN.setObjectName("DPT_EN")
+        self.gridLayout_5.addWidget(self.DPT_EN, 5, 0, 1, 1)
+        self.LCAB_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.LCAB_EN.setObjectName("LCAB_EN")
+        self.gridLayout_5.addWidget(self.LCAB_EN, 6, 1, 1, 1)
+        self.PPT_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.PPT_EN.setMinimumSize(QtCore.QSize(20, 0))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.PPT_EN.setFont(font)
+        self.PPT_EN.setObjectName("PPT_EN")
+        self.gridLayout_5.addWidget(self.PPT_EN, 6, 0, 1, 1)
+        self.PAB_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.PAB_EN.setMinimumSize(QtCore.QSize(20, 0))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.PAB_EN.setFont(font)
+        self.PAB_EN.setObjectName("PAB_EN")
+        self.gridLayout_5.addWidget(self.PAB_EN, 3, 0, 1, 1)
+        self.RCAB_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.RCAB_EN.setObjectName("RCAB_EN")
+        self.gridLayout_5.addWidget(self.RCAB_EN, 2, 2, 1, 1)
+        self.gridLayout_3.addWidget(self.acu_gb, 14, 2, 1, 3)
+        self.STO_VER_BTN = QtWidgets.QPushButton(self.groupBox1565)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.STO_VER_BTN.sizePolicy().hasHeightForWidth())
+        self.STO_VER_BTN.setSizePolicy(sizePolicy)
+        self.STO_VER_BTN.setMinimumSize(QtCore.QSize(350, 50))
+        self.STO_VER_BTN.setObjectName("STO_VER_BTN")
+        self.gridLayout_3.addWidget(self.STO_VER_BTN, 0, 2, 2, 1)
+        self.WRITE_ACU_BTN = QtWidgets.QPushButton(self.groupBox1565)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.WRITE_ACU_BTN.sizePolicy().hasHeightForWidth())
+        self.WRITE_ACU_BTN.setSizePolicy(sizePolicy)
+        self.WRITE_ACU_BTN.setMinimumSize(QtCore.QSize(350, 50))
+        self.WRITE_ACU_BTN.setObjectName("WRITE_ACU_BTN")
+        self.gridLayout_3.addWidget(self.WRITE_ACU_BTN, 0, 4, 1, 1)
+        self.Manufacture_mode_btn = QtWidgets.QPushButton(self.groupBox1565)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.Manufacture_mode_btn.sizePolicy().hasHeightForWidth())
+        self.Manufacture_mode_btn.setSizePolicy(sizePolicy)
+        self.Manufacture_mode_btn.setObjectName("Manufacture_mode_btn")
+        self.gridLayout_3.addWidget(self.Manufacture_mode_btn, 4, 4, 3, 1)
+        self.gridLayout_2.addWidget(self.groupBox1565, 3, 0, 1, 1)
         self.tabWidget.addTab(self.reprogramming_tab, "")
         self.Settings = QtWidgets.QWidget()
         self.Settings.setObjectName("Settings")
@@ -1900,17 +2024,14 @@ class Ui_MainWindow(object):
         self.COM_PORT_BRS = QtWidgets.QTextBrowser(self.groupBox_21)
         self.COM_PORT_BRS.setObjectName("COM_PORT_BRS")
         self.COM_PORT_CLOSE_BTN.setText("ЗАКРЫТЬ COM-PORT")
-
         portlist=list()
         ports = serial.tools.list_ports.comports()
         for port in ports:
             portlist.append(port.device)
-        #print(portlist)
         for i in range(0,len(portlist)):
             self.COM_PORT_SELECTOR.addItem(portlist[i])
         if(len(portlist)>0):
             self.COM_PORT=portlist[0]
-            print(self.COM_PORT)
             self.UART=serial.Serial(self.COM_PORT,115200)
             self.UART.close()
         self.gridLayout_26.addWidget(self.COM_PORT_BRS, 2, 0, 1, 1)
@@ -1921,6 +2042,20 @@ class Ui_MainWindow(object):
 
         self.tabWidget.setCurrentIndex(0)
         self.UDS_LED_SELECTOR.setDisabled(True)
+
+        self.tstart_min_input.valueChanged.connect(self.update_plot)
+        self.tstart_max_input.valueChanged.connect(self.update_plot)
+        self.t1_input.valueChanged.connect(self.update_plot)
+        self.t2_input.valueChanged.connect(self.update_plot)
+        self.t3_input.valueChanged.connect(self.update_plot)
+        self.t4_input.valueChanged.connect(self.update_plot)
+        self.tend_min_input.valueChanged.connect(self.update_plot)
+        self.tend_max_input.valueChanged.connect(self.update_plot)
+        self.limit_ares_input.valueChanged.connect(self.update_plot)
+        self.ares_range_input.valueChanged.connect(self.update_plot)
+
+        self.syntez_btn.clicked.connect(self.on_click2)
+
         self.Run_Init_btn.clicked.connect(self.run_test1)
         self.Run_Init_btn.clicked.connect(self.inittime_brs.clear)
         self.Run_Init_btn.clicked.connect(self.initresult_brs.clear)
@@ -1996,22 +2131,42 @@ class Ui_MainWindow(object):
         self.DIAG_CLEAR_DTC_BTN.clicked.connect(lambda: self.DIAG_CLEAR_DTC_BTN.setDisabled(True))
 
         self.CHECK_PARAM_VALID_BTN.clicked.connect(self.run_thread_model_all)
-        self.CHECK_PARAM_VALID_BTN.clicked.connect(self.PARAMS_PROCESS_BRS.clear)
+#        self.CHECK_PARAM_VALID_BTN.clicked.connect(self.PARAMS_PROCESS_BRS.clear)
 
         self.run_single_test_btn.clicked.connect(self.run_thread_model_single)
-        self.run_single_test_btn.clicked.connect(self.single_test_result_brs.clear)
+        #self.run_single_test_btn.clicked.connect(self.single_test_result_brs.clear)
 
         self.DIAG_UPD_CAN_MSG_BTN.clicked.connect(self.Send_periodic)
 
         self.DIAG_STOP_CAN_MSG_BTN.clicked.connect(self.Stop_Send_periodic)
 
-        self.DIAG_ACU_BTN.clicked.connect(self.run_Write_ACU)
-        self.DIAG_ACU_BTN.clicked.connect(self.DIAG_ACCEPTED_BRS.clear)
-        self.DIAG_ACU_BTN.clicked.connect(lambda: self.DIAG_ACU_BTN.setDisabled(True))
+        self.WRITE_ACU_BTN.clicked.connect(self.run_Write_ACU)
+        self.WRITE_ACU_BTN.clicked.connect(lambda: self.WRITE_ACU_BTN.setDisabled(True))
+        self.WRITE_ACU_BTN.clicked.connect(self.VER_LOG_BRS.clear)
 
-        self.EDR_READ_BTN.clicked.connect(self.run_EDR_read)
-        #self.EDR_READ_BTN.clicked.connect(self.tableWidget.clear)
-        self.EDR_READ_BTN.clicked.connect(lambda: self.EDR_READ_BTN.setDisabled(True))
+        self.EDR1_BTN.clicked.connect(lambda:self.run_EDR_read(1))
+        self.EDR1_BTN.clicked.connect(lambda: self.EDR1_BTN.setDisabled(True))
+        self.EDR1_BTN.clicked.connect(lambda: self.EDR2_BTN.setDisabled(True))
+        self.EDR1_BTN.clicked.connect(lambda: self.EDR3_BTN.setDisabled(True))
+        self.EDR1_BTN.clicked.connect(lambda: self.EDR_STOP_BTN.setDisabled(True))
+        self.EDR1_BTN.clicked.connect(lambda: self.READ_NUM_BTN.setDisabled(True))
+        self.EDR1_BTN.clicked.connect(lambda: self.EDR_OTHER_DATA_BRS.clear)
+
+        self.EDR2_BTN.clicked.connect(lambda:self.run_EDR_read(2))
+        self.EDR2_BTN.clicked.connect(lambda: self.EDR1_BTN.setDisabled(True))
+        self.EDR2_BTN.clicked.connect(lambda: self.EDR2_BTN.setDisabled(True))
+        self.EDR2_BTN.clicked.connect(lambda: self.EDR3_BTN.setDisabled(True))
+        self.EDR2_BTN.clicked.connect(lambda: self.EDR_STOP_BTN.setDisabled(True))
+        self.EDR2_BTN.clicked.connect(lambda: self.READ_NUM_BTN.setDisabled(True))
+        self.EDR2_BTN.clicked.connect(lambda: self.EDR_OTHER_DATA_BRS.clear)
+
+        self.EDR3_BTN.clicked.connect(lambda: self.run_EDR_read(3))
+        self.EDR3_BTN.clicked.connect(lambda: self.EDR1_BTN.setDisabled(True))
+        self.EDR3_BTN.clicked.connect(lambda: self.EDR2_BTN.setDisabled(True))
+        self.EDR3_BTN.clicked.connect(lambda: self.EDR3_BTN.setDisabled(True))
+        self.EDR3_BTN.clicked.connect(lambda: self.EDR_STOP_BTN.setDisabled(True))
+        self.EDR3_BTN.clicked.connect(lambda: self.READ_NUM_BTN.setDisabled(True))
+        self.EDR3_BTN.clicked.connect(lambda: self.EDR_OTHER_DATA_BRS.clear)
 
         self.CHECK_CRASH_DETECTION_BTN.clicked.connect(self.run_Check_CD)
         self.CHECK_CRASH_DETECTION_BTN.clicked.connect(self.DIAG_ACCEPTED_BRS.clear)
@@ -2055,10 +2210,13 @@ class Ui_MainWindow(object):
         self.STOP_BTN_6.setDisabled(True)
 
 
-        self.STOP_BTN_7.clicked.connect(self.close)
-        self.STOP_BTN_7.clicked.connect(lambda: self.EDR_READ_BTN.setDisabled(False))
-        self.STOP_BTN_7.setDisabled(True)
+        self.EDR_STOP_BTN.clicked.connect(self.close)
 
+
+        self.READ_NUM_BTN.clicked.connect(self.run_EDR_num_read)
+        self.EDR_STOP_BTN.clicked.connect(lambda: self.EDR1_BTN.setDisabled(False))
+        self.EDR_STOP_BTN.clicked.connect(lambda: self.EDR2_BTN.setDisabled(False))
+        self.EDR_STOP_BTN.clicked.connect(lambda: self.EDR3_BTN.setDisabled(False))
 
 
         self.STOP_BTN_8.clicked.connect(self.close)
@@ -2098,7 +2256,8 @@ class Ui_MainWindow(object):
         self.Manufacture_mode_btn.clicked.connect(self.VER_LOG_BRS.clear)
         self.export_results_btn.clicked.connect(self.run_export_results)
 
-        self.update_testparams_btn.clicked.connect(self.run_file_updater)
+        #self.update_testparams_btn.clicked.connect(self.run_file_updater)
+        #self.update_testparams_btn.clicked.connect(self.single_test_result_brs.clear)
         self.COM_PORT_CLOSE_BTN.clicked.connect(self.close_com)
 
 
@@ -2110,9 +2269,11 @@ class Ui_MainWindow(object):
         self.start_acc_btn.setDisabled(True)
         self.Run_Init_btn.setDisabled(True)
         self.CHECK_CRASH_DETECTION_BTN.setDisabled(True)
-        self.DIAG_ACU_BTN.setDisabled(True)
         self.UDS_RUN_BTN.setDisabled(True)
-        self.EDR_settings_btn.setDisabled(True)
+        self.EDR1_BTN.setDisabled(True)
+        self.EDR2_BTN.setDisabled(True)
+        self.EDR3_BTN.setDisabled(True)
+        self.EDR_STOP_BTN.setDisabled(True)
         self.perod_periodic_btn.setDisabled(True)
         self.read_params_btn.setDisabled(True)
         self.start_trig_btn.setDisabled(True)
@@ -2123,13 +2284,14 @@ class Ui_MainWindow(object):
         self.DIAG_VIN0_BTN.setDisabled(True)
         self.DIAG_VIN1_BTN.setDisabled(True)
         self.DIAG_RESET_BTN.setDisabled(True)
-        self.EDR_READ_BTN.setDisabled(True)
         self.START_VALID_AB_BTN.setDisabled(True)
         self.toolButton.setDisabled(True)
         self.DIAG_UPD_CAN_MSG_BTN.setDisabled(True)
         self.DIAG_STOP_CAN_MSG_BTN.setDisabled(True)
         self.read_snap_btn.setDisabled(True)
         self.UPDATE_PARAMS_BTN.setDisabled(True)
+        self.WRITE_ACU_BTN.setDisabled(True)
+        self.READ_NUM_BTN.setDisabled(True)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
 
@@ -2178,7 +2340,6 @@ class Ui_MainWindow(object):
         self.AIRBAG_OFF_btn.setText(_translate("MainWindow", "Отключить ПБ переднего пассажира"))
         self.acc_selector_lbl.setText(_translate("MainWindow", "Выбор набора ускорений"))
         self.start_acc_btn.setText(_translate("MainWindow", "Старт"))
-        self.exp_res_acc_brs.setText("TTF DriverAirbag=12 мс\nTTF PassengerAirbag=12 мс\nTTF DriverPretensioner=10 мс\nTTF PassengerPretensioner=10 мс\nTTF DriverSideAirbag=0 мс\nTTF PassengerSideAirbag=0 мс\nTTF DriverCurtainAirbag=0 мс\n")
         self.expected_res_acc_lbl.setText(_translate("MainWindow", "Ожидаемый результат"))
         self.got_res_acc_lbl.setText(_translate("MainWindow", "Полученный результат"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Проверка срабатывания системы"))
@@ -2215,7 +2376,7 @@ class Ui_MainWindow(object):
         self.Seatbelt_selector.setItemText(3, _translate("MainWindow", "Центральный Задний пассажир"))
         self.Seatbelt_selector.setItemText(2, _translate("MainWindow", "Правый задний пассажир"))
         self.Seatbelt_selector.setItemText(4, _translate("MainWindow", "Левый задний пассажир"))
-        self.PARAM_RESULT_LBL.setText(_translate("MainWindow", "Результат"))
+       # self.PARAM_RESULT_LBL.setText(_translate("MainWindow", "Результат"))
         self.SB_select_lbl.setText(_translate("MainWindow", "Селектор ремня безопасности"))
         self.CHECK_PARAM_VALID_BTN.setText(_translate("MainWindow", "Проверить валидность параметров"))
         self.accepted_SBR_title.setText(_translate("MainWindow", "Ход проверки"))
@@ -2235,23 +2396,18 @@ class Ui_MainWindow(object):
         self.DIAG_DIAGENABLE_SELECTOR.setItemText(2, _translate("MainWindow", "2"))
         self.DIAG_DIAGENABLE_SELECTOR.setItemText(3, _translate("MainWindow", "3"))
         self.DIAG_SPEED_SELECTOR_2.setText(_translate("MainWindow", "Отправляемая скорость"))
-        self.DIAG_ACU_BTN.setText("Записать ACU Configuration")
         self.CHECK_CRASH_DETECTION_BTN.setText("Проверить CrashDetectionOutOfOrder")
         self.DIAG_DIAGENABLE_SELECTOR_2.setText(_translate("MainWindow", "Сигнал GenericApplicativeDiagEnable"))
         self.label_2.setText(_translate("MainWindow", "Принятые сообщения"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Проверка самодиагностки"))
-        self.EDR_READ_BTN.setText(_translate("MainWindow", "Cтарт"))
         self.label_3.setText(_translate("MainWindow", "Измерение периода CAN-сообщения 0x023"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("MainWindow", "Проверка чтения EDR"))
-        #self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("MainWindow", "Перепрошивка БУ СНПБ"))
-        self.EDR_settings_btn.setText("Изменить отправляемые данные")
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.EDR_tab), _translate("MainWindow", "Проверка чтения EDR"))
         self.COM_PORT_CONNECT_BTN.setText(_translate("MainWindow", "Подключиться"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.Settings), _translate("MainWindow", "Настройки"))
         self.groupBox_17.setTitle(_translate("MainWindow", "Precrash data"))
         self.groupBox_18.setTitle(_translate("MainWindow", "Other supproted data"))
         self.groupBox_16.setTitle(_translate("MainWindow", "Crash data"))
         self.pushButton_3.setText("Начать перепрошивку")
-        #self.LimitAy_lbl.setText(_translate("MainWindow", "Limit Ay (m/s\u00B2)"))
         self.LimitSresside_lbl.setText(_translate("MainWindow", "Limit Sres side (10\u207b\u2076 m)"))
         self.LimitAresfront_lbl.setText(_translate("MainWindow", "Limit Ares front (10\u207b\u00b9 m/s\u00B2)"))
         self.LimitSxSyfront_lbl.setText(_translate("MainWindow", "Limit Sx,Sy front (10\u207b\u2076 m)"))
@@ -2260,25 +2416,43 @@ class Ui_MainWindow(object):
         self.Tcalc2_lbl.setText(_translate("MainWindow", "T calc side (ms)"))
         self.Sresimpactside_lbl.setText(_translate("MainWindow", "Sres impact side (10\u207b\u2076 m)"))
         self.groupBox143.setTitle(_translate("MainWindow", "Работа с БУ СНПБ"))
-        self.UPDATE_PARAMS_BTN.setText(_translate("MainWindow", "Загрузить параметры"))
-        self.PARAM_RESULT_LBL.setText(_translate("MainWindow", "Результат"))
-        self.read_params_btn.setText(_translate("MainWindow", "Считать параметры"))
         self.groupBox_2666.setTitle(_translate("MainWindow", "Проверка модели"))
-        self.run_single_test_btn.setText(_translate("MainWindow", "Запуск"))
-        self.data_selector_lbl.setText(_translate("MainWindow", "Выбор набора данных"))
-        self.single_test_result_lbl.setText(_translate("MainWindow", "Результаты теста"))
-        self.groupBox_2A.setTitle(_translate("MainWindow", "Прохождение всех тестов"))
-        self.MISUSE.setText(_translate("MainWindow", "Misuse"))
-        self.FIRE.setText(_translate("MainWindow", "Fire"))
-        self.EXP.setText(_translate("MainWindow", "Exp"))
-        self.CHECK_PARAM_VALID_BTN.setText(_translate("MainWindow", "Cтарт"))
-        self.XGF_lbl.setText(_translate("MainWindow", "XGF"))
-        self.multitest_result_brs.setText(_translate("MainWindow", "Результаты"))
-        self.export_results_btn.setText(_translate("MainWindow", "Открыть файл с результатами"))
         self.LimitAresside_lbl.setText(_translate("MainWindow", "Limit Ares side (10\u207b\u00b9 m/s\u00B2)"))
         self.Sresimpactfront_lbl.setText(_translate("MainWindow", "Sres impact front (10\u207b\u2076 m)"))
-       # self.PARAMS_PROCESS_LBL.setText(_translate("MainWindow", "Ход обновления"))
-        #self.LimitAx_lbl.setText(_translate("MainWindow", "Limit Ax (m/s\u00B2)"))
+        self.LOGS_LBL.setText(_translate("MainWindow", "Логи"))
+        self.LimitSresfront_lbl.setText(_translate("MainWindow", "Limit Sres front"))
+        self.save_params_btn.setText(_translate("MainWindow", "Сохранить набор"))
+        self.read_params_btn.setText(_translate("MainWindow", "Считать теукущие параметры БУ"))
+        self.UPDATE_PARAMS_BTN.setText(_translate("MainWindow", "Загрузить параметры в БУ"))
+        self.UPDATE_PARAMS_LOCAL_BTN.setText(_translate("MainWindow", "Обновить параметры локальной модели"))
+        self.read_params_local_btn.setText(_translate("MainWindow", "Считать параметры локальной модели"))
+        self.groupBox143.setTitle(_translate("MainWindow", "Проверка модели"))
+        self.export_results_btn.setText(_translate("MainWindow", "Экспорт результатов"))
+        self.run_single_test_btn.setText(_translate("MainWindow", "Запустить тест"))
+        self.CHECK_PARAM_VALID_BTN.setText(_translate("MainWindow", "Запуск всех тестов"))
+        self.groupBox_2666.setTitle(_translate("MainWindow", "Синтез данных"))
+        self.tendmin_lbl.setText(_translate("MainWindow",
+                                            "<html><head/><body><p>t end <span style=\" vertical-align:sub;\">min</span></p></body></html>"))
+        self.tstmax_lbl.setText(_translate("MainWindow", "t start ₘₐₓ "))
+        self.t2_lbl.setText(_translate("MainWindow", "t₂"))
+        self.tstmin_lbl.setText(_translate("MainWindow",
+                                           "<html><head/><body><p>t start <span style=\" vertical-align:sub;\">min </span></p></body></html>"))
+        self.aresrange_lbl.setText(_translate("MainWindow",
+                                              "<html><head/><body><p>A<span style=\" vertical-align:sub;\">res</span> range</p></body></html>"))
+        self.limitares_lbl.setText(_translate("MainWindow",
+                                              "<html><head/><body><p>Limit A<span style=\" vertical-align:sub;\">res</span></p></body></html>"))
+        self.tendmax_lbl.setText(_translate("MainWindow", "t end ₘₐₓ"))
+        self.t3_lbl.setText(_translate("MainWindow", "t₃"))
+        self.t4_lbl.setText(_translate("MainWindow", "t₄"))
+        self.t1_lbl.setText(_translate("MainWindow", "t₁"))
+        self.sideinput.setItemText(0, _translate("MainWindow", "front"))
+        self.sideinput.setItemText(1, _translate("MainWindow", "left"))
+        self.sideinput.setItemText(2, _translate("MainWindow", "right"))
+        self.sideinput.setItemText(3, _translate("MainWindow", "rear"))
+        self.timestep_lbl.setText(_translate("MainWindow", "Time step"))
+        self.timebeforecoll_lbl.setText(_translate("MainWindow", "Time before collision"))
+        self.collside_lbl.setText(_translate("MainWindow", "Collision side"))
+        self.syntez_btn.setText(_translate("MainWindow", "Синтезировать"))
         self.deltaAres_lbl.setText(_translate("MainWindow", "delta Ares (m/s\u00B2)"))
         self.LimitSxSyside_lbl.setText(_translate("MainWindow", "Limit Sx,Sy side (10\u207b\u2076 m)"))
         self.LimitSresfront_lbl.setText(_translate("MainWindow", "Limit Sres front (10\u207b\u2076 m)"))
@@ -2293,11 +2467,29 @@ class Ui_MainWindow(object):
         self.STOP_BTN_4.setText(_translate("MainWindow", "Стоп"))
         self.STOP_BTN_5.setText(_translate("MainWindow", "Стоп"))
         self.STOP_BTN_6.setText(_translate("MainWindow", "Стоп"))
-        self.STOP_BTN_7.setText(_translate("MainWindow", "Стоп"))
+        self.EDR_STOP_BTN.setText(_translate("MainWindow", "Стоп"))
         self.STOP_BTN_8.setText(_translate("MainWindow", "Стоп"))
         self.defined_params_selector.addItem("Пользовательские параметры")
         self.defined_params_selector.addItem("XGF")
         self.defined_params_selector.addItem("XGE")
+        self.acu_gb.setTitle(_translate("MainWindow", "ACU configuration"))
+        self.RLSB_EN.setText(_translate("MainWindow", "Rear left SB"))
+        self.RCSB_EN.setText(_translate("MainWindow", "Rear center SB"))
+        self.RRSB_EN.setText(_translate("MainWindow", "Rear right SB"))
+        self.PADI_EN.setText(_translate("MainWindow", "PADI"))
+        self.PSAB_EN.setText(_translate("MainWindow", "Passenger side AB"))
+        self.DSAB_EN.setText(_translate("MainWindow", "Driver side AB"))
+        self.DSB_EN.setText(_translate("MainWindow", "Driver SB"))
+        self.PSB_EN.setText(_translate("MainWindow", "Passenger SB"))
+        self.PPS_EN.setText(_translate("MainWindow", "Presence sensor"))
+        self.DAB_EN.setText(_translate("MainWindow", "Driver AB"))
+        self.PADS_EN.setText(_translate("MainWindow", "PADS"))
+        self.DPT_EN.setText(_translate("MainWindow", "Driver Pretensioner"))
+        self.LCAB_EN.setText(_translate("MainWindow", "Left curtain AB"))
+        self.PPT_EN.setText(_translate("MainWindow", "Passenger pretensioner"))
+        self.PAB_EN.setText(_translate("MainWindow", "Passenger AB"))
+        self.RCAB_EN.setText(_translate("MainWindow", "Right curtain AB"))
+        self.WRITE_ACU_BTN.setText(_translate("MainWindow", "Запись ACU configuration"))
         self.Manufacture_mode_btn.setText(_translate("MainWindow", "Сброс к заводским настройкам"))
         item = self.Crash_data_table.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", " "))
@@ -2352,9 +2544,9 @@ class Ui_MainWindow(object):
         item = self.Crash_data_table.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Time,ms"))
         item = self.Crash_data_table.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Long dV,km/h"))
+        item.setText(_translate("MainWindow", "Long dV"))
         item = self.Crash_data_table.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Lateral dV,km/h"))
+        item.setText(_translate("MainWindow", "Lateral dV"))
         item = self.Precrash_data_table.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Time,S"))
         item = self.Precrash_data_table.horizontalHeaderItem(1)
@@ -2389,23 +2581,27 @@ class Ui_MainWindow(object):
         self.exp_res_SBR_brs.setText(
             "При пристёгнутом ремне соответствующий сигнал SafetyBeltState равен 0х02 (SB fastened) \nПри непристёгнутом ремне соответствующий сигнал SafetyBeltState равен 0х01 (SB unfastened)")
         self.pushButton_3.setEnabled(False)
+        self.EDR1_BTN.setText(_translate("MainWindow", "EDR0"))
+        self.EDR3_BTN.setText(_translate("MainWindow", "EDR2"))
+        self.EDR2_BTN.setText(_translate("MainWindow", "EDR1"))
+        self.READ_NUM_BTN.setText(_translate("MainWindow", "Прочитать текущий номер EDR"))
     def acc_set_changed(self):
-        if self.acc_selector.currentIndex() == 0:
-            self.exp_res_acc_brs.setText("TTF DriverAirbag=12 мс\nTTF PassengerAirbag=12 мс\nTTF DriverPretensioner=10 мс\nTTF PassengerPretensioner=10 мс\nTTF DriverSideAirbag=0 мс\nTTF PassengerSideAirbag=0 мс\nTTF DriverCurtainAirbag=0 мс\n")
-        elif self.acc_selector.currentIndex() == 1:
-            self.exp_res_acc_brs.setText("TTF DriverAirbag=35 мс\nTTF PassengerAirbag=30 мс\nTTF DriverPretensioner=20 мс\nTTF PassengerPretensioner=20 мс\nTTF DriverSideAirbag=0 мс\nTTF PassengerSideAirbag=0 мс\nTTF DriverCurtainAirbag=0 мс\n")
-        elif self.acc_selector.currentIndex() == 2:
-            self.exp_res_acc_brs.setText("TTF DriverAirbag=35 мс\nTTF PassengerAirbag=30 мс\nTTF DriverPretensioner=20 мс\nTTF PassengerPretensioner=20 мс\nTTF DriverSideAirbag=0 мс\nTTF PassengerSideAirbag=0 мс\nTTF DriverCurtainAirbag=0 мс\n")
-        elif self.acc_selector.currentIndex() == 3:
-            self.exp_res_acc_brs.setText("СНПБ не срабатывает")
-        elif self.acc_selector.currentIndex() == 4:
-            self.exp_res_acc_brs.setText("СНПБ не срабатывает")
-        elif self.acc_selector.currentIndex() == 5:
-            self.exp_res_acc_brs.setText("СНПБ не срабатывает")
-        elif self.acc_selector.currentIndex() == 6:
-            self.exp_res_acc_brs.setText("TTF DriverAirbag=0 мс\nTTF PassengerAirbag=0 мс\nTTF DriverPretensioner=7 мс\nTTF PassengerPretensioner=7 мс\nTTF DriverSideAirbag=7 мс\nTTF PassengerSideAirbag=7 мс\nTTF DriverCurtainAirbag=7 мс\n")
-        elif self.acc_selector.currentIndex() == 7:
-            self.exp_res_acc_brs.setText("TTF DriverAirbag=0 мс\nTTF PassengerAirbag=0 мс\nTTF DriverPretensioner=22 мс\nTTF PassengerPretensioner=22 мс\nTTF DriverSideAirbag=22 мс\nTTF PassengerSideAirbag=22 мс\nTTF DriverCurtainAirbag=22 мс\n")
+        match (self.acc_selector.currentText()):
+            case 'FRONT 100 50':
+                self.exp_res_acc_brs.setText("TTF DriverAirbag=12 мс\nTTF PassengerAirbag=12 мс\nTTF DriverPretensioner=10 мс\nTTF PassengerPretensioner=10 мс\nTTF DriverSideAirbag=0 мс\nTTF PassengerSideAirbag=0 мс\nTTF DriverCurtainAirbag=0 мс\nTTF PassengerCurtainAirbag=0 мс\n")
+            case 'FRONT ARCAP':
+                self.exp_res_acc_brs.setText("TTF DriverAirbag=35 мс\nTTF PassengerAirbag=30 мс\nTTF DriverPretensioner=20 мс\nTTF PassengerPretensioner=20 мс\nTTF DriverSideAirbag=0 мс\nTTF PassengerSideAirbag=0 мс\nTTF DriverCurtainAirbag=0 мс\nTTF PassengerCurtainAirbag=0 мс\n")
+            case 'FRONT R94':
+                self.exp_res_acc_brs.setText( "TTF DriverAirbag=35 мс\nTTF PassengerAirbag=30 мс\nTTF DriverPretensioner=20 мс\nTTF PassengerPretensioner=20 мс\nTTF DriverSideAirbag=0 мс\nTTF PassengerSideAirbag=0 мс\nTTF DriverCurtainAirbag=0 мс\nTTF PassengerCurtainAirbag=0 мс\n")
+            case 'FRONT 15kmh40' | 'Side 15kmh' | 'Rear36':
+                self.exp_res_acc_brs.setText("СНБП не срабатывает")
+            case 'Side R95':
+                self.exp_res_acc_brs.setText("TTF DriverAirbag=0 мс\nTTF PassengerAirbag=0 мс\nTTF DriverPretensioner=7 мс\nTTF PassengerPretensioner=7 мс\nTTF DriverSideAirbag=7 мс\nTTF PassengerSideAirbag=7 мс\nTTF DriverCurtainAirbag=7 мс\nTTF PassengerCurtainAirbag=7 мс\n")
+            case 'Side 25kmh':
+                self.exp_res_acc_brs.setText("TTF DriverAirbag=0 мс\nTTF PassengerAirbag=0 мс\nTTF DriverPretensioner=22 мс\nTTF PassengerPretensioner=22 мс\nTTF DriverSideAirbag=22 мс\nTTF PassengerSideAirbag=22 мс\nTTF DriverCurtainAirbag=22 мс\nTTF PassengerCurtainAirbag=22 мс\n")
+            case _:
+                self.exp_res_acc_brs.setText("Unknown TTF")
+
     def NRC_CHANGED(self):
         match self.UDS_TEST_SELECTOR.currentIndex():
             case 0:
@@ -2504,7 +2700,8 @@ class Ui_MainWindow(object):
     def UDS_test_changed(self):
         if self.UDS_TEST_SELECTOR.currentIndex() == 0:
             self.EXP_UDS_BRS.setText("Отправлено: 02 11 01\nПринято: 02 51 01\nДиагностический светодиод моргает")
-            self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_LED_SELECTOR.setDisabled(True)
+            self.UDS_LED_SELECTOR.clear()
             self.UDS_NRC_SELECTOR.setEnabled(True)
             self.UDS_NRC_SELECTOR.clear()
             self.UDS_NRC_SELECTOR.addItem("No NRC")
@@ -2512,7 +2709,13 @@ class Ui_MainWindow(object):
             self.UDS_NRC_SELECTOR.addItem("0x13-Invalid message length/format")
         elif self.UDS_TEST_SELECTOR.currentIndex() == 1:
             self.EXP_UDS_BRS.setText("Блок успешно вошёл в SecurityAccess\nОтправлено: 05 2F 38 01 03 00\nПринято: 05 6F 38 01 03 00")
-            self.UDS_LED_SELECTOR.setDisabled(0)
+            self.UDS_LED_SELECTOR.setDisabled(False)
+            self.UDS_LED_SELECTOR.clear()
+            self.UDS_LED_SELECTOR.addItem("Включение диагностического светодиода")
+            self.UDS_LED_SELECTOR.addItem("Отключение диагностического светодиода")
+            self.UDS_LED_SELECTOR.addItem("Включение светодиода отключения ПБ")
+            self.UDS_LED_SELECTOR.addItem("Отключение светодиода отключения ПБ")
+            self.UDS_LED_SELECTOR.addItem("Проверка subfunction Return control to ECU")
             self.UDS_NRC_SELECTOR.setEnabled(True)
             self.UDS_NRC_SELECTOR.clear()
             self.UDS_NRC_SELECTOR.addItem("No NRC")
@@ -2522,7 +2725,8 @@ class Ui_MainWindow(object):
             self.UDS_NRC_SELECTOR.addItem("0x33-Security access denied")
         elif self.UDS_TEST_SELECTOR.currentIndex() == 2:
             self.EXP_UDS_BRS.setText("Отправлено: 02 3E 00\nПринято: 02 7E 00")
-            self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_LED_SELECTOR.setDisabled(True)
+            self.UDS_LED_SELECTOR.clear()
             self.UDS_NRC_SELECTOR.setEnabled(True)
             self.UDS_NRC_SELECTOR.clear()
             self.UDS_NRC_SELECTOR.addItem("No NRC")
@@ -2530,7 +2734,8 @@ class Ui_MainWindow(object):
             self.UDS_NRC_SELECTOR.addItem("0x13-Invalid message length/format")
         elif self.UDS_TEST_SELECTOR.currentIndex() == 3:
             self.EXP_UDS_BRS.setText("Отправлено: 03 28 01 01\nПринято: 02 68 01\nСообщения по CAN не принимаются\nОтправлено: 03 28 00 01\nПринято: 02 68 00\nСообщения по CAN принимаются")
-            self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_LED_SELECTOR.setDisabled(True)
+            self.UDS_LED_SELECTOR.clear()
             self.UDS_NRC_SELECTOR.setEnabled(True)
             self.UDS_NRC_SELECTOR.clear()
             self.UDS_NRC_SELECTOR.addItem("No NRC")
@@ -2540,11 +2745,13 @@ class Ui_MainWindow(object):
             self.UDS_NRC_SELECTOR.addItem("0x31-Request out of range")
         elif self.UDS_TEST_SELECTOR.currentIndex() == 4:
             self.EXP_UDS_BRS.setText("Отправлено: 03 28 03 03\nПринято: 02 68 03\nСообщения по CAN не принимаются и не передаются")
-            self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_LED_SELECTOR.setDisabled(True)
+            self.UDS_LED_SELECTOR.clear()
             self.UDS_NRC_SELECTOR.setEnabled(False)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 5:
             self.EXP_UDS_BRS.setText("Коды ошибок стёрлись")
-            self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_LED_SELECTOR.setDisabled(True)
+            self.UDS_LED_SELECTOR.clear()
             self.UDS_NRC_SELECTOR.setEnabled(True)
             self.UDS_NRC_SELECTOR.clear()
             self.UDS_NRC_SELECTOR.addItem("No NRC")
@@ -2553,7 +2760,8 @@ class Ui_MainWindow(object):
             self.UDS_NRC_SELECTOR.addItem("0x31-Request out of range")
         elif self.UDS_TEST_SELECTOR.currentIndex() == 6:
             self.EXP_UDS_BRS.setText("На экране появились все поддерживаемые DTC и их состояния")
-            self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_LED_SELECTOR.setDisabled(True)
+            self.UDS_LED_SELECTOR.clear()
             self.UDS_NRC_SELECTOR.setEnabled(True)
             self.UDS_NRC_SELECTOR.clear()
             self.UDS_NRC_SELECTOR.addItem("No NRC")
@@ -2562,11 +2770,13 @@ class Ui_MainWindow(object):
             self.UDS_NRC_SELECTOR.addItem("0x31-Request out of range")
         elif self.UDS_TEST_SELECTOR.currentIndex() == 7:
             self.EXP_UDS_BRS.setText("После отключения самодиагностики не считан DTC 0xc14087(Lost communication with uBCM)\nПосле включения самодиагностики считан DTC 0xc14087(Lost communication with uBCM)")
-            self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_LED_SELECTOR.setDisabled(True)
+            self.UDS_LED_SELECTOR.clear()
             self.UDS_NRC_SELECTOR.setEnabled(True)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 8:
             self.EXP_UDS_BRS.setText("Блок успешно вошёл в security access")
-            self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_LED_SELECTOR.setDisabled(True)
+            self.UDS_LED_SELECTOR.clear()
             self.UDS_NRC_SELECTOR.setEnabled(True)
             self.UDS_NRC_SELECTOR.clear()
             self.UDS_NRC_SELECTOR.addItem("No NRC")
@@ -2582,7 +2792,8 @@ class Ui_MainWindow(object):
 
         elif self.UDS_TEST_SELECTOR.currentIndex() == 9:
             self.EXP_UDS_BRS.setText("При чтении DID последний байт ответа 0хА5\nВизуально убедиться, что диагностический светодиод не моргает")
-            self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_LED_SELECTOR.setDisabled(True)
+            self.UDS_LED_SELECTOR.clear()
             self.UDS_NRC_SELECTOR.setEnabled(True)
             self.UDS_NRC_SELECTOR.clear()
             self.UDS_NRC_SELECTOR.addItem("No NRC")
@@ -2594,48 +2805,40 @@ class Ui_MainWindow(object):
 
         elif self.UDS_TEST_SELECTOR.currentIndex() == 10:
             self.EXP_UDS_BRS.setText("При чтении DID последний байт ответа 0х5A\nВизуально убедиться, что диагностический светодиод моргает с частотой 1Гц")
-            self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_LED_SELECTOR.setDisabled(True)
             self.UDS_NRC_SELECTOR.setEnabled(False)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 11:
             self.EXP_UDS_BRS.setText("1)При первом чтении DID 0xE180 последний байт в ответе 0хFF\n2)Импульс на пиропатроне водтеля не задетектирован\n3)При чтении DID 0xE180 после перезагрузки последний байт ответа 0хFE\n4)При первом чтениии DID 0xE182 последний байт ответа 0xFF\n5)При чтениии DID 0xE182 после перезагрузки последний байт ответа 0xFE\n6)Состояния ремня безопасности водителя изменилось на not monitored")
-            self.UDS_LED_SELECTOR.setDisabled(1)
+            self.UDS_LED_SELECTOR.setDisabled(True)
             self.UDS_NRC_SELECTOR.setEnabled(False)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 12:
-            self.EXP_UDS_BRS.setText(f"Отправлено: 03 22 59 10\nПринято: 05 62 59 10 xx xx \nxx-Считанное сопротивление")
-            self.UDS_LED_SELECTOR.setDisabled(1)
+            self.EXP_UDS_BRS.setText("На экране появилось значение, прочитанное с помощью DID")
+            self.UDS_LED_SELECTOR.clear()
+            self.UDS_LED_SELECTOR.setEnabled(True)
+            self.UDS_LED_SELECTOR.addItem("Driver Airbag Resistance")
+            self.UDS_LED_SELECTOR.addItem("Passenger Airbag Resistance")
+            self.UDS_LED_SELECTOR.addItem("Driver Pretensioner Resistance")
+            self.UDS_LED_SELECTOR.addItem("Passenger Pretensioner Resistance")
+            self.UDS_LED_SELECTOR.addItem("Driver Side Airbag Resistance")
+            self.UDS_LED_SELECTOR.addItem("Passenger Side Airbag Resistance")
+            self.UDS_LED_SELECTOR.addItem("Left Curtain Airbag Resistance")
+            self.UDS_LED_SELECTOR.addItem("Right Curtain Airbag Resistance")
+            self.UDS_LED_SELECTOR.addItem("PAB Deactivation Indicator Status")
+            self.UDS_LED_SELECTOR.addItem("PAB Deactivation Indicator switch Resistance")
+            self.UDS_LED_SELECTOR.addItem("Vehicle Speed")
+            self.UDS_LED_SELECTOR.addItem("Battery Voltage")
+            self.UDS_LED_SELECTOR.addItem("ECU`s Lifetime timer")
+            self.UDS_LED_SELECTOR.addItem("Passenger Presence Sensor Resistance")
+            self.UDS_LED_SELECTOR.addItem("SRS Warning Lamp")
+            self.UDS_LED_SELECTOR.addItem("Mileage")
+            self.UDS_LED_SELECTOR.addItem("ECU`s Key-on timer")
+            self.UDS_LED_SELECTOR.addItem("Occupant Input")
+            self.UDS_LED_SELECTOR.addItem("ECU Operating State")
+            self.UDS_LED_SELECTOR.addItem("ACU configuration 1")
+            self.UDS_LED_SELECTOR.addItem("ACU configuration 2")
+            self.UDS_LED_SELECTOR.addItem("ACU configuration 3")
             self.UDS_NRC_SELECTOR.setEnabled(False)
-        elif self.UDS_TEST_SELECTOR.currentIndex() == 13:
-            self.EXP_UDS_BRS.setText(f"Отправлено: 03 22 59 18\nПринято: 04 62 59 10 xx \nxx-Состояние светодиода")
-            self.UDS_LED_SELECTOR.setDisabled(1)
-            self.UDS_NRC_SELECTOR.setEnabled(False)
-        elif self.UDS_TEST_SELECTOR.currentIndex() == 14:
-            self.EXP_UDS_BRS.setText(f"Отправлено: 03 22 C9 21\nПринято: 05 62 C9 21 xx xx\nxx xx-Считанное значение скорости\n")
-            self.UDS_LED_SELECTOR.setDisabled(1)
-            self.UDS_NRC_SELECTOR.setEnabled(False)
-        elif self.UDS_TEST_SELECTOR.currentIndex() == 15:
-            self.EXP_UDS_BRS.setText("Отправлено: 03 22 C9 53\nПринято: 04 62 C9 53 xx \nxx- Считанное напряжение")
-            self.UDS_LED_SELECTOR.setDisabled(1)
-            self.UDS_NRC_SELECTOR.setEnabled(False)
-        elif self.UDS_TEST_SELECTOR.currentIndex() == 16:
-            self.EXP_UDS_BRS.setText("Отправлено: 03 22 C9 14\nПринято: 07 62 C9 14 xx xx xx xx\nПосле ожидания 5с.\nОтправлено: 03 22 C9 14\nПринято: 07 62 C9 14 xx xx xx xx\nСчитанное значение увеличилось на 5")
-            self.UDS_LED_SELECTOR.setDisabled(1)
-            self.UDS_NRC_SELECTOR.setEnabled(False)
-        elif self.UDS_TEST_SELECTOR.currentIndex() == 17:
-            self.EXP_UDS_BRS.setText("Отправлено: 03 22 C9 57\nПринято: 05 62 C9 57 xx xx\nxx xx -Состояние РБ и кнопки отключения ПБ\nУбедиться, что считанное состояние соответствует реальному")
-            self.UDS_LED_SELECTOR.setDisabled(1)
-            self.UDS_NRC_SELECTOR.setEnabled(False)
-        elif self.UDS_TEST_SELECTOR.currentIndex() == 18:
-            self.EXP_UDS_BRS.setText("Отправлено: 06 19 04 90 18 00 01\nПринято: 10 1A 59 04 90 18 00 SS\nОтправлено: 30 00 00\nПринято: 21 01 04 С9 21 XX XX C9\nПринято: 22 14 YY YY YY C9 18 ZZ\nПринято: 23 ZZ ZZ ZZ C9 19 LL\nSS-Статус ошибки\nXX XX-Скорость\nYY YY YY-Значение lifetime timer\nZZ ZZ ZZ ZZ - Пробег\nLL -Значение DTC occurrence counter")
-            self.UDS_LED_SELECTOR.setDisabled(1)
-            self.UDS_NRC_SELECTOR.setEnabled(False)
-        elif self.UDS_TEST_SELECTOR.currentIndex() == 19:
-            self.EXP_UDS_BRS.setText("Отправлено: 06 19 04 С1 21 87 01\nПринято: 10 1A 59 04 С1 21 87 SS\nОтправлено: 30 00 00\nПринято: 21 01 04 С9 21 XX XX C9\nПринято: 22 14 YY YY YY C9 18 ZZ\nПринято: 23 ZZ ZZ ZZ C9 19 LL\nSS-Статус ошибки\nXX XX-Скорость\nYY YY YY-Значение lifetime timer\nZZ ZZ ZZ ZZ - Пробег\nLL -Значение DTC occurrence counter")
-            self.UDS_LED_SELECTOR.setDisabled(1)
-            self.UDS_NRC_SELECTOR.setEnabled(False)
-        elif self.UDS_TEST_SELECTOR.currentIndex() == 20:
-            self.EXP_UDS_BRS.setText("Отправлено: 06 19 04 90 91 1B 01\nПринято: 10 1A 59 04 90 91 1B SS\nОтправлено: 30 00 00\nПринято: 21 01 04 С9 21 XX XX C9\nПринято: 22 14 YY YY YY C9 18 ZZ\nПринято: 23 ZZ ZZ ZZ C9 19 LL\nSS-Статус ошибки\nXX XX-Скорость\nYY YY YY-Значение lifetime timer\nZZ ZZ ZZ ZZ - Пробег\nLL -Значение DTC occurrence counter")
-            self.UDS_LED_SELECTOR.setDisabled(1)
-            self.UDS_NRC_SELECTOR.setEnabled(False)
+
     def XGF_or_XGE(self):
         match(self.defined_params_selector.currentIndex()):
             case 0:
@@ -2705,16 +2908,20 @@ class Ui_MainWindow(object):
 
 
     def UDS_LED_changed(self):
-        if self.UDS_LED_SELECTOR.currentIndex() == 0:
-            self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 01 03 00\nПринято: 05 6F 38 01 03 00\nДиагностический светодиод загорелся")
-        elif self.UDS_LED_SELECTOR.currentIndex() == 1:
-            self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 01 03 01\nПринято: 05 6F 38 01 03 01\nДиагностический светодиод погас")
-        elif self.UDS_LED_SELECTOR.currentIndex() == 2:
-            self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 02 03 00\nПринято: 05 6F 38 02 03 00\nСветодиод отключения ПБ переднего пассажира горит")
-        elif self.UDS_LED_SELECTOR.currentIndex() == 3:
-            self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 02 03 01\nПринято: 05 6F 38 02 03 01\nСветодиод отключения ПБ переднего пассажира погас")
-        elif self.UDS_LED_SELECTOR.currentIndex() == 4:
-            self.EXP_UDS_BRS.setText("Отправлено:04 2f 38 01 00, \nПринято: 05 6f 38 01 00 xx, где хх-последнее состояние диагностического светодиода\n")
+        match (self.UDS_TEST_SELECTOR.currentIndex()):
+            case 1:
+                if self.UDS_LED_SELECTOR.currentIndex() == 0:
+                    self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 01 03 00\nПринято: 05 6F 38 01 03 00\nДиагностический светодиод загорелся")
+                elif self.UDS_LED_SELECTOR.currentIndex() == 1:
+                    self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 01 03 01\nПринято: 05 6F 38 01 03 01\nДиагностический светодиод погас")
+                elif self.UDS_LED_SELECTOR.currentIndex() == 2:
+                    self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 02 03 00\nПринято: 05 6F 38 02 03 00\nСветодиод отключения ПБ переднего пассажира горит")
+                elif self.UDS_LED_SELECTOR.currentIndex() == 3:
+                    self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 02 03 01\nПринято: 05 6F 38 02 03 01\nСветодиод отключения ПБ переднего пассажира погас")
+                elif self.UDS_LED_SELECTOR.currentIndex() == 4:
+                    self.EXP_UDS_BRS.setText("Отправлено:04 2f 38 01 00, \nПринято: 05 6f 38 01 00 xx, где хх-последнее состояние диагностического светодиода\n")
+            case 12:
+                pass
 
     def SBR_test_changed(self):
         if self.SBR_test_selector.currentIndex() == 0:
@@ -2847,7 +3054,6 @@ class Ui_MainWindow(object):
             bytes_read = self.UART.read(int(received_len, 16))
             self.UART.close()
             Result.ParseFromString(bytes_read)
-            #print(Result)
             if (len(Result.frame[0].data) < 8):
                 self.DIAG_ERRORS_BRS.append("No DTC found")
             else:
@@ -2877,7 +3083,6 @@ class Ui_MainWindow(object):
         if (received_len == ''):
             self.DIAG_ACCEPTED_BRS.append("Остановлено")
         else:
-            print((int(received_len, 16)))
             bytes_read = self.UART.read(int(received_len, 16))
             self.UART.close()
             Result.ParseFromString(bytes_read)
@@ -2904,23 +3109,17 @@ class Ui_MainWindow(object):
         Command = Command.SerializeToString()
         self.UART.write(Command)
         received_len = self.UART.read(2).hex()
-        print((int(received_len, 16)))
         bytes_read = self.UART.read(int(received_len, 16))
-        if(bytes_read==''):
-            self.DIAG_ACCEPTED_BRS.append("Остановлено")
-            time.sleep(0.01)
-        else:
-            self.UART.close()
+        try:
             Result.ParseFromString(bytes_read)
             self.DIAG_ACCEPTED_BRS.append("Очистка DTC:")
             time.sleep(0.01)
-            self.DIAG_ACCEPTED_BRS.append(f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}")
+            self.DIAG_ACCEPTED_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+        except:
+            self.DIAG_ACCEPTED_BRS.append("Ошибка очистки DTC. Перезапустите СТО и попробуйте снова")
             time.sleep(0.01)
-            self.DIAG_ACCEPTED_BRS.append("Очистка информации об аварии:")
-            time.sleep(0.01)
-            self.DIAG_ACCEPTED_BRS.append(
-                f"Отправлено:{str(Result.frame[8].data.hex())}\nПринято:{str(Result.frame[9].data.hex())}")
-            self.DIAG_CLEAR_DTC_BTN.setEnabled(True)
+        self.UART.close()
+        self.DIAG_CLEAR_DTC_BTN.setEnabled(True)
     def run_ClearDTC(self):
         Receiver=threading.Thread(target=self.ClearDTC)
         Receiver.start()
@@ -2936,11 +3135,9 @@ class Ui_MainWindow(object):
         if (received_len == ''):
             self.DIAG_ACCEPTED_BRS.append("Остановлено")
         else:
-            print((int(received_len, 16)))
             bytes_read = self.UART.read(int(received_len, 16))
             self.UART.close()
             Result.ParseFromString(bytes_read)
-            print(Result)
             self.DIAG_ACCEPTED_BRS.append("Перезагрузка блока")
             time.sleep(0.05)
             self.DIAG_ACCEPTED_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
@@ -2961,11 +3158,9 @@ class Ui_MainWindow(object):
         if (received_len == ''):
             self.DIAG_ACCEPTED_BRS.append("Остановлено")
         else:
-            print((int(received_len, 16)))
             bytes_read = self.UART.read(int(received_len, 16))
             self.UART.close()
             Result.ParseFromString(bytes_read)
-            print(Result)
             self.DIAG_ACCEPTED_BRS.append(f"CrashDetectionOutOfOrder:{int(Result.measuredValue[0])}")
         self.CHECK_CRASH_DETECTION_BTN.setEnabled(True)
     def run_Check_CD(self):
@@ -2973,22 +3168,80 @@ class Ui_MainWindow(object):
         Receiver.start()
     def Write_ACU(self):
         self.UART.open()
+        B1=0
+        B2=0
+        B3=0
+        if(self.DAB_EN.isChecked()==True):
+            B1|=0x01
+        if (self.PAB_EN.isChecked() == True):
+            B1 |= 0x02
+        if (self.DPT_EN.isChecked() == True):
+            B1 |= 0x04
+        if (self.PPT_EN.isChecked() == True):
+            B1 |= 0x08
+        if (self.PADI_EN.isChecked() == True):
+            B1 |= 0x10
+        if (self.PADS_EN.isChecked() == True):
+            B1 |= 0x20
+        if (self.PPS_EN.isChecked() == True):
+            B1 |= 0x40
+
+
+        if (self.LCAB_EN.isChecked() == True):
+            B2 |= 0x01
+        if (self.RCAB_EN.isChecked() == True):
+            B2 |= 0x02
+        if (self.DSAB_EN.isChecked() == True):
+            B2 |= 0x04
+        if (self.PSAB_EN.isChecked() == True):
+            B2 |= 0x08
+        B2 |= 0x10
+        B2 |= 0x20
+        B2 |= 0x40
+        B2 |= 0x80
+
+        if (self.DSB_EN.isChecked() == True):
+            B3 |= 0x01
+        if (self.PSB_EN.isChecked() == True):
+            B3 |= 0x02
+        if (self.RRSB_EN.isChecked() == True):
+            B3 |= 0x04
+        if (self.RCSB_EN.isChecked() == True):
+            B3 |= 0x08
+        if (self.RLSB_EN.isChecked() == True):
+            B3 |= 0x10
+        B3 |= 0x20
+        B3 |= 0x40
+        B3 |= 0x80
+
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
         Command.testNumber = 0x5A
         Command = Command.SerializeToString()
         self.UART.write(Command)
-        received_len = self.UART.read(2).hex()
-        if (received_len == ''):
-            self.DIAG_ACCEPTED_BRS.append("Остановлено")
-        else:
-            print((int(received_len, 16)))
-            bytes_read = self.UART.read(int(received_len, 16))
-            self.UART.close()
-            Result.ParseFromString(bytes_read)
-            self.DIAG_ACCEPTED_BRS.append("ACU configuration записана")
-        self.DIAG_ACU_BTN.setEnabled(True)
+        time.sleep(0.5)
+        cfgbytes=bytearray([B1,B2,B3])
+        self.UART.write(cfgbytes)
+        try:
+            received_len = self.UART.read(2).hex()
+            if (received_len == ''):
+                self.VER_LOG_BRS.append("Остановлено")
+            else:
+                bytes_read = self.UART.read(int(received_len, 16))
+                Result.ParseFromString(bytes_read)
+                self.VER_LOG_BRS.append("ACU configuration записана")
+                time.sleep(0.02)
+                self.VER_LOG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                time.sleep(0.02)
+                self.VER_LOG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
+                time.sleep(0.02)
+                self.VER_LOG_BRS.append(f"Отправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
+                time.sleep(0.02)
+        except:
+            self.VER_LOG_BRS.append("Ошибка записи ACU configuration. Попробуйте ещё раз")
+        self.UART.close()
+        self.WRITE_ACU_BTN.setEnabled(True)
     def run_Write_ACU(self):
         Receiver=threading.Thread(target=self.Write_ACU)
         Receiver.start()
@@ -3005,7 +3258,6 @@ class Ui_MainWindow(object):
         if (received_len == ''):
             self.DIAG_ACCEPTED_BRS.append("Остановлено")
         else:
-            print((int(received_len, 16)))
             bytes_read = self.UART.read(int(received_len, 16))
             self.UART.close()
             Result.ParseFromString(bytes_read)
@@ -3026,7 +3278,6 @@ class Ui_MainWindow(object):
         if (received_len == ''):
             self.DIAG_ACCEPTED_BRS.append("Остановлено")
         else:
-            print((int(received_len, 16)))
             bytes_read = self.UART.read(int(received_len, 16))
             self.UART.close()
             Result.ParseFromString(bytes_read)
@@ -3048,7 +3299,6 @@ class Ui_MainWindow(object):
         if (received_len == ''):
             self.DIAG_ACCEPTED_BRS.append("Остановлено")
         else:
-            print((int(received_len, 16)))
             bytes_read = self.UART.read(int(received_len, 16))
             self.UART.close()
             Result.ParseFromString(bytes_read)
@@ -3059,31 +3309,6 @@ class Ui_MainWindow(object):
         Receiver=threading.Thread(target=self.Write_VIN1)
         Receiver.start()
 
-    '''def Emulate_crash(self):
-        self.UART.open()
-        Command = Messages.TestData()
-        Result = Messages.TestData()
-        Command.method = 0
-        Command.testNumber = 0x58
-        Command.accDataNumber=1
-        Command = Command.SerializeToString()
-        self.UART.write(Command)
-        received_len = self.UART.read(2).hex()
-        if (received_len == ''):
-            self.DIAG_ACCEPTED_BRS.append("Остановлено")
-        else:
-            print((int(received_len, 16)))
-            bytes_read = self.UART.read(int(received_len, 16))
-            self.UART.close()
-            Result.ParseFromString(bytes_read)
-            if(Result.measuredValue[0]==1):
-                 self.DIAG_ACCEPTED_BRS.append("Импульс на пиропатроне задетектирован")
-            else:
-                self.DIAG_ACCEPTED_BRS.append("Импульс на пиропатроне не задетектирован")
-        self.DIAG_ACC_BTN.setEnabled(True)
-    def run_Emulate_crash(self):
-        Receiver=threading.Thread(target=self.Emulate_crash)
-        Receiver.start()'''
 
     def Send_periodic(self):
         self.UART.open()
@@ -3119,7 +3344,6 @@ class Ui_MainWindow(object):
         indexes=[]
         tmp=0
         length=len(Result.frame)
-        print(length)
         for num in range(0, length):
             for index in range(0, len(Result.frame[num].data)):
                 Status_Byte_index = Result.frame[num].data.find(Status_Byte, index)
@@ -3132,31 +3356,26 @@ class Ui_MainWindow(object):
                     DTC = hex(((Result.frame[num].data[indexes[i] - 3]) << 16) + (
                                 (Result.frame[num].data[indexes[i] - 2]) << 8) + (
                               Result.frame[num].data[indexes[i] -1]))
-                    print(DTC)
+
                     DTC_list.append(int(DTC,16))
                 elif (indexes[i] == 3 and num>0):
                     DTC = hex(((Result.frame[num-1].data[7]) << 16) + ((Result.frame[num].data[1]) << 8) + (Result.frame[num].data[2]))
-                    print(DTC)
+
                     DTC_list.append(int(DTC,16))
                 elif (indexes[i] == 2 and num>0):
                     DTC = hex(((Result.frame[num-1].data[6]) << 16) + ((Result.frame[num-1].data[7]) << 8) + (
                     Result.frame[num].data[1]))
-                    print(DTC)
+
                     DTC_list.append(int(DTC,16))
                 elif (indexes[i] == 1 and num>0):#and num!=length-1):  #####
                     DTC = hex(((Result.frame[num-1].data[5]) << 16) + ((Result.frame[num -1].data[6]) << 8) + (Result.frame[num-1].data[7]))
-                    print(DTC)
+
                     DTC_list.append(int(DTC,16))
                 '''elif (indexes[i] == 7):
                     DTC = hex(((Result.frame[num + 1].data[1]) << 16) + ((Result.frame[num + 1].data[2]) << 8) + (
                     Result.frame[num + 1].data[3]))
-                    print(DTC)
                     DTC_list.append(DTC)'''
-            print("INDEXES:")
-            print(indexes)
             indexes.clear()
-        for i in range(0,len(DTC_list)):
-            print(hex(DTC_list[i]))
         return DTC_list
     def match_DTC(self,dtc):
         match int(dtc,16):
@@ -3310,6 +3529,20 @@ class Ui_MainWindow(object):
             return "Crash detected"
         else:
             return "Wrong signal"
+    def matchACU(self, signal):
+        if (signal == 0):
+            return "Disabled"
+        elif (signal == 1):
+            return "Enabled"
+        else:
+            return "Wrong signal"
+    def matchSB(self, signal):
+        if (signal == 0):
+            return "Unfastened"
+        elif (signal == 1):
+            return "Fastened"
+        else:
+            return "Wrong signal"
     def checkTTF(self,expected_ttf,experimental_ttf):
         if(experimental_ttf<expected_ttf+3 and experimental_ttf>expected_ttf-3):
             return 1
@@ -3328,7 +3561,6 @@ class Ui_MainWindow(object):
         if(received_len==''):
             self.can_msg_brs.append("Остановлено")
         else:
-            print((int(received_len,16)))
             bytes_read = self.UART.read(int(received_len,16))
             Result.ParseFromString(bytes_read)
             self.can_msg_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
@@ -3358,7 +3590,6 @@ class Ui_MainWindow(object):
         if (received_len == ''):
             self.VALIDAB_BRS.append("Остановлено")
         else:
-            print((int(received_len,16)))
             bytes_read = self.UART.read(int(received_len,16))
             Result.ParseFromString(bytes_read)
             self.VALIDAB_BRS.append(f"Timestamp:{str(Result.frame[2].timestamp)}   id:{str(hex(Result.frame[2].id))}   DLC:{str(Result.frame[2].length)}   Data:{str(Result.frame[2].data.hex())}")
@@ -3428,25 +3659,74 @@ class Ui_MainWindow(object):
         Result = Messages.TestData()
         Command.method = 0
         Command.testNumber = 0x22
+        Command.accDataNumber = self.acc_selector.currentIndex() + 1
+        Command.AIRBAG_OFF = self.AIRBAG_OFF_btn.isChecked()
+        accX = []
+        accY = []
+        X_new = []
+        Y_new = []
+        length = []
+        i = 0
+        self.accfile = 'FRONT 100 50.csv'
+        os.chdir("acceleration_synthesis")
+        os.chdir("Generated_acc")
+        with open(self.accfile, mode='r') as file:
+            csvFile = csv.reader(file)
+            for lines in csvFile:
+                try:
+                    accX.insert(i, int(lines[0].split(';')[0], 16))
+                    accY.insert(i, int(lines[0].split(';')[1], 16))
+                    i += 1
+                except:
+                    pass
+            accX.pop(0)
+            accY.pop(0)
+            file.close()
+        os.chdir("..")
+        os.chdir("..")
+        for i in range(0, len(accY)):
+            X_new.insert(4 * i, (accX[i] & 0xFF000000) >> 24)
+            X_new.insert(4 * i + 1, (accX[i] & 0x00FF0000) >> 16)
+            X_new.insert(4 * i + 2, (accX[i] & 0x0000FF00) >> 8)
+            X_new.insert(4 * i + 3, accX[i] & 0x000000FF)
+            Y_new.insert(4 * i, (accY[i] & 0xFF000000) >> 24)
+            Y_new.insert(4 * i + 1, (accY[i] & 0x00FF0000) >> 16)
+            Y_new.insert(4 * i + 2, (accY[i] & 0x0000FF00) >> 8)
+            Y_new.insert(4 * i + 3, accY[i] & 0x000000FF)
+        X_new = bytearray(X_new)
+        Y_new = bytearray(Y_new)
         Command.accDataNumber=2
         Command.UDS_NRC=1
         Command = Command.SerializeToString()
         self.UART.write(Command)
-        received_len=self.UART.read(2).hex()
-        if (received_len == ''):
-            self.accepted_trig_brs.append("Остановлено")
-        else:
-            bytes_read = self.UART.read(int(received_len,16))
-            Result.ParseFromString(bytes_read)
-            for i in range(0,4):
-                self.accepted_trig_brs.append(f"Timestamp:{str(Result.frame[i].timestamp)}   id:{str(hex(Result.frame[i].id))}   DLC:{str(Result.frame[i].length)}   Data:{str(Result.frame[i].data.hex())}")
-                time.sleep(0.01)
-            self.measured_trig_brs.append(f"{str(Result.measuredValue[0]/1000)} мс.")
-            time.sleep(0.01)
-            if (Result.measuredValue[0]/1000 < 4.4 and Result.measuredValue[0]/1000 > 3.6):
-                self.result_trig_brs.append("Success")
+        length.insert(0, (len(X_new) >> 8) & 0xff)
+        length.insert(1, (len(X_new)) & 0xff)
+        length = bytearray(length)
+        time.sleep(2)
+        self.UART.flushInput()
+        self.UART.flushOutput()
+        self.UART.write(length)
+        bytes_read = self.UART.read(2)
+        if (bytes_read == length):
+            self.UART.write(X_new)
+            time.sleep(0.5)
+            time.sleep(0.5)
+            self.UART.write(Y_new)
+            received_len=self.UART.read(2).hex()
+            if (received_len == ''):
+                self.accepted_trig_brs.append("Остановлено")
             else:
-                self.result_trig_brs.append("Fail")
+                bytes_read = self.UART.read(int(received_len,16))
+                Result.ParseFromString(bytes_read)
+                for i in range(0,4):
+                    self.accepted_trig_brs.append(f"Timestamp:{str(Result.frame[i].timestamp)}   id:{str(hex(Result.frame[i].id))}   DLC:{str(Result.frame[i].length)}   Data:{str(Result.frame[i].data.hex())}")
+                    time.sleep(0.01)
+                self.measured_trig_brs.append(f"{str(Result.measuredValue[0]/1000)} мс.")
+                time.sleep(0.01)
+                if (Result.measuredValue[0]/1000 < 4.4 and Result.measuredValue[0]/1000 > 3.6):
+                    self.result_trig_brs.append("Success")
+                else:
+                    self.result_trig_brs.append("Fail")
         self.UART.close()
         self.start_trig_btn.setEnabled(True)
         self.STOP_BTN_2.setEnabled(False)
@@ -3483,6 +3763,7 @@ class Ui_MainWindow(object):
                     pass
             accX.pop(0)
             accY.pop(0)
+            file.close()
         for i in range(0, len(accY)):
             X_new.insert(4*i,(accX[i] & 0xFF000000) >> 24)
             X_new.insert(4*i+1,(accX[i] & 0x00FF0000) >> 16)
@@ -3524,7 +3805,7 @@ class Ui_MainWindow(object):
                 self.CRASHDETECTED_BRS.append(f"До столкновения:{(Result.frame[0].data[0]&0b10000000)>>7} ({self.matchCrashDetected((Result.frame[0].data[0]&0b10000000)>>7)})\nПосле столкновения:{(Result.frame[1].data[0]&0b10000000)>>7} ({self.matchCrashDetected(int((Result.frame[1].data[0]&0b10000000)>>7))})")
                 time.sleep(0.02)
 
-                self.got_res_brs.append(f"TTF DriverAirbag={Result.measuredValue[0]/1000}\nTTF PassengerAirbag={Result.measuredValue[1]/1000}\nTTF DriverPretensioner={Result.measuredValue[2]/1000}\nTTF PassengerPretensioner={Result.measuredValue[3]/1000}\nTTF DriverSideAirbag={Result.measuredValue[4]/1000}\nTTF PassengerSideAirbag={Result.measuredValue[5]/1000}\nTTF DriverCurtainAirbag={Result.measuredValue[6]/1000}")
+                self.got_res_brs.append(f"TTF DriverAirbag={round(Result.measuredValue[0]/1000,2)} мс\nTTF PassengerAirbag={round(Result.measuredValue[1]/1000,2)} мс\nTTF DriverPretensioner={round(Result.measuredValue[2]/1000,2)} мс\nTTF PassengerPretensioner={round(Result.measuredValue[3]/1000,2)} мс\nTTF DriverSideAirbag={round(Result.measuredValue[4]/1000,2)} мс\nTTF PassengerSideAirbag={round(Result.measuredValue[5]/1000,2)} мс\nTTF DriverCurtainAirbag={round(Result.measuredValue[6]/1000,2)} мс\nTTF PassengerCurtainAirbag={round(Result.measuredValue[7]/1000,2)} мс")
                 time.sleep(0.02)
                 #if(self.checkTTF(TTF_DAB,Result.measuredValue[0]/1000)==1 and self.checkTTF(TTF_PAB,Result.measuredValue[1]/1000)==1 and self.checkTTF(TTF_DPT,Result.measuredValue[2]/1000)==1 and self.checkTTF(TTF_PPT,Result.measuredValue[3]/1000)==1 and self.checkTTF(TTF_DSAB,Result.measuredValue[4]/1000)==1 and self.checkTTF(TTF_PSAB,Result.measuredValue[5]/1000)==1 and self.checkTTF(TTF_DCAB,Result.measuredValue[6]/1000)==1):
                  #   self.got_res_brs.append("Success")
@@ -3547,22 +3828,9 @@ class Ui_MainWindow(object):
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
-        if (self.UDS_TEST_SELECTOR.currentIndex() < 15):
-            Command.testNumber = self.UDS_TEST_SELECTOR.currentIndex()+0x31
-        elif(self.UDS_TEST_SELECTOR.currentIndex() == 15):
-            Command.testNumber = 0x301
-        elif (self.UDS_TEST_SELECTOR.currentIndex() == 16):
-            Command.testNumber = 0x302
-        elif(self.UDS_TEST_SELECTOR.currentIndex() == 17):
-            Command.testNumber=0x303
-        elif (self.UDS_TEST_SELECTOR.currentIndex() == 18):
-            Command.testNumber = 0x304
-        elif (self.UDS_TEST_SELECTOR.currentIndex() == 19):
-            Command.testNumber = 0x305
-        elif (self.UDS_TEST_SELECTOR.currentIndex() == 20):
-            Command.testNumber = 0x306
-        if(Command.testNumber==0x32):
-            Command.LED=self.UDS_LED_SELECTOR.currentIndex()
+        Command.testNumber = self.UDS_TEST_SELECTOR.currentIndex()+0x31
+        if(Command.testNumber==0x32 or Command.testNumber==0x3D):
+            Command.UDS_subtest=self.UDS_LED_SELECTOR.currentIndex()+1
         Command.UDS_NRC = self.UDS_NRC_SELECTOR.currentIndex()
         Cmd = Command.SerializeToString()
         self.UART.write(Cmd)
@@ -3669,7 +3937,7 @@ class Ui_MainWindow(object):
                                 self.UDS_MSG_BRS.append(f"{str(hex(DTC_list[i]))}:{self.match_DTC(hex(DTC_list[i]))}")
                                 time.sleep(0.1)
                             received_len = self.UART.read(2).hex()
-                            print(received_len)
+
                             bytes_read = self.UART.read(int(received_len, 16))
                             Result.ParseFromString(bytes_read)
                             self.UDS_MSG_BRS.append("\nОчистка кодов ошибок и удаление информации об аварии")
@@ -3677,7 +3945,7 @@ class Ui_MainWindow(object):
                             self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
                             time.sleep(0.1)
                             received_len = self.UART.read(2).hex()
-                            print(received_len)
+
                             bytes_read = self.UART.read(int(received_len, 16))
                             Result.ParseFromString(bytes_read)
                             DTC_list2= self.parse_UDS_errors(Result, 0x09)
@@ -3715,7 +3983,6 @@ class Ui_MainWindow(object):
                                     if(self.match_DTC(hex(DTC_list3[i]))!=None):
                                         self.UDS_MSG_BRS.append(f"{str(hex(DTC_list3[i]))}:{self.match_DTC(hex(DTC_list3[i]))} Status:Not active")
                                         time.sleep(0.05)
-                                print("1")
                         case 1:
                             self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
                         case 2:
@@ -3828,10 +4095,6 @@ class Ui_MainWindow(object):
                             for i in range(0,7):
                                 self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2*i].data.hex())}\nПринято:{str(Result.frame[2*i+1].data.hex())}")
                                 time.sleep(0.02)
-
-
-
-
                 case 0x3A: #DID ECU OPERATING STATES
                     self.UDS_MSG_BRS.append("Вход в расширенную диагностическую сессию:")
                     time.sleep(0.01)
@@ -3934,81 +4197,100 @@ class Ui_MainWindow(object):
                         self.UDS_MSG_BRS.append("Fastened")
                     elif (Result.measuredValue[2] == 3):
                         self.UDS_MSG_BRS.append("Unavalible")
-                case 0x3D: #Read driver airbag resistance
+                case 0x3D: #Read DID
                     self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                    Resisatnce =0.01*((Result.frame[1].data[4]<<8)+Result.frame[1].data[5])
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(f"Считанное сопротивление:{str(Resisatnce)} Ом")
-                case 0x3E: #Read PAB Deactivation indicator status
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                    time.sleep(0.01)
-                    State=Result.frame[1].data[4]
-                    if(State==0):
-                        self.UDS_MSG_BRS.append("Состояние светодиода:No indication")
-                    else:
-                        self.UDS_MSG_BRS.append("Состояние светодиода:Indication requested")
-                case 0x3F: #Read Vehicle speed
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(f"Скорость:{str(int((100*0.01*((Result.frame[1].data[4] << 8) + (Result.frame[1].data[5])))))} км/ч")
-                case 0x301:  # Read Battery Voltage
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(f"Считанное напряжение:{str(round(0.1*(Result.frame[1].data[4]),2))} В.")
-                case 0x302:  # Read ECU's lifetime timer
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nЗначение:{(Result.frame[1].data[4]<<24)+(Result.frame[1].data[5]<<16)+(Result.frame[1].data[6]<<8)+(Result.frame[1].data[7])}")
-                    time.sleep(0.02)
-                    self.UDS_MSG_BRS.append("После паузы 5 сек.")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nЗначение:{(Result.frame[3].data[4] << 24) + (Result.frame[3].data[5] << 16) + (Result.frame[3].data[6] << 8) + (Result.frame[3].data[7])}")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(f"Разность:{((Result.frame[3].data[4] << 24) + (Result.frame[3].data[5] << 16) + (Result.frame[3].data[6] << 8) + (Result.frame[3].data[7]))-((Result.frame[1].data[4]<<24)+(Result.frame[1].data[5]<<16)+(Result.frame[1].data[6]<<8)+(Result.frame[1].data[7]))}")
-                case 0x303:  # Read Occupant Input
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                    time.sleep(0.01)
-                    if(Result.frame[1].data[5]&0x01==1):
-                        self.UDS_MSG_BRS.append("РБ водителя застёгнут")
-                    else:
-                        self.UDS_MSG_BRS.append("РБ водителя расстёгнут")
-                    time.sleep(0.01)
-                    if (Result.frame[1].data[5] & 0x04 == 0x04):  #0x80 BP1 #0X40 BP3 0X20 BP2 0X01 DR 0X04 SB FP PADS 0X02 ДРУГОЙ БАЙТ
-                        self.UDS_MSG_BRS.append("РБ переднего пассажира застёгнут")
-                    else:
-                        self.UDS_MSG_BRS.append("РБ переднего пассажира расстёгнут")
-                    time.sleep(0.01)
-                    if (Result.frame[1].data[5] & 0x80 == 0x80):
-                        self.UDS_MSG_BRS.append("РБ заднего правого пассажира застёгнут")
-                    else:
-                        self.UDS_MSG_BRS.append("РБ заднего правого пасаажира расстёгнут")
-                    time.sleep(0.01)
-                    if (Result.frame[1].data[5] & 0x20 == 0x20):
-                        self.UDS_MSG_BRS.append("РБ заднего центрального пассажира застёгнут")
-                    else:
-                        self.UDS_MSG_BRS.append("РБ заднего центрального пасаажира расстёгнут")
-                    time.sleep(0.01)
-                    if (Result.frame[1].data[5] & 0x40 == 0x40):
-                        self.UDS_MSG_BRS.append("РБ заднего левого пассажира застёгнут")
-                    else:
-                        self.UDS_MSG_BRS.append("РБ заднего левого пассажира расстёгнут")
-                    time.sleep(0.01)
-                    if (Result.frame[1].data[4] & 0x02 == 0x02):
-                        self.UDS_MSG_BRS.append("ПБ включена")
-                    else:
-                        self.UDS_MSG_BRS.append("ПБ отключена")
-                    time.sleep(0.01)
-                    '''case 0x304:
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nПринято:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
-                    time.sleep(0.02)
-                    if(Result.frame[1].data[7]==0x09):
-                        self.UDS_MSG_BRS.append("Статус: Активна")
-                    else:
-                        self.UDS_MSG_BRS.append("Статус: Нективна")
-                    time.sleep(0.02)
-                    self.UDS_MSG_BRS.append(f"Cкорость:{float(((Result.frame[3].data[5]<<8)+(Result.frame[3].data[6]))*0.01)} км/ч")
-                    self.UDS_MSG_BRS.append(f"Значение lifetime timer:{int(((Result.frame[4].data[2] << 16) + (Result.frame[4].data[3]<<8)+(Result.frame[4].data[4]))*5 )} мин.")
-                    self.UDS_MSG_BRS.append(f"Значение DTC occurence counter::{int((Result.frame[5].data[6]))}")'''
+                    match(Command.UDS_subtest):
+                        case 1|2|3|4|5|6|7|8:
+                            Resisatnce =0.01*((Result.frame[1].data[4]<<8)+Result.frame[1].data[5])
+                            time.sleep(0.01)
+                            self.UDS_MSG_BRS.append(f"\nResistance:{str(Resisatnce)} Ohm")
+                        case  10:
+                            Resisatnce =  ((Result.frame[1].data[4] << 8) + Result.frame[1].data[5])
+                            time.sleep(0.01)
+                            self.UDS_MSG_BRS.append(f"\nResistance:{str(Resisatnce)} Ohm")
+                        case 14:
+                            Resisatnce = 0.1*((Result.frame[1].data[4] << 8) + Result.frame[1].data[5])
+                            time.sleep(0.01)
+                            self.UDS_MSG_BRS.append(f"\nResistance:{str(Resisatnce)} Ohm")
+                        case 9:
+                            Indicator_status=Result.frame[1].data[4]
+                            if(Indicator_status==0):
+                                self.UDS_MSG_BRS.append("\nPAB Deactivation Indicator Status: No indication")
+                            else:
+                                self.UDS_MSG_BRS.append("\nPAB Deactivation Indicator Status: Indication requested")
+                        case 11:
+                            Vehicle_spd = ((Result.frame[1].data[4])+Result.frame[1].data[5])
+                            self.UDS_MSG_BRS.append(f"\nVehicle Speed:{Vehicle_spd} km/h")
+                        case 12:
+                            VLT = (Result.frame[1].data[4])
+                            self.UDS_MSG_BRS.append(f"\nBattery voltage:{0.1*VLT} V")
+                        case 13:
+                            TMR = ((Result.frame[1].data[4] << 24) + (Result.frame[1].data[5] << 16) + (Result.frame[1].data[6]<<8) + Result.frame[1].data[7])
+                            self.UDS_MSG_BRS.append(f"\nLifetime timer value:{TMR} s")
+                        case 15:
+                            WL_status = Result.frame[1].data[4]
+                            if (WL_status == 0):
+                                self.UDS_MSG_BRS.append("\nWarning Lamp Status: No warning")
+                            else:
+                                self.UDS_MSG_BRS.append("\nWarning Lamp Status: Warning")
+                        case 16:
+                            Mil = ((Result.frame[1].data[4] << 16) + (Result.frame[1].data[5] << 8) + (Result.frame[1].data[6]))
+                            self.UDS_MSG_BRS.append(f"\nMileage:{0.01*Mil} km")
+                        case 17:
+                            TIM = ((Result.frame[1].data[4] << 8) + (Result.frame[1].data[5]))
+                            self.UDS_MSG_BRS.append(f"\nKey-on timer value:{TIM} s")
+                        case 18:
+                            DSB = (Result.frame[1].data[5] & 0x1)
+                            PSB_PPS = ((Result.frame[1].data[5] & 0x1E) >> 1)
+                            match(PSB_PPS):
+                                case 0:
+                                    PSB_PPS='Passenger not present'
+                                case 1:
+                                    PSB_PPS='Passenger present,not fastened'
+                                case 2:
+                                    PSB_PPS='Passenger present,fastened'
+                                case _:
+                                    PSB_PPS='Sensor value out of range'
+                            RRSB = ((Result.frame[1].data[5] & 0x4) >> 5)
+                            CRSB = ((Result.frame[1].data[5] & 0x8) >> 6)
+                            LRSB = ((Result.frame[1].data[5] & 0x10) >> 7)
+                            PADS_ST = ((Result.frame[1].data[4] & 0x2) >> 1)
+                            BRSB = ((Result.frame[1].data[4] & 0x4) >> 2)
+                            BLSB = ((Result.frame[1].data[4] & 0x8) >> 3)
+                            self.UDS_MSG_BRS.append(f"\nDriver SB:{self.matchSB(DSB)}\nPassenger SB:{(PSB_PPS)}\nRear right SB:{self.matchSB(RRSB)}\nRear left SB:{self.matchSB(LRSB)}\nPADS_ST:{self.matchSB(PADS_ST)}\n3rd row right SB:{self.matchSB(BRSB)}\n3rd row left SB:{self.matchSB(BLSB)}\n")
+                        case 19:
+                            OPST = (Result.frame[1].data[4])
+                            if(OPST==0xA5):
+                                self.UDS_MSG_BRS.append("\nWorking mode")
+                            if (OPST == 0x5A):
+                                self.UDS_MSG_BRS.append("\nPlant mode")
+                        case 20:
+                            DAB = (Result.frame[1].data[4] & 0x1)
+                            PAB = ((Result.frame[1].data[4] & 0x2) >> 1)
+                            DPT = ((Result.frame[1].data[4] & 0x4) >> 2)
+                            PPT = ((Result.frame[1].data[4] & 0x8) >> 3)
+                            PADI = ((Result.frame[1].data[4] & 0x10) >> 4)
+                            PADS = ((Result.frame[1].data[4] & 0x20) >> 5)
+                            PPS = ((Result.frame[1].data[4] & 0x40) >> 6)
+                            self.UDS_MSG_BRS.append(f"\nDriver Airbag:{self.matchACU(DAB)}\nPassenger Airbag:{self.matchACU(PAB)}\nDriver Pretensioner:{self.matchACU(DPT)}\nPassenger Pretensioner:{self.matchACU(PPT)}\nPADI:{self.matchACU(PADI)}\nPADS:{self.matchACU(PADS)}\nPassenger Presence sensor:{self.matchACU(PPS)}\n")
+                        case 21:
+                            LCAB = (Result.frame[1].data[4] & 0x1)
+                            RCAB = ((Result.frame[1].data[4] & 0x2) >> 1)
+                            DSAB = ((Result.frame[1].data[4] & 0x4) >> 2)
+                            PSAB = ((Result.frame[1].data[4] & 0x8) >> 3)
+                            PGSAT = ((Result.frame[1].data[4] & 0x10) >> 4)
+                            DGSAT = ((Result.frame[1].data[4] & 0x20) >> 5)
+                            PPSAT = ((Result.frame[1].data[4] & 0x40) >> 6)
+                            DPSAT = ((Result.frame[1].data[4] & 0x80) >> 7)
+                            self.UDS_MSG_BRS.append(f"\nLeft Curtain Airbag:{self.matchACU(LCAB)}\nRight Curtain Airbag:{self.matchACU(RCAB)}\nDriver Side Airbag:{self.matchACU(DSAB)}\nPassenger Side Airbag:{self.matchACU(PSAB)}\nPassenger front side crash sensor:{self.matchACU(PGSAT)}\nDriver front side crash sensor:{self.matchACU(DGSAT)}\nPassenger door pressure sensor:{self.matchACU(PPSAT)}\nDriver door pressure sensor:{self.matchACU(DPSAT)}\n")
 
-            #bytes_read.clear()
+                        case 22:
+                            DSB = (Result.frame[1].data[4] & 0x1)
+                            PSB = ((Result.frame[1].data[4] & 0x2)>>1)
+                            RRSB = ((Result.frame[1].data[4] & 0x4)>>2)
+                            RCSB = ((Result.frame[1].data[4] & 0x8)>>3)
+                            RLSB = ((Result.frame[1].data[4] & 0x10)>>4)
+                            self.UDS_MSG_BRS.append(f"\nDriver SB:{self.matchACU(DSB)}\nPassenger SB:{self.matchACU(PSB)}\nRear right SB:{self.matchACU(RRSB)}\nRear Center SB:{self.matchACU(RCSB)}\nRear left SB:{self.matchACU(RLSB)}\n")
         self.UDS_RUN_BTN.setEnabled(True)
         self.STOP_BTN_6.setEnabled(False)
         self.UART.close()
@@ -4016,7 +4298,7 @@ class Ui_MainWindow(object):
         Receiver=threading.Thread(target=self.UDS_handler)
         Receiver.start()
     def snap_handler(self):
-
+        self.read_snap_btn.setDisabled(True)
         self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
@@ -4174,17 +4456,18 @@ class Ui_MainWindow(object):
                 else:
                     self.status_brs.append("INACTIVE")
                 time.sleep(0.2)
-                self.lcdNumber_2.append(f"{float(((Result.frame[3].data[5] << 8) + (Result.frame[3].data[6])) * 0.01)}")
+                self.lcdNumber_2.append(f"{float(((Result.frame[3].data[5] << 8) + (Result.frame[3].data[6])) * 0.01)} km/h")
                 time.sleep(0.2)
-                self.lcdNumber_3.append(f"{int(((Result.frame[4].data[7] << 24)+(Result.frame[5].data[1] << 16) + (Result.frame[5].data[2] << 8) + (Result.frame[5].data[3] >>4)) * 0.01)}")
+                self.lcdNumber_3.append(f"{int(((Result.frame[4].data[7] << 24)+(Result.frame[5].data[1] << 16) + (Result.frame[5].data[2] << 8) + (Result.frame[5].data[3] >>4)) * 0.01)} km")
                 time.sleep(0.2)
-                self.lcdNumber_4.append(f"{int(((Result.frame[4].data[2] << 16) + (Result.frame[4].data[3] << 8) + (Result.frame[4].data[4])) * 5)}  ")
+                self.lcdNumber_4.append(f"{int(((Result.frame[4].data[2] << 16) + (Result.frame[4].data[3] << 8) + (Result.frame[4].data[4])) * 5)}  min")
                 time.sleep(0.2)
                 self.lcdNumber_5.append(f"{int((Result.frame[5].data[6]))}")
                 self.UART.close()
             except:
                 self.snap_brs.append("Ошибка чтения snapshot.Попробуйте ещё раз")
                 self.UART.close()
+        self.read_snap_btn.setEnabled(True)
 
 
     def run_snap_handler(self):
@@ -4607,59 +4890,103 @@ class Ui_MainWindow(object):
     def run_SBR(self):
         Receiver=threading.Thread(target=self.SBR_handler)
         Receiver.start()
-    def EDR_read(self):
+
+    def EDR_num_read(self):
+        self.EDR_OTHER_DATA_BRS.clear()
+        self.UART.open()
+        Result=Messages.TestData()
+        Command = Messages.TestData()
+        Command.method = 0
+        Command.testNumber = 0x64
+        Command = Command.SerializeToString()
+        self.UART.write(Command)
+        try:
+            received_len = self.UART.read(2).hex()
+            if (received_len != ''):
+                bytes_read = self.UART.read(int(received_len, 16))
+                Result.ParseFromString(bytes_read)
+                listWidgetItem = QtWidgets.QListWidgetItem(f"Отправлено:{Result.frame[0].data.hex()}")
+                self.EDR_OTHER_DATA_BRS.addItem(listWidgetItem)
+                listWidgetItem = QtWidgets.QListWidgetItem(f"Принято:{Result.frame[1].data.hex()}")
+                self.EDR_OTHER_DATA_BRS.addItem(listWidgetItem)
+                listWidgetItem = QtWidgets.QListWidgetItem(f"Номер EDR:{Result.frame[1].data[4]}")
+                self.EDR_OTHER_DATA_BRS.addItem(listWidgetItem)
+        except:
+            self.EDR_OTHER_DATA_BRS.addItem("Возникла ошибка. Попробуйте ещё раз")
+        self.UART.flush()
+        self.UART.close()
+        self.EDR1_BTN.setEnabled(True)
+        self.EDR2_BTN.setEnabled(True)
+        self.EDR3_BTN.setEnabled(True)
+        self.READ_NUM_BTN.setEnabled(True)
+        self.EDR_STOP_BTN.setEnabled(True)
+
+    def run_EDR_num_read(self):
+        Receiver = threading.Thread(target=self.EDR_num_read)
+        Receiver.start()
+    def EDR_read(self,num):
         self.Precrash_data_table.clearContents()
         self.Crash_data_table.clearContents()
         self.EDR_OTHER_DATA_BRS.clear()
         self.UART.open()
-        self.STOP_BTN_7.setEnabled(True)
+        #self.READ_NUM_BTN.setDisabled(True)
+        #self.EDR_STOP_BTN.setDisabled(True)
         Command = Messages.TestData()
         Command.method = 0
-        Command.testNumber = 0x61
+        match(num):
+            case 1:
+                Command.testNumber = 0x61
+            case 2:
+                Command.testNumber = 0x62
+            case 3:
+                Command.testNumber = 0x63
         Command.accDataNumber=7
         Command = Command.SerializeToString()
         self.UART.write(Command)
-        received_len = self.UART.read(2).hex()
-        if(received_len!=''):
-            print(received_len)
-            bytes_read = self.UART.read(int(received_len, 16))
-            '''f = open('EDR2.txt', 'w')
-            for index in bytes_read:
-                f.write(str(hex(bytes_read[index]))+' ')'''
-            Result = Parse_EDR(bytes_read)
-            print(Result)
-            for i in range(10, 260, 10):
-                self.Crash_data_table.setItem(int(i / 10) -1, 0, QtWidgets.QTableWidgetItem(f"{i}"))
-                self.Crash_data_table.setItem(int(i / 10) - 1, 1, QtWidgets.QTableWidgetItem(f"{Result[0][int(i/10) - 1]}"))
-                self.Crash_data_table.setItem(int(i / 10) - 1, 2, QtWidgets.QTableWidgetItem(f"{Result[1][int(i/10) - 1]}"))
-            for i in range(11):
-                self.Precrash_data_table.setItem(i, 0, QtWidgets.QTableWidgetItem(f"{Result[2][i]}"))
-                self.Precrash_data_table.setItem(i , 1, QtWidgets.QTableWidgetItem(f"{Result[3][i]}"))
-                self.Precrash_data_table.setItem(i, 2, QtWidgets.QTableWidgetItem(f"{Result[4][i]}"))
-                self.Precrash_data_table.setItem(i, 3, QtWidgets.QTableWidgetItem(f"{Result[5][i]}"))
-                self.Precrash_data_table.setItem(i, 4, QtWidgets.QTableWidgetItem(f"{Result[6][i]}"))
-                self.Precrash_data_table.setItem(i, 5, QtWidgets.QTableWidgetItem(f"{Result[7][i]}"))
-                self.Precrash_data_table.setItem(i, 6, QtWidgets.QTableWidgetItem(f"{Result[8][i]}"))
-                self.Precrash_data_table.setItem(i, 7, QtWidgets.QTableWidgetItem(f"{Result[9][i]}"))
-                self.Precrash_data_table.setItem(i, 8, QtWidgets.QTableWidgetItem(f"{Result[10][i]}"))
-                self.Precrash_data_table.setItem(i, 9, QtWidgets.QTableWidgetItem(f"{Result[11][i]}"))
-                self.Precrash_data_table.setItem(i, 10, QtWidgets.QTableWidgetItem(f"{Result[12][i]}"))
-                self.Precrash_data_table.setItem(i, 11, QtWidgets.QTableWidgetItem(f"{Result[13][i]}"))
-            for i in range(0,40):#?
-                listWidgetItem = QtWidgets.QListWidgetItem(f"{Result[14][i]}")
-                self.EDR_OTHER_DATA_BRS.addItem(listWidgetItem)
-            Result.clear()
-            print(Result)
-            bytes_read=bytearray(bytes_read)
-            for i in range(0,len(bytes_read)):
-                bytes_read[i]=0
-            self.UART.flush()
-            self.UART.close()
-        self.EDR_READ_BTN.setEnabled(True)
-        self.STOP_BTN_7.setEnabled(False)
+        try:
+            received_len = self.UART.read(2).hex()
+            if(received_len!=''):
+                bytes_read = self.UART.read(int(received_len, 16))
+                '''f = open('EDR2.txt', 'w')
+                for index in bytes_read:
+                    f.write(str(hex(bytes_read[index]))+' ')'''
+                Result = Parse_EDR(bytes_read)
+                for i in range(10, 310, 10):
+                    self.Crash_data_table.setItem(int(i / 10) -1, 0, QtWidgets.QTableWidgetItem(f"{i}"))
+                    self.Crash_data_table.setItem(int(i / 10) - 1, 1, QtWidgets.QTableWidgetItem(f"{Result[0][int(i/10) - 1]}"))
+                    self.Crash_data_table.setItem(int(i / 10) - 1, 2, QtWidgets.QTableWidgetItem(f"{Result[1][int(i/10) - 1]}"))
+                for i in range(11):
+                    self.Precrash_data_table.setItem(i, 0, QtWidgets.QTableWidgetItem(f"{Result[2][i]}"))
+                    self.Precrash_data_table.setItem(i , 1, QtWidgets.QTableWidgetItem(f"{Result[3][i]}"))
+                    self.Precrash_data_table.setItem(i, 2, QtWidgets.QTableWidgetItem(f"{Result[4][i]}"))
+                    self.Precrash_data_table.setItem(i, 3, QtWidgets.QTableWidgetItem(f"{Result[5][i]}"))
+                    self.Precrash_data_table.setItem(i, 4, QtWidgets.QTableWidgetItem(f"{Result[6][i]}"))
+                    self.Precrash_data_table.setItem(i, 5, QtWidgets.QTableWidgetItem(f"{Result[7][i]}"))
+                    self.Precrash_data_table.setItem(i, 6, QtWidgets.QTableWidgetItem(f"{Result[8][i]}"))
+                    self.Precrash_data_table.setItem(i, 7, QtWidgets.QTableWidgetItem(f"{Result[9][i]}"))
+                    self.Precrash_data_table.setItem(i, 8, QtWidgets.QTableWidgetItem(f"{Result[10][i]}"))
+                    self.Precrash_data_table.setItem(i, 9, QtWidgets.QTableWidgetItem(f"{Result[11][i]}"))
+                    self.Precrash_data_table.setItem(i, 10, QtWidgets.QTableWidgetItem(f"{Result[12][i]}"))
+                    self.Precrash_data_table.setItem(i, 11, QtWidgets.QTableWidgetItem(f"{Result[13][i]}"))
+                for i in range(0,40):#?
+                    listWidgetItem = QtWidgets.QListWidgetItem(f"{Result[14][i]}")
+                    self.EDR_OTHER_DATA_BRS.addItem(listWidgetItem)
+                Result.clear()
+                bytes_read=bytearray(bytes_read)
+                for i in range(0,len(bytes_read)):
+                    bytes_read[i]=0
+        except:
+            self.EDR_OTHER_DATA_BRS.addItem("Ошибка чтения EDR. Попробуйте ещё раз")
+        self.UART.flush()
+        self.UART.close()
+        self.EDR1_BTN.setEnabled(True)
+        self.EDR2_BTN.setEnabled(True)
+        self.EDR3_BTN.setEnabled(True)
+        self.READ_NUM_BTN.setEnabled(True)
+        self.EDR_STOP_BTN.setEnabled(True)
 
-    def run_EDR_read(self):
-        Receiver = threading.Thread(target=self.EDR_read)
+    def run_EDR_read(self, num):
+        Receiver = threading.Thread(target=self.EDR_read,args=(num,))
         Receiver.start()
     def update_params(self):
         self.UPDATE_PARAMS_BTN.setDisabled(True)
@@ -4672,42 +4999,29 @@ class Ui_MainWindow(object):
         self.UART.write(Command)
 
         Limit_Ares_front = self.LimitAresfront_input.value()
-        print(hex(Limit_Ares_front))
 
         Limit_Sx_Sy_front = self.LimitSxSyfront_input.value()
-        print(hex(Limit_Sx_Sy_front))
 
         Limit_Sres_front = self.LimitSresfront_input.value()
-        print(hex(Limit_Sres_front))
 
         delta_Ares = self.deltaAres_input.value()
-        print(hex(delta_Ares))
 
         Limit_Ares_side = self.LimitAresside_input.value()
-        print(hex(Limit_Ares_side))
 
         Limit_Sx_Sy_side = self.LimitSxSyside_input.value()
-        print(hex(Limit_Sx_Sy_side))
 
         Limit_Sres_side = self.LimitSresside_input.value()
-        print(hex(Limit_Sres_side))
 
         T_calc_front = self.Tcalc_input.value()
-        print(hex(T_calc_front))
 
         T_calc_side = self.Tcalc2_input.value()
-        print(hex(T_calc_side))
 
         Time_to_stop_calc = self.Timetostopcalc_input.value()
-        print(hex(Time_to_stop_calc))
 
         Sres_impact_front = self.Sresimpactfront_input.value()
-        print(hex(Sres_impact_front))
 
         Sres_impact_side = self.Sresimpact_side_input.value()
-        print(hex(Sres_impact_side))
         PARAMS_ARRAY=bytearray([(Limit_Ares_front>>8)&0xff,(Limit_Ares_front)&0xff,(Limit_Ares_side)>>8&0xff,(Limit_Ares_side)&0xff,(Limit_Sx_Sy_front>>8)&0xff,(Limit_Sx_Sy_front)&0xff,(Limit_Sx_Sy_side>>8)&0xff,(Limit_Sx_Sy_side)&0xff,(Limit_Sres_front>>8)&0xff,Limit_Sres_front&0xff,(Limit_Sres_side>>8)&0xff,Limit_Sres_side&0xff,T_calc_front,T_calc_side,Time_to_stop_calc,(Sres_impact_front>>8)&0xff,(Sres_impact_front)&0xff,(Sres_impact_side>>8)&0xff,(Sres_impact_side)&0xff,delta_Ares])
-        print(PARAMS_ARRAY)
         time.sleep(1)
         self.UART.write(PARAMS_ARRAY)
         received_len = self.UART.read(2).hex()
@@ -4729,6 +5043,7 @@ class Ui_MainWindow(object):
         Receiver = threading.Thread(target=self.update_params)
         Receiver.start()
     def read_params(self):
+        self.read_params_btn.setDisabled(True)
         self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
@@ -4770,6 +5085,7 @@ class Ui_MainWindow(object):
             except:
                 self.PARAM_RESULT_BRS.append("Ошибка чтения парметров. Попробуйте ещё раз")
         self.UART.close()
+        self.read_params_btn.setEnabled(True)
 
     def run_read_params(self):
         Receiver = threading.Thread(target=self.read_params)
@@ -4790,7 +5106,6 @@ class Ui_MainWindow(object):
         appHex = HexOp(self.file)
         appHex.readHex()
         hexsize = appHex.getHexZise()
-        print(hexsize)
         requestDownload2[1] = (hexsize & 0xFF0000) >> 16
         requestDownload2[2] = (hexsize & 0x00FF00) >> 8
         requestDownload2[3] = (hexsize & 0x0000FF)
@@ -4848,25 +5163,21 @@ class Ui_MainWindow(object):
         self.UART.flushOutput()
         self.UART.close()
     def CheckConnection(self):
-        #print(self.COM_PORT)
+
         self.UART.open()
         self.UART.timeout = 2
         check=bytes([0xbb])
         self.UART.write(check)
-        bytes_read=bytes([0x1])
         bytes_read=self.UART.read(1)
         if(len(bytes_read)==0):
             bytes_read=bytes([0x70])
-        #print(bytes_read)
         if(bytes_read[0]==0xBB):
             self.COM_PORT_BRS.append("Связь с СТО установлена")
             self.start_SBR_btn.setEnabled(True)
             self.start_acc_btn.setEnabled(True)
             self.Run_Init_btn.setEnabled(True)
             self.CHECK_CRASH_DETECTION_BTN.setEnabled(True)
-            self.DIAG_ACU_BTN.setEnabled(True)
             self.UDS_RUN_BTN.setEnabled(True)
-            self.EDR_settings_btn.setEnabled(True)
             self.perod_periodic_btn.setEnabled(True)
             self.start_trig_btn.setEnabled(True)
             self.DIAG_CLEAR_DTC_BTN.setEnabled(True)
@@ -4876,7 +5187,7 @@ class Ui_MainWindow(object):
             self.DIAG_VIN0_BTN.setEnabled(True)
             self.DIAG_VIN1_BTN.setEnabled(True)
             self.DIAG_RESET_BTN.setEnabled(True)
-            self.EDR_READ_BTN.setEnabled(True)
+            self.READ_NUM_BTN.setEnabled(True)
             self.START_VALID_AB_BTN.setEnabled(True)
             self.toolButton.setEnabled(True)
             self.DIAG_UPD_CAN_MSG_BTN.setEnabled(True)
@@ -4887,6 +5198,11 @@ class Ui_MainWindow(object):
             self.ACC_VER_BTN.setEnabled(True)
             self.Manufacture_mode_btn.setEnabled(True)
             self.read_params_btn.setEnabled(True)
+            self.WRITE_ACU_BTN.setEnabled(True)
+            self.EDR1_BTN.setEnabled(True)
+            self.EDR2_BTN.setEnabled(True)
+            self.EDR3_BTN.setEnabled(True)
+            self.EDR_STOP_BTN.setEnabled(True)
         else:
             self.COM_PORT_BRS.append("Ошибка подключения.Попробуйте ещё раз")
         self.UART.timeout=300
@@ -4898,11 +5214,9 @@ class Ui_MainWindow(object):
         Receiver.start()
     def run_model_single(self):
         absolute_path = os.path.dirname(__file__)
-        relative_path = "pillows_2024_09_04\\lib\\test.exe"
+        relative_path = "pillows\\lib\\test.exe"
         full_path = os.path.join(absolute_path, relative_path)
-        #print(full_path)
         params=tests.get(self.data_selector.currentText())
-        #print(params)
         is_single_test = 1
         inc_fire_tests = 1
         inc_misuse_tests = 1
@@ -4915,8 +5229,8 @@ class Ui_MainWindow(object):
         sys.stdout = result
 
         proc = subprocess.Popen(
-            [full_path, "D:\STO_gui\params.txt" , str(is_single_test), str(inc_fire_tests), str(inc_misuse_tests),
-             str(inc_exp_tests), str(single_test_type), str(single_fold_num), str(single_testnum), "D:\STO_gui\pillows_2024_09_04\lib\yres.txt"],#поменять зависимости
+            [full_path, absolute_path+"\pillows\params.txt" , str(is_single_test), str(inc_fire_tests), str(inc_misuse_tests),
+             str(inc_exp_tests), str(single_test_type), str(single_fold_num), str(single_testnum), absolute_path+"\pillows\lib\yres.txt"],#поменять зависимости
             stdout=subprocess.PIPE)
         time.sleep(3)
         sys.stdout = tmp_stdout
@@ -4960,10 +5274,14 @@ class Ui_MainWindow(object):
         Receiver = threading.Thread(target=self.run_model_single)
         Receiver.start()
     def run_model_all(self):
+        faulthandler.enable()
+        self.CHECK_PARAM_VALID_BTN.setDisabled(True)
+        time.sleep(0.01)
+        self.PARAMS_PROCESS_BRS.append("Running model")
+        time.sleep(0.01)
         absolute_path = os.path.dirname(__file__)
-        relative_path = "pillows_2024_09_04\\lib\\test.exe"
+        relative_path = "pillows\\lib\\test.exe"
         full_path = os.path.join(absolute_path, relative_path)
-        print(full_path)
         is_XGF = 0
         is_FIRE = 0
         is_EXP = 0
@@ -4979,11 +5297,11 @@ class Ui_MainWindow(object):
         sys.stdout = result
 
         proc = subprocess.Popen(
-            [full_path, "D:\STO_gui\params.txt ", str(is_single_test), str(inc_fire_tests), str(inc_misuse_tests),
-             str(inc_exp_tests), str(single_test_type), str(single_fold_num), str(single_testnum), "D:\STO_gui\pillows_2024_09_04\lib\TEST_RESULT.csv"],
+            [full_path, absolute_path+"\pillows\params.txt", str(is_single_test), str(inc_fire_tests), str(inc_misuse_tests),
+             str(inc_exp_tests), str(single_test_type), str(single_fold_num), str(single_testnum), absolute_path+"\pillows\lib\TEST_RESULT.csv"],
             stdout=subprocess.PIPE)
-        time.sleep(3)
         sys.stdout = tmp_stdout
+        time.sleep(3)
         while True:
             try:
                 line = proc.stdout.readline()
@@ -5018,14 +5336,14 @@ class Ui_MainWindow(object):
 
             if not line:
                 break
+            self.CHECK_PARAM_VALID_BTN.setDisabled(False)
     def run_thread_model_all(self):
         Receiver = threading.Thread(target=self.run_model_all)
         Receiver.start()
     def export_results(self):
-        os.chdir("D:\STO_gui\pillows_2024_09_04\lib")
-        print(os.listdir('.'))
+        os.chdir("D:\STO_gui\pillows\lib")
         subprocess.call("TEST_RESULT.csv", shell=True)
-        #process = subprocess.Popen(["D:\STO_gui\pillows_2024_09_04\lib\TEST_RESULT.csv"],stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
+        #process = subprocess.Popen(["D:\STO_gui\pillows\lib\TEST_RESULT.csv"],stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
     def run_export_results(self):
         Receiver = threading.Thread(target=self.export_results)
         Receiver.start()
@@ -5043,7 +5361,6 @@ class Ui_MainWindow(object):
         self.UART.write(Command)
         received_len = self.UART.read(2).hex()
 
-        print((int(received_len, 16)))
         bytes_read = self.UART.read(int(received_len, 16))
         self.UART.close()
         Result.ParseFromString(bytes_read)
@@ -5072,17 +5389,29 @@ class Ui_MainWindow(object):
         file.write(f"Limit_Ax = 0\n")
         file.write(f"Limit_Ay = 0\n")
         file.write(f"Limit_Ares_front = {self.LimitAresfront_input.value()/10}\n")
+        self.single_test_result_brs.append(f"Limit_Ares_front = {self.LimitAresfront_input.value()/10}")
         file.write(f"Limit_Sx_Sy_front = {self.LimitSxSyfront_input.value()/100}e-4\n")
+        self.single_test_result_brs.append(f"Limit_Sx_Sy_front = {self.LimitSxSyfront_input.value()/100}e-4")
         file.write(f"Limit_Sres_front = {self.LimitSresfront_input.value()/100}e-4\n")
+        self.single_test_result_brs.append(f"Limit_Sres_front = {self.LimitSresfront_input.value()/100}e-4")
         file.write(f"delta_Ares = {self.deltaAres_input.value()}\n")
+        self.single_test_result_brs.append(f"delta_Ares = {self.deltaAres_input.value()}")
         file.write(f"Limit_Ares_side = {self.LimitAresside_input.value()/10}\n")
+        self.single_test_result_brs.append(f"Limit_Ares_side = {self.LimitAresside_input.value()/10}")
         file.write(f"Limit_Sx_Sy_side = {self.LimitSxSyside_input.value()/100}e-4\n")
+        self.single_test_result_brs.append(f"Limit_Sx_Sy_side = {self.LimitSxSyside_input.value()/100}e-4")
         file.write(f"Limit_Sres_side = {self.LimitSresside_input.value()/100}e-4\n")
+        self.single_test_result_brs.append(f"Limit_Sres_side = {self.LimitSresside_input.value()/100}e-4")
         file.write(f"T_calc_front = {self.Tcalc_input.value()}\n")
+        self.single_test_result_brs.append(f"T_calc_front = {self.Tcalc_input.value()}")
         file.write(f"T_calc_side = {self.Tcalc2_input.value()}\n")
+        self.single_test_result_brs.append(f"T_calc_side = {self.Tcalc2_input.value()}")
         file.write(f"Time_to_stop = {self.Timetostopcalc_input.value()/1000}e3\n")
+        self.single_test_result_brs.append(f"Time_to_stop = {self.Timetostopcalc_input.value()/1000}e3")
         file.write(f"Sres_impact_front = {self.Sresimpactfront_input.value()/100}e-4\n")
+        self.single_test_result_brs.append(f"Sres_impact_front = {self.Sresimpactfront_input.value()/100}e-4")
         file.write(f"Sres_impact_side = {self.Sresimpact_side_input.value()/100}e-4\n")
+        self.single_test_result_brs.append(f"Sres_impact_side = {self.Sresimpact_side_input.value()/100}e-4")
 
 
     def run_file_updater(self):
@@ -5130,7 +5459,6 @@ class Ui_MainWindow(object):
     def on_click(self):
         file, _ = QtWidgets.QFileDialog.getOpenFileName(self.reprogramming_tab, 'Open File', './', " (*.hex)")
         if file:
-            print(file)
             self.textBrowser_2.append(file)
             self.file=file
             self.pushButton_3.setEnabled(True)
@@ -5155,9 +5483,7 @@ class Ui_MainWindow(object):
         self.start_acc_btn.setEnabled(True)
         self.Run_Init_btn.setEnabled(True)
         self.CHECK_CRASH_DETECTION_BTN.setEnabled(True)
-        self.DIAG_ACU_BTN.setEnabled(True)
         self.UDS_RUN_BTN.setEnabled(True)
-        self.EDR_settings_btn.setEnabled(True)
         self.perod_periodic_btn.setEnabled(True)
         self.start_trig_btn.setEnabled(True)
         self.DIAG_CLEAR_DTC_BTN.setEnabled(True)
@@ -5167,7 +5493,6 @@ class Ui_MainWindow(object):
         self.DIAG_VIN0_BTN.setEnabled(True)
         self.DIAG_VIN1_BTN.setEnabled(True)
         self.DIAG_RESET_BTN.setEnabled(True)
-        self.EDR_READ_BTN.setEnabled(True)
         self.START_VALID_AB_BTN.setEnabled(True)
         self.toolButton.setEnabled(True)
         self.DIAG_UPD_CAN_MSG_BTN.setEnabled(True)
@@ -5178,11 +5503,145 @@ class Ui_MainWindow(object):
         self.ACC_VER_BTN.setEnabled(True)
         self.Manufacture_mode_btn.setEnabled(True)
         self.read_params_btn.setEnabled(True)
+    def update_plot(self):
+        self.tstart_min_input.setMaximum(self.t1_input.value()-1)
+        self.tstart_max_input.setMaximum(self.t2_input.value()-1)
+        self.t1_input.setMinimum(1)
+        self.t1_input.setMaximum(self.t3_input.value()-1)
+        self.t2_input.setMinimum(1)
+        self.t2_input.setMaximum(self.t3_input.value()-1)
+        self.t3_input.setMinimum(self.t2_input.value()+1)
+        self.t3_input.setMaximum(self.tend_max_input.value()-1)
+        self.t4_input.setMaximum(self.tend_min_input.value()-1)
+        self.t4_input.setMinimum(self.t1_input.value() + 1)
+        self.tend_min_input.setMaximum(self.tend_max_input.value()-1)
+        self.tend_max_input.setMaximum(500)
+        self.limit_ares_input.setMaximum(100-self.ares_range_input.value())
+        self.ares_range_input.setMaximum(100-self.limit_ares_input.value())
+
+        self.tstart_min = self.tstart_min_input.value()
+        self.tstart_max = self.tstart_max_input.value()
+        self.t1 = self.t1_input.value()
+        self.t2 = self.t2_input.value()
+        self.t3 = self.t3_input.value()
+        self.t4 = self.t4_input.value()
+        self.tend_min = self.tend_min_input.value()
+        self.tend_max = self.tend_max_input.value()
+        self.limit_ares = self.limit_ares_input.value()
+        self.ares_range = self.ares_range_input.value()
+        self.canvas.plot(self.tstart_min,self.t1,self.tstart_max,self.t2,self.t3,self.t4,self.limit_ares,self.ares_range,self.tend_min,self.tend_max)
+
+
+    def nevjebacca_generator(self):
+        faulthandler.enable()
+        self.syntez_btn.setDisabled(True)
+        absolute_path = os.path.dirname(__file__)
+        relative_path = "acceleration_synthesis\\gen2.exe"
+        full_path = os.path.join(absolute_path, relative_path)
+#        os.chdir('acceleration_synthesis')
+        Limit_ares = str(self.limit_ares_input.value())
+        Ares_range = str(self.ares_range_input.value())
+        side_of_collision = self.sideinput.currentText()
+        time_start_max = str(self.tstart_max_input.value())# начало коридора  # ms
+        time_end_max = str(self.tend_max_input.value())  # конец коридора  # ms
+        time_up_max = str(self.t2_input.value()-self.tstart_max_input.value())  # ширина коридора (время) # ms  < (time_end - time_start)/2/(1+Limit_Ares/(Limit_Ares+Ares_range))
+        time_down_max = str(self.tend_max_input.value()-self.t3_input.value())
+        time_start_min = str(self.tstart_max_input.value())
+        time_end_min = str(self.tend_min_input.value())
+        time_up_min = str(self.t1_input.value()-self.tstart_min_input.value())
+        time_down_min = str(self.tend_min_input.value()-self.t4_input.value())
+        time_step = str(self.timestep_input.value())
+        time_before_collision = str(60)#str(self.timebeforecollis_input.value())
+        name_of_output_file = self.file
+        proc= subprocess.Popen(
+            [full_path, Limit_ares, Ares_range, side_of_collision, time_start_max, time_end_max, time_up_max,
+             time_down_max, time_start_min, time_end_min, time_up_min, time_down_min, time_step, time_before_collision,
+             name_of_output_file],stdout=subprocess.PIPE)
+        #os.chdir('..')
+        self.syntez_btn.setEnabled(True)
+        faulthandler.disable()
+    def run_nevjebacca_generator(self):
+        Receiver = threading.Thread(target=self.nevjebacca_generator)
+        Receiver.start()
+
+    def on_click2(self):
+        os.chdir('acceleration_synthesis')
+        os.chdir('Generated_acc')
+        file, _ = QtWidgets.QFileDialog.getSaveFileName(self.params_tab, 'Save as', './', " (*.csv)")
+        if file:
+            self.file = file
+            print(self.file)
+        self.run_nevjebacca_generator()
+        os.chdir('..')
+        os.chdir('..')
 
 
 
 class Communicate(QtCore.QObject):
     progress_changed = QtCore.pyqtSignal(int)
+
+class PlotCanvas(FigureCanvas):
+    def __init__(self, parent=None):
+        fig, self.ax = plt.subplots()
+        super(PlotCanvas, self).__init__(fig)
+#        self.setParent(parent)
+
+    def plot(self,tstart_min,t1,tstart_max,t2,t3,t4,limit_ares,ares_range,tend_min,tend_max):
+        # Example data
+
+        x_left1 = np.linspace(tstart_min, t1, 300)
+        x_left2 = np.linspace(tstart_max, t2, 300)
+        x_mid2 = np.linspace(t2, t3, t3-t2)
+        x_mid1 = np.linspace(t1, t4, t4-t1)
+        x_right1= np.linspace(t4,tend_min, 300)
+        x_right2 = np.linspace(t3, tend_max, 300)
+        k1=limit_ares/(t1-tstart_min)
+        b1=-k1*tstart_min
+        k2=(limit_ares+ares_range)/(t2-tstart_max)
+        b2 = -k2 * tstart_max
+        k5=limit_ares/(t4-tend_min)
+        k6=(limit_ares+ares_range)/(t3-tend_max)
+        b5 = -k5 * tend_min
+        b6 = -k6 * tend_max
+        y1 = k1*x_left1+b1
+        y2=k2*x_left2+b2
+        y3 = [limit_ares+ares_range for i in range(t2,t3)]
+        y4 = [limit_ares for i in range(t1,t4)]
+        y5 = (k5 * x_right1 + b5)
+        y6 = (k6 * x_right2 + b6)
+        self.ax.clear()  # Clear the previous graph
+        self.ax.plot(x_left1, y1,color='#CD5C5C')
+        plt.grid(True)
+        plt.xlim(min([tstart_min,tstart_max,tend_min,tend_max,t1,t2,t3,t4]),max([tstart_min,tstart_max,tend_min,tend_max,t1,t2,t3,t4])+10)
+        plt.ylim(0, 120)
+        self.ax.plot(x_left2, y2,color='#CD5C5C')
+        self.ax.plot(x_mid1, y4,color='#CD5C5C')
+        self.ax.plot(x_mid2, y3,color='#CD5C5C')
+        self.ax.plot(x_right1, y5,color='#CD5C5C')
+        self.ax.plot(x_right2, y6,color='#CD5C5C')
+        plt.axvline(t1,linestyle='--')
+        plt.scatter(t1, 0, marker='*')
+        plt.text(t1, -40, "t1")
+        plt.axvline(t2, linestyle='--')
+        plt.scatter(t2, 0, marker='*')
+        plt.text(t2, -40, "t2")
+        plt.axvline(t3, linestyle='--')
+        plt.scatter(t3, 0, marker='*')
+        plt.text(t3, -40, "t3")
+        plt.axvline(t4, linestyle='--')
+        plt.scatter(t4, 0, marker='*')
+        plt.text(t4, -40, "t4")
+        plt.scatter(tstart_min,0,marker='*')
+        plt.text(tstart_min,-40,"$t_{start}{ min}$")
+        plt.scatter(tstart_max, 0, marker='*')
+        plt.text(tstart_max, -40, "$t_{start}  {max}$")
+        plt.scatter(tend_min, 0, marker='*')
+        plt.text(tend_min, -40, "$t_{end}  {min}$")
+        plt.scatter(tend_max, 0, marker='*')
+        plt.text(tend_max, -40, "$t_{end}  {max}$")
+#        self.ax.legend()
+        self.draw()  # Refresh the canvasb v
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)

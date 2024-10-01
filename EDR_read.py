@@ -470,6 +470,24 @@ print(EDR_buffer)
 f.close()'''
 
 def Parse_EDR(EDR_buffer):
+    LongdV_buf.clear()
+    LateraldV_buf.clear()
+    Time.clear()
+    Vehicle_Speed.clear()
+    Brake_OnOff.clear()
+    Engine_Revolutions_Per_Minute.clear()
+    ABS_activity.clear()
+    Stability_control.clear()
+    Steering_Angle.clear()
+    Yaw_Rate.clear()
+    Traction_Control_Status.clear()
+    Cruise_Control_System.clear()
+    Longitudinal_acceleration_pre_crash.clear()
+    Lateral_acceleration_pre_crash.clear()
+    datalist.clear()
+    EDR_postcrash_decoded.clear()
+    EDR_precrash_arr_decoded.clear()
+    EDR_decoded.clear()
     #----------------------------MESSAGE HANDLING--------------------------
     wnum = get_dV(0, "Longitudinal Delta-V Value", EDR_buffer)
     wnum = get_single_data(wnum, 2, "Max Longitudinal Delta-V Value", EDR_buffer)
@@ -586,7 +604,7 @@ def Parse_EDR(EDR_buffer):
     #Time, s:    Vehicle Speed     Brake On/Off    Engine RPM     ABS activity    Stability control   Steering Angle  Yaw Rate   Traction Control Status   Cruise Control System  Long acc, g   Lateral acc, g
     #'''
     for i in range(11):
-        Time.append(f"{(i/2)-5.0}")
+        Time.insert(i,f"{(i/2)-5.0}")
         Vehicle_Speed.insert(i, (f"{EDR_precrash_arr_decoded['Vehicle Speed'][i]}"))
         Brake_OnOff.insert(i,(f"{to_brake_state(EDR_precrash_arr_decoded['Brake On/Off'][i])}"))
         Engine_Revolutions_Per_Minute.insert(i,(f"{to_eng_rpm(EDR_precrash_arr_decoded['Engine Revolutions Per Minute'][i])}"))
@@ -642,27 +660,12 @@ def Parse_EDR(EDR_buffer):
     datalist.insert(39,( f"Advanced emergency braking system status AEB\n"))
     EDR_buffer=bytearray(EDR_buffer)
     EDR_buffer.clear()
+    print(Time)
 
 
     return ([LongdV_buf,LateraldV_buf,Time,Vehicle_Speed,Brake_OnOff,Engine_Revolutions_Per_Minute,ABS_activity,Stability_control,Steering_Angle,Yaw_Rate,Traction_Control_Status,Cruise_Control_System,Longitudinal_acceleration_pre_crash,Lateral_acceleration_pre_crash,datalist])
-LongdV_buf.clear()
-LateraldV_buf.clear()
-Time.clear()
-Vehicle_Speed.clear()
-Brake_OnOff.clear()
-Engine_Revolutions_Per_Minute.clear()
-ABS_activity.clear()
-Stability_control.clear()
-Steering_Angle.clear()
-Yaw_Rate.clear()
-Traction_Control_Status.clear()
-Cruise_Control_System.clear()
-Longitudinal_acceleration_pre_crash.clear()
-Lateral_acceleration_pre_crash.clear()
-datalist.clear()
-EDR_postcrash_decoded.clear()
-EDR_precrash_arr_decoded.clear()
-EDR_decoded.clear()
+
+
 
 
 
