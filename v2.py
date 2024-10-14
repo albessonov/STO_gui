@@ -31,23 +31,24 @@ import time
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 class Ui_MainWindow(object):
+    def __init__(self):
+        self.file = None
+        self.tests_dict=dict()
+
     def setupUi(self, MainWindow):
+        #buffer=[0x69,0x40,0x2C,0x40,0x64,0x40,0x69,0x40,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x2C,0x40,0xD0,0x07,0x00,0x28,0x28,0x28,0x28,0x28,0x28,0x28,0x28,0x28,0x28,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0x00,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x40,0x00,0x0C,0x00,0x01,0x00,0x1A,0x00,0x1A,0x00,0xFE,0xFE,0x01,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0x62,0x40,0x5F,0x40,0x60,0x60,0x40,0x60,0x40,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x5F,0x40,0xD0,0x07,0xE8,0x03,0x00,0x00,0x4B,0x0C,0x4B,0x0E,0x4B,0x0E,0x4B,0x10,0x4B,0x10,0x4B,0x00,0x4B,0x00,0x4B,0x00,0x4B,0x00,0x4B,0x02,0xFE,0xFF,0xFE,0xFF,0xFE,0xFF,0xFE,0xFF,0x00,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x00,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x00,0x00,0x00,0x00,0x94,0xB6,0x94,0xB6,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x15,0x00,0x15,0x00,0xFE,0xFE,0xFE,0xFE,0x01,0x01,0x01,0xFE,0x0F,0x0F,0x0F,0x0F,0x0F,0x0F,0x0F,0x0F,0x0F,0x0F,0x0F,0x0A,0x0A,0x0A,0x0A,0x0A,0x0A,0x0A,0x0A,0x0A,0x0A,0x0A,0x00,0x00,0x14,0x03,0x14,0x03,0x14,0x03,0x14,0x03,0x14,0x03,0x14,0x03,0x14,0x03,0x14,0x03,0x14,0x03,0x14,0x03,0x00,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE]
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
-        MainWindow.resize(1200, 800)
+        MainWindow.resize(1280, 960)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
-        os.chdir('icons')
-        MainWindow.setWindowIcon(QtGui.QIcon("main_icon.ico"))
-        os.chdir('..')
         os.chdir('pillows')
         os.chdir('..')
         self.COM_PORT=None
         self.UART=None
-        self.file=None
         self.progress_changed = QtCore.pyqtSignal(int)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -438,7 +439,7 @@ class Ui_MainWindow(object):
         font.setPointSize(13)
         self.acc_selector.setFont(font)
         self.acc_selector.setObjectName("acc_selector")
-        folder_path = 'acceleration_synthesis\Generated_acc'
+        folder_path = 'pillows\\test_folder\\XGF'
         # Перебираем все файлы в указанной папке
         for filename in os.listdir(folder_path):
             if filename.startswith("~$"):
@@ -447,12 +448,12 @@ class Ui_MainWindow(object):
                 file_path = os.path.join(folder_path, filename)
                 self.acc_selector.addItem(filename.replace(".csv",""))
         self.gridLayout_6.addWidget(self.acc_selector, 5, 0, 1, 1)
-        self.AIRBAG_OFF_btn = QtWidgets.QRadioButton(self.groupBox)
+        #self.AIRBAG_OFF_btn = QtWidgets.QRadioButton(self.groupBox)
         font = QtGui.QFont()
         font.setPointSize(12)
-        self.AIRBAG_OFF_btn.setFont(font)
-        self.AIRBAG_OFF_btn.setObjectName("AIRBAG_OFF_btn")
-        self.gridLayout_6.addWidget(self.AIRBAG_OFF_btn, 0, 0, 1, 1)
+        #self.AIRBAG_OFF_btn.setFont(font)
+        #self.AIRBAG_OFF_btn.setObjectName("AIRBAG_OFF_btn")
+        #self.gridLayout_6.addWidget(self.AIRBAG_OFF_btn, 0, 0, 1, 1)
         self.acc_selector_lbl = QtWidgets.QLabel(self.groupBox)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -555,7 +556,6 @@ class Ui_MainWindow(object):
         font.setPointSize(11)
         self.SBR_test_selector.setFont(font)
         self.SBR_test_selector.setObjectName("SBR_test_selector")
-        self.SBR_test_selector.addItem("")
         self.SBR_test_selector.addItem("")
         self.SBR_test_selector.addItem("")
         self.SBR_test_selector.addItem("")
@@ -847,6 +847,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(12)
         self.read_snap_btn.setFont(font)
+        self.read_snap_btn.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.read_snap_btn.setObjectName("read_snap_btn")
         self.gridLayout_311.addWidget(self.read_snap_btn, 13, 0, 1, 2)
         spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
@@ -938,7 +939,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.DIAG_VIN1_BTN.sizePolicy().hasHeightForWidth())
         self.DIAG_VIN1_BTN.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setPointSize(10)
+        font.setPointSize(12)
         self.DIAG_VIN1_BTN.setFont(font)
         self.DIAG_VIN1_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.DIAG_VIN1_BTN.setObjectName("DIAG_VIN1_BTN")
@@ -950,23 +951,16 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.DIAG_VIN0_BTN.sizePolicy().hasHeightForWidth())
         self.DIAG_VIN0_BTN.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setPointSize(10)
+        font.setPointSize(12)
         self.DIAG_VIN0_BTN.setFont(font)
         self.DIAG_VIN0_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.DIAG_VIN0_BTN.setObjectName("DIAG_VIN0_BTN")
         self.gridLayout_16.addWidget(self.DIAG_VIN0_BTN, 1, 0, 1, 1)
-        self.DIAG_EXTDIAG_BTN = QtWidgets.QPushButton(self.groupBox_9)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.DIAG_EXTDIAG_BTN.sizePolicy().hasHeightForWidth())
-        self.DIAG_EXTDIAG_BTN.setSizePolicy(sizePolicy)
+
+
         font = QtGui.QFont()
-        font.setPointSize(10)
-        self.DIAG_EXTDIAG_BTN.setFont(font)
-        self.DIAG_EXTDIAG_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
-        self.DIAG_EXTDIAG_BTN.setObjectName("DIAG_EXTDIAG_BTN")
-        self.gridLayout_16.addWidget(self.DIAG_EXTDIAG_BTN, 2, 1, 1, 1)
+        font.setPointSize(12)
+
         self.DIAG_RESET_BTN = QtWidgets.QPushButton(self.groupBox_9)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
@@ -974,7 +968,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.DIAG_RESET_BTN.sizePolicy().hasHeightForWidth())
         self.DIAG_RESET_BTN.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setPointSize(10)
+        font.setPointSize(12)
         self.DIAG_RESET_BTN.setFont(font)
         self.DIAG_RESET_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.DIAG_RESET_BTN.setObjectName("DIAG_RESET_BTN")
@@ -986,7 +980,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.CHECK_CRASH_DETECTION_BTN.sizePolicy().hasHeightForWidth())
         self.CHECK_CRASH_DETECTION_BTN.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setPointSize(10)
+        font.setPointSize(12)
         self.CHECK_CRASH_DETECTION_BTN.setFont(font)
         self.CHECK_CRASH_DETECTION_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.CHECK_CRASH_DETECTION_BTN.setObjectName("CHECK_CRASH_DETECTION_BTN")
@@ -1091,7 +1085,7 @@ class Ui_MainWindow(object):
         self.DIAG_SPEED_SELECTOR.setValue(0)  # Установка начального значения
         self.DIAG_SPEED_SELECTOR.setTickInterval(1)
         font = QtGui.QFont()
-        font.setPointSize(11)
+        font.setPointSize(14)
         self.DIAG_SPEED_SELECTOR.setFont(font)
         self.DIAG_SPEED_SELECTOR.setObjectName("DIAG_SPEED_SELECTOR")
         self.gridLayout_14.addWidget(self.DIAG_SPEED_SELECTOR, 11, 0, 1, 3)
@@ -1114,7 +1108,7 @@ class Ui_MainWindow(object):
 
         self.DIAG_DIAGENABLE_SELECTOR_2 = QtWidgets.QLabel(self.groupBox_10)
         font = QtGui.QFont()
-        font.setPointSize(11)
+        font.setPointSize(13)
         self.DIAG_DIAGENABLE_SELECTOR_2.setFont(font)
         self.DIAG_DIAGENABLE_SELECTOR_2.setObjectName("DIAG_DIAGENABLE_SELECTOR_2")
         self.gridLayout_14.addWidget(self.DIAG_DIAGENABLE_SELECTOR_2, 15, 0, 1, 1)
@@ -1150,7 +1144,7 @@ class Ui_MainWindow(object):
         self.gridLayout_14.addWidget(self.DIAG_CAN_MSG_LBL, 3, 0, 1, 1)
         self.DIAG_DIAGENABLE_SELECTOR = QtWidgets.QComboBox(self.groupBox_10)
         font = QtGui.QFont()
-        font.setPointSize(11)
+        font.setPointSize(13)
         self.DIAG_DIAGENABLE_SELECTOR.setFont(font)
         self.DIAG_DIAGENABLE_SELECTOR.setObjectName("DIAG_DIAGENABLE_SELECTOR")
         self.DIAG_DIAGENABLE_SELECTOR.addItem("")
@@ -1160,10 +1154,20 @@ class Ui_MainWindow(object):
         self.gridLayout_14.addWidget(self.DIAG_DIAGENABLE_SELECTOR, 17, 0, 1, 3)
         self.DIAG_SPEED_SELECTOR_2 = QtWidgets.QLabel(self.groupBox_10)
         font = QtGui.QFont()
-        font.setPointSize(11)
+        font.setPointSize(14)
         self.DIAG_SPEED_SELECTOR_2.setFont(font)
         self.DIAG_SPEED_SELECTOR_2.setObjectName("DIAG_SPEED_SELECTOR_2")
         self.gridLayout_14.addWidget(self.DIAG_SPEED_SELECTOR_2, 10, 0, 1, 1)
+        '''self.DIAG_RPM_SELECTOR = QtWidgets.QSlider(self.groupBox_10)
+        self.DIAG_RPM_SELECTOR.setOrientation(1)  # Установка ориентации (1 - вертикально, 0 - горизонтально)
+        self.DIAG_RPM_SELECTOR.setRange(0, 25500)  # Установка диапазона от 0 до 100
+        self.DIAG_RPM_SELECTOR.setValue(0)  # Установка начального значения
+        self.DIAG_RPM_SELECTOR.setTickInterval(1)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.DIAG_RPM_SELECTOR.setFont(font)
+        self.DIAG_RPM_SELECTOR.setObjectName("DIAG_SPEED_SELECTOR")
+        #self.gridLayout_14.addWidget(self.DIAG_RPM_SELECTOR, 20, 0, 1, 3)'''
         self.gridLayout_21.addWidget(self.groupBox_10, 1, 1, 1, 1)
         self.tabWidget.addTab(self.tab, "")
         self.EDR_tab = QtWidgets.QWidget()
@@ -1175,13 +1179,13 @@ class Ui_MainWindow(object):
         self.groupBox_11223344.setObjectName("groupBox_11223344")
         self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_11223344)
         self.gridLayout_3.setObjectName("gridLayout_3")
-        self.groupBox = QtWidgets.QGroupBox(self.groupBox_11223344)
-        self.groupBox.setMaximumSize(QtCore.QSize(16777215, 200))
-        self.groupBox.setTitle("")
-        self.groupBox.setObjectName("groupBox")
-        self.gridLayout_4 = QtWidgets.QGridLayout(self.groupBox)
+        self.groupBox789 = QtWidgets.QGroupBox(self.groupBox_11223344)
+        self.groupBox789.setMaximumSize(QtCore.QSize(16777215, 200))
+        self.groupBox789.setTitle("")
+        self.groupBox789.setObjectName("groupBox")
+        self.gridLayout_4 = QtWidgets.QGridLayout(self.groupBox789)
         self.gridLayout_4.setObjectName("gridLayout_4")
-        self.EDR_STOP_BTN = QtWidgets.QPushButton(self.groupBox)
+        self.EDR_STOP_BTN = QtWidgets.QPushButton(self.groupBox789)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -1191,43 +1195,48 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(12)
         self.EDR_STOP_BTN.setFont(font)
+        self.EDR_STOP_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.EDR_STOP_BTN.setObjectName("EDR_STOP_BTN")
         self.gridLayout_4.addWidget(self.EDR_STOP_BTN, 0, 3, 1, 1)
-        self.EDR1_BTN = QtWidgets.QPushButton(self.groupBox)
+        self.EDR1_BTN = QtWidgets.QPushButton(self.groupBox789)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.EDR1_BTN.sizePolicy().hasHeightForWidth())
         self.EDR1_BTN.setSizePolicy(sizePolicy)
         self.EDR1_BTN.setMinimumSize(QtCore.QSize(0, 50))
+        self.EDR1_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.EDR1_BTN.setMaximumSize(QtCore.QSize(16777215, 50))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.EDR1_BTN.setFont(font)
         self.EDR1_BTN.setObjectName("EDR1_BTN")
         self.gridLayout_4.addWidget(self.EDR1_BTN, 0, 2, 1, 1)
-        self.EDR3_BTN = QtWidgets.QPushButton(self.groupBox)
+        self.EDR3_BTN = QtWidgets.QPushButton(self.groupBox789)
         self.EDR3_BTN.setMinimumSize(QtCore.QSize(0, 50))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.EDR3_BTN.setFont(font)
+        self.EDR3_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.EDR3_BTN.setObjectName("EDR3_BTN")
         self.gridLayout_4.addWidget(self.EDR3_BTN, 2, 2, 1, 1)
-        self.EDR2_BTN = QtWidgets.QPushButton(self.groupBox)
+        self.EDR2_BTN = QtWidgets.QPushButton(self.groupBox789)
         self.EDR2_BTN.setMinimumSize(QtCore.QSize(0, 50))
+        self.EDR2_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.EDR2_BTN.setFont(font)
         self.EDR2_BTN.setObjectName("EDR2_BTN")
         self.gridLayout_4.addWidget(self.EDR2_BTN, 1, 2, 1, 1)
-        self.READ_NUM_BTN = QtWidgets.QPushButton(self.groupBox)
+        self.READ_NUM_BTN = QtWidgets.QPushButton(self.groupBox789)
         self.READ_NUM_BTN.setMinimumSize(QtCore.QSize(0, 50))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.READ_NUM_BTN.setFont(font)
         self.READ_NUM_BTN.setObjectName("READ_NUM_BTN")
+        self.READ_NUM_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.gridLayout_4.addWidget(self.READ_NUM_BTN, 1, 3, 1, 1)
-        self.gridLayout_3.addWidget(self.groupBox, 0, 0, 1, 3)
+        self.gridLayout_3.addWidget(self.groupBox789, 0, 0, 1, 3)
         self.groupBox_17 = QtWidgets.QGroupBox(self.groupBox_11223344)
         self.groupBox_17.setMaximumSize(QtCore.QSize(16777215, 500))
         font = QtGui.QFont()
@@ -1312,12 +1321,48 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.Crash_data_table.sizePolicy().hasHeightForWidth())
         self.Crash_data_table.setSizePolicy(sizePolicy)
         self.Crash_data_table.setMaximumSize(QtCore.QSize(6666, 66666))
+        self.Crash_data_table.setStyleSheet("""
+                    QTableWidget {
+                        background-color: #f0f0f0; /* Цвет фона таблицы */
+                        gridline-color: #aaaaaa; /* Цвет линий сетки */
+                    }
+                    QHeaderView::section {
+                        background-color: #d0d0d0; /* Цвет фона заголовка столбца */
+                        border: 1px solid #aaaaaa; /* Цвет границы заголовка */
+                        padding: 4px; /* Отступы в заголовке */
+                    }
+                    QTableWidget::item {
+                        padding: 10px; /* Отступы для элементов таблицы */
+                    }
+                    QTableWidget::item:selected {
+                        background-color: #0078d7; /* Цвет выделенного элемента */
+                        color: white; /* Цвет текста выделенного элемента */
+                    }
+                """)
+        self.Precrash_data_table.setStyleSheet("""
+                            QTableWidget {
+                                background-color: #f0f0f0; /* Цвет фона таблицы */
+                                gridline-color: #aaaaaa; /* Цвет линий сетки */
+                            }
+                            QHeaderView::section {
+                                background-color: #d0d0d0; /* Цвет фона заголовка столбца */
+                                border: 1px solid #aaaaaa; /* Цвет границы заголовка */
+                                padding: 4px; /* Отступы в заголовке */
+                            }
+                            QTableWidget::item {
+                                padding: 10px; /* Отступы для элементов таблицы */
+                            }
+                            QTableWidget::item:selected {
+                                background-color: #0078d7; /* Цвет выделенного элемента */
+                                color: white; /* Цвет текста выделенного элемента */
+                            }
+                        """)
         font = QtGui.QFont()
         font.setPointSize(10)
         self.Crash_data_table.setFont(font)
         self.Crash_data_table.setObjectName("Crash_data_table")
         self.Crash_data_table.setColumnCount(3)
-        self.Crash_data_table.setRowCount(30)
+        self.Crash_data_table.setRowCount(25)
         item = QtWidgets.QTableWidgetItem()
         self.Crash_data_table.setVerticalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
@@ -1371,14 +1416,6 @@ class Ui_MainWindow(object):
         item = QtWidgets.QTableWidgetItem()
         self.Crash_data_table.setVerticalHeaderItem(25, item)
         item = QtWidgets.QTableWidgetItem()
-        self.Crash_data_table.setVerticalHeaderItem(26, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Crash_data_table.setVerticalHeaderItem(27, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Crash_data_table.setVerticalHeaderItem(28, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Crash_data_table.setVerticalHeaderItem(29, item)
-        item = QtWidgets.QTableWidgetItem()
         self.Crash_data_table.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
         self.Crash_data_table.setHorizontalHeaderItem(1, item)
@@ -1398,18 +1435,21 @@ class Ui_MainWindow(object):
         self.EDR_OTHER_DATA_BRS = QtWidgets.QListWidget(self.groupBox_18)
         self.EDR_OTHER_DATA_BRS.setMaximumSize(QtCore.QSize(16777215, 6666))
         self.EDR_OTHER_DATA_BRS.setObjectName("EDR_OTHER_DATA_BRS")
+        self.EDR_OTHER_DATA_BRS.setFont(font)
         self.gridLayout_2.addWidget(self.EDR_OTHER_DATA_BRS, 0, 0, 1, 1)
         self.gridLayout_3.addWidget(self.groupBox_18, 2, 2, 2, 1)
         self.gridLayout_5.addWidget(self.groupBox_11223344, 0, 0, 1, 1)
         self.Crash_data_table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
+        self.Crash_data_table.verticalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
         self.Precrash_data_table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
+        self.Precrash_data_table.verticalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
         self.tabWidget.addTab(self.EDR_tab, "")
         self.params_tab = QtWidgets.QWidget()
         self.params_tab.setObjectName("params_tab")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.params_tab)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.groupBoxA = QtWidgets.QGroupBox(self.params_tab)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.groupBoxA.sizePolicy().hasHeightForWidth())
@@ -1431,6 +1471,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(12)
         self.Sresimpact_side_input.setFont(font)
+        self.Sresimpact_side_input.setMinimumSize(QtCore.QSize(0, 26))
         self.Sresimpact_side_input.setMaximum(65535)
         self.Sresimpact_side_input.setObjectName("Sresimpact_side_input")
         self.gridLayout_3.addWidget(self.Sresimpact_side_input, 16, 1, 1, 1)
@@ -1438,6 +1479,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(12)
         self.LimitSxSyfront_input.setFont(font)
+        self.LimitSxSyfront_input.setMinimumSize(QtCore.QSize(0, 26))
         self.LimitSxSyfront_input.setMaximum(65535)
         self.LimitSxSyfront_input.setObjectName("LimitSxSyfront_input")
         self.gridLayout_3.addWidget(self.LimitSxSyfront_input, 5, 1, 1, 1)
@@ -1446,12 +1488,14 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         self.Tcalc_input.setFont(font)
         self.Tcalc_input.setMaximum(255)
+        self.Tcalc_input.setMinimumSize(QtCore.QSize(0, 26))
         self.Tcalc_input.setObjectName("Tcalc_input")
         self.gridLayout_3.addWidget(self.Tcalc_input, 11, 1, 1, 1)
         self.Sresimpactfront_input = QtWidgets.QSpinBox(self.groupBoxA)
         font = QtGui.QFont()
         font.setPointSize(12)
         self.Sresimpactfront_input.setFont(font)
+        self.Sresimpactfront_input.setMinimumSize(QtCore.QSize(0, 26))
         self.Sresimpactfront_input.setMaximum(65535)
         self.Sresimpactfront_input.setObjectName("Sresimpactfront_input")
         self.gridLayout_3.addWidget(self.Sresimpactfront_input, 15, 1, 1, 1)
@@ -1459,6 +1503,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(12)
         self.LimitAresfront_input.setFont(font)
+        self.LimitAresfront_input.setMinimumSize(QtCore.QSize(0, 26))
         self.LimitAresfront_input.setMaximum(65535)
         self.LimitAresfront_input.setObjectName("LimitAresfront_input")
         self.gridLayout_3.addWidget(self.LimitAresfront_input, 3, 1, 1, 1)
@@ -1479,6 +1524,7 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         self.LimitSresfront_input.setFont(font)
         self.LimitSresfront_input.setMaximum(65535)
+        self.LimitSresfront_input.setMinimumSize(QtCore.QSize(0, 26))
         self.LimitSresfront_input.setObjectName("LimitSresfront_input")
         self.gridLayout_3.addWidget(self.LimitSresfront_input, 8, 1, 1, 1)
         self.Sresimpactfront_lbl = QtWidgets.QLabel(self.groupBoxA)
@@ -1512,6 +1558,7 @@ class Ui_MainWindow(object):
         self.Time_to_stop_calc_lbl.setObjectName("Time_to_stop_calc_lbl")
         self.gridLayout_3.addWidget(self.Time_to_stop_calc_lbl, 14, 0, 1, 1)
         self.LimitSresside_input = QtWidgets.QSpinBox(self.groupBoxA)
+        self.LimitSresside_input.setMinimumSize(QtCore.QSize(0, 26))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.LimitSresside_input.setFont(font)
@@ -1519,6 +1566,7 @@ class Ui_MainWindow(object):
         self.LimitSresside_input.setObjectName("LimitSresside_input")
         self.gridLayout_3.addWidget(self.LimitSresside_input, 10, 1, 1, 1)
         self.LimitSxSyside_input = QtWidgets.QSpinBox(self.groupBoxA)
+        self.LimitSxSyside_input.setMinimumSize(QtCore.QSize(0, 26))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.LimitSxSyside_input.setFont(font)
@@ -1530,6 +1578,7 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         self.LimitAresside_input.setFont(font)
         self.LimitAresside_input.setMaximum(65535)
+        self.LimitAresside_input.setMinimumSize(QtCore.QSize(0, 26))
         self.LimitAresside_input.setObjectName("LimitAresside_input")
         self.gridLayout_3.addWidget(self.LimitAresside_input, 4, 1, 1, 1)
         self.deltaAres_lbl = QtWidgets.QLabel(self.groupBoxA)
@@ -1543,6 +1592,7 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         self.Timetostopcalc_input.setFont(font)
         self.Timetostopcalc_input.setMaximum(255)
+        self.Timetostopcalc_input.setMinimumSize(QtCore.QSize(0, 26))
         self.Timetostopcalc_input.setObjectName("Timetostopcalc_input")
         self.gridLayout_3.addWidget(self.Timetostopcalc_input, 14, 1, 1, 1)
         self.LimitSresside_lbl = QtWidgets.QLabel(self.groupBoxA)
@@ -1555,6 +1605,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(12)
         self.deltaAres_input.setFont(font)
+        self.deltaAres_input.setMinimumSize(QtCore.QSize(0, 26))
         self.deltaAres_input.setMaximum(255)
         self.deltaAres_input.setObjectName("deltaAres_input")
         self.gridLayout_3.addWidget(self.deltaAres_input, 13, 1, 1, 1)
@@ -1574,6 +1625,10 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(12)
         self.Tcalc2_input.setFont(font)
+        self.Tcalc2_input.setMinimumSize(QtCore.QSize(0, 26))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.Tcalc2_lbl.setFont(font)
         self.Tcalc2_input.setObjectName("Tcalc2_input")
         self.gridLayout_3.addWidget(self.Tcalc2_input, 12, 1, 1, 1)
         self.LimitSresfront_lbl = QtWidgets.QLabel(self.groupBoxA)
@@ -1587,44 +1642,8 @@ class Ui_MainWindow(object):
         self.save_params_btn.setAutoRepeat(False)
         self.save_params_btn.setObjectName("save_params_btn")
         self.gridLayout_3.addWidget(self.save_params_btn, 0, 2, 2, 1)
-        self.groupBox = QtWidgets.QGroupBox(self.groupBoxA)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
-        self.groupBox.setSizePolicy(sizePolicy)
-        self.groupBox.setTitle("")
-        self.groupBox.setObjectName("groupBox")
-        self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox)
-        self.gridLayout_6.setObjectName("gridLayout_6")
-        self.read_params_btn = QtWidgets.QPushButton(self.groupBox)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.read_params_btn.setFont(font)
-        self.read_params_btn.setObjectName("read_params_btn")
-        self.gridLayout_6.addWidget(self.read_params_btn, 0, 1, 1, 1)
-        self.UPDATE_PARAMS_BTN = QtWidgets.QPushButton(self.groupBox)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.UPDATE_PARAMS_BTN.setFont(font)
-        self.UPDATE_PARAMS_BTN.setObjectName("UPDATE_PARAMS_BTN")
-        self.gridLayout_6.addWidget(self.UPDATE_PARAMS_BTN, 0, 0, 1, 1)
-        self.UPDATE_PARAMS_LOCAL_BTN = QtWidgets.QPushButton(self.groupBox)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.UPDATE_PARAMS_LOCAL_BTN.setFont(font)
-        self.UPDATE_PARAMS_LOCAL_BTN.setObjectName("UPDATE_PARAMS_LOCAL_BTN")
-        self.gridLayout_6.addWidget(self.UPDATE_PARAMS_LOCAL_BTN, 1, 0, 1, 1)
-        self.read_params_local_btn = QtWidgets.QPushButton(self.groupBox)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.read_params_local_btn.setFont(font)
-        self.read_params_local_btn.setObjectName("read_params_local_btn")
-        self.gridLayout_6.addWidget(self.read_params_local_btn, 1, 1, 1, 1)
-        self.gridLayout_3.addWidget(self.groupBox, 17, 0, 2, 3)
         self.PARAM_RESULT_BRS_2 = QtWidgets.QTextBrowser(self.groupBoxA)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding,
-                                           QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.PARAM_RESULT_BRS_2.sizePolicy().hasHeightForWidth())
@@ -1640,7 +1659,7 @@ class Ui_MainWindow(object):
         self.groupBox143.setSizePolicy(sizePolicy)
         self.groupBox143.setMinimumSize(QtCore.QSize(500, 0))
         font = QtGui.QFont()
-        font.setPointSize(14)
+        font.setPointSize(12)
         self.groupBox143.setFont(font)
         self.groupBox143.setObjectName("groupBox143")
         self.gridLayout_4 = QtWidgets.QGridLayout(self.groupBox143)
@@ -1659,7 +1678,21 @@ class Ui_MainWindow(object):
         self.gridLayout_4.addWidget(self.export_results_btn, 5, 0, 1, 1)
         self.model_test_selector = QtWidgets.QComboBox(self.groupBox143)
         self.model_test_selector.setObjectName("model_test_selector")
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.model_test_selector.setFont(font)
+        os.chdir('pillows/test_folder')
+        for dir in os.listdir():
+            self.model_test_selector.addItem(str(dir))
+
+        os.chdir('..')
+        os.chdir('..')
         self.gridLayout_4.addWidget(self.model_test_selector, 1, 0, 1, 1)
+
+        self.model_test_selector2 = QtWidgets.QComboBox(self.groupBox143)
+        self.model_test_selector2.setObjectName("model_test_selector")
+        self.model_test_selector2.setFont(font)
+        self.gridLayout_4.addWidget(self.model_test_selector2, 2, 0, 1, 1)
         self.run_single_test_btn = QtWidgets.QPushButton(self.groupBox143)
         self.run_single_test_btn.setEnabled(True)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
@@ -1674,6 +1707,7 @@ class Ui_MainWindow(object):
         self.run_single_test_btn.setObjectName("run_single_test_btn")
         self.gridLayout_4.addWidget(self.run_single_test_btn, 4, 0, 1, 1)
         self.CHECK_PARAM_VALID_BTN = QtWidgets.QPushButton(self.groupBox143)
+        self.CHECK_PARAM_VALID_BTN.setFont(font)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -1683,14 +1717,14 @@ class Ui_MainWindow(object):
         self.CHECK_PARAM_VALID_BTN.setObjectName("CHECK_PARAM_VALID_BTN")
         self.gridLayout_4.addWidget(self.CHECK_PARAM_VALID_BTN, 6, 0, 1, 1)
         self.PARAM_RESULT_BRS = QtWidgets.QTextBrowser(self.groupBox143)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(10)
         sizePolicy.setHeightForWidth(self.PARAM_RESULT_BRS.sizePolicy().hasHeightForWidth())
         self.PARAM_RESULT_BRS.setSizePolicy(sizePolicy)
-        self.PARAM_RESULT_BRS.setObjectName("PARAM_RESULT_BRS")
+        self.PARAM_RESULT_BRS.setObjectName("single_test_result_brs")
         self.gridLayout_4.addWidget(self.PARAM_RESULT_BRS, 0, 1, 7, 1)
-        self.gridLayout_2.addWidget(self.groupBox143, 1, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.groupBox143, 2, 0, 1, 1)
         self.groupBox_2666 = QtWidgets.QGroupBox(self.params_tab)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -1718,6 +1752,8 @@ class Ui_MainWindow(object):
         self.tstart_min_input = QtWidgets.QSpinBox(self.groupBox_2666)
         self.tstart_min_input.setObjectName("tstart_min_input")
         self.gridLayout_5.addWidget(self.tstart_min_input, 3, 1, 1, 1)
+        #self.replace_to_plot = QtWidgets.QTextBrowser(self.groupBox_2666)
+        #self.replace_to_plot.setObjectName("replace_to_plot")
         self.canvas = PlotCanvas(self)
         self.gridLayout_5.addWidget(self.canvas, 0, 0, 1, 3)
         self.aresrange_lbl = QtWidgets.QLabel(self.groupBox_2666)
@@ -1790,7 +1826,98 @@ class Ui_MainWindow(object):
         self.ares_range_input = QtWidgets.QSpinBox(self.groupBox_2666)
         self.ares_range_input.setObjectName("ares_range_input")
         self.gridLayout_5.addWidget(self.ares_range_input, 16, 1, 1, 1)
-        self.gridLayout_2.addWidget(self.groupBox_2666, 0, 2, 2, 1)
+        self.gridLayout_2.addWidget(self.groupBox_2666, 0, 2, 3, 1)
+        self.groupBox1342 = QtWidgets.QGroupBox(self.params_tab)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.groupBox1342.sizePolicy().hasHeightForWidth())
+        self.groupBox1342.setSizePolicy(sizePolicy)
+        self.groupBox1342.setMinimumSize(QtCore.QSize(0, 90))
+        self.groupBox1342.setTitle("")
+        self.groupBox1342.setObjectName("groupBox1342")
+        self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox1342)
+        self.gridLayout_6.setObjectName("gridLayout_6")
+        self.read_params_btn = QtWidgets.QPushButton(self.groupBox1342)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.read_params_btn.sizePolicy().hasHeightForWidth())
+        self.read_params_btn.setSizePolicy(sizePolicy)
+        self.read_params_btn.setMinimumSize(QtCore.QSize(0, 0))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.read_params_btn.setFont(font)
+        self.read_params_btn.setObjectName("read_params_btn")
+        self.gridLayout_6.addWidget(self.read_params_btn, 0, 1, 1, 1)
+        self.UPDATE_PARAMS_BTN = QtWidgets.QPushButton(self.groupBox1342)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.UPDATE_PARAMS_BTN.sizePolicy().hasHeightForWidth())
+        self.UPDATE_PARAMS_BTN.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.UPDATE_PARAMS_BTN.setFont(font)
+        self.UPDATE_PARAMS_BTN.setObjectName("UPDATE_PARAMS_BTN")
+        self.gridLayout_6.addWidget(self.UPDATE_PARAMS_BTN, 0, 0, 1, 1)
+        self.UPDATE_PARAMS_LOCAL_BTN = QtWidgets.QPushButton(self.groupBox1342)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.UPDATE_PARAMS_LOCAL_BTN.sizePolicy().hasHeightForWidth())
+        self.UPDATE_PARAMS_LOCAL_BTN.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.UPDATE_PARAMS_LOCAL_BTN.setFont(font)
+        self.UPDATE_PARAMS_LOCAL_BTN.setObjectName("UPDATE_PARAMS_LOCAL_BTN")
+        self.gridLayout_6.addWidget(self.UPDATE_PARAMS_LOCAL_BTN, 1, 0, 1, 1)
+        self.read_params_local_btn = QtWidgets.QPushButton(self.groupBox1342)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.read_params_local_btn.sizePolicy().hasHeightForWidth())
+        self.read_params_local_btn.setSizePolicy(sizePolicy)
+        self.read_params_local_btn.setMinimumSize(QtCore.QSize(0, 35))
+        self.read_params_btn.setMinimumSize(QtCore.QSize(0, 35))
+        self.UPDATE_PARAMS_LOCAL_BTN.setMinimumSize(QtCore.QSize(0, 35))
+        self.UPDATE_PARAMS_BTN.setMinimumSize(QtCore.QSize(0, 35))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.read_params_local_btn.setFont(font)
+        self.read_params_local_btn.setObjectName("read_params_local_btn")
+        self.gridLayout_6.addWidget(self.read_params_local_btn, 1, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.groupBox1342, 1, 0, 1, 1)
+        font = QtGui.QFont()
+        font.setPointSize(13)
+        self.tstmax_lbl.setFont(font)
+        self.tstmin_lbl.setFont(font)
+        self.t1_lbl.setFont(font)
+        self.t2_lbl.setFont(font)
+        self.t3_lbl.setFont(font)
+        self.t4_lbl.setFont(font)
+        self.tendmax_lbl.setFont(font)
+        self.tendmin_lbl.setFont(font)
+        self.aresrange_lbl.setFont(font)
+        self.limitares_lbl.setFont(font)
+        self.timestep_lbl.setFont(font)
+        self.timebeforecoll_lbl.setFont(font)
+        self.collside_lbl.setFont(font)
+
+        self.sideinput.setFont(font)
+        self.timebeforecollis_input.setFont(font)
+        self.tstart_min_input.setFont(font)
+        self.tstart_max_input.setFont(font)
+        self.t1_input.setFont(font)
+        self.t2_input.setFont(font)
+        self.t3_input.setFont(font)
+        self.t4_input.setFont(font)
+        self.tend_min_input.setFont(font)
+        self.tend_max_input.setFont(font)
+        self.limit_ares_input.setFont(font)
+        self.ares_range_input.setFont(font)
+        self.timestep_input.setFont(font)
+
         self.tstart_min_input.setMaximum(1000)
         self.tstart_max_input.setMaximum(1000)
         self.t1_input.setMaximum(1000)
@@ -1814,7 +1941,11 @@ class Ui_MainWindow(object):
         self.limit_ares_input.setValue(20)
         self.ares_range_input.setValue(80)
         self.timestep_input.setValue(0.5)
-        self.canvas.plot(self.tstart_min_input.value(), self.t1_input.value(), self.tstart_max_input.value(), self.t2_input.value(), self.t3_input.value(), self.t4_input.value(),self.limit_ares_input.value(),self.ares_range_input.value(), self.tend_min_input.value(), self.tend_max_input.value())
+        self.canvas.plot(self.tstart_min_input.value(), self.t1_input.value(), self.tstart_max_input.value(),
+                         self.t2_input.value(), self.t3_input.value(), self.t4_input.value(),
+                         self.limit_ares_input.value(), self.ares_range_input.value(), self.tend_min_input.value(),
+                         self.tend_max_input.value())
+
         self.tabWidget.addTab(self.params_tab, "")
         self.reprogramming_tab = QtWidgets.QWidget()
         self.reprogramming_tab.setObjectName("reprogramming_tab")
@@ -1839,6 +1970,7 @@ class Ui_MainWindow(object):
         self.gridLayout_4.addWidget(self.progressBar, 2, 1, 1, 2)
         self.LOG_BRS = QtWidgets.QTextBrowser(self.groupBox_23456789)
         self.LOG_BRS.setObjectName("LOG_BRS")
+        self.LOG_BRS.setFont(font)
         self.gridLayout_4.addWidget(self.LOG_BRS, 3, 1, 1, 2)
         self.pushButton_3 = QtWidgets.QPushButton(self.groupBox_23456789)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -1859,9 +1991,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.toolButton.sizePolicy().hasHeightForWidth())
         self.toolButton.setSizePolicy(sizePolicy)
         self.toolButton.setMinimumSize(QtCore.QSize(50, 50))
-        os.chdir('icons')
-        self.toolButton.setIcon(QtGui.QIcon("reprogramming_icon.png"))
-        os.chdir('..')
+        self.toolButton.setObjectName("toolButton")
         self.gridLayout_4.addWidget(self.toolButton, 0, 1, 1, 1)
         self.textBrowser_2 = QtWidgets.QTextBrowser(self.groupBox_23456789)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -1871,6 +2001,7 @@ class Ui_MainWindow(object):
         self.textBrowser_2.setSizePolicy(sizePolicy)
         self.textBrowser_2.setMinimumSize(QtCore.QSize(0, 150))
         self.textBrowser_2.setObjectName("textBrowser_2")
+        self.textBrowser_2.setFont(font)
         self.gridLayout_4.addWidget(self.textBrowser_2, 0, 2, 1, 1)
         self.gridLayout_2.addWidget(self.groupBox_23456789, 1, 0, 2, 1)
         self.groupBox1565 = QtWidgets.QGroupBox(self.reprogramming_tab)
@@ -1886,54 +2017,86 @@ class Ui_MainWindow(object):
         self.groupBox1565.setObjectName("groupBox1565")
         self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox1565)
         self.gridLayout_3.setObjectName("gridLayout_3")
-        self.ACC_VER_BTN = QtWidgets.QPushButton(self.groupBox1565)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.ACC_VER_BTN.sizePolicy().hasHeightForWidth())
-        self.ACC_VER_BTN.setSizePolicy(sizePolicy)
-        self.ACC_VER_BTN.setMinimumSize(QtCore.QSize(0, 50))
-        self.ACC_VER_BTN.setObjectName("ACC_VER_BTN")
-        self.gridLayout_3.addWidget(self.ACC_VER_BTN, 4, 2, 3, 1)
         self.VER_LOG_BRS = QtWidgets.QTextBrowser(self.groupBox1565)
         self.VER_LOG_BRS.setObjectName("VER_LOG_BRS")
         self.gridLayout_3.addWidget(self.VER_LOG_BRS, 0, 7, 15, 1)
+        self.BUTTONSGROUP_BOX = QtWidgets.QGroupBox(self.groupBox1565)
+        self.BUTTONSGROUP_BOX.setTitle("")
+        self.BUTTONSGROUP_BOX.setObjectName("BUTTONSGROUP_BOX")
+        self.gridLayout_6 = QtWidgets.QGridLayout(self.BUTTONSGROUP_BOX)
+        self.gridLayout_6.setObjectName("gridLayout_6")
+        self.Manufacture_mode_btn = QtWidgets.QPushButton(self.BUTTONSGROUP_BOX)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.Manufacture_mode_btn.sizePolicy().hasHeightForWidth())
+        self.Manufacture_mode_btn.setSizePolicy(sizePolicy)
+        self.Manufacture_mode_btn.setMinimumSize(QtCore.QSize(0, 50))
+        self.Manufacture_mode_btn.setObjectName("Manufacture_mode_btn")
+        self.gridLayout_6.addWidget(self.Manufacture_mode_btn, 0, 1, 1, 1)
+        self.WRITE_ACU_BTN = QtWidgets.QPushButton(self.BUTTONSGROUP_BOX)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.WRITE_ACU_BTN.sizePolicy().hasHeightForWidth())
+        self.WRITE_ACU_BTN.setSizePolicy(sizePolicy)
+        self.WRITE_ACU_BTN.setMinimumSize(QtCore.QSize(350, 50))
+        self.WRITE_ACU_BTN.setObjectName("WRITE_ACU_BTN")
+        self.gridLayout_6.addWidget(self.WRITE_ACU_BTN, 0, 0, 1, 1)
+        self.READ_VERSBTN = QtWidgets.QPushButton(self.BUTTONSGROUP_BOX)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.READ_VERSBTN.sizePolicy().hasHeightForWidth())
+        self.READ_VERSBTN.setSizePolicy(sizePolicy)
+        self.READ_VERSBTN.setMinimumSize(QtCore.QSize(0, 50))
+        self.READ_VERSBTN.setObjectName("READ_VERSBTN")
+        self.gridLayout_6.addWidget(self.READ_VERSBTN, 1, 1, 1, 1)
+        self.SET_WM_BTN = QtWidgets.QPushButton(self.BUTTONSGROUP_BOX)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.SET_WM_BTN.sizePolicy().hasHeightForWidth())
+        self.SET_WM_BTN.setSizePolicy(sizePolicy)
+        self.SET_WM_BTN.setMinimumSize(QtCore.QSize(0, 50))
+        self.SET_WM_BTN.setObjectName("SET_WM_BTN")
+        self.gridLayout_6.addWidget(self.SET_WM_BTN, 1, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.BUTTONSGROUP_BOX, 0, 2, 1, 2)
         self.acu_gb = QtWidgets.QGroupBox(self.groupBox1565)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.acu_gb.sizePolicy().hasHeightForWidth())
+        #self.acu_gb.setMinimumSize(QtCore.QSize(0, 350))
         self.acu_gb.setSizePolicy(sizePolicy)
         self.acu_gb.setObjectName("acu_gb")
+        self.acu_gb.setFont(font)
         self.gridLayout_5 = QtWidgets.QGridLayout(self.acu_gb)
         self.gridLayout_5.setObjectName("gridLayout_5")
         self.RLSB_EN = QtWidgets.QCheckBox(self.acu_gb)
         self.RLSB_EN.setObjectName("RLSB_EN")
         self.gridLayout_5.addWidget(self.RLSB_EN, 6, 3, 1, 1)
-        self.RCSB_EN = QtWidgets.QCheckBox(self.acu_gb)
-        self.RCSB_EN.setObjectName("RCSB_EN")
-        self.gridLayout_5.addWidget(self.RCSB_EN, 5, 3, 1, 1)
-        self.RRSB_EN = QtWidgets.QCheckBox(self.acu_gb)
-        self.RRSB_EN.setObjectName("RRSB_EN")
-        self.gridLayout_5.addWidget(self.RRSB_EN, 3, 3, 1, 1)
-        self.PADI_EN = QtWidgets.QCheckBox(self.acu_gb)
-        self.PADI_EN.setObjectName("PADI_EN")
-        self.gridLayout_5.addWidget(self.PADI_EN, 2, 1, 1, 1)
         self.PSAB_EN = QtWidgets.QCheckBox(self.acu_gb)
         self.PSAB_EN.setObjectName("PSAB_EN")
         self.gridLayout_5.addWidget(self.PSAB_EN, 5, 2, 1, 1)
-        self.DSAB_EN = QtWidgets.QCheckBox(self.acu_gb)
-        self.DSAB_EN.setObjectName("DSAB_EN")
-        self.gridLayout_5.addWidget(self.DSAB_EN, 3, 2, 1, 1)
+        self.RCSB_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.RCSB_EN.setObjectName("RCSB_EN")
+        self.gridLayout_5.addWidget(self.RCSB_EN, 5, 3, 1, 1)
+        self.PADI_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.PADI_EN.setObjectName("PADI_EN")
+        self.gridLayout_5.addWidget(self.PADI_EN, 2, 1, 1, 1)
+        self.RRSB_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.RRSB_EN.setObjectName("RRSB_EN")
+        self.gridLayout_5.addWidget(self.RRSB_EN, 3, 3, 1, 1)
         self.DSB_EN = QtWidgets.QCheckBox(self.acu_gb)
         self.DSB_EN.setObjectName("DSB_EN")
         self.gridLayout_5.addWidget(self.DSB_EN, 6, 2, 1, 1)
-        self.PSB_EN = QtWidgets.QCheckBox(self.acu_gb)
-        self.PSB_EN.setObjectName("PSB_EN")
-        self.gridLayout_5.addWidget(self.PSB_EN, 2, 3, 1, 1)
         self.PPS_EN = QtWidgets.QCheckBox(self.acu_gb)
         self.PPS_EN.setObjectName("PPS_EN")
         self.gridLayout_5.addWidget(self.PPS_EN, 5, 1, 1, 1)
+        self.DSAB_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.DSAB_EN.setObjectName("DSAB_EN")
+        self.gridLayout_5.addWidget(self.DSAB_EN, 3, 2, 1, 1)
         self.DAB_EN = QtWidgets.QCheckBox(self.acu_gb)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
@@ -1946,9 +2109,16 @@ class Ui_MainWindow(object):
         self.DAB_EN.setFont(font)
         self.DAB_EN.setObjectName("DAB_EN")
         self.gridLayout_5.addWidget(self.DAB_EN, 2, 0, 1, 1)
-        self.PADS_EN = QtWidgets.QCheckBox(self.acu_gb)
-        self.PADS_EN.setObjectName("PADS_EN")
-        self.gridLayout_5.addWidget(self.PADS_EN, 3, 1, 1, 1)
+        self.PSB_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.PSB_EN.setObjectName("PSB_EN")
+        self.gridLayout_5.addWidget(self.PSB_EN, 2, 3, 1, 1)
+        self.PAB_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.PAB_EN.setMinimumSize(QtCore.QSize(20, 0))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.PAB_EN.setFont(font)
+        self.PAB_EN.setObjectName("PAB_EN")
+        self.gridLayout_5.addWidget(self.PAB_EN, 3, 0, 1, 1)
         self.DPT_EN = QtWidgets.QCheckBox(self.acu_gb)
         self.DPT_EN.setMinimumSize(QtCore.QSize(20, 0))
         font = QtGui.QFont()
@@ -1959,6 +2129,9 @@ class Ui_MainWindow(object):
         self.LCAB_EN = QtWidgets.QCheckBox(self.acu_gb)
         self.LCAB_EN.setObjectName("LCAB_EN")
         self.gridLayout_5.addWidget(self.LCAB_EN, 6, 1, 1, 1)
+        self.PADS_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.PADS_EN.setObjectName("PADS_EN")
+        self.gridLayout_5.addWidget(self.PADS_EN, 3, 1, 1, 1)
         self.PPT_EN = QtWidgets.QCheckBox(self.acu_gb)
         self.PPT_EN.setMinimumSize(QtCore.QSize(20, 0))
         font = QtGui.QFont()
@@ -1966,64 +2139,109 @@ class Ui_MainWindow(object):
         self.PPT_EN.setFont(font)
         self.PPT_EN.setObjectName("PPT_EN")
         self.gridLayout_5.addWidget(self.PPT_EN, 6, 0, 1, 1)
-        self.PAB_EN = QtWidgets.QCheckBox(self.acu_gb)
-        self.PAB_EN.setMinimumSize(QtCore.QSize(20, 0))
-        font = QtGui.QFont()
-        font.setPointSize(11)
-        self.PAB_EN.setFont(font)
-        self.PAB_EN.setObjectName("PAB_EN")
-        self.gridLayout_5.addWidget(self.PAB_EN, 3, 0, 1, 1)
         self.RCAB_EN = QtWidgets.QCheckBox(self.acu_gb)
         self.RCAB_EN.setObjectName("RCAB_EN")
         self.gridLayout_5.addWidget(self.RCAB_EN, 2, 2, 1, 1)
-        self.gridLayout_3.addWidget(self.acu_gb, 14, 2, 1, 3)
-        self.STO_VER_BTN = QtWidgets.QPushButton(self.groupBox1565)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Maximum)
+        self.PGSAT_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.PGSAT_EN.setObjectName("PGSAT_EN")
+        self.gridLayout_5.addWidget(self.PGSAT_EN, 2, 4, 1, 1)
+        self.DGSAT_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.DGSAT_EN.setObjectName("DGSAT_EN")
+        self.gridLayout_5.addWidget(self.DGSAT_EN, 3, 4, 1, 1)
+        self.PPSAT_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.PPSAT_EN.setObjectName("PPSAT_EN")
+        self.gridLayout_5.addWidget(self.PPSAT_EN, 5, 4, 1, 1)
+        self.DPSAT_EN = QtWidgets.QCheckBox(self.acu_gb)
+        self.DPSAT_EN.setObjectName("DPSAT_EN")
+        self.gridLayout_5.addWidget(self.DPSAT_EN, 6, 4, 1, 1)
+        self.gridLayout_3.addWidget(self.acu_gb, 13, 2, 1, 2)
+        self.groupBoxSEL = QtWidgets.QGroupBox(self.groupBox1565)
+        self.groupBoxSEL.setObjectName("groupBox")
+        self.gridLayout_7 = QtWidgets.QGridLayout(self.groupBoxSEL)
+        self.gridLayout_7.setObjectName("gridLayout_7")
+        self.STO_VER_BTN = QtWidgets.QPushButton(self.groupBoxSEL)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.STO_VER_BTN.sizePolicy().hasHeightForWidth())
         self.STO_VER_BTN.setSizePolicy(sizePolicy)
         self.STO_VER_BTN.setMinimumSize(QtCore.QSize(350, 50))
         self.STO_VER_BTN.setObjectName("STO_VER_BTN")
-        self.gridLayout_3.addWidget(self.STO_VER_BTN, 0, 2, 2, 1)
-        self.WRITE_ACU_BTN = QtWidgets.QPushButton(self.groupBox1565)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_7.addWidget(self.STO_VER_BTN, 0, 2, 1, 1)
+        self.ACC_VER_BTN = QtWidgets.QPushButton(self.groupBoxSEL)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.WRITE_ACU_BTN.sizePolicy().hasHeightForWidth())
-        self.WRITE_ACU_BTN.setSizePolicy(sizePolicy)
-        self.WRITE_ACU_BTN.setMinimumSize(QtCore.QSize(350, 50))
-        self.WRITE_ACU_BTN.setObjectName("WRITE_ACU_BTN")
-        self.gridLayout_3.addWidget(self.WRITE_ACU_BTN, 0, 4, 1, 1)
-        self.Manufacture_mode_btn = QtWidgets.QPushButton(self.groupBox1565)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.Manufacture_mode_btn.sizePolicy().hasHeightForWidth())
-        self.Manufacture_mode_btn.setSizePolicy(sizePolicy)
-        self.Manufacture_mode_btn.setObjectName("Manufacture_mode_btn")
-        self.gridLayout_3.addWidget(self.Manufacture_mode_btn, 4, 4, 3, 1)
+        sizePolicy.setHeightForWidth(self.ACC_VER_BTN.sizePolicy().hasHeightForWidth())
+        self.ACC_VER_BTN.setSizePolicy(sizePolicy)
+        self.ACC_VER_BTN.setMinimumSize(QtCore.QSize(0, 50))
+        self.ACC_VER_BTN.setObjectName("ACC_VER_BTN")
+        self.gridLayout_7.addWidget(self.ACC_VER_BTN, 0, 1, 1, 1)
+        self.gridLayout_3.addWidget(self.groupBoxSEL, 1, 2, 1, 2)
         self.gridLayout_2.addWidget(self.groupBox1565, 3, 0, 1, 1)
         self.tabWidget.addTab(self.reprogramming_tab, "")
         self.Settings = QtWidgets.QWidget()
         self.Settings.setObjectName("Settings")
         self.groupBox_21 = QtWidgets.QGroupBox(self.Settings)
-        self.groupBox_21.setGeometry(QtCore.QRect(0, 0, 311, 191))
+        self.groupBox_21.setGeometry(QtCore.QRect(0, 0, 600, 300))
         self.groupBox_21.setObjectName("groupBox_21")
         self.gridLayout_26 = QtWidgets.QGridLayout(self.groupBox_21)
         self.gridLayout_26.setObjectName("gridLayout_26")
         self.COM_PORT_SELECTOR = QtWidgets.QComboBox(self.groupBox_21)
+        self.COM_PORT_SELECTOR.setFont(font)
         self.COM_PORT_SELECTOR.setObjectName("COM_PORT_SELECTOR")
         self.gridLayout_26.addWidget(self.COM_PORT_SELECTOR, 0, 0, 1, 1)
         self.COM_PORT_CONNECT_BTN = QtWidgets.QPushButton(self.groupBox_21)
         self.COM_PORT_CONNECT_BTN.setObjectName("COM_PORT_CONNECT_BTN")
+        self.COM_PORT_CONNECT_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
+        self.COM_PORT_CONNECT_BTN.setFont(font)
         self.gridLayout_26.addWidget(self.COM_PORT_CONNECT_BTN, 1, 0, 1, 1)
         self.COM_PORT_CLOSE_BTN = QtWidgets.QPushButton(self.groupBox_21)
+        self.COM_PORT_CLOSE_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.COM_PORT_CLOSE_BTN.setObjectName("COM_PORT_CONNECT_BTN")
         self.gridLayout_26.addWidget(self.COM_PORT_CLOSE_BTN, 3, 0, 1, 1)
         self.COM_PORT_BRS = QtWidgets.QTextBrowser(self.groupBox_21)
         self.COM_PORT_BRS.setObjectName("COM_PORT_BRS")
+        self.COM_PORT_BRS.setFont(font)
         self.COM_PORT_CLOSE_BTN.setText("ЗАКРЫТЬ COM-PORT")
+
+        self.manual_mode_btn = QtWidgets.QPushButton(self.groupBox_21)
+        self.manual_mode_btn.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
+        self.manual_mode_btn.setObjectName("COM_PORT2T_BTN")
+        self.gridLayout_26.addWidget(self.manual_mode_btn, 4, 0, 1, 1)
+        self.manual_mode_btn.setText("Ручной режим управления ремнями")
+        self.manual_mode_btn.setFont(font)
+
+        self.RLSB_EN.setFont(font)
+        self.RCSB_EN.setFont(font)
+        self.RRSB_EN.setFont(font)
+        self.PADI_EN.setFont(font)
+        self.PSAB_EN.setFont(font)
+        self.DSAB_EN.setFont(font)
+        self.DSB_EN.setFont(font)
+        self.PSB_EN.setFont(font)
+        self.PPS_EN.setFont(font)
+        self.DAB_EN.setFont(font)
+        self.PADS_EN.setFont(font)
+        self.DPT_EN.setFont(font)
+        self.LCAB_EN.setFont(font)
+        self.PPT_EN.setFont(font)
+        self.PAB_EN.setFont(font)
+        self.RCAB_EN.setFont(font)
+        self.PGSAT_EN.setFont(font)
+        self.DGSAT_EN.setFont(font)
+        self.PPSAT_EN.setFont(font)
+        self.DPSAT_EN.setFont(font)
+        self.groupBoxSEL.setFont(font)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.STO_VER_BTN.setFont(font)
+        self.ACC_VER_BTN.setFont(font)
+        self.WRITE_ACU_BTN.setFont(font)
+        self.Manufacture_mode_btn.setFont(font)
+        self.READ_VERSBTN.setFont(font)
+        self.SET_WM_BTN.setFont(font)
+        self.VER_LOG_BRS.setFont(font)
         portlist=list()
         ports = serial.tools.list_ports.comports()
         for port in ports:
@@ -2032,8 +2250,8 @@ class Ui_MainWindow(object):
             self.COM_PORT_SELECTOR.addItem(portlist[i])
         if(len(portlist)>0):
             self.COM_PORT=portlist[0]
-            self.UART=serial.Serial(self.COM_PORT,115200)
-            self.UART.close()
+            self.UART=None#Nserial.Serial(self.COM_PORT,115200)
+            #self.UART.close()
         self.gridLayout_26.addWidget(self.COM_PORT_BRS, 2, 0, 1, 1)
         self.tabWidget.addTab(self.Settings, "")
         self.gridLayout.addWidget(self.tabWidget, 0, 0, 1, 1)
@@ -2055,35 +2273,42 @@ class Ui_MainWindow(object):
         self.ares_range_input.valueChanged.connect(self.update_plot)
 
         self.syntez_btn.clicked.connect(self.on_click2)
+        self.save_params_btn.clicked.connect(self.on_click3)
+        self.save_params_btn.clicked.connect(self.PARAM_RESULT_BRS_2.clear)
+        self.SET_WM_BTN.clicked.connect(self.run_set_working_mode)
+        self.SET_WM_BTN.clicked.connect(self.VER_LOG_BRS.clear)
+
+        self.READ_VERSBTN.clicked.connect(self.run_read_ecu_version)
+        self.READ_VERSBTN.clicked.connect(self.VER_LOG_BRS.clear)
 
         self.Run_Init_btn.clicked.connect(self.run_test1)
         self.Run_Init_btn.clicked.connect(self.inittime_brs.clear)
         self.Run_Init_btn.clicked.connect(self.initresult_brs.clear)
         self.Run_Init_btn.clicked.connect(self.can_msg_brs.clear)
-        self.Run_Init_btn.clicked.connect(lambda: self.Run_Init_btn.setDisabled(True))
+        self.Run_Init_btn.clicked.connect(self.DisableAll)
 
         self.perod_periodic_btn.clicked.connect(self.run_test2)
         self.perod_periodic_btn.clicked.connect(self.accepted_periodic_brs.clear)
         self.perod_periodic_btn.clicked.connect(self.measured_period_brs.clear)
         self.perod_periodic_btn.clicked.connect(self.result_periodic_brs.clear)
-        self.perod_periodic_btn.clicked.connect(lambda: self.perod_periodic_btn.setDisabled(True))
+        self.perod_periodic_btn.clicked.connect(self.DisableAll)
 
 
         self.start_trig_btn.clicked.connect(self.run_test3_period)
         self.start_trig_btn.clicked.connect(self.accepted_trig_brs.clear)
         self.start_trig_btn.clicked.connect(self.measured_trig_brs.clear)
         self.start_trig_btn.clicked.connect(self.result_trig_brs.clear)
-        self.start_trig_btn.clicked.connect(lambda: self.start_trig_btn.setDisabled(True))
+        self.start_trig_btn.clicked.connect(self.DisableAll)
 
 
         self.start_acc_btn.clicked.connect(self.run_accelerometer)
         self.start_acc_btn.clicked.connect(self.got_res_brs.clear)
         self.start_acc_btn.clicked.connect(self.CRASHDETECTED_BRS.clear)
-        self.start_acc_btn.clicked.connect(lambda: self.start_acc_btn.setDisabled(True))
+        self.start_acc_btn.clicked.connect(self.DisableAll)
 
         self.UDS_RUN_BTN.clicked.connect(self.run_UDS)
         self.UDS_RUN_BTN.clicked.connect(self.UDS_MSG_BRS.clear)
-        self.UDS_RUN_BTN.clicked.connect(lambda: self.UDS_RUN_BTN.setDisabled(True))
+        self.UDS_RUN_BTN.clicked.connect(self.DisableAll)
 
         self.UDS_TEST_SELECTOR.currentIndexChanged['int'].connect(self.UDS_test_changed)
         self.UDS_TEST_SELECTOR.currentIndexChanged['int'].connect(self.UDS_MSG_BRS.clear)
@@ -2097,80 +2322,70 @@ class Ui_MainWindow(object):
         self.start_SBR_btn.clicked.connect(self.run_SBR)
         self.start_SBR_btn.clicked.connect(self.acc_SBR_brs.clear)
         self.start_SBR_btn.clicked.connect(self.got_res_SBR_brs.clear)
-        self.start_SBR_btn.clicked.connect(lambda: self.start_SBR_btn.setDisabled(True))
+        self.start_SBR_btn.clicked.connect(self.DisableAll)
 
         self.acc_selector.currentIndexChanged['int'].connect(self.acc_set_changed) # type: ignore
         self.SBR_test_selector.currentIndexChanged['int'].connect(self.SBR_test_changed) # type: ignore
 
         self.DIAG_RESET_BTN.clicked.connect(self.run_ECU_reset)
         self.DIAG_RESET_BTN.clicked.connect(self.DIAG_ACCEPTED_BRS.clear)
-        self.DIAG_RESET_BTN.clicked.connect(lambda: self.DIAG_RESET_BTN.setDisabled(True))
+        self.DIAG_RESET_BTN.clicked.connect(self.DisableAll)
 
-        self.DIAG_EXTDIAG_BTN.clicked.connect(self.run_ExtendedDiagnostic)
-        self.DIAG_EXTDIAG_BTN.clicked.connect(self.DIAG_ACCEPTED_BRS.clear)
-        self.DIAG_EXTDIAG_BTN.clicked.connect(lambda: self.DIAG_EXTDIAG_BTN.setDisabled(True))
 
         self.DIAG_VIN0_BTN.clicked.connect(self.run_Write_VIN0)
         self.DIAG_VIN0_BTN.clicked.connect(self.DIAG_ACCEPTED_BRS.clear)
-        self.DIAG_VIN0_BTN.clicked.connect(lambda: self.DIAG_VIN0_BTN.setDisabled(True))
+        self.DIAG_VIN0_BTN.clicked.connect(self.DisableAll)
 
         self.DIAG_VIN1_BTN.clicked.connect(self.run_Write_VIN1)
         self.DIAG_VIN1_BTN.clicked.connect(self.DIAG_ACCEPTED_BRS.clear)
-        self.DIAG_VIN1_BTN.clicked.connect(lambda: self.DIAG_VIN1_BTN.setDisabled(True))
+        self.DIAG_VIN1_BTN.clicked.connect(self.DisableAll)
 
-        self.DIAG_READ_0x08_BTN.clicked.connect(self.run_Read0x08)
+        self.DIAG_READ_0x08_BTN.clicked.connect(lambda:self.run_ReadDTC(0x08))
         self.DIAG_READ_0x08_BTN.clicked.connect(self.DIAG_ERRORS_BRS.clear)
-        self.DIAG_READ_0x08_BTN.clicked.connect(lambda: self.DIAG_READ_0x08_BTN.setDisabled(True))
+        self.DIAG_READ_0x08_BTN.clicked.connect(self.DisableAll)
 
-        self.DIAG_READ_0x09_BTN.clicked.connect(self.run_Read0x09)
+        self.DIAG_READ_0x09_BTN.clicked.connect(lambda:self.run_ReadDTC(0x09))
         self.DIAG_READ_0x09_BTN.clicked.connect(self.DIAG_ERRORS_BRS.clear)
-        self.DIAG_READ_0x09_BTN.clicked.connect(lambda: self.DIAG_READ_0x09_BTN.setDisabled(True))
+        self.DIAG_READ_0x09_BTN.clicked.connect(self.DisableAll)
 
         self.DIAG_CLEAR_DTC_BTN.clicked.connect(self.run_ClearDTC)
         self.DIAG_CLEAR_DTC_BTN.clicked.connect(self.DIAG_ACCEPTED_BRS.clear)
-        self.DIAG_CLEAR_DTC_BTN.clicked.connect(lambda: self.DIAG_CLEAR_DTC_BTN.setDisabled(True))
+        self.DIAG_CLEAR_DTC_BTN.clicked.connect(self.DisableAll)
+        self.manual_mode_btn.clicked.connect(self.run_manual_mode)
+        self.manual_mode_btn.clicked.connect(self.COM_PORT_BRS.clear)
 
         self.CHECK_PARAM_VALID_BTN.clicked.connect(self.run_thread_model_all)
-#        self.CHECK_PARAM_VALID_BTN.clicked.connect(self.PARAMS_PROCESS_BRS.clear)
+        self.CHECK_PARAM_VALID_BTN.clicked.connect(self.PARAM_RESULT_BRS.clear)
 
         self.run_single_test_btn.clicked.connect(self.run_thread_model_single)
-        #self.run_single_test_btn.clicked.connect(self.single_test_result_brs.clear)
+        self.run_single_test_btn.clicked.connect(self.PARAM_RESULT_BRS.clear)
 
         self.DIAG_UPD_CAN_MSG_BTN.clicked.connect(self.Send_periodic)
 
         self.DIAG_STOP_CAN_MSG_BTN.clicked.connect(self.Stop_Send_periodic)
 
         self.WRITE_ACU_BTN.clicked.connect(self.run_Write_ACU)
-        self.WRITE_ACU_BTN.clicked.connect(lambda: self.WRITE_ACU_BTN.setDisabled(True))
+        self.WRITE_ACU_BTN.clicked.connect(self.DisableAll)
         self.WRITE_ACU_BTN.clicked.connect(self.VER_LOG_BRS.clear)
 
         self.EDR1_BTN.clicked.connect(lambda:self.run_EDR_read(1))
-        self.EDR1_BTN.clicked.connect(lambda: self.EDR1_BTN.setDisabled(True))
-        self.EDR1_BTN.clicked.connect(lambda: self.EDR2_BTN.setDisabled(True))
-        self.EDR1_BTN.clicked.connect(lambda: self.EDR3_BTN.setDisabled(True))
-        self.EDR1_BTN.clicked.connect(lambda: self.EDR_STOP_BTN.setDisabled(True))
-        self.EDR1_BTN.clicked.connect(lambda: self.READ_NUM_BTN.setDisabled(True))
+        self.EDR1_BTN.clicked.connect(self.DisableAll)
+        self.EDR1_BTN.clicked.connect(lambda: self.EDR_STOP_BTN.setDisabled(False))
         self.EDR1_BTN.clicked.connect(lambda: self.EDR_OTHER_DATA_BRS.clear)
 
         self.EDR2_BTN.clicked.connect(lambda:self.run_EDR_read(2))
-        self.EDR2_BTN.clicked.connect(lambda: self.EDR1_BTN.setDisabled(True))
-        self.EDR2_BTN.clicked.connect(lambda: self.EDR2_BTN.setDisabled(True))
-        self.EDR2_BTN.clicked.connect(lambda: self.EDR3_BTN.setDisabled(True))
-        self.EDR2_BTN.clicked.connect(lambda: self.EDR_STOP_BTN.setDisabled(True))
-        self.EDR2_BTN.clicked.connect(lambda: self.READ_NUM_BTN.setDisabled(True))
+        self.EDR2_BTN.clicked.connect(self.DisableAll)
+        self.EDR2_BTN.clicked.connect(lambda: self.EDR_STOP_BTN.setDisabled(False))
         self.EDR2_BTN.clicked.connect(lambda: self.EDR_OTHER_DATA_BRS.clear)
 
         self.EDR3_BTN.clicked.connect(lambda: self.run_EDR_read(3))
-        self.EDR3_BTN.clicked.connect(lambda: self.EDR1_BTN.setDisabled(True))
-        self.EDR3_BTN.clicked.connect(lambda: self.EDR2_BTN.setDisabled(True))
-        self.EDR3_BTN.clicked.connect(lambda: self.EDR3_BTN.setDisabled(True))
-        self.EDR3_BTN.clicked.connect(lambda: self.EDR_STOP_BTN.setDisabled(True))
-        self.EDR3_BTN.clicked.connect(lambda: self.READ_NUM_BTN.setDisabled(True))
+        self.EDR3_BTN.clicked.connect(self.DisableAll)
+        self.EDR3_BTN.clicked.connect(lambda: self.EDR_STOP_BTN.setDisabled(False))
         self.EDR3_BTN.clicked.connect(lambda: self.EDR_OTHER_DATA_BRS.clear)
 
         self.CHECK_CRASH_DETECTION_BTN.clicked.connect(self.run_Check_CD)
         self.CHECK_CRASH_DETECTION_BTN.clicked.connect(self.DIAG_ACCEPTED_BRS.clear)
-        self.CHECK_CRASH_DETECTION_BTN.clicked.connect(lambda: self.CHECK_CRASH_DETECTION_BTN.setDisabled(True))
+        self.CHECK_CRASH_DETECTION_BTN.clicked.connect(self.DisableAll)
 
         self.read_snap_btn.clicked.connect(self.run_snap_handler)
         self.read_snap_btn.clicked.connect(self.snap_brs.clear)
@@ -2181,42 +2396,40 @@ class Ui_MainWindow(object):
         self.read_snap_btn.clicked.connect(self.lcdNumber_5.clear)
 
         self.STOP_BTN_1.clicked.connect(self.close)
-        self.STOP_BTN_1.clicked.connect(lambda: self.perod_periodic_btn.setDisabled(False))
+        self.STOP_BTN_1.clicked.connect(self.EnableAll)
         self.STOP_BTN_1.setDisabled(True)
 
 
         self.STOP_BTN_2.clicked.connect(self.close)
-        self.STOP_BTN_2.clicked.connect(lambda: self.start_trig_btn.setDisabled(False))
+        self.STOP_BTN_2.clicked.connect(self.EnableAll)
         self.STOP_BTN_2.setDisabled(True)
 
 
         self.STOP_BTN_3.clicked.connect(self.close)
-        self.STOP_BTN_3.clicked.connect(lambda: self.Run_Init_btn.setDisabled(False))
+        self.STOP_BTN_3.clicked.connect(self.EnableAll)
         self.STOP_BTN_3.setDisabled(True)
 
 
         self.STOP_BTN_4.clicked.connect(self.close)
-        self.STOP_BTN_4.clicked.connect(lambda: self.start_acc_btn.setDisabled(False))
+        self.STOP_BTN_4.clicked.connect(self.EnableAll)
         self.STOP_BTN_4.setDisabled(True)
 
 
         self.STOP_BTN_5.clicked.connect(self.close)
-        self.STOP_BTN_5.clicked.connect(lambda: self.start_SBR_btn.setDisabled(False))
+        self.STOP_BTN_5.clicked.connect(self.EnableAll)
         self.STOP_BTN_5.setDisabled(True)
 
 
         self.STOP_BTN_6.clicked.connect(self.close)
-        self.STOP_BTN_6.clicked.connect(lambda: self.UDS_RUN_BTN.setDisabled(False))
+        self.STOP_BTN_6.clicked.connect(self.EnableAll)
         self.STOP_BTN_6.setDisabled(True)
 
 
         self.EDR_STOP_BTN.clicked.connect(self.close)
-
-
         self.READ_NUM_BTN.clicked.connect(self.run_EDR_num_read)
-        self.EDR_STOP_BTN.clicked.connect(lambda: self.EDR1_BTN.setDisabled(False))
-        self.EDR_STOP_BTN.clicked.connect(lambda: self.EDR2_BTN.setDisabled(False))
-        self.EDR_STOP_BTN.clicked.connect(lambda: self.EDR3_BTN.setDisabled(False))
+        self.EDR_STOP_BTN.clicked.connect(self.EnableAll)
+
+        self.model_test_selector.currentIndexChanged.connect(lambda: self.testfolder_changed())
 
 
         self.STOP_BTN_8.clicked.connect(self.close)
@@ -2225,13 +2438,13 @@ class Ui_MainWindow(object):
 
         self.START_VALID_AB_BTN.clicked.connect(self.run_ValidAB)
         self.START_VALID_AB_BTN.clicked.connect(self.VALIDAB_BRS.clear)
-        self.START_VALID_AB_BTN.clicked.connect(lambda: self.START_VALID_AB_BTN.setDisabled(True))
+        self.START_VALID_AB_BTN.clicked.connect(self.DisableAll)
 
         self.UPDATE_PARAMS_BTN.clicked.connect(self.run_update_params)
-        self.UPDATE_PARAMS_BTN.clicked.connect(self.PARAM_RESULT_BRS.clear)
+        self.UPDATE_PARAMS_BTN.clicked.connect(self.PARAM_RESULT_BRS_2.clear)
 
         self.read_params_btn.clicked.connect(self.run_read_params)
-        self.read_params_btn.clicked.connect(self.PARAM_RESULT_BRS.clear)
+        self.read_params_btn.clicked.connect(self.PARAM_RESULT_BRS_2.clear)
 
         self.COM_PORT_SELECTOR.currentIndexChanged['int'].connect(self.COM_port_changed)
         self.COM_PORT_CONNECT_BTN.clicked.connect(self.CheckConnection_run)
@@ -2256,42 +2469,14 @@ class Ui_MainWindow(object):
         self.Manufacture_mode_btn.clicked.connect(self.VER_LOG_BRS.clear)
         self.export_results_btn.clicked.connect(self.run_export_results)
 
-        #self.update_testparams_btn.clicked.connect(self.run_file_updater)
-        #self.update_testparams_btn.clicked.connect(self.single_test_result_brs.clear)
+        self.UPDATE_PARAMS_LOCAL_BTN.clicked.connect(self.run_file_updater)
+        self.UPDATE_PARAMS_LOCAL_BTN.clicked.connect(self.PARAM_RESULT_BRS_2.clear)
+
+        self.read_params_local_btn.clicked.connect(self.run_file_reader)
+        self.read_params_local_btn.clicked.connect(self.PARAM_RESULT_BRS_2.clear)
         self.COM_PORT_CLOSE_BTN.clicked.connect(self.close_com)
 
-
-
-        self.STO_VER_BTN.setDisabled(True)
-        self.ACC_VER_BTN.setDisabled(True)
-        self.Manufacture_mode_btn.setDisabled(True)
-        self.start_SBR_btn.setDisabled(True)
-        self.start_acc_btn.setDisabled(True)
-        self.Run_Init_btn.setDisabled(True)
-        self.CHECK_CRASH_DETECTION_BTN.setDisabled(True)
-        self.UDS_RUN_BTN.setDisabled(True)
-        self.EDR1_BTN.setDisabled(True)
-        self.EDR2_BTN.setDisabled(True)
-        self.EDR3_BTN.setDisabled(True)
-        self.EDR_STOP_BTN.setDisabled(True)
-        self.perod_periodic_btn.setDisabled(True)
-        self.read_params_btn.setDisabled(True)
-        self.start_trig_btn.setDisabled(True)
-        self.DIAG_CLEAR_DTC_BTN.setDisabled(True)
-        self.DIAG_READ_0x08_BTN.setDisabled(True)
-        self.DIAG_READ_0x09_BTN.setDisabled(True)
-        self.DIAG_EXTDIAG_BTN.setDisabled(True)
-        self.DIAG_VIN0_BTN.setDisabled(True)
-        self.DIAG_VIN1_BTN.setDisabled(True)
-        self.DIAG_RESET_BTN.setDisabled(True)
-        self.START_VALID_AB_BTN.setDisabled(True)
-        self.toolButton.setDisabled(True)
-        self.DIAG_UPD_CAN_MSG_BTN.setDisabled(True)
-        self.DIAG_STOP_CAN_MSG_BTN.setDisabled(True)
-        self.read_snap_btn.setDisabled(True)
-        self.UPDATE_PARAMS_BTN.setDisabled(True)
-        self.WRITE_ACU_BTN.setDisabled(True)
-        self.READ_NUM_BTN.setDisabled(True)
+        self.DisableAll()
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
 
@@ -2299,6 +2484,11 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "СТО СНПБ АВТОВАЗ"))
+        self.testfolder_changed()
+        os.chdir('icons')
+        MainWindow.setWindowIcon(QtGui.QIcon("main_icon.ico"))
+        self.toolButton.setIcon(QtGui.QIcon("reprogramming_icon.png"))
+        os.chdir('..')
         self.Run_Init_btn.setText(_translate("MainWindow", "Старт"))
         self.Inittime_lbl.setText(_translate("MainWindow", "Измеренное время инциализации"))
         self.Initreuult_lbl.setText(_translate("MainWindow", "Результат проверки"))
@@ -2322,9 +2512,12 @@ class Ui_MainWindow(object):
         self.accepted_trig_lbl.setText(_translate("MainWindow", "Принятые CAN-сообщения"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.can_tab),
                                   _translate("MainWindow", "Проверка периода CAN"))
+        self.SET_WM_BTN.setText(_translate("MainWindow", "Перевести в working mode"))
+        self.READ_VERSBTN.setText(_translate("MainWindow", "Прочитать текущую версию"))
         self.groupBox.setTitle(_translate("MainWindow", "Параметры испытания"))
         self.groupBox11.setTitle(_translate("MainWindow", "Ход чтения"))
         self.groupBox_243.setTitle(_translate("MainWindow", "Считанные данные"))
+        self.groupBoxSEL.setTitle(_translate("MainWindow", "Выбор источника данных ускорений"))
         self.stat_snap.setText(_translate("MainWindow", "Cтатус ошибки"))
         self.speed_snap.setText(_translate("MainWindow", "Скорость"))
         self.errctr_snpa.setText(_translate("MainWindow", "Значение DTC occurence counter"))
@@ -2337,7 +2530,7 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.SNAPSHOT_TAB),
                                   _translate("MainWindow", "Проверка чтения snapshot"))
         self.read_params_btn.setText("Прочитать текущие параметры")
-        self.AIRBAG_OFF_btn.setText(_translate("MainWindow", "Отключить ПБ переднего пассажира"))
+        #self.AIRBAG_OFF_btn.setText(_translate("MainWindow", "Отключить ПБ переднего пассажира"))
         self.acc_selector_lbl.setText(_translate("MainWindow", "Выбор набора ускорений"))
         self.start_acc_btn.setText(_translate("MainWindow", "Старт"))
         self.expected_res_acc_lbl.setText(_translate("MainWindow", "Ожидаемый результат"))
@@ -2365,8 +2558,7 @@ class Ui_MainWindow(object):
                                            _translate("MainWindow", "Проверка отключения тревоги при заднем ходе"))
         self.SBR_test_selector.setItemText(8,
                                            _translate("MainWindow", "Проверка ДНП переднего пассажира"))
-        self.SBR_test_selector.setItemText(9,
-                                           _translate("MainWindow", "Проверка PADS, PADI"))
+
         self.sbr_test_sel_lbl.setText(_translate("MainWindow", "Запускаемый тест"))
         self.exp_res_SBR_lbl.setText(_translate("MainWindow", "Ожидаемый результат"))
         self.got_res_SBR_lbl.setText(_translate("MainWindow", "Полученный результат"))
@@ -2386,15 +2578,14 @@ class Ui_MainWindow(object):
         self.DIAG_ERRORS_LBL.setText(_translate("MainWindow", "Считанные ошибки"))
         self.DIAG_READ_0x08_BTN.setText(_translate("MainWindow", "Считать DTC 0x08"))
         self.DIAG_RESET_BTN.setText(_translate("MainWindow", "Перезапустить БУ СНПБ"))
-        self.DIAG_VIN0_BTN.setText(_translate("MainWindow", "Записать VIN!=0"))
+        self.DIAG_VIN0_BTN.setText(_translate("MainWindow", "Записать VIN≠0"))
         self.DIAG_VIN1_BTN.setText(_translate("MainWindow", "Записать VIN=0"))
-        self.DIAG_EXTDIAG_BTN.setText(_translate("MainWindow", "Войти в ExtendedDiagnosticSession"))
         self.DIAG_UPD_CAN_MSG_BTN.setText(_translate("MainWindow", "Обновить данные"))
         self.DIAG_CAN_MSG_LBL.setText(_translate("MainWindow", "Отправляемые сообщения"))
-        self.DIAG_DIAGENABLE_SELECTOR.setItemText(0, _translate("MainWindow", "0"))
-        self.DIAG_DIAGENABLE_SELECTOR.setItemText(1, _translate("MainWindow", "1"))
-        self.DIAG_DIAGENABLE_SELECTOR.setItemText(2, _translate("MainWindow", "2"))
-        self.DIAG_DIAGENABLE_SELECTOR.setItemText(3, _translate("MainWindow", "3"))
+        self.DIAG_DIAGENABLE_SELECTOR.setItemText(0, _translate("MainWindow", "0 (only faults reports and alerts that must remain active during cranking or sleeping periods are enabled)"))
+        self.DIAG_DIAGENABLE_SELECTOR.setItemText(1, _translate("MainWindow", "1 (all faults reports and alerts not related to APC power level are enabled)"))
+        self.DIAG_DIAGENABLE_SELECTOR.setItemText(2, _translate("MainWindow", "2 (all faults reports and alerts are enabled)"))
+        self.DIAG_DIAGENABLE_SELECTOR.setItemText(3, _translate("MainWindow", "3 (unavalible)"))
         self.DIAG_SPEED_SELECTOR_2.setText(_translate("MainWindow", "Отправляемая скорость"))
         self.CHECK_CRASH_DETECTION_BTN.setText("Проверить CrashDetectionOutOfOrder")
         self.DIAG_DIAGENABLE_SELECTOR_2.setText(_translate("MainWindow", "Сигнал GenericApplicativeDiagEnable"))
@@ -2405,7 +2596,7 @@ class Ui_MainWindow(object):
         self.COM_PORT_CONNECT_BTN.setText(_translate("MainWindow", "Подключиться"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.Settings), _translate("MainWindow", "Настройки"))
         self.groupBox_17.setTitle(_translate("MainWindow", "Precrash data"))
-        self.groupBox_18.setTitle(_translate("MainWindow", "Other supproted data"))
+        self.groupBox_18.setTitle(_translate("MainWindow", "Other data"))
         self.groupBox_16.setTitle(_translate("MainWindow", "Crash data"))
         self.pushButton_3.setText("Начать перепрошивку")
         self.LimitSresside_lbl.setText(_translate("MainWindow", "Limit Sres side (10\u207b\u2076 m)"))
@@ -2422,35 +2613,32 @@ class Ui_MainWindow(object):
         self.LOGS_LBL.setText(_translate("MainWindow", "Логи"))
         self.LimitSresfront_lbl.setText(_translate("MainWindow", "Limit Sres front"))
         self.save_params_btn.setText(_translate("MainWindow", "Сохранить набор"))
-        self.read_params_btn.setText(_translate("MainWindow", "Считать теукущие параметры БУ"))
+        self.read_params_btn.setText(_translate("MainWindow", "Считать текущие параметры БУ"))
         self.UPDATE_PARAMS_BTN.setText(_translate("MainWindow", "Загрузить параметры в БУ"))
         self.UPDATE_PARAMS_LOCAL_BTN.setText(_translate("MainWindow", "Обновить параметры локальной модели"))
         self.read_params_local_btn.setText(_translate("MainWindow", "Считать параметры локальной модели"))
         self.groupBox143.setTitle(_translate("MainWindow", "Проверка модели"))
-        self.export_results_btn.setText(_translate("MainWindow", "Экспорт результатов"))
+        self.export_results_btn.setText(_translate("MainWindow", "Открыть файл с результатами"))
         self.run_single_test_btn.setText(_translate("MainWindow", "Запустить тест"))
-        self.CHECK_PARAM_VALID_BTN.setText(_translate("MainWindow", "Запуск всех тестов"))
+        self.CHECK_PARAM_VALID_BTN.setText(_translate("MainWindow", "Запуск всех тестов из папки"))
         self.groupBox_2666.setTitle(_translate("MainWindow", "Синтез данных"))
         self.tendmin_lbl.setText(_translate("MainWindow",
-                                            "<html><head/><body><p>t end <span style=\" vertical-align:sub;\">min</span></p></body></html>"))
-        self.tstmax_lbl.setText(_translate("MainWindow", "t start ₘₐₓ "))
-        self.t2_lbl.setText(_translate("MainWindow", "t₂"))
-        self.tstmin_lbl.setText(_translate("MainWindow",
-                                           "<html><head/><body><p>t start <span style=\" vertical-align:sub;\">min </span></p></body></html>"))
-        self.aresrange_lbl.setText(_translate("MainWindow",
-                                              "<html><head/><body><p>A<span style=\" vertical-align:sub;\">res</span> range</p></body></html>"))
-        self.limitares_lbl.setText(_translate("MainWindow",
-                                              "<html><head/><body><p>Limit A<span style=\" vertical-align:sub;\">res</span></p></body></html>"))
-        self.tendmax_lbl.setText(_translate("MainWindow", "t end ₘₐₓ"))
-        self.t3_lbl.setText(_translate("MainWindow", "t₃"))
-        self.t4_lbl.setText(_translate("MainWindow", "t₄"))
-        self.t1_lbl.setText(_translate("MainWindow", "t₁"))
+                                            "<html><head/><body><p>t end <span style=\" vertical-align:sub;\">min</span>(ms)</p></body></html>"))
+        self.tstmax_lbl.setText(_translate("MainWindow", "t start ₘₐₓ (ms) "))
+        self.t2_lbl.setText(_translate("MainWindow", "t₂ (ms)"))
+        self.tstmin_lbl.setText(_translate("MainWindow","<html><head/><body><p>t start <span style=\" vertical-align:sub;\">min </span>(ms)</p></body></html> "))
+        self.aresrange_lbl.setText(_translate("MainWindow","<html><head/><body><p>A<span style=\" vertical-align:sub;\">res</span> range (g)</p></body></html>"))
+        self.limitares_lbl.setText(_translate("MainWindow","<html><head/><body><p>Limit A<span style=\" vertical-align:sub;\">res</span>(g)</p></body></html>"))
+        self.tendmax_lbl.setText(_translate("MainWindow", "t end ₘₐₓ (ms)"))
+        self.t3_lbl.setText(_translate("MainWindow", "t₃ (ms)"))
+        self.t4_lbl.setText(_translate("MainWindow", "t₄ (ms)"))
+        self.t1_lbl.setText(_translate("MainWindow", "t₁ (ms)"))
         self.sideinput.setItemText(0, _translate("MainWindow", "front"))
         self.sideinput.setItemText(1, _translate("MainWindow", "left"))
         self.sideinput.setItemText(2, _translate("MainWindow", "right"))
         self.sideinput.setItemText(3, _translate("MainWindow", "rear"))
-        self.timestep_lbl.setText(_translate("MainWindow", "Time step"))
-        self.timebeforecoll_lbl.setText(_translate("MainWindow", "Time before collision"))
+        self.timestep_lbl.setText(_translate("MainWindow", "Time step (ms)"))
+        self.timebeforecoll_lbl.setText(_translate("MainWindow", "Time before collision (ms)"))
         self.collside_lbl.setText(_translate("MainWindow", "Collision side"))
         self.syntez_btn.setText(_translate("MainWindow", "Синтезировать"))
         self.deltaAres_lbl.setText(_translate("MainWindow", "delta Ares (m/s\u00B2)"))
@@ -2470,8 +2658,11 @@ class Ui_MainWindow(object):
         self.EDR_STOP_BTN.setText(_translate("MainWindow", "Стоп"))
         self.STOP_BTN_8.setText(_translate("MainWindow", "Стоп"))
         self.defined_params_selector.addItem("Пользовательские параметры")
-        self.defined_params_selector.addItem("XGF")
-        self.defined_params_selector.addItem("XGE")
+        os.chdir('parameters')
+        for file in os.listdir():
+            if(file.endswith('.txt')):
+                self.defined_params_selector.addItem(file.replace('.txt',''))
+        os.chdir('..')
         self.acu_gb.setTitle(_translate("MainWindow", "ACU configuration"))
         self.RLSB_EN.setText(_translate("MainWindow", "Rear left SB"))
         self.RCSB_EN.setText(_translate("MainWindow", "Rear center SB"))
@@ -2489,6 +2680,10 @@ class Ui_MainWindow(object):
         self.PPT_EN.setText(_translate("MainWindow", "Passenger pretensioner"))
         self.PAB_EN.setText(_translate("MainWindow", "Passenger AB"))
         self.RCAB_EN.setText(_translate("MainWindow", "Right curtain AB"))
+        self.PGSAT_EN.setText(_translate("MainWindow", "Passenger front crash sensor"))
+        self.DGSAT_EN.setText(_translate("MainWindow", "Driver front crash sensor"))
+        self.PPSAT_EN.setText(_translate("MainWindow", "Passenger DPS"))
+        self.DPSAT_EN.setText(_translate("MainWindow", "Driver DPS"))
         self.WRITE_ACU_BTN.setText(_translate("MainWindow", "Запись ACU configuration"))
         self.Manufacture_mode_btn.setText(_translate("MainWindow", "Сброс к заводским настройкам"))
         item = self.Crash_data_table.verticalHeaderItem(0)
@@ -2574,7 +2769,7 @@ class Ui_MainWindow(object):
         self.groupBox_20.setTitle(_translate("MainWindow", "Отслеживание сигнала CrashDetected"))
         self.groupBox1565.setTitle(_translate("MainWindow", "Конфигурация БУ СНПБ"))
         self.STO_VER_BTN.setText(_translate("MainWindow", "СТО"))
-        self.ACC_VER_BTN.setText(_translate("MainWindow", "ВНУТРЕННИЙ АКСЕЛЕРОМЕТР"))
+        self.ACC_VER_BTN.setText(_translate("MainWindow", "Внутренний акселерометр"))
         self.groupBox_23456789.setTitle(_translate("MainWindow", "Перепрошивка БУ СНПБ"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.reprogramming_tab), _translate("MainWindow", "Перепрошивка БУ СНПБ"))
         self.EXP_UDS_BRS.setText("Отправлено: 02 11 01\nПринято: 02 51 01\nДиагностический светодиод моргает")
@@ -2587,17 +2782,17 @@ class Ui_MainWindow(object):
         self.READ_NUM_BTN.setText(_translate("MainWindow", "Прочитать текущий номер EDR"))
     def acc_set_changed(self):
         match (self.acc_selector.currentText()):
-            case 'FRONT 100 50':
+            case 'Front_100_50':
                 self.exp_res_acc_brs.setText("TTF DriverAirbag=12 мс\nTTF PassengerAirbag=12 мс\nTTF DriverPretensioner=10 мс\nTTF PassengerPretensioner=10 мс\nTTF DriverSideAirbag=0 мс\nTTF PassengerSideAirbag=0 мс\nTTF DriverCurtainAirbag=0 мс\nTTF PassengerCurtainAirbag=0 мс\n")
-            case 'FRONT ARCAP':
+            case 'Front_ARCAP':
                 self.exp_res_acc_brs.setText("TTF DriverAirbag=35 мс\nTTF PassengerAirbag=30 мс\nTTF DriverPretensioner=20 мс\nTTF PassengerPretensioner=20 мс\nTTF DriverSideAirbag=0 мс\nTTF PassengerSideAirbag=0 мс\nTTF DriverCurtainAirbag=0 мс\nTTF PassengerCurtainAirbag=0 мс\n")
-            case 'FRONT R94':
+            case 'Front_R94':
                 self.exp_res_acc_brs.setText( "TTF DriverAirbag=35 мс\nTTF PassengerAirbag=30 мс\nTTF DriverPretensioner=20 мс\nTTF PassengerPretensioner=20 мс\nTTF DriverSideAirbag=0 мс\nTTF PassengerSideAirbag=0 мс\nTTF DriverCurtainAirbag=0 мс\nTTF PassengerCurtainAirbag=0 мс\n")
-            case 'FRONT 15kmh40' | 'Side 15kmh' | 'Rear36':
+            case 'Front_15kmh40' | 'Side_15kmh_100' | 'Rear_36':
                 self.exp_res_acc_brs.setText("СНБП не срабатывает")
-            case 'Side R95':
+            case 'Side_R95':
                 self.exp_res_acc_brs.setText("TTF DriverAirbag=0 мс\nTTF PassengerAirbag=0 мс\nTTF DriverPretensioner=7 мс\nTTF PassengerPretensioner=7 мс\nTTF DriverSideAirbag=7 мс\nTTF PassengerSideAirbag=7 мс\nTTF DriverCurtainAirbag=7 мс\nTTF PassengerCurtainAirbag=7 мс\n")
-            case 'Side 25kmh':
+            case 'Side_25kmh_100':
                 self.exp_res_acc_brs.setText("TTF DriverAirbag=0 мс\nTTF PassengerAirbag=0 мс\nTTF DriverPretensioner=22 мс\nTTF PassengerPretensioner=22 мс\nTTF DriverSideAirbag=22 мс\nTTF PassengerSideAirbag=22 мс\nTTF DriverCurtainAirbag=22 мс\nTTF PassengerCurtainAirbag=22 мс\n")
             case _:
                 self.exp_res_acc_brs.setText("Unknown TTF")
@@ -2616,7 +2811,7 @@ class Ui_MainWindow(object):
                 match self.UDS_NRC_SELECTOR.currentIndex():
                     case 0:
                         self.UDS_LED_SELECTOR.setDisabled(0)
-                        self.EXP_UDS_BRS.setText("Блок успешно вошёл в SecurityAccess\nОтправлено: 05 2F 38 01 03 00\nПринято: 05 6F 38 01 03 00")
+                        self.EXP_UDS_BRS.setText("Блок успешно вошёл в SecurityAccess\nОтправлено: 05 2F 38 01 03 00\nПринято: 05 6F 38 01 03 xx, где хх-последнее состояние диагностического светодиода\nДиагностический светодиод загорелся")
                     case 1:
                         self.UDS_LED_SELECTOR.setDisabled(1)
                         self.EXP_UDS_BRS.setText("Отправлено: 03 2F 38 01 \nПринято: 03 7F 2F 13")
@@ -2674,15 +2869,15 @@ class Ui_MainWindow(object):
                     case 0:
                         self.EXP_UDS_BRS.setText("Блок успешно вошёл в SecurityAccess")
                     case 1:
-                        self.EXP_UDS_BRS.setText("Блок успешно вошёл в диагностическую сессию\nОтправлено: 03 27 03 10 \nПринято: 03 7F 27 12")
+                        self.EXP_UDS_BRS.setText("Блок успешно вошёл в диагностическую сессию\nОтправлено: 03 27 05 00 \nПринято: 03 7F 27 12")
                     case 2:
                         self.EXP_UDS_BRS.setText("Отправлено: 01 27 01 00 \nПринято: 03 7F 27 13")
                     case 3:
                         self.EXP_UDS_BRS.setText("Отправлено: 03 27 01 00\nПринято: 03 7F 27 22")
                     case 4:
-                        self.EXP_UDS_BRS.setText("Отправлено: 03 27 01 00\nПринято: 03 7F 27 22")
-                    case 4:
-                        self.EXP_UDS_BRS.setText("После нескольких неудачных попыток входа принято: 03 7F 27 37")
+                        self.EXP_UDS_BRS.setText("1)В ответ на отправку неверного ключа принято: 03 7F 27 35\n2)После двух неудачных попыток входа в Security access в ответ на третью неудачную попытку принято: 03 7F 27 36\n3)При попытке запросить ключ в четвертый раз принято: 03 7F 27 37")
+                    case 5:
+                        self.EXP_UDS_BRS.setText("Блок успешно вошёл в диагностическую сессию\nОтправлено: 06 27 02 00 00 00 00\nПринято: 03 7f 27 24")
             case 9:
                 match self.UDS_NRC_SELECTOR.currentIndex():
                     case 0:
@@ -2694,9 +2889,28 @@ class Ui_MainWindow(object):
                     case 3:
                         self.EXP_UDS_BRS.setText("Отправлено: 02 2E D1\nПринято: 03 7F 22 13")
                     case 4:
-                        self.EXP_UDS_BRS.setText("Отправлено: 04 2E FF FF FF\nПринято: 03 7F 22 31")
+                        self.EXP_UDS_BRS.setText("Отправлено: 04 2E D1 FF FF\nПринято: 03 7F 22 31")
                     case 5:
-                        self.EXP_UDS_BRS.setText("Отправлено: 03 22 D1 00\nПринято: 03 7F 22 33")
+                        self.EXP_UDS_BRS.setText("Отправлено: 04 2E D1 00 5A\nПринято: 03 7F 2E 33")
+
+    def testfolder_changed(self):
+        self.tests_dict.clear()
+        self.model_test_selector2.clear()
+        os.chdir('pillows/test_folder')
+        os.chdir(f'{self.model_test_selector.currentText()}')
+        folder=os.listdir()
+        for dirs in folder:
+            if dirs.startswith("~$"):
+                continue
+            if dirs.endswith('.csv'):
+                self.model_test_selector2.addItem(dirs)
+        for i in range(0, len(folder)):
+            self.tests_dict.update({folder[i]: i + 1})
+        os.chdir('..')
+        os.chdir('..')
+        os.chdir('..')
+
+
     def UDS_test_changed(self):
         if self.UDS_TEST_SELECTOR.currentIndex() == 0:
             self.EXP_UDS_BRS.setText("Отправлено: 02 11 01\nПринято: 02 51 01\nДиагностический светодиод моргает")
@@ -2708,7 +2922,7 @@ class Ui_MainWindow(object):
             self.UDS_NRC_SELECTOR.addItem("0x12-Subfunction not supported")
             self.UDS_NRC_SELECTOR.addItem("0x13-Invalid message length/format")
         elif self.UDS_TEST_SELECTOR.currentIndex() == 1:
-            self.EXP_UDS_BRS.setText("Блок успешно вошёл в SecurityAccess\nОтправлено: 05 2F 38 01 03 00\nПринято: 05 6F 38 01 03 00")
+            self.EXP_UDS_BRS.setText("Блок успешно вошёл в SecurityAccess\nОтправлено: 05 2F 38 01 03 00\nПринято: 05 6F 38 01 03 xx, где хх-последнее состояние диагностического светодиода\nДиагностический светодиод загорелся")
             self.UDS_LED_SELECTOR.setDisabled(False)
             self.UDS_LED_SELECTOR.clear()
             self.UDS_LED_SELECTOR.addItem("Включение диагностического светодиода")
@@ -2747,6 +2961,7 @@ class Ui_MainWindow(object):
             self.EXP_UDS_BRS.setText("Отправлено: 03 28 03 03\nПринято: 02 68 03\nСообщения по CAN не принимаются и не передаются")
             self.UDS_LED_SELECTOR.setDisabled(True)
             self.UDS_LED_SELECTOR.clear()
+            self.UDS_NRC_SELECTOR.clear()
             self.UDS_NRC_SELECTOR.setEnabled(False)
         elif self.UDS_TEST_SELECTOR.currentIndex() == 5:
             self.EXP_UDS_BRS.setText("Коды ошибок стёрлись")
@@ -2772,7 +2987,8 @@ class Ui_MainWindow(object):
             self.EXP_UDS_BRS.setText("После отключения самодиагностики не считан DTC 0xc14087(Lost communication with uBCM)\nПосле включения самодиагностики считан DTC 0xc14087(Lost communication with uBCM)")
             self.UDS_LED_SELECTOR.setDisabled(True)
             self.UDS_LED_SELECTOR.clear()
-            self.UDS_NRC_SELECTOR.setEnabled(True)
+            self.UDS_NRC_SELECTOR.setDisabled(True)
+            self.UDS_NRC_SELECTOR.clear()
         elif self.UDS_TEST_SELECTOR.currentIndex() == 8:
             self.EXP_UDS_BRS.setText("Блок успешно вошёл в security access")
             self.UDS_LED_SELECTOR.setDisabled(True)
@@ -2783,12 +2999,9 @@ class Ui_MainWindow(object):
             self.UDS_NRC_SELECTOR.addItem("Request seed: 0x12-Subfunction not supported")
             self.UDS_NRC_SELECTOR.addItem("Request seed: 0x13-Invalid message length/format")
             self.UDS_NRC_SELECTOR.addItem("Request seed: 0x22-Conditions not correct")
-            self.UDS_NRC_SELECTOR.addItem("Request seed: 0x37-Required time delay has not expired")
-            self.UDS_NRC_SELECTOR.addItem("Send key: 0x12-Subfunction not supported")
-            self.UDS_NRC_SELECTOR.addItem("Send key: 0x13-Invalid message length/format")
+            self.UDS_NRC_SELECTOR.addItem("Request seed: 0x37-Required time delay has not expired + Send key: 0x35-Invalid Key + Send key: 0x36-Exceed number of attempts")
             self.UDS_NRC_SELECTOR.addItem("Send key: 0x24-Request sequence error")
-            self.UDS_NRC_SELECTOR.addItem("Send key: 0x35-Invalid Key")
-            self.UDS_NRC_SELECTOR.addItem("Send key: 0x36-Exceeded number of attempts")
+
 
         elif self.UDS_TEST_SELECTOR.currentIndex() == 9:
             self.EXP_UDS_BRS.setText("При чтении DID последний байт ответа 0хА5\nВизуально убедиться, что диагностический светодиод не моргает")
@@ -2807,10 +3020,12 @@ class Ui_MainWindow(object):
             self.EXP_UDS_BRS.setText("При чтении DID последний байт ответа 0х5A\nВизуально убедиться, что диагностический светодиод моргает с частотой 1Гц")
             self.UDS_LED_SELECTOR.setDisabled(True)
             self.UDS_NRC_SELECTOR.setEnabled(False)
+            self.UDS_NRC_SELECTOR.clear()
         elif self.UDS_TEST_SELECTOR.currentIndex() == 11:
             self.EXP_UDS_BRS.setText("1)При первом чтении DID 0xE180 последний байт в ответе 0хFF\n2)Импульс на пиропатроне водтеля не задетектирован\n3)При чтении DID 0xE180 после перезагрузки последний байт ответа 0хFE\n4)При первом чтениии DID 0xE182 последний байт ответа 0xFF\n5)При чтениии DID 0xE182 после перезагрузки последний байт ответа 0xFE\n6)Состояния ремня безопасности водителя изменилось на not monitored")
             self.UDS_LED_SELECTOR.setDisabled(True)
             self.UDS_NRC_SELECTOR.setEnabled(False)
+            self.UDS_NRC_SELECTOR.clear()
         elif self.UDS_TEST_SELECTOR.currentIndex() == 12:
             self.EXP_UDS_BRS.setText("На экране появилось значение, прочитанное с помощью DID")
             self.UDS_LED_SELECTOR.clear()
@@ -2838,86 +3053,97 @@ class Ui_MainWindow(object):
             self.UDS_LED_SELECTOR.addItem("ACU configuration 2")
             self.UDS_LED_SELECTOR.addItem("ACU configuration 3")
             self.UDS_NRC_SELECTOR.setEnabled(False)
+            self.UDS_NRC_SELECTOR.clear()
 
     def XGF_or_XGE(self):
-        match(self.defined_params_selector.currentIndex()):
-            case 0:
-                self.LimitAresfront_input.setEnabled(True)
-                self.LimitAresside_input.setEnabled(True)
-                self.LimitSxSyside_input.setEnabled(True)
-                self.LimitSxSyfront_input.setEnabled(True)
-                self.LimitSresside_input.setEnabled(True)
-                self.LimitSresfront_input.setEnabled(True)
-                self.deltaAres_input.setEnabled(True)
-                self.Tcalc_input.setEnabled(True)
-                self.Tcalc2_input.setEnabled(True)
-                self.Timetostopcalc_input.setEnabled(True)
-                self.Sresimpactfront_input.setEnabled(True)
-                self.Sresimpact_side_input.setEnabled(True)
-            case 1:
+        os.chdir('parameters')
+        file=open(self.defined_params_selector.currentText()+'.txt','r')
+       # print(file.read())
 
-                self.LimitAresfront_input.setValue(330)
-                self.LimitAresfront_input.setEnabled(False)
-                self.LimitAresside_input.setValue(200)
-                self.LimitAresside_input.setEnabled(False)
-                self.LimitSxSyside_input.setValue(100)
-                self.LimitSxSyside_input.setEnabled(False)
-                self.LimitSxSyfront_input.setValue(120)
-                self.LimitSxSyfront_input.setEnabled(False)
-                self.LimitSresside_input.setValue(155)
-                self.LimitSresside_input.setEnabled(False)
-                self.LimitSresfront_input.setValue(190)
-                self.LimitSresfront_input.setEnabled(False)
-                self.deltaAres_input.setValue(6)
-                self.deltaAres_input.setEnabled(False)
-                self.Tcalc_input.setValue(3)
-                self.Tcalc_input.setEnabled(False)
-                self.Tcalc2_input.setValue(3)
-                self.Tcalc2_input.setEnabled(False)
-                self.Timetostopcalc_input.setValue(180)
-                self.Timetostopcalc_input.setEnabled(False)
-                self.Sresimpactfront_input.setValue(190)
-                self.Sresimpactfront_input.setEnabled(False)
-                self.Sresimpact_side_input.setValue(160)
-                self.Sresimpact_side_input.setEnabled(False)
-            case 2:
-                self.LimitAresfront_input.setValue(0)
-                self.LimitAresfront_input.setEnabled(False)
-                self.LimitAresside_input.setValue(0)
-                self.LimitAresside_input.setEnabled(False)
-                self.LimitSxSyside_input.setValue(0)
-                self.LimitSxSyside_input.setEnabled(False)
-                self.LimitSxSyfront_input.setValue(0)
-                self.LimitSxSyfront_input.setEnabled(False)
-                self.LimitSresside_input.setValue(0)
-                self.LimitSresside_input.setEnabled(False)
-                self.LimitSresfront_input.setValue(0)
-                self.LimitSresfront_input.setEnabled(False)
-                self.deltaAres_input.setValue(0)
-                self.deltaAres_input.setEnabled(False)
-                self.Tcalc_input.setValue(0)
-                self.Tcalc_input.setEnabled(False)
-                self.Tcalc2_input.setValue(0)
-                self.Tcalc2_input.setEnabled(False)
-                self.Timetostopcalc_input.setValue(0)
-                self.Timetostopcalc_input.setEnabled(False)
-                self.Sresimpactfront_input.setValue(0)
-                self.Sresimpactfront_input.setEnabled(False)
-                self.Sresimpact_side_input.setValue(0)
-                self.Sresimpact_side_input.setEnabled(False)
+        line = (file.readline())
+        #print(line)
+        line=line.split('=')
+        #print(float(line[1]))
+
+        line = (file.readline())
+        #print(line)
+        line=line.split('=')
+        #print(float(line[1]))
+
+        line = (file.readline())
+        #print(line)
+        line = line.split('=')
+        self.LimitAresfront_input.setValue(int(float(line[1])*10))
+
+        line = (file.readline())
+        #print(line)
+        line=line.split('=')
+        self.LimitSxSyfront_input.setValue(int(float(line[1])*10e5))
+
+        line = (file.readline())
+        #print(line)
+        line=line.split('=')
+        self.LimitSresfront_input.setValue(int(float(line[1])*10e5))
+
+        line = (file.readline())
+       # print(line)
+        line=line.split('=')
+        self.deltaAres_input.setValue(int(float(line[1])))
+
+        line = (file.readline())
+        #print(line)
+        line=line.split('=')
+        self.LimitAresside_input.setValue(int(float(line[1])*10))
+
+        line = (file.readline())
+        #print(line)
+        line=line.split('=')
+        self.LimitSxSyside_input.setValue(int(float(line[1])*10e5))
+
+        line = (file.readline())
+       # print(line)
+        line=line.split('=')
+        self.LimitSresside_input.setValue(int(float(line[1])*10e5))
+
+        line = (file.readline())
+        #print(line)
+        line=line.split('=')
+        self.Tcalc_input.setValue(int(float(line[1])))
+
+        line = (file.readline())
+       # print(line)
+        line=line.split('=')
+        self.Tcalc2_input.setValue(int(float(line[1])))
+
+        line = (file.readline())
+        #print(line)
+        line=line.split('=')
+        self.Timetostopcalc_input.setValue(int(float(line[1])))
+
+        line = (file.readline())
+        #print(line)
+        line = line.split('=')
+        self.Sresimpactfront_input.setValue(int(float(line[1])*10e5))
+
+        line = (file.readline())
+        #print(line)
+        line = line.split('=')
+        self.Sresimpact_side_input.setValue(int(float(line[1])*10e5))
+
+        os.chdir('..')
 
 
     def UDS_LED_changed(self):
         match (self.UDS_TEST_SELECTOR.currentIndex()):
             case 1:
                 if self.UDS_LED_SELECTOR.currentIndex() == 0:
-                    self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 01 03 00\nПринято: 05 6F 38 01 03 00\nДиагностический светодиод загорелся")
+                    self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 01 03 00\nПринято: 05 6F 38 01 03 xx, где хх-последнее состояние диагностического светодиода\nДиагностический светодиод загорелся")
                 elif self.UDS_LED_SELECTOR.currentIndex() == 1:
-                    self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 01 03 01\nПринято: 05 6F 38 01 03 01\nДиагностический светодиод погас")
+                    self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 01 03 01\nПринято: 05 6F 38 01 03 xx, где хх-последнее состояние диагностического светодиода\nДиагностический светодиод погас")
                 elif self.UDS_LED_SELECTOR.currentIndex() == 2:
-                    self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 02 03 00\nПринято: 05 6F 38 02 03 00\nСветодиод отключения ПБ переднего пассажира горит")
+                    self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 02 03 00\nПринято: 05 6F 38 02 03 xx, где хх-последнее состояние диагностического светодиода\nСветодиод отключения ПБ переднего пассажира горит")
                 elif self.UDS_LED_SELECTOR.currentIndex() == 3:
-                    self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 02 03 01\nПринято: 05 6F 38 02 03 01\nСветодиод отключения ПБ переднего пассажира погас")
+                    self.EXP_UDS_BRS.setText("Отправлено: 05 2F 38 02 03 01\nПринято: 05 6F 38 02 03 xx, где хх-последнее состояние диагностического светодиода\nСветодиод отключения ПБ переднего пассажира погас")
                 elif self.UDS_LED_SELECTOR.currentIndex() == 4:
                     self.EXP_UDS_BRS.setText("Отправлено:04 2f 38 01 00, \nПринято: 05 6f 38 01 00 xx, где хх-последнее состояние диагностического светодиода\n")
             case 12:
@@ -2956,10 +3182,10 @@ class Ui_MainWindow(object):
             case 1:
                 self.snap_sel_2.clear()
                 self.snap_sel_2.addItem("Crash stored in memory")
-                self.snap_sel_2.addItem("Crash recorded in frontal airbag only")
-                self.snap_sel_2.addItem("Crash recorded in Driver side airbag only")
-                self.snap_sel_2.addItem("Crash recorded in Passenger sideairbag only")
-                self.snap_sel_2.addItem("Crash recorded in Belt pretensioner only")
+                self.snap_sel_2.addItem("Crash recorded in frontal airbag ")
+                self.snap_sel_2.addItem("Crash recorded in Driver side airbag ")
+                self.snap_sel_2.addItem("Crash recorded in Passenger side airbag ")
+                self.snap_sel_2.addItem("Crash recorded in Belt pretensioner")
                 self.snap_sel_2.addItem("Crash recorded in Rear")
             case 2:
                 self.snap_sel_2.clear()
@@ -3038,8 +3264,12 @@ class Ui_MainWindow(object):
         except:
             self.COM_PORT_BRS.append("Выбранный COM-порт занят")
 
-    def Read0x09(self):
-        self.UART.open()
+    def ReadDTC(self,status_byte):
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -3047,61 +3277,34 @@ class Ui_MainWindow(object):
         Command = Command.SerializeToString()
         self.UART.write(Command)
         received_len = self.UART.read(2).hex()
-        #if (received_len == ''):
-           # self.DIAG_ACCEPTED_BRS.append("Остановлено")
-       # else:
         try:
             bytes_read = self.UART.read(int(received_len, 16))
-            self.UART.close()
             Result.ParseFromString(bytes_read)
             if (len(Result.frame[0].data) < 8):
                 self.DIAG_ERRORS_BRS.append("No DTC found")
             else:
-                DTC_list = self.parse_UDS_errors(Result, 0x09)
-                if (len(DTC_list) == 1 and self.match_DTC(hex(DTC_list[0])) == None):
+                DTC_list = self.parse_UDS_errors(Result, status_byte)
+                if (len(DTC_list) == 1 and self.match_DTC(hex(DTC_list[0])) == None or len(DTC_list)==0):
                     self.DIAG_ERRORS_BRS.append("No DTC found")
                 for i in range(0,len(DTC_list)):
                     if (self.match_DTC(hex(DTC_list[i])) != None):
                         self.DIAG_ERRORS_BRS.append(f"{str(hex(DTC_list[i]))}:{self.match_DTC(hex(DTC_list[i]))}")
                         time.sleep(0.05)
-            self.DIAG_READ_0x09_BTN.setEnabled(True)
         except:
-            self.DIAG_ERRORS_BRS.append("Остановлено")
+            self.DIAG_ERRORS_BRS.append("Возникла ошибка. Попробуйте ещё раз")
+        self.UART.close()
+        self.EnableAll()
 
-    def run_Read0x09(self):
-        Receiver=threading.Thread(target=self.Read0x09)
+    def run_ReadDTC(self,status_byte):
+        Receiver=threading.Thread(target=self.ReadDTC,args=(status_byte,))
         Receiver.start()
-    def Read0x08(self):
-        self.UART.open()
-        Command = Messages.TestData()
-        Result = Messages.TestData()
-        Command.method = 0
-        Command.testNumber = 0x52
-        Command = Command.SerializeToString()
-        self.UART.write(Command)
-        received_len = self.UART.read(2).hex()
-        if (received_len == ''):
-            self.DIAG_ACCEPTED_BRS.append("Остановлено")
-        else:
-            bytes_read = self.UART.read(int(received_len, 16))
-            self.UART.close()
-            Result.ParseFromString(bytes_read)
-            if (len(Result.frame[0].data) < 8):
-                self.DIAG_ERRORS_BRS.append("No DTC found")
-            else:
-                DTC_list = self.parse_UDS_errors(Result, 0x08)
-                if (len(DTC_list) == 1 and self.match_DTC(hex(DTC_list[0])) == None):
-                    self.DIAG_ERRORS_BRS.append("No DTC found")
-                for i in range(1, len(DTC_list)):
-                    if (self.match_DTC(hex(DTC_list[i])) != None):
-                        self.DIAG_ERRORS_BRS.append(f"{str(hex(DTC_list[i]))}:{self.match_DTC(hex(DTC_list[i]))}")
-                        time.sleep(0.1)
-        self.DIAG_READ_0x08_BTN.setEnabled(True)
-    def run_Read0x08(self):
-        Receiver=threading.Thread(target=self.Read0x08)
-        Receiver.start()
+
     def ClearDTC(self):
-        self.UART.open()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -3119,12 +3322,16 @@ class Ui_MainWindow(object):
             self.DIAG_ACCEPTED_BRS.append("Ошибка очистки DTC. Перезапустите СТО и попробуйте снова")
             time.sleep(0.01)
         self.UART.close()
-        self.DIAG_CLEAR_DTC_BTN.setEnabled(True)
+        self.EnableAll()
     def run_ClearDTC(self):
         Receiver=threading.Thread(target=self.ClearDTC)
         Receiver.start()
     def ECU_reset(self):
-        self.UART.open()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -3141,13 +3348,18 @@ class Ui_MainWindow(object):
             self.DIAG_ACCEPTED_BRS.append("Перезагрузка блока")
             time.sleep(0.05)
             self.DIAG_ACCEPTED_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-        self.DIAG_RESET_BTN.setEnabled(True)
+        self.UART.close()
+        self.EnableAll()
     def run_ECU_reset(self):
         Receiver=threading.Thread(target=self.ECU_reset)
         Receiver.start()
 
     def Check_CD(self):
-        self.UART.open()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -3159,16 +3371,20 @@ class Ui_MainWindow(object):
             self.DIAG_ACCEPTED_BRS.append("Остановлено")
         else:
             bytes_read = self.UART.read(int(received_len, 16))
-            self.UART.close()
             Result.ParseFromString(bytes_read)
             self.DIAG_ACCEPTED_BRS.append(f"CrashDetectionOutOfOrder:{int(Result.measuredValue[0])}")
-        self.CHECK_CRASH_DETECTION_BTN.setEnabled(True)
+        self.UART.close()
+        self.EnableAll()
     def run_Check_CD(self):
         Receiver = threading.Thread(target=self.Check_CD)
         Receiver.start()
     def Write_ACU(self):
-        self.UART.open()
-        B1=0
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
+        B1=0x80
         B2=0
         B3=0
         if(self.DAB_EN.isChecked()==True):
@@ -3195,10 +3411,14 @@ class Ui_MainWindow(object):
             B2 |= 0x04
         if (self.PSAB_EN.isChecked() == True):
             B2 |= 0x08
-        B2 |= 0x10
-        B2 |= 0x20
-        B2 |= 0x40
-        B2 |= 0x80
+        if (self.PGSAT_EN.isChecked() == True):
+            B2 |= 0x10
+        if (self.DGSAT_EN.isChecked() == True):
+            B2 |= 0x20
+        if (self.PPSAT_EN.isChecked() == True):
+            B2 |= 0x40
+        if (self.DPSAT_EN.isChecked() == True):
+            B2 |= 0x80
 
         if (self.DSB_EN.isChecked() == True):
             B3 |= 0x01
@@ -3220,7 +3440,7 @@ class Ui_MainWindow(object):
         Command.testNumber = 0x5A
         Command = Command.SerializeToString()
         self.UART.write(Command)
-        time.sleep(0.5)
+        time.sleep(1)
         cfgbytes=bytearray([B1,B2,B3])
         self.UART.write(cfgbytes)
         try:
@@ -3241,33 +3461,16 @@ class Ui_MainWindow(object):
         except:
             self.VER_LOG_BRS.append("Ошибка записи ACU configuration. Попробуйте ещё раз")
         self.UART.close()
-        self.WRITE_ACU_BTN.setEnabled(True)
+        self.EnableAll()
     def run_Write_ACU(self):
         Receiver=threading.Thread(target=self.Write_ACU)
         Receiver.start()
-
-    def ExtendedDiagnostic(self):
-        self.UART.open()
-        Command = Messages.TestData()
-        Result = Messages.TestData()
-        Command.method = 0
-        Command.testNumber = 0x57
-        Command = Command.SerializeToString()
-        self.UART.write(Command)
-        received_len = self.UART.read(2).hex()
-        if (received_len == ''):
-            self.DIAG_ACCEPTED_BRS.append("Остановлено")
-        else:
-            bytes_read = self.UART.read(int(received_len, 16))
-            self.UART.close()
-            Result.ParseFromString(bytes_read)
-            self.DIAG_ACCEPTED_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-        self.DIAG_EXTDIAG_BTN.setEnabled(True)
-    def run_ExtendedDiagnostic(self):
-        Receiver=threading.Thread(target=self.ExtendedDiagnostic)
-        Receiver.start()
     def Write_VIN0(self):
-        self.UART.open()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -3279,16 +3482,20 @@ class Ui_MainWindow(object):
             self.DIAG_ACCEPTED_BRS.append("Остановлено")
         else:
             bytes_read = self.UART.read(int(received_len, 16))
-            self.UART.close()
             Result.ParseFromString(bytes_read)
             self.DIAG_ACCEPTED_BRS.append(
                 f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}\nОтправлено:{str(Result.frame[8].data.hex())}\nОтправлено:{str(Result.frame[9].data.hex())}\nПринято:{str(Result.frame[10].data.hex())}")
-            self.DIAG_VIN0_BTN.setEnabled(True)
+        self.UART.close()
+        self.EnableAll()
     def run_Write_VIN0(self):
         Receiver=threading.Thread(target=self.Write_VIN0)
         Receiver.start()
     def Write_VIN1(self):
-        self.UART.open()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -3300,18 +3507,23 @@ class Ui_MainWindow(object):
             self.DIAG_ACCEPTED_BRS.append("Остановлено")
         else:
             bytes_read = self.UART.read(int(received_len, 16))
-            self.UART.close()
+
             Result.ParseFromString(bytes_read)
             self.DIAG_ACCEPTED_BRS.append(
                 f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}\nОтправлено:{str(Result.frame[8].data.hex())}\nОтправлено:{str(Result.frame[9].data.hex())}\nПринято:{str(Result.frame[10].data.hex())}")
-            self.DIAG_VIN1_BTN.setEnabled(True)
+        self.UART.close()
+        self.EnableAll()
     def run_Write_VIN1(self):
         Receiver=threading.Thread(target=self.Write_VIN1)
         Receiver.start()
 
 
     def Send_periodic(self):
-        self.UART.open()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -3324,7 +3536,11 @@ class Ui_MainWindow(object):
         self.UART.close()
 
     def Stop_Send_periodic(self):
-        self.UART.open()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -3390,13 +3606,13 @@ class Ui_MainWindow(object):
             case int(DTC.Crash_stored_in_memory):
                 return "Crash stored in memory"
             case int(DTC.Crash_recorded_in_frontal_airbag_only):
-                return "Crash recorded in frontal airbag only"
+                return "Crash recorded in frontal airbag"
             case int(DTC.Crash_recorded_in_Driver_side_airbag_only):
-                return "Crash recorded in Driver side airbag only"
+                return "Crash recorded in Driver side airbag"
             case int(DTC.Crash_recorded_in_Passenger_side_airbag_only):
                 return "Crash recorded in Passenger side airbag "
             case int(DTC.Crash_recorded_in_Belt_pretensioner_only):
-                return "Crash recorded in Belt pretensioner only"
+                return "Crash recorded in Belt pretensioner"
             case int(DTC.Crash_recorded_in_Rear):
                 return "Crash recorded in Rear"
             case int(DTC.Vbatt_too_high):
@@ -3549,7 +3765,11 @@ class Ui_MainWindow(object):
         else:
             return 0
     def Test1_handler(self):
-        self.UART.open()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
         self.STOP_BTN_3.setEnabled(True)
         Command = Messages.TestData()
         Result = Messages.TestData()
@@ -3572,13 +3792,17 @@ class Ui_MainWindow(object):
             else:
                 self.initresult_brs.append("Fail")
         self.UART.close()
-        self.Run_Init_btn.setEnabled(True)
+        self.EnableAll()
         self.STOP_BTN_3.setEnabled(False)
     def run_test1(self):
         Receiver=threading.Thread(target=self.Test1_handler)
         Receiver.start()
     def ValidAB_handler(self):
-        self.UART.open()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
         self.STOP_BTN_8.setEnabled(True)
         Command = Messages.TestData()
         Result = Messages.TestData()
@@ -3601,10 +3825,8 @@ class Ui_MainWindow(object):
             time.sleep(0.05)
             if(Result.measuredValue[0]==0):
                 self.VALIDAB_BRS.append("No valid airbag information")
-                self.acc_SBR_brs.setTextColor(QtGui.QColor("red"))
             else:
                 self.VALIDAB_BRS.append("Valid airbag information")
-                self.acc_SBR_brs.setTextColor(QtGui.QColor("red"))
             time.sleep(0.05)
             self.VALIDAB_BRS.append("Поcле инициализации:")
             time.sleep(0.05)
@@ -3613,14 +3835,18 @@ class Ui_MainWindow(object):
             else:
                 self.VALIDAB_BRS.append("Valid airbag information")
         self.UART.close()
-        self.START_VALID_AB_BTN.setEnabled(True)
+        self.EnableAll()
         self.STOP_BTN_8.setEnabled(False)
     def run_ValidAB(self):
         Receiver=threading.Thread(target=self.ValidAB_handler)
         Receiver.start()
 
     def Test2_handler(self):
-        self.UART.open()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
         self.STOP_BTN_1.setEnabled(True)
         Command = Messages.TestData()
         Result = Messages.TestData()
@@ -3646,28 +3872,32 @@ class Ui_MainWindow(object):
                 #self.result_periodic_brs.setStyleSheet("QTextEdit {color:red}")
                 self.result_periodic_brs.append("Fail")
         self.UART.close()
-        self.perod_periodic_btn.setEnabled(True)
+        self.EnableAll()
         self.STOP_BTN_1.setEnabled(False)
 
     def run_test2(self):
         Receiver=threading.Thread(target=self.Test2_handler)
         Receiver.start()
     def Test3_period_handler(self):
-        self.UART.open()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
         self.STOP_BTN_2.setEnabled(True)
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
         Command.testNumber = 0x22
         Command.accDataNumber = self.acc_selector.currentIndex() + 1
-        Command.AIRBAG_OFF = self.AIRBAG_OFF_btn.isChecked()
+        #Command.AIRBAG_OFF = self.AIRBAG_OFF_btn.isChecked()
         accX = []
         accY = []
         X_new = []
         Y_new = []
         length = []
         i = 0
-        self.accfile = 'FRONT 100 50.csv'
+        self.accfile = 'FRONT ARCAP.csv'
         os.chdir("acceleration_synthesis")
         os.chdir("Generated_acc")
         with open(self.accfile, mode='r') as file:
@@ -3728,21 +3958,25 @@ class Ui_MainWindow(object):
                 else:
                     self.result_trig_brs.append("Fail")
         self.UART.close()
-        self.start_trig_btn.setEnabled(True)
+        self.EnableAll()
         self.STOP_BTN_2.setEnabled(False)
 
     def run_test3_period(self):
         Receiver=threading.Thread(target=self.Test3_period_handler)
         Receiver.start()
     def Accelerometer_handler(self):
-        self.UART.open()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
         self.STOP_BTN_4.setEnabled(True)
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
         Command.testNumber = 0x22
         Command.accDataNumber=self.acc_selector.currentIndex()+1
-        Command.AIRBAG_OFF=self.AIRBAG_OFF_btn.isChecked()
+#        Command.AIRBAG_OFF=self.AIRBAG_OFF_btn.isChecked()
         accX=[]
         accY=[]
         X_new=[]
@@ -3750,14 +3984,15 @@ class Ui_MainWindow(object):
         length=[]
         i=0
         self.accfile=self.acc_selector.currentText()+'.csv'
-        os.chdir("acceleration_synthesis")
-        os.chdir("Generated_acc")
+        os.chdir("pillows")
+        os.chdir("test_folder")
+        os.chdir("XGF")
         with open(self.accfile, mode='r') as file:
             csvFile = csv.reader(file)
             for lines in csvFile:
                 try:
-                    accX.insert(i, int(lines[0].split(';')[0], 16))
-                    accY.insert(i, int(lines[0].split(';')[1], 16))
+                    accX.insert(i, int(lines[0].split(';')[2], 16))
+                    accY.insert(i, int(lines[0].split(';')[3], 16))
                     i += 1
                 except:
                     pass
@@ -3816,490 +4051,470 @@ class Ui_MainWindow(object):
         time.sleep(0.1)
         os.chdir("..")
         os.chdir("..")
-        self.start_acc_btn.setEnabled(True)
-
-
+        os.chdir("..")
+        self.EnableAll()
     def run_accelerometer(self):
         Receiver=threading.Thread(target=self.Accelerometer_handler)
         Receiver.start()
     def UDS_handler(self):
-        self.UART.open()
-        self.STOP_BTN_6.setEnabled(True)
-        Command = Messages.TestData()
-        Result = Messages.TestData()
-        Command.method = 0
-        Command.testNumber = self.UDS_TEST_SELECTOR.currentIndex()+0x31
-        if(Command.testNumber==0x32 or Command.testNumber==0x3D):
-            Command.UDS_subtest=self.UDS_LED_SELECTOR.currentIndex()+1
-        Command.UDS_NRC = self.UDS_NRC_SELECTOR.currentIndex()
-        Cmd = Command.SerializeToString()
-        self.UART.write(Cmd)
-        received_len = self.UART.read(2).hex()
-        if (received_len == ''):
-            self.UDS_MSG_BRS.append("Остановлено")
-        else:
-            bytes_read = self.UART.read(int(received_len, 16))
-            Result.ParseFromString(bytes_read)
-            match Result.testNumber:
-                case 0x31:  #ECU reset
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                case 0x32:  #InputOutputControlByIdentifier
-                    match Command.UDS_NRC:
-                        case 0:
-                            self.UDS_MSG_BRS.append(
-                                f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nОтправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
-                            time.sleep(0.02)
-                            if (Result.frame[5].data[1] == 0x67 and Result.frame[5].data[2] == 0x02):
-                                self.UDS_MSG_BRS.append("Блок успешно вошёл в security access")
-                            else:
-                                self.UDS_MSG_BRS.append("Ошибка входа в security access")
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}")
-                        case 1:
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                        case 2:
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                        case 3:
-                            self.UDS_MSG_BRS.append(
-                                f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nОтправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
-                            time.sleep(0.02)
-                            if (Result.frame[5].data[1] == 0x67 and Result.frame[5].data[2] == 0x02):
-                                self.UDS_MSG_BRS.append("Блок успешно вошёл в security access")
-                            else:
-                                self.UDS_MSG_BRS.append("Ошибка входа в security access")
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}")
-                        case 4:
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                            time.sleep(0.02)
-                            if(Result.frame[1].data[1]==0x50):
-                                self.UDS_MSG_BRS.append("Блок успешно вошёл в диагностическую сессию")
-                            else:
-                                self.UDS_MSG_BRS.append("Ошибка входа в диагностическую сессию")
-                            time.sleep(0.02)
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
-                case 0x33:  #Проверка Tester Present 0x3E
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                case 0x34:  #Проверка CommunicationControl 0x28 disable tx
-                    match Command.UDS_NRC:
-                        case 0:
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                            time.sleep(0.01)
-                            if(Result.measuredValue[0]==0):
-                                self.UDS_MSG_BRS.append("Сообщения по CAN не принимаются ")
-                            else:
-                                self.UDS_MSG_BRS.append("Сообщения по CAN принимаются ")
-                            time.sleep(0.01)
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
-                            time.sleep(0.01)
-                            if (Result.measuredValue[1] == 0):
-                                self.UDS_MSG_BRS.append("Сообщения по CAN не принимаются ")
-                            else:
-                                self.UDS_MSG_BRS.append("Сообщения по CAN принимаются ")
-                        case 1:
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                            time.sleep(0.02)
-                            if(Result.frame[1].data[1]==0x50):
-                                self.UDS_MSG_BRS.append("Блок успешно вошёл в диагностическую сессию")
-                            else:
-                                self.UDS_MSG_BRS.append("Ошибка входа  в диагностическую сессию")
-                            time.sleep(0.02)
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
-                        case 2:
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                        case 3:
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                        case 4:
-                            self.UDS_MSG_BRS.append(
-                                f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                            time.sleep(0.02)
-                            if (Result.frame[1].data[1] == 0x50):
-                                self.UDS_MSG_BRS.append("Блок успешно вошёл в диагностическую сессию")
-                            else:
-                                self.UDS_MSG_BRS.append("Ошибка входа  в диагностическую сессию")
-                            time.sleep(0.02)
-                            self.UDS_MSG_BRS.append(
-                                f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
+        try:
+            try:
+                self.UART.open()
+            except:
+                self.UART.close()
+                self.UART.open()
+            self.STOP_BTN_6.setEnabled(True)
 
-                case 0x35: #Проверка CommunicationControl 0x28 disable tx,rx
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                    time.sleep(0.01)
-                    if (Result.measuredValue[0] == 0):
-                        self.UDS_MSG_BRS.append("Сообщения по CAN не принимаются и не передаются ")
-                    else:
-                        self.UDS_MSG_BRS.append("Сообщения по CAN принимаются")
-                    #ПРОВЕРИТЬ FDCAN->PSR И ЕСЛИ ОН МЕНЯЕТ СОСТОЯНИЕ ДОБАВИТЬ В OUTPUT
-                case 0x36:#Проверка ClearDiagnosticInformation 0x14
-                    match(Command.UDS_NRC):
-                        case 0:
-                            DTC_list=self.parse_UDS_errors(Result, 0x09)
-                            self.UDS_MSG_BRS.append("Считанные ошибки:\n")
-                            time.sleep(0.1)
-                            for i in range(1, len(DTC_list)):
-                                self.UDS_MSG_BRS.append(f"{str(hex(DTC_list[i]))}:{self.match_DTC(hex(DTC_list[i]))}")
-                                time.sleep(0.1)
-                            received_len = self.UART.read(2).hex()
-
-                            bytes_read = self.UART.read(int(received_len, 16))
-                            Result.ParseFromString(bytes_read)
-                            self.UDS_MSG_BRS.append("\nОчистка кодов ошибок и удаление информации об аварии")
-                            time.sleep(0.1)
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
-                            time.sleep(0.1)
-                            received_len = self.UART.read(2).hex()
-
-                            bytes_read = self.UART.read(int(received_len, 16))
-                            Result.ParseFromString(bytes_read)
-                            DTC_list2= self.parse_UDS_errors(Result, 0x09)
-                            self.UDS_MSG_BRS.append("\nСчитанные ошибки:\n")
-                            if(len(Result.frame[0].data)<8):
-                                self.UDS_MSG_BRS.append("None")
-                            else:
+            Command = Messages.TestData()
+            Result = Messages.TestData()
+            Command.method = 0
+            Command.testNumber = self.UDS_TEST_SELECTOR.currentIndex()+0x31
+            if(Command.testNumber==0x32 or Command.testNumber==0x3D):
+                Command.UDS_subtest=self.UDS_LED_SELECTOR.currentIndex()+1
+            Command.UDS_NRC = self.UDS_NRC_SELECTOR.currentIndex()
+            Cmd = Command.SerializeToString()
+            self.UART.write(Cmd)
+            received_len = self.UART.read(2).hex()
+            if (received_len == ''):
+                self.UDS_MSG_BRS.append("Остановлено")
+            else:
+                bytes_read = self.UART.read(int(received_len, 16))
+                Result.ParseFromString(bytes_read)
+                match Result.testNumber:
+                    case 0x31:  #ECU reset
+                        self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                    case 0x32:  #InputOutputControlByIdentifier
+                        match Command.UDS_NRC:
+                            case 0:
+                                self.UDS_MSG_BRS.append(
+                                    f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nОтправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
+                                time.sleep(0.02)
+                                if (Result.frame[5].data[1] == 0x67 and Result.frame[5].data[2] == 0x02):
+                                    self.UDS_MSG_BRS.append("Блок успешно вошёл в security access")
+                                else:
+                                    self.UDS_MSG_BRS.append("Ошибка входа в security access")
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}")
+                            case 1|2:
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                            case 3:
+                                self.UDS_MSG_BRS.append( f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nОтправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
+                                time.sleep(0.02)
+                                if (Result.frame[5].data[1] == 0x67 and Result.frame[5].data[2] == 0x02):
+                                    self.UDS_MSG_BRS.append("Блок успешно вошёл в security access")
+                                else:
+                                    self.UDS_MSG_BRS.append("Ошибка входа в security access")
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}")
+                            case 4:
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                                time.sleep(0.02)
+                                if(Result.frame[1].data[1]==0x50):
+                                    self.UDS_MSG_BRS.append("Блок успешно вошёл в диагностическую сессию")
+                                else:
+                                    self.UDS_MSG_BRS.append("Ошибка входа в диагностическую сессию")
+                                time.sleep(0.02)
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
+                    case 0x33:  #Проверка Tester Present 0x3E
+                        self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                    case 0x34:  #Проверка CommunicationControl 0x28 disable tx
+                        match Command.UDS_NRC:
+                            case 0:
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
                                 time.sleep(0.01)
-                                for i in range(1, len(DTC_list2)):
-                                    self.UDS_MSG_BRS.append(f"{str(hex(DTC_list2[i]))}:{self.match_DTC(hex(DTC_list2[i]))}")
-                                    time.sleep(0.1)
-                        case 1:
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                        case 2:
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-
-                case 0x37:   #read supported dtc
-                    match (Command.UDS_NRC):
-                        case 0:
-                            if (len(Result.frame[0].data) < 8):
-                                self.UDS_MSG_BRS.append("No DTC found")
-                            else:
-                                DTC_list1 = self.parse_UDS_errors(Result, 0x09)
-                                for i in range(0, len(DTC_list1)):
-                                    if (self.match_DTC(hex(DTC_list1[i])) != None):
-                                        self.UDS_MSG_BRS.append(f"{str(hex(DTC_list1[i]))}:{self.match_DTC(hex(DTC_list1[i]))} Status:Active")
-                                        time.sleep(0.05)
-                                DTC_list2 = self.parse_UDS_errors(Result, 0x08)
-                                for i in range(0, len(DTC_list2)):
-                                    if (self.match_DTC(hex(DTC_list2[i])) != None):
-                                        self.UDS_MSG_BRS.append(f"{str(hex(DTC_list2[i]))}:{self.match_DTC(hex(DTC_list2[i]))} Status:DTC confirmed")
-                                        time.sleep(0.05)
-                                DTC_list3 = self.parse_UDS_errors(Result, 0x00)
-                                for i in range(0, len(DTC_list3)):
-                                    if(self.match_DTC(hex(DTC_list3[i]))!=None):
-                                        self.UDS_MSG_BRS.append(f"{str(hex(DTC_list3[i]))}:{self.match_DTC(hex(DTC_list3[i]))} Status:Not active")
-                                        time.sleep(0.05)
-                        case 1:
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                        case 2:
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                        case 3:
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-
-                case 0x38:#control dtcsetting
-                    self.UDS_MSG_BRS.append("Очистка DTC:")
-                    time.sleep(0.02)
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\n")
-                    time.sleep(0.02)
-                    self.UDS_MSG_BRS.append("Отключение самодиагностики")
-                    time.sleep(0.02)
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\n")
-                    received_len = self.UART.read(2).hex()
-                    bytes_read = self.UART.read(int(received_len, 16))
-                    Result.ParseFromString(bytes_read)
-                    DTC_list = self.parse_UDS_errors(Result, 0x09)
-                    self.UDS_MSG_BRS.append("Чтение DTC")
-                    time.sleep(0.02)
-                    if(len(DTC_list)>1):
-                        for i in range(1, len(DTC_list)):
-                            self.UDS_MSG_BRS.append(f"{str(hex(DTC_list[i]))}:{self.match_DTC(hex(DTC_list[i]))} Status:Active")
-                            time.sleep(0.05)
-                    else:
-                        self.UDS_MSG_BRS.append("NO ACTIVE DTC")
-                    received_len = self.UART.read(2).hex()
-                    bytes_read = self.UART.read(int(received_len, 16))
-                    Result.ParseFromString(bytes_read)
-                    self.UDS_MSG_BRS.append("\nВключение самодиагностики")
-                    time.sleep(0.02)
-                    self.UDS_MSG_BRS.append( f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\n")
-                    received_len = self.UART.read(2).hex()
-                    bytes_read = self.UART.read(int(received_len, 16))
-                    Result.ParseFromString(bytes_read)
-                    DTC_list = self.parse_UDS_errors(Result, 0x09)
-                    self.UDS_MSG_BRS.append("Чтение DTC")
-                    time.sleep(0.02)
-                    if (len(DTC_list) > 1):
-                        for i in range(1, len(DTC_list)):
-                            self.UDS_MSG_BRS.append(
-                                f"{str(hex(DTC_list[i]))}:{self.match_DTC(hex(DTC_list[i]))} Status:Active")
-                            time.sleep(0.05)
-                    else:
-                        self.UDS_MSG_BRS.append("NO ACTIVE DTC")
-                case 0x39:#security access
-                    match (Command.UDS_NRC):
-                        case 0:
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nОтправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
-                            time.sleep(0.02)
-                            if(Result.frame[5].data[1]==0x67 and Result.frame[5].data[2]==0x02):
-                                self.UDS_MSG_BRS.append("Блок успешно вошёл в security access")
-                            else:
-                                self.UDS_MSG_BRS.append("Ошибка входа в security access")
-                        case 1:
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\n")
-                            time.sleep(0.02)
-                            if(Result.frame[1].data[1]==0x50):
-                                self.UDS_MSG_BRS.append("Блок успешно вошёл в диагностическую сессию")
-                            else:
-                                self.UDS_MSG_BRS.append("Ошибка входа в диагностическую сессию")
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\n")
-                        case 2:
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\n")
-                        case 3:
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                        case 4:
-                            for i in range(0,13):
-                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2*i].data.hex())}\nПринято:{str(Result.frame[2*i+1].data.hex())}")
+                                if(Result.measuredValue[0]==0):
+                                    self.UDS_MSG_BRS.append("Сообщения по CAN не принимаются ")
+                                else:
+                                    self.UDS_MSG_BRS.append("Сообщения по CAN принимаются ")
+                                time.sleep(0.01)
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
+                                time.sleep(0.01)
+                                if (Result.measuredValue[1] == 0):
+                                    self.UDS_MSG_BRS.append("Сообщения по CAN не принимаются ")
+                                else:
+                                    self.UDS_MSG_BRS.append("Сообщения по CAN принимаются ")
+                            case 1:
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
                                 time.sleep(0.02)
-                        case 5:
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                            time.sleep(0.02)
-                            if (Result.frame[1].data[1] == 0x50):
-                                self.UDS_MSG_BRS.append("Блок успешно вошёл в диагностическую сессию")
-                            else:
-                                self.UDS_MSG_BRS.append("Ошибка входа в диагностическую сессию")
-                            time.sleep(0.02)
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
-                            time.sleep(0.02)
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
-                        case 6:
-                            self.UDS_MSG_BRS.append(
-                                f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                        case 7:
-                            self.UDS_MSG_BRS.append(
-                                f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                            time.sleep(0.02)
-                            if (Result.frame[1].data[1] == 0x50):
-                                self.UDS_MSG_BRS.append("Блок успешно вошёл в диагностическую сессию")
-                            else:
-                                self.UDS_MSG_BRS.append("Ошибка входа в диагностическую сессию")
-                            time.sleep(0.02)
-                            self.UDS_MSG_BRS.append(
-                                f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
-                        case 8:
-                            self.UDS_MSG_BRS.append(
-                                f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                            time.sleep(0.02)
-                            if (Result.frame[1].data[1] == 0x50):
-                                self.UDS_MSG_BRS.append("Блок успешно вошёл в диагностическую сессию")
-                            else:
-                                self.UDS_MSG_BRS.append("Ошибка входа в диагностическую сессию")
-                            time.sleep(0.02)
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
-                            time.sleep(0.02)
-                            self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
-                        case 9:
-                            for i in range(0,7):
-                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2*i].data.hex())}\nПринято:{str(Result.frame[2*i+1].data.hex())}")
+                                if(Result.frame[1].data[1]==0x50):
+                                    self.UDS_MSG_BRS.append("Блок успешно вошёл в диагностическую сессию")
+                                else:
+                                    self.UDS_MSG_BRS.append("Ошибка входа  в диагностическую сессию")
                                 time.sleep(0.02)
-                case 0x3A: #DID ECU OPERATING STATES
-                    self.UDS_MSG_BRS.append("Вход в расширенную диагностическую сессию:")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\n")
-                    time.sleep(0.01)
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append("Изменение режима работы на Working:")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}\n")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append("Перезагрузка блока:")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[8].data.hex())}\nПринято:{str(Result.frame[9].data.hex())}\n")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append("Чтение DID:")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[10].data.hex())}\nПринято:{str(Result.frame[11].data.hex())}")
-                case 0x3B:  # DID ECU OPERATING STATES
-                    self.UDS_MSG_BRS.append("Вход в SecurityAccess:")
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nОтправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
-                    time.sleep(0.02)
-                    self.UDS_MSG_BRS.append("\nИзменение режима работы на Plant:")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(
-                        f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}\n")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append("Перезагрузка блока:")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(
-                        f"Отправлено:{str(Result.frame[8].data.hex())}\nПринято:{str(Result.frame[9].data.hex())}\n")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append("Чтение DID:")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(
-                        f"Отправлено:{str(Result.frame[10].data.hex())}\nПринято:{str(Result.frame[11].data.hex())}")
-                case 0x3C: #DID ACU Configuration
-                    self.UDS_MSG_BRS.append(
-                        f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nОтправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
-                    time.sleep(0.02)
-                    if (Result.frame[5].data[1] == 0x67 and Result.frame[5].data[2] == 0x02):
-                        self.UDS_MSG_BRS.append("Блок успешно вошёл в security access\n")
-                    else:
-                        self.UDS_MSG_BRS.append("Ошибка входа в security access\n")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append("Чтение DID 0xE180:")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(
-                        f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}\n")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append("Отключение передней подушки:")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[8].data.hex())}\nПринято:{str(Result.frame[9].data.hex())}\n")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append("Перезагрузка блока:")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[10].data.hex())}\nПринято:{str(Result.frame[11].data.hex())}\n")
-                    time.sleep(0.01)
-                    if(Result.measuredValue[0]==0):
-                        self.UDS_MSG_BRS.append("Импульс на пиропатроне водителя не зарегистрирован\n")
-                    else:
-                        self.UDS_MSG_BRS.append("Импульс на пиропатроне водителя зарегистрирован\n")
-                    self.UDS_MSG_BRS.append("Чтение DID 0хE180 после перезагрузки:")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(
-                        f"Отправлено:{str(Result.frame[12].data.hex())}\nПринято:{str(Result.frame[13].data.hex())}\n")
-                    self.UDS_MSG_BRS.append("Чтение DID 0хE182")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(
-                        f"Отправлено:{str(Result.frame[14].data.hex())}\nПринято:{str(Result.frame[15].data.hex())}\n")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append("Отключение ремня безопасности водителя")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(
-                        f"Отправлено:{str(Result.frame[16].data.hex())}\nПринято:{str(Result.frame[17].data.hex())}\n")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(f"Состояние ремня безопасности водителя:")
-                    time.sleep(0.01)
-                    if (Result.measuredValue[1] == 0):
-                        self.UDS_MSG_BRS.append("Not monitored")
-                    elif(Result.measuredValue[1] == 1):
-                        self.UDS_MSG_BRS.append("Unfastened")
-                    elif(Result.measuredValue[1] == 2):
-                        self.UDS_MSG_BRS.append("Fastened")
-                    elif(Result.measuredValue[1] == 3):
-                        self.UDS_MSG_BRS.append("Unavalible")
-                    self.UDS_MSG_BRS.append("\nПерезагрузка блока:")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[18].data.hex())}\nПринято:{str(Result.frame[19].data.hex())}\n")
-                    self.UDS_MSG_BRS.append("Чтение DID 0xE182 после перезагрузки:")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[20].data.hex())}\nПринято:{str(Result.frame[21].data.hex())}\n")
-                    time.sleep(0.01)
-                    self.UDS_MSG_BRS.append(f"Состояние ремня безопасности водителя:")
-                    time.sleep(0.01)
-                    if(Result.measuredValue[2]==0):
-                        self.UDS_MSG_BRS.append("Not monitored")
-                    elif (Result.measuredValue[2] == 1):
-                        self.UDS_MSG_BRS.append("Unfastened")
-                    elif (Result.measuredValue[2] == 2):
-                        self.UDS_MSG_BRS.append("Fastened")
-                    elif (Result.measuredValue[2] == 3):
-                        self.UDS_MSG_BRS.append("Unavalible")
-                case 0x3D: #Read DID
-                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
-                    match(Command.UDS_subtest):
-                        case 1|2|3|4|5|6|7|8:
-                            Resisatnce =0.01*((Result.frame[1].data[4]<<8)+Result.frame[1].data[5])
-                            time.sleep(0.01)
-                            self.UDS_MSG_BRS.append(f"\nResistance:{str(Resisatnce)} Ohm")
-                        case  10:
-                            Resisatnce =  ((Result.frame[1].data[4] << 8) + Result.frame[1].data[5])
-                            time.sleep(0.01)
-                            self.UDS_MSG_BRS.append(f"\nResistance:{str(Resisatnce)} Ohm")
-                        case 14:
-                            Resisatnce = 0.1*((Result.frame[1].data[4] << 8) + Result.frame[1].data[5])
-                            time.sleep(0.01)
-                            self.UDS_MSG_BRS.append(f"\nResistance:{str(Resisatnce)} Ohm")
-                        case 9:
-                            Indicator_status=Result.frame[1].data[4]
-                            if(Indicator_status==0):
-                                self.UDS_MSG_BRS.append("\nPAB Deactivation Indicator Status: No indication")
-                            else:
-                                self.UDS_MSG_BRS.append("\nPAB Deactivation Indicator Status: Indication requested")
-                        case 11:
-                            Vehicle_spd = ((Result.frame[1].data[4])+Result.frame[1].data[5])
-                            self.UDS_MSG_BRS.append(f"\nVehicle Speed:{Vehicle_spd} km/h")
-                        case 12:
-                            VLT = (Result.frame[1].data[4])
-                            self.UDS_MSG_BRS.append(f"\nBattery voltage:{0.1*VLT} V")
-                        case 13:
-                            TMR = ((Result.frame[1].data[4] << 24) + (Result.frame[1].data[5] << 16) + (Result.frame[1].data[6]<<8) + Result.frame[1].data[7])
-                            self.UDS_MSG_BRS.append(f"\nLifetime timer value:{TMR} s")
-                        case 15:
-                            WL_status = Result.frame[1].data[4]
-                            if (WL_status == 0):
-                                self.UDS_MSG_BRS.append("\nWarning Lamp Status: No warning")
-                            else:
-                                self.UDS_MSG_BRS.append("\nWarning Lamp Status: Warning")
-                        case 16:
-                            Mil = ((Result.frame[1].data[4] << 16) + (Result.frame[1].data[5] << 8) + (Result.frame[1].data[6]))
-                            self.UDS_MSG_BRS.append(f"\nMileage:{0.01*Mil} km")
-                        case 17:
-                            TIM = ((Result.frame[1].data[4] << 8) + (Result.frame[1].data[5]))
-                            self.UDS_MSG_BRS.append(f"\nKey-on timer value:{TIM} s")
-                        case 18:
-                            DSB = (Result.frame[1].data[5] & 0x1)
-                            PSB_PPS = ((Result.frame[1].data[5] & 0x1E) >> 1)
-                            match(PSB_PPS):
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
+                            case 2:
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                            case 3:
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                            case 4:
+                                self.UDS_MSG_BRS.append(
+                                    f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                                time.sleep(0.02)
+                                if (Result.frame[1].data[1] == 0x50):
+                                    self.UDS_MSG_BRS.append("Блок успешно вошёл в диагностическую сессию")
+                                else:
+                                    self.UDS_MSG_BRS.append("Ошибка входа  в диагностическую сессию")
+                                time.sleep(0.02)
+                                self.UDS_MSG_BRS.append(
+                                    f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
+
+                    case 0x35: #Проверка CommunicationControl 0x28 disable tx,rx
+                        self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                        time.sleep(0.01)
+                        if (Result.measuredValue[0] == 0):
+                            self.UDS_MSG_BRS.append("Сообщения по CAN не принимаются и не передаются ")
+                        else:
+                            self.UDS_MSG_BRS.append("Сообщения по CAN принимаются")
+                        #ПРОВЕРИТЬ FDCAN->PSR И ЕСЛИ ОН МЕНЯЕТ СОСТОЯНИЕ ДОБАВИТЬ В OUTPUT
+                    case 0x36:#Проверка ClearDiagnosticInformation 0x14
+                        match(Command.UDS_NRC):
+                            case 0:
+                                DTC_list=self.parse_UDS_errors(Result, 0x09)
+                                self.UDS_MSG_BRS.append("Считанные ошибки:\n")
+                                time.sleep(0.02)
+                                for i in range(1, len(DTC_list)):
+                                    self.UDS_MSG_BRS.append(f"{str(hex(DTC_list[i]))}:{self.match_DTC(hex(DTC_list[i]))}")
+                                    time.sleep(0.02)
+                                received_len = self.UART.read(2).hex()
+
+                                bytes_read = self.UART.read(int(received_len, 16))
+                                Result.ParseFromString(bytes_read)
+                                self.UDS_MSG_BRS.append("\nОчистка ошибок")
+                                time.sleep(0.02)
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\n")
+                                time.sleep(0.02)
+                                received_len = self.UART.read(2).hex()
+
+                                bytes_read = self.UART.read(int(received_len, 16))
+                                Result.ParseFromString(bytes_read)
+                                DTC_list2= self.parse_UDS_errors(Result, 0x09)
+                                self.UDS_MSG_BRS.append("\nСчитанные ошибки:\n")
+                                if(len(Result.frame[0].data)<8):
+                                    self.UDS_MSG_BRS.append("None")
+                                else:
+                                    time.sleep(0.01)
+                                    for i in range(1, len(DTC_list2)):
+                                        self.UDS_MSG_BRS.append(f"{str(hex(DTC_list2[i]))}:{self.match_DTC(hex(DTC_list2[i]))}")
+                                        time.sleep(0.02)
+                            case 1:
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                            case 2:
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+
+                    case 0x37:   #read supported dtc
+                        match (Command.UDS_NRC):
+                            case 0:
+                                if (len(Result.frame[0].data) < 8):
+                                    self.UDS_MSG_BRS.append("No DTC found")
+                                else:
+                                    DTC_list1 = self.parse_UDS_errors(Result, 0x09)
+                                    for i in range(0, len(DTC_list1)):
+                                        if (self.match_DTC(hex(DTC_list1[i])) != None):
+                                            self.UDS_MSG_BRS.append(f"{str(hex(DTC_list1[i]))}:{self.match_DTC(hex(DTC_list1[i]))} Status:Active")
+                                            time.sleep(0.05)
+                                    DTC_list2 = self.parse_UDS_errors(Result, 0x08)
+                                    for i in range(0, len(DTC_list2)):
+                                        if (self.match_DTC(hex(DTC_list2[i])) != None):
+                                            self.UDS_MSG_BRS.append(f"{str(hex(DTC_list2[i]))}:{self.match_DTC(hex(DTC_list2[i]))} Status:DTC confirmed")
+                                            time.sleep(0.05)
+                                    DTC_list3 = self.parse_UDS_errors(Result, 0x00)
+                                    for i in range(0, len(DTC_list3)):
+                                        if(self.match_DTC(hex(DTC_list3[i]))!=None):
+                                            self.UDS_MSG_BRS.append(f"{str(hex(DTC_list3[i]))}:{self.match_DTC(hex(DTC_list3[i]))} Status:Not active")
+                                            time.sleep(0.05)
+                            case 1:
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                            case 2:
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                            case 3:
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+
+                    case 0x38:#control dtcsetting
+                        self.UDS_MSG_BRS.append("Очистка DTC:")
+                        time.sleep(0.02)
+                        self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\n")
+                        time.sleep(0.02)
+                        self.UDS_MSG_BRS.append("Отключение самодиагностики")
+                        time.sleep(0.02)
+                        self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\n")
+                        received_len = self.UART.read(2).hex()
+                        bytes_read = self.UART.read(int(received_len, 16))
+                        Result.ParseFromString(bytes_read)
+                        DTC_list = self.parse_UDS_errors(Result, 0x09)
+                        self.UDS_MSG_BRS.append("Чтение DTC")
+                        time.sleep(0.02)
+                        if(len(DTC_list)>1):
+                            for i in range(1, len(DTC_list)):
+                                self.UDS_MSG_BRS.append(f"{str(hex(DTC_list[i]))}:{self.match_DTC(hex(DTC_list[i]))} Status:Active")
+                                time.sleep(0.05)
+                        else:
+                            self.UDS_MSG_BRS.append("NO ACTIVE DTC")
+                        received_len = self.UART.read(2).hex()
+                        bytes_read = self.UART.read(int(received_len, 16))
+                        Result.ParseFromString(bytes_read)
+                        self.UDS_MSG_BRS.append("\nВключение самодиагностики")
+                        time.sleep(0.02)
+                        self.UDS_MSG_BRS.append( f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\n")
+                        received_len = self.UART.read(2).hex()
+                        bytes_read = self.UART.read(int(received_len, 16))
+                        Result.ParseFromString(bytes_read)
+                        DTC_list = self.parse_UDS_errors(Result, 0x09)
+                        self.UDS_MSG_BRS.append("Чтение DTC")
+                        time.sleep(0.02)
+                        if (len(DTC_list) > 1):
+                            for i in range(1, len(DTC_list)):
+                                self.UDS_MSG_BRS.append(
+                                    f"{str(hex(DTC_list[i]))}:{self.match_DTC(hex(DTC_list[i]))} Status:Active")
+                                time.sleep(0.05)
+                        else:
+                            self.UDS_MSG_BRS.append("NO ACTIVE DTC")
+                    case 0x39:#security access
+                        match (Command.UDS_NRC):
+                            case 0:
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nОтправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
+                                time.sleep(0.02)
+                                if(Result.frame[5].data[1]==0x67 and Result.frame[5].data[2]==0x02):
+                                    self.UDS_MSG_BRS.append("Блок успешно вошёл в security access")
+                                else:
+                                    self.UDS_MSG_BRS.append("Ошибка входа в security access")
+                            case 1:
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\n")
+                                time.sleep(0.02)
+                                if(Result.frame[1].data[1]==0x50):
+                                    self.UDS_MSG_BRS.append("Блок успешно вошёл в диагностическую сессию")
+                                else:
+                                    self.UDS_MSG_BRS.append("Ошибка входа в диагностическую сессию")
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\n")
+                            case 2|3:
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\n")
+                            case 4:
+                                for i in range(0,7):
+                                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2*i].data.hex())}\nПринято:{str(Result.frame[2*i+1].data.hex())}")
+                                    time.sleep(0.02)
+                            case 5:
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                                time.sleep(0.02)
+                                if (Result.frame[1].data[1] == 0x50):
+                                    self.UDS_MSG_BRS.append("Блок успешно вошёл в диагностическую сессию")
+                                else:
+                                    self.UDS_MSG_BRS.append("Ошибка входа в диагностическую сессию")
+                                time.sleep(0.02)
+                                self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
+                    case 0x3A: #DID ECU OPERATING STATES
+                        match(Command.UDS_NRC):
                                 case 0:
-                                    PSB_PPS='Passenger not present'
-                                case 1:
-                                    PSB_PPS='Passenger present,not fastened'
-                                case 2:
-                                    PSB_PPS='Passenger present,fastened'
-                                case _:
-                                    PSB_PPS='Sensor value out of range'
-                            RRSB = ((Result.frame[1].data[5] & 0x4) >> 5)
-                            CRSB = ((Result.frame[1].data[5] & 0x8) >> 6)
-                            LRSB = ((Result.frame[1].data[5] & 0x10) >> 7)
-                            PADS_ST = ((Result.frame[1].data[4] & 0x2) >> 1)
-                            BRSB = ((Result.frame[1].data[4] & 0x4) >> 2)
-                            BLSB = ((Result.frame[1].data[4] & 0x8) >> 3)
-                            self.UDS_MSG_BRS.append(f"\nDriver SB:{self.matchSB(DSB)}\nPassenger SB:{(PSB_PPS)}\nRear right SB:{self.matchSB(RRSB)}\nRear left SB:{self.matchSB(LRSB)}\nPADS_ST:{self.matchSB(PADS_ST)}\n3rd row right SB:{self.matchSB(BRSB)}\n3rd row left SB:{self.matchSB(BLSB)}\n")
-                        case 19:
-                            OPST = (Result.frame[1].data[4])
-                            if(OPST==0xA5):
-                                self.UDS_MSG_BRS.append("\nWorking mode")
-                            if (OPST == 0x5A):
-                                self.UDS_MSG_BRS.append("\nPlant mode")
-                        case 20:
-                            DAB = (Result.frame[1].data[4] & 0x1)
-                            PAB = ((Result.frame[1].data[4] & 0x2) >> 1)
-                            DPT = ((Result.frame[1].data[4] & 0x4) >> 2)
-                            PPT = ((Result.frame[1].data[4] & 0x8) >> 3)
-                            PADI = ((Result.frame[1].data[4] & 0x10) >> 4)
-                            PADS = ((Result.frame[1].data[4] & 0x20) >> 5)
-                            PPS = ((Result.frame[1].data[4] & 0x40) >> 6)
-                            self.UDS_MSG_BRS.append(f"\nDriver Airbag:{self.matchACU(DAB)}\nPassenger Airbag:{self.matchACU(PAB)}\nDriver Pretensioner:{self.matchACU(DPT)}\nPassenger Pretensioner:{self.matchACU(PPT)}\nPADI:{self.matchACU(PADI)}\nPADS:{self.matchACU(PADS)}\nPassenger Presence sensor:{self.matchACU(PPS)}\n")
-                        case 21:
-                            LCAB = (Result.frame[1].data[4] & 0x1)
-                            RCAB = ((Result.frame[1].data[4] & 0x2) >> 1)
-                            DSAB = ((Result.frame[1].data[4] & 0x4) >> 2)
-                            PSAB = ((Result.frame[1].data[4] & 0x8) >> 3)
-                            PGSAT = ((Result.frame[1].data[4] & 0x10) >> 4)
-                            DGSAT = ((Result.frame[1].data[4] & 0x20) >> 5)
-                            PPSAT = ((Result.frame[1].data[4] & 0x40) >> 6)
-                            DPSAT = ((Result.frame[1].data[4] & 0x80) >> 7)
-                            self.UDS_MSG_BRS.append(f"\nLeft Curtain Airbag:{self.matchACU(LCAB)}\nRight Curtain Airbag:{self.matchACU(RCAB)}\nDriver Side Airbag:{self.matchACU(DSAB)}\nPassenger Side Airbag:{self.matchACU(PSAB)}\nPassenger front side crash sensor:{self.matchACU(PGSAT)}\nDriver front side crash sensor:{self.matchACU(DGSAT)}\nPassenger door pressure sensor:{self.matchACU(PPSAT)}\nDriver door pressure sensor:{self.matchACU(DPSAT)}\n")
+                                    self.UDS_MSG_BRS.append("Вход в расширенную диагностическую сессию:")
+                                    time.sleep(0.01)
+                                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\n")
+                                    time.sleep(0.01)
+                                    time.sleep(0.01)
+                                    self.UDS_MSG_BRS.append("Изменение режима работы на Working:")
+                                    time.sleep(0.01)
+                                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}\n")
+                                    time.sleep(0.01)
+                                    self.UDS_MSG_BRS.append("Перезагрузка блока:")
+                                    time.sleep(0.01)
+                                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[8].data.hex())}\nПринято:{str(Result.frame[9].data.hex())}\n")
+                                    time.sleep(0.01)
+                                    self.UDS_MSG_BRS.append("Чтение DID:")
+                                    time.sleep(0.01)
+                                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[10].data.hex())}\nПринято:{str(Result.frame[11].data.hex())}")
+                                case 1|2|3|4|5:
+                                    self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}\n")
+                                    time.sleep(0.01)
+                    case 0x3B:  # DID ECU OPERATING STATES
+                        self.UDS_MSG_BRS.append("Вход в SecurityAccess:")
+                        self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nОтправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
+                        time.sleep(0.02)
+                        self.UDS_MSG_BRS.append("\nИзменение режима работы на Plant:")
+                        time.sleep(0.01)
+                        self.UDS_MSG_BRS.append(
+                            f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}\n")
+                        time.sleep(0.01)
+                        self.UDS_MSG_BRS.append("Перезагрузка блока:")
+                        time.sleep(0.01)
+                        self.UDS_MSG_BRS.append(
+                            f"Отправлено:{str(Result.frame[8].data.hex())}\nПринято:{str(Result.frame[9].data.hex())}\n")
+                        time.sleep(0.01)
+                        self.UDS_MSG_BRS.append("Чтение DID:")
+                        time.sleep(0.01)
+                        self.UDS_MSG_BRS.append(
+                            f"Отправлено:{str(Result.frame[10].data.hex())}\nПринято:{str(Result.frame[11].data.hex())}")
+                    case 0x3C: #DID ACU Configuration
+                        self.UDS_MSG_BRS.append(
+                            f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nОтправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
+                        time.sleep(0.02)
+                        if (Result.frame[5].data[1] == 0x67 and Result.frame[5].data[2] == 0x02):
+                            self.UDS_MSG_BRS.append("Блок успешно вошёл в security access\n")
+                        else:
+                            self.UDS_MSG_BRS.append("Ошибка входа в security access\n")
+                        time.sleep(0.01)
+                        self.UDS_MSG_BRS.append("Чтение DID 0xE180:")
+                        time.sleep(0.01)
+                        self.UDS_MSG_BRS.append(
+                            f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}\n")
+                        time.sleep(0.01)
+                        self.UDS_MSG_BRS.append("Отключение передней подушки:")
+                        time.sleep(0.01)
+                        self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[8].data.hex())}\nПринято:{str(Result.frame[9].data.hex())}\n")
+                        time.sleep(0.01)
+                        self.UDS_MSG_BRS.append("Перезагрузка блока:")
+                        time.sleep(0.01)
+                        self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[10].data.hex())}\nПринято:{str(Result.frame[11].data.hex())}\n")
+                        time.sleep(0.01)
+                        if(Result.measuredValue[0]==0):
+                            self.UDS_MSG_BRS.append("Импульс на пиропатроне водителя не зарегистрирован\n")
+                        else:
+                            self.UDS_MSG_BRS.append("Импульс на пиропатроне водителя зарегистрирован\n")
+                        self.UDS_MSG_BRS.append("Чтение DID 0хE180 после перезагрузки:")
+                        time.sleep(0.01)
+                        self.UDS_MSG_BRS.append(
+                            f"Отправлено:{str(Result.frame[12].data.hex())}\nПринято:{str(Result.frame[13].data.hex())}\n")
+                        self.UDS_MSG_BRS.append("Чтение DID 0хE182")
+                        time.sleep(0.01)
+                        self.UDS_MSG_BRS.append(
+                            f"Отправлено:{str(Result.frame[14].data.hex())}\nПринято:{str(Result.frame[15].data.hex())}\n")
+                        time.sleep(0.01)
+                        self.UDS_MSG_BRS.append("Отключение ремня безопасности водителя")
+                        time.sleep(0.01)
+                        self.UDS_MSG_BRS.append(
+                            f"Отправлено:{str(Result.frame[16].data.hex())}\nПринято:{str(Result.frame[17].data.hex())}\n")
+                        time.sleep(0.01)
+                        self.UDS_MSG_BRS.append(f"Состояние ремня безопасности водителя:")
+                        time.sleep(0.01)
+                        if (Result.measuredValue[1] == 0):
+                            self.UDS_MSG_BRS.append("Not monitored")
+                        elif(Result.measuredValue[1] == 1):
+                            self.UDS_MSG_BRS.append("Unfastened")
+                        elif(Result.measuredValue[1] == 2):
+                            self.UDS_MSG_BRS.append("Fastened")
+                        elif(Result.measuredValue[1] == 3):
+                            self.UDS_MSG_BRS.append("Unavalible")
+                        self.UDS_MSG_BRS.append("\nПерезагрузка блока:")
+                        time.sleep(0.01)
+                        self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[18].data.hex())}\nПринято:{str(Result.frame[19].data.hex())}\n")
+                        self.UDS_MSG_BRS.append("Чтение DID 0xE182 после перезагрузки:")
+                        time.sleep(0.01)
+                        self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[20].data.hex())}\nПринято:{str(Result.frame[21].data.hex())}\n")
+                        time.sleep(0.01)
+                        self.UDS_MSG_BRS.append(f"Состояние ремня безопасности водителя:")
+                        time.sleep(0.01)
+                        if(Result.measuredValue[2]==0):
+                            self.UDS_MSG_BRS.append("Not monitored")
+                        elif (Result.measuredValue[2] == 1):
+                            self.UDS_MSG_BRS.append("Unfastened")
+                        elif (Result.measuredValue[2] == 2):
+                            self.UDS_MSG_BRS.append("Fastened")
+                        elif (Result.measuredValue[2] == 3):
+                            self.UDS_MSG_BRS.append("Unavalible")
+                    case 0x3D: #Read DID
+                        self.UDS_MSG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+                        match(Command.UDS_subtest):
+                            case 1|2|3|4|5|6|7|8:
+                                Resisatnce =0.01*((Result.frame[1].data[4]<<8)+Result.frame[1].data[5])
+                                time.sleep(0.01)
+                                self.UDS_MSG_BRS.append(f"\nResistance:{str(round(Resisatnce,1))} Ohm")
+                            case  10:
+                                Resisatnce = ((Result.frame[1].data[4] << 8) + Result.frame[1].data[5])
+                                time.sleep(0.01)
+                                self.UDS_MSG_BRS.append(f"\nResistance:{str(round(Resisatnce,1))} Ohm")
+                            case 14:
+                                Resisatnce = 0.1*((Result.frame[1].data[4] << 8) + Result.frame[1].data[5])
+                                time.sleep(0.01)
+                                self.UDS_MSG_BRS.append(f"\nResistance:{str(round(Resisatnce,1))} Ohm")
+                            case 9:
+                                Indicator_status=Result.frame[1].data[4]
+                                if(Indicator_status==0):
+                                    self.UDS_MSG_BRS.append("\nPAB Deactivation Indicator Status: No indication")
+                                else:
+                                    self.UDS_MSG_BRS.append("\nPAB Deactivation Indicator Status: Indication requested")
+                            case 11:
+                                Vehicle_spd = ((Result.frame[1].data[4])+Result.frame[1].data[5])
+                                self.UDS_MSG_BRS.append(f"\nVehicle Speed:{Vehicle_spd} km/h")
+                            case 12:
+                                VLT = (Result.frame[1].data[4])
+                                self.UDS_MSG_BRS.append(f"\nBattery voltage:{round(0.1*VLT,1)} V")
+                            case 13:
+                                TMR = ((Result.frame[1].data[4] << 24) + (Result.frame[1].data[5] << 16) + (Result.frame[1].data[6]<<8) + Result.frame[1].data[7])
+                                self.UDS_MSG_BRS.append(f"\nLifetime timer value:{TMR} s")
+                            case 15:
+                                WL_status = Result.frame[1].data[4]
+                                if (WL_status == 0):
+                                    self.UDS_MSG_BRS.append("\nWarning Lamp Status: No warning")
+                                else:
+                                    self.UDS_MSG_BRS.append("\nWarning Lamp Status: Warning")
+                            case 16:
+                                Mil = ((Result.frame[1].data[4] << 16) + (Result.frame[1].data[5] << 8) + (Result.frame[1].data[6]))
+                                self.UDS_MSG_BRS.append(f"\nMileage:{round(0.01*Mil,1)} km")
+                            case 17:
+                                TIM = ((Result.frame[1].data[4] << 8) + (Result.frame[1].data[5]))
+                                self.UDS_MSG_BRS.append(f"\nKey-on timer value:{TIM} s")
+                            case 18:
+                                DSB = (Result.frame[1].data[5] & 0x1)
+                                PSB_PPS = ((Result.frame[1].data[5] & 0x1E) >> 1)
+                                match(PSB_PPS):
+                                    case 0:
+                                        PSB_PPS='Passenger not present'
+                                    case 1:
+                                        PSB_PPS='Passenger present,not fastened'
+                                    case 2:
+                                        PSB_PPS='Passenger present,fastened'
+                                    case _:
+                                        PSB_PPS='Sensor value out of range'
+                                RRSB = ((Result.frame[1].data[5] & 0x20) >> 5)
+                                CRSB = ((Result.frame[1].data[5] & 0x40) >> 6)
+                                LRSB = ((Result.frame[1].data[5] & 0x80) >> 7)
+                                PADS_ST = ((Result.frame[1].data[4] & 0x1) >> 1)
+                                BRSB = ((Result.frame[1].data[4] & 0x2) >> 2)
+                                BLSB = ((Result.frame[1].data[4] & 0x4) >> 3)
+                                self.UDS_MSG_BRS.append(f"\nDriver SB:{self.matchSB(DSB)}\nPassenger SB:{(PSB_PPS)}\nRear right SB:{self.matchSB(RRSB)}\nRear left SB:{self.matchSB(LRSB)}\nPADS_ST:{self.matchACU(PADS_ST)}\n3rd row right SB:{self.matchSB(BRSB)}\n3rd row left SB:{self.matchSB(BLSB)}\n")
+                            case 19:
+                                OPST = (Result.frame[1].data[4])
+                                if(OPST==0xA5):
+                                    self.UDS_MSG_BRS.append("\nWorking mode")
+                                if (OPST == 0x5A):
+                                    self.UDS_MSG_BRS.append("\nPlant mode")
+                            case 20:
+                                DAB = (Result.frame[1].data[4] & 0x1)
+                                PAB = ((Result.frame[1].data[4] & 0x2) >> 1)
+                                DPT = ((Result.frame[1].data[4] & 0x4) >> 2)
+                                PPT = ((Result.frame[1].data[4] & 0x8) >> 3)
+                                PADI = ((Result.frame[1].data[4] & 0x10) >> 4)
+                                PADS = ((Result.frame[1].data[4] & 0x20) >> 5)
+                                PPS = ((Result.frame[1].data[4] & 0x40) >> 6)
+                                self.UDS_MSG_BRS.append(f"\nDriver Airbag:{self.matchACU(DAB)}\nPassenger Airbag:{self.matchACU(PAB)}\nDriver Pretensioner:{self.matchACU(DPT)}\nPassenger Pretensioner:{self.matchACU(PPT)}\nPADI:{self.matchACU(PADI)}\nPADS:{self.matchACU(PADS)}\nPassenger Presence sensor:{self.matchACU(PPS)}\n")
+                            case 21:
+                                LCAB = (Result.frame[1].data[4] & 0x1)
+                                RCAB = ((Result.frame[1].data[4] & 0x2) >> 1)
+                                DSAB = ((Result.frame[1].data[4] & 0x4) >> 2)
+                                PSAB = ((Result.frame[1].data[4] & 0x8) >> 3)
+                                PGSAT = ((Result.frame[1].data[4] & 0x10) >> 4)
+                                DGSAT = ((Result.frame[1].data[4] & 0x20) >> 5)
+                                PPSAT = ((Result.frame[1].data[4] & 0x40) >> 6)
+                                DPSAT = ((Result.frame[1].data[4] & 0x80) >> 7)
+                                self.UDS_MSG_BRS.append(f"\nLeft Curtain Airbag:{self.matchACU(LCAB)}\nRight Curtain Airbag:{self.matchACU(RCAB)}\nDriver Side Airbag:{self.matchACU(DSAB)}\nPassenger Side Airbag:{self.matchACU(PSAB)}\nPassenger front side crash sensor:{self.matchACU(PGSAT)}\nDriver front side crash sensor:{self.matchACU(DGSAT)}\nPassenger door pressure sensor:{self.matchACU(PPSAT)}\nDriver door pressure sensor:{self.matchACU(DPSAT)}\n")
 
-                        case 22:
-                            DSB = (Result.frame[1].data[4] & 0x1)
-                            PSB = ((Result.frame[1].data[4] & 0x2)>>1)
-                            RRSB = ((Result.frame[1].data[4] & 0x4)>>2)
-                            RCSB = ((Result.frame[1].data[4] & 0x8)>>3)
-                            RLSB = ((Result.frame[1].data[4] & 0x10)>>4)
-                            self.UDS_MSG_BRS.append(f"\nDriver SB:{self.matchACU(DSB)}\nPassenger SB:{self.matchACU(PSB)}\nRear right SB:{self.matchACU(RRSB)}\nRear Center SB:{self.matchACU(RCSB)}\nRear left SB:{self.matchACU(RLSB)}\n")
-        self.UDS_RUN_BTN.setEnabled(True)
-        self.STOP_BTN_6.setEnabled(False)
+                            case 22:
+                                DSB = (Result.frame[1].data[4] & 0x1)
+                                PSB = ((Result.frame[1].data[4] & 0x2)>>1)
+                                RRSB = ((Result.frame[1].data[4] & 0x4)>>2)
+                                RCSB = ((Result.frame[1].data[4] & 0x8)>>3)
+                                RLSB = ((Result.frame[1].data[4] & 0x10)>>4)
+                                self.UDS_MSG_BRS.append(f"\nDriver SB:{self.matchACU(DSB)}\nPassenger SB:{self.matchACU(PSB)}\nRear right SB:{self.matchACU(RRSB)}\nRear Center SB:{self.matchACU(RCSB)}\nRear left SB:{self.matchACU(RLSB)}\n")
+        except:
+            self.UDS_MSG_BRS.append("Ошибка. Попробуйте ещё раз")
         self.UART.close()
+        time.sleep(0.1)
+        self.EnableAll()
+        self.STOP_BTN_6.setEnabled(False)
     def run_UDS(self):
         Receiver=threading.Thread(target=self.UDS_handler)
         Receiver.start()
     def snap_handler(self):
-        self.read_snap_btn.setDisabled(True)
-        self.UART.open()
+        self.DisableAll()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -4450,31 +4665,35 @@ class Ui_MainWindow(object):
             Result.ParseFromString(bytes_read)
             try:
                 self.snap_brs.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}\nОтправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}\nПринято:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
-                time.sleep(0.2)
+                time.sleep(0.02)
                 if (Result.frame[1].data[7] == 0x09):
                     self.status_brs.append("ACTIVE")
                 else:
                     self.status_brs.append("INACTIVE")
-                time.sleep(0.2)
-                self.lcdNumber_2.append(f"{float(((Result.frame[3].data[5] << 8) + (Result.frame[3].data[6])) * 0.01)} km/h")
-                time.sleep(0.2)
+                time.sleep(0.02)
+                self.lcdNumber_2.append(f"{round(float(((Result.frame[3].data[5] << 8) + (Result.frame[3].data[6])) * 0.01),1)} km/h")
+                time.sleep(0.02)
                 self.lcdNumber_3.append(f"{int(((Result.frame[4].data[7] << 24)+(Result.frame[5].data[1] << 16) + (Result.frame[5].data[2] << 8) + (Result.frame[5].data[3] >>4)) * 0.01)} km")
-                time.sleep(0.2)
+                time.sleep(0.02)
                 self.lcdNumber_4.append(f"{int(((Result.frame[4].data[2] << 16) + (Result.frame[4].data[3] << 8) + (Result.frame[4].data[4])) * 5)}  min")
-                time.sleep(0.2)
+                time.sleep(0.02)
                 self.lcdNumber_5.append(f"{int((Result.frame[5].data[6]))}")
                 self.UART.close()
             except:
                 self.snap_brs.append("Ошибка чтения snapshot.Попробуйте ещё раз")
-                self.UART.close()
-        self.read_snap_btn.setEnabled(True)
+        self.UART.close()
+        self.EnableAll()
 
 
     def run_snap_handler(self):
         Receiver = threading.Thread(target=self.snap_handler)
         Receiver.start()
     def SBR_handler(self):
-        self.UART.open()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
         self.STOP_BTN_5.setEnabled(True)
         Command = Messages.TestData()
         Result = Messages.TestData()
@@ -4508,382 +4727,397 @@ class Ui_MainWindow(object):
                 Command.vehicle_speed = 0
         Cmd = Command.SerializeToString()
         self.UART.write(Cmd)
-        received_len=self.UART.read(2).hex()
-        if (received_len == ''):
-            self.got_res_SBR_brs.append("Остановлено")
-        else:
-            bytes_read = self.UART.read(int(received_len,16))
-            Result.ParseFromString(bytes_read)
-            match Result.testNumber:
-                case 0x41:
-                    for i in range(0, 2):
-                        self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[i].timestamp)}   id:{str(hex(Result.frame[i].id))}   DLC:{str(Result.frame[i].length)}   Data:{str(Result.frame[i].data.hex())}")
-                    time.sleep(0.1)
-                    match Result.Seatbelt_position:
-                        case 1:
-                            self.got_res_SBR_brs.append(f"При пристегнутом ремне: {hex((Result.frame[0].data[0] & DriverSafetyBeltState.Unavalible) >> DriverSafetyBeltState.shift)}\nПри непристегнутом ремне: {hex((Result.frame[1].data[0] & DriverSafetyBeltState.Unavalible) >> DriverSafetyBeltState.shift)}")
-                            time.sleep(0.1)
-                            if (Result.frame[0].data[0] & DriverSafetyBeltState.Unavalible == DriverSafetyBeltState.SB_fastened and Result.frame[1].data[0] & DriverSafetyBeltState.Unavalible == DriverSafetyBeltState.SB_unfastened):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 2:
-                            self.got_res_SBR_brs.append(f"При пристегнутом ремне: {hex((Result.frame[1].data[0] & FrontPassengerSafetyBeltState.Unavalible) >> FrontPassengerSafetyBeltState.shift)}\nПри непристегнутом ремне: {hex((Result.frame[0].data[0] &FrontPassengerSafetyBeltState.Unavalible) >> FrontPassengerSafetyBeltState.shift)}")
-                            time.sleep(0.05)
-                            if (Result.frame[1].data[0] & FrontPassengerSafetyBeltState.Unavalible == FrontPassengerSafetyBeltState.SB_fastened and Result.frame[0].data[0] & FrontPassengerSafetyBeltState.Unavalible == FrontPassengerSafetyBeltState.SB_unfastened):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 4:
-                            self.got_res_SBR_brs.append(f"При пристегнутом ремне: {hex((Result.frame[0].data[2] & SecondRowCenterSafetyBeltState.Unavalible) >> SecondRowCenterSafetyBeltState.shift)}\nПри непристегнутом ремне: {hex((Result.frame[1].data[2] & SecondRowCenterSafetyBeltState.Unavalible) >> SecondRowCenterSafetyBeltState.shift)}")
-                            time.sleep(0.05)
-                            if (Result.frame[0].data[2] & SecondRowCenterSafetyBeltState.Unavalible == SecondRowCenterSafetyBeltState.SB_fastened and Result.frame[1].data[2] & SecondRowCenterSafetyBeltState.Unavalible == SecondRowCenterSafetyBeltState.SB_unfastened):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 3:
-                            self.got_res_SBR_brs.append(f"При пристегнутом ремне: {hex((Result.frame[0].data[3] & SecondRowRightSafetyBeltState.Unavalible) >> SecondRowRightSafetyBeltState.shift)}\nПри непристегнутом ремне: {hex((Result.frame[1].data[3] & SecondRowRightSafetyBeltState.Unavalible) >> SecondRowRightSafetyBeltState.shift)}")
-                            time.sleep(0.05)
-                            if (Result.frame[0].data[3] & SecondRowRightSafetyBeltState.Unavalible == SecondRowRightSafetyBeltState.SB_fastened and Result.frame[1].data[3] & SecondRowRightSafetyBeltState.Unavalible== SecondRowRightSafetyBeltState.SB_unfastened):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 5:
-                            self.got_res_SBR_brs.append(f"При пристегнутом ремне: {hex(((Result.frame[0].data[2] <<8)+(Result.frame[0].data[3])&0b0000000110000000)>>7)}\nПри непристегнутом ремне: {hex(((Result.frame[1].data[2] <<8)+(Result.frame[1].data[3])&0b0000000110000000)>>7)}")
-                            time.sleep(0.05)
-                            if (int(hex(((Result.frame[0].data[2] <<8)+(Result.frame[0].data[3])&0b0000000110000000)>>7),16)==0x2 and int(hex(((Result.frame[1].data[2] <<8)+(Result.frame[1].data[3])&0b0000000110000000)>>7),16)==0x1):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                case 0x42:
-                    self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
-                    time.sleep(0.1)
-                    match Command.Seatbelt_position:
-                        case 1:
-                            self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used) )}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.No_Warning):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 2:
-                            self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.No_Warning ):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 4:
-                            self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used))}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.No_Warning ):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 3:
-                            self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.No_Warning):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 5:
-                            self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used) >> SecondRowLeftSafetyBeltWarning.shift)}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.No_Warning):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
+        try:
+            received_len=self.UART.read(2).hex()
+            if (received_len == ''):
+                self.got_res_SBR_brs.append("Остановлено")
+            else:
+                bytes_read = self.UART.read(int(received_len,16))
+                Result.ParseFromString(bytes_read)
+                match Result.testNumber:
+                    case 0x41:
+                        for i in range(0, 2):
+                            self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[i].timestamp)}   id:{str(hex(Result.frame[i].id))}   DLC:{str(Result.frame[i].length)}   Data:{str(Result.frame[i].data.hex())}")
+                        time.sleep(0.02)
+                        match Result.Seatbelt_position:
+                            case 1:
+                                self.got_res_SBR_brs.append(f"При пристегнутом ремне: {hex((Result.frame[0].data[0] & DriverSafetyBeltState.Unavalible) >> DriverSafetyBeltState.shift)}\nПри непристегнутом ремне: {hex((Result.frame[1].data[0] & DriverSafetyBeltState.Unavalible) >> DriverSafetyBeltState.shift)}")
+                                time.sleep(0.02)
+                                if (Result.frame[0].data[0] & DriverSafetyBeltState.Unavalible == DriverSafetyBeltState.SB_fastened and Result.frame[1].data[0] & DriverSafetyBeltState.Unavalible == DriverSafetyBeltState.SB_unfastened):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 2:
+                                self.got_res_SBR_brs.append(f"При пристегнутом ремне: {hex((Result.frame[1].data[0] & FrontPassengerSafetyBeltState.Unavalible) >> FrontPassengerSafetyBeltState.shift)}\nПри непристегнутом ремне: {hex((Result.frame[0].data[0] &FrontPassengerSafetyBeltState.Unavalible) >> FrontPassengerSafetyBeltState.shift)}")
+                                time.sleep(0.05)
+                                if (Result.frame[1].data[0] & FrontPassengerSafetyBeltState.Unavalible == FrontPassengerSafetyBeltState.SB_fastened and Result.frame[0].data[0] & FrontPassengerSafetyBeltState.Unavalible == FrontPassengerSafetyBeltState.SB_unfastened):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 4:
+                                self.got_res_SBR_brs.append(f"При пристегнутом ремне: {hex((Result.frame[0].data[2] & SecondRowCenterSafetyBeltState.Unavalible) >> SecondRowCenterSafetyBeltState.shift)}\nПри непристегнутом ремне: {hex((Result.frame[1].data[2] & SecondRowCenterSafetyBeltState.Unavalible) >> SecondRowCenterSafetyBeltState.shift)}")
+                                time.sleep(0.05)
+                                if (Result.frame[0].data[2] & SecondRowCenterSafetyBeltState.Unavalible == SecondRowCenterSafetyBeltState.SB_fastened and Result.frame[1].data[2] & SecondRowCenterSafetyBeltState.Unavalible == SecondRowCenterSafetyBeltState.SB_unfastened):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 3:
+                                self.got_res_SBR_brs.append(f"При пристегнутом ремне: {hex((Result.frame[0].data[3] & SecondRowRightSafetyBeltState.Unavalible) >> SecondRowRightSafetyBeltState.shift)}\nПри непристегнутом ремне: {hex((Result.frame[1].data[3] & SecondRowRightSafetyBeltState.Unavalible) >> SecondRowRightSafetyBeltState.shift)}")
+                                time.sleep(0.05)
+                                if (Result.frame[0].data[3] & SecondRowRightSafetyBeltState.Unavalible == SecondRowRightSafetyBeltState.SB_fastened and Result.frame[1].data[3] & SecondRowRightSafetyBeltState.Unavalible== SecondRowRightSafetyBeltState.SB_unfastened):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 5:
+                                self.got_res_SBR_brs.append(f"При пристегнутом ремне: {hex(((Result.frame[0].data[2] <<8)+(Result.frame[0].data[3])&0b0000000110000000)>>7)}\nПри непристегнутом ремне: {hex(((Result.frame[1].data[2] <<8)+(Result.frame[1].data[3])&0b0000000110000000)>>7)}")
+                                time.sleep(0.05)
+                                if (int(hex(((Result.frame[0].data[2] <<8)+(Result.frame[0].data[3])&0b0000000110000000)>>7),16)==0x2 and int(hex(((Result.frame[1].data[2] <<8)+(Result.frame[1].data[3])&0b0000000110000000)>>7),16)==0x1):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                    case 0x42:
+                        self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
+                        time.sleep(0.02)
+                        match Command.Seatbelt_position:
+                            case 1:
+                                self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used) )}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.No_Warning):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 2:
+                                self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.No_Warning ):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 4:
+                                self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used))}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.No_Warning ):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 3:
+                                self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.No_Warning):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 5:
+                                self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used) >> SecondRowLeftSafetyBeltWarning.shift)}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.No_Warning):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
 
-                case 0x43:
-                    self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
-                    time.sleep(0.05)
-                    match Command.Seatbelt_position:
-                        case 1:
-                            self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift )}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.Warning_level_1):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 2:
-                            self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.Warning_level_1 ):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 4:
-                            self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used))}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.Warning_level_1 ):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 3:
-                            self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.Warning_level_1):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 5:
-                            self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift )}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.Warning_level_1):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                case 0x44:
-                    self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
-                    time.sleep(0.05)
-                    match Command.Seatbelt_position:
-                        case 1:
-                            self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift )}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.Warning_level_2):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 2:
-                            self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.Warning_level_2 ):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 4:
-                            self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) )}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.Warning_level_2 ):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 3:
-                            self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.Warning_level_2):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 5:
-                            self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.Warning_level_2):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                case 0x45:
-                    self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
-                    time.sleep(0.05)
-                    self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[1].timestamp)}   id:{str(hex(Result.frame[1].id))}   DLC:{str(Result.frame[1].length)}   Data:{str(Result.frame[1].data.hex())}")
-                    time.sleep(0.05)
-                    match Command.Seatbelt_position:
-                        case 1:
-                            self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder до истечения таймаута: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}")
-                            time.sleep(0.05)
-                            self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder после истечения таймаута: {hex((Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}")
-                            if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used >0 and Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.No_Warning):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 2:
-                            self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder до истечения таймаута: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
-                            time.sleep(0.05)
-                            self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder после истечения таймаута: {hex((Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
-                            if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used != FrontPassengerSafetyBeltReminder.No_Warning and Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.No_Warning):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 4:
-                            self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning до истечения таймаута: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used))}")
-                            time.sleep(0.05)
-                            self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning после истечения таймаута: {hex((Result.frame[1].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) )}")
-                            if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used != SecondRowCenterSafetyBeltWarning.No_Warning and Result.frame[1].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.No_Warning):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 3:
-                            self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning до истечения таймаута: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
-                            time.sleep(0.05)
-                            self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning после истечения таймаута: {hex((Result.frame[1].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
-                            if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used != SecondRowRightSafetyBeltWarning.No_Warning and Result.frame[1].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.No_Warning):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 5:
-                            self.got_res_SBR_brs.append( f"Значение SecondRowLeftSafetyBeltWarning до истечения таймаута: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}")
-                            time.sleep(0.05)
-                            self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning после истечения таймаута: {hex((Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}")
-                            if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used != SecondRowLeftSafetyBeltWarning.No_Warning and Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.No_Warning):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
+                    case 0x43:
+                        self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
+                        time.sleep(0.05)
+                        match Command.Seatbelt_position:
+                            case 1:
+                                self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift )}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.Warning_level_1):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 2:
+                                self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.Warning_level_1 ):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 4:
+                                self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used))}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.Warning_level_1 ):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 3:
+                                self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.Warning_level_1):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 5:
+                                self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift )}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.Warning_level_1):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                    case 0x44:
+                        self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
+                        time.sleep(0.05)
+                        match Command.Seatbelt_position:
+                            case 1:
+                                self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift )}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.Warning_level_2):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 2:
+                                self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.Warning_level_2 ):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 4:
+                                self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) )}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.Warning_level_2 ):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 3:
+                                self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.Warning_level_2):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 5:
+                                self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.Warning_level_2):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                    case 0x45:
+                        self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
+                        time.sleep(0.05)
+                        self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[1].timestamp)}   id:{str(hex(Result.frame[1].id))}   DLC:{str(Result.frame[1].length)}   Data:{str(Result.frame[1].data.hex())}")
+                        time.sleep(0.05)
+                        match Command.Seatbelt_position:
+                            case 1:
+                                self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder до истечения таймаута: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}")
+                                time.sleep(0.05)
+                                self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder после истечения таймаута: {hex((Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}")
+                                if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used >0 and Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.No_Warning):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 2:
+                                self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder до истечения таймаута: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
+                                time.sleep(0.05)
+                                self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder после истечения таймаута: {hex((Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
+                                if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used != FrontPassengerSafetyBeltReminder.No_Warning and Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.No_Warning):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 4:
+                                self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning до истечения таймаута: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used))}")
+                                time.sleep(0.05)
+                                self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning после истечения таймаута: {hex((Result.frame[1].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) )}")
+                                if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used != SecondRowCenterSafetyBeltWarning.No_Warning and Result.frame[1].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.No_Warning):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 3:
+                                self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning до истечения таймаута: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
+                                time.sleep(0.05)
+                                self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning после истечения таймаута: {hex((Result.frame[1].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
+                                if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used != SecondRowRightSafetyBeltWarning.No_Warning and Result.frame[1].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.No_Warning):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 5:
+                                self.got_res_SBR_brs.append( f"Значение SecondRowLeftSafetyBeltWarning до истечения таймаута: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}")
+                                time.sleep(0.05)
+                                self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning после истечения таймаута: {hex((Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}")
+                                if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used != SecondRowLeftSafetyBeltWarning.No_Warning and Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.No_Warning):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
 
-                case 0x46:
-                    for i in range(0,2):
-                        self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[i].timestamp)}   id:{str(hex(Result.frame[i].id))}   DLC:{str(Result.frame[i].length)}   Data:{str(Result.frame[i].data.hex())}")
-                    time.sleep(0.05)
-                    match Command.Seatbelt_position:
-                        case 1:
-                            self.got_res_SBR_brs.append(
-                                f"Значение DriverSafetyBeltReminder по истечении таймаута: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}\nЗначение DriverSafetyBeltReminder после сброса: {hex((Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.No_Warning and Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.Warning_level_1):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 2:
-                            self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder по истечении таймаута: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}\nЗначение FrontPassengerSafetyBeltReminder после сброса: {hex((Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.No_Warning and Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.Warning_level_1):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 4:
-                            self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning по истечении таймаута: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) )}\nЗначение SecondRowCenterSafetyBeltWarning после сброса: {hex((Result.frame[1].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) )}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.No_Warning and Result.frame[1].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.Warning_level_1):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 3:
-                            self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning по истечении таймаута: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}\nЗначение SecondRowRightSafetyBeltWarning после сброса: {hex((Result.frame[1].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.No_Warning and Result.frame[1].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.Warning_level_1):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 5:
-                            self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning по истечении таймаута: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}\nЗначение SecondRowLeftSetyBeltWarning после сброса: {hex((Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.No_Warning and Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.Warning_level_1):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                case 0x47:
-                    self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
-                    match Command.Seatbelt_position:
-                        case 1:
-                            self.got_res_SBR_brs.append( f"Значение DriverSafetyBeltReminder: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.No_Warning):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 2:
-                            self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.No_Warning):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 4:
-                            self.got_res_SBR_brs.append( f"Значение SecondRowCenterSafetyBeltWarning: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) )}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.No_Warning):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 3:
-                            self.got_res_SBR_brs.append(
-                                f"Значение SecondRowRightSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
-                            if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.No_Warning):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 5:
-                            self.got_res_SBR_brs.append( f"Значение SecondRowLeftSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.No_Warning):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                case 0x48:
-                    self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
-                    time.sleep(0.01)
-                    self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[1].timestamp)}   id:{str(hex(Result.frame[1].id))}   DLC:{str(Result.frame[1].length)}   Data:{str(Result.frame[1].data.hex())}")
-                    match Command.Seatbelt_position:
-                        case 1:
-                            self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder при Gear Lever drive: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}")
-                            time.sleep(0.01)
-                            self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder при Gear Lever reverse: {hex((Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}")
-                            time.sleep(0.01)
-                            if ((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.Warning_level_1) and (Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.No_Warning)):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 2:
-                            self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder при Gear Lever drive: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
-                            time.sleep(0.01)
-                            self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder при Gear Lever reverse: {hex((Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.Warning_level_1 and Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.No_Warning):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 4:
-                            self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning при Gear Lever drive: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) )}")
-                            time.sleep(0.01)
-                            self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning при Gear Lever reverse: {hex((Result.frame[1].data[1] & SecondRowCenterSafetyBeltWarning.Not_used))}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[1] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.Warning_level_1 and Result.frame[1].data[1] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.No_Warning):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 3:
-                            self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning при Gear Lever drive: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
-                            time.sleep(0.01)
-                            self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning при Gear Lever reverse: {hex((Result.frame[1].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[2] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.Warning_level_1 and Result.frame[1].data[2] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.No_Warning):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
-                        case 5:
-                            self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning при Gear Lever drive: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}")
-                            time.sleep(0.01)
-                            self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning при Gear Lever reverse: {hex((Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}")
-                            time.sleep(0.01)
-                            if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.Warning_level_1 and Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.No_Warning):
-                                self.got_res_SBR_brs.append("Success")
-                            else:
-                                self.got_res_SBR_brs.append("Fail")
+                    case 0x46:
+                        for i in range(0,2):
+                            self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[i].timestamp)}   id:{str(hex(Result.frame[i].id))}   DLC:{str(Result.frame[i].length)}   Data:{str(Result.frame[i].data.hex())}")
+                        time.sleep(0.05)
+                        match Command.Seatbelt_position:
+                            case 1:
+                                self.got_res_SBR_brs.append(
+                                    f"Значение DriverSafetyBeltReminder по истечении таймаута: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}\nЗначение DriverSafetyBeltReminder после сброса: {hex((Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.No_Warning and Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.Warning_level_1):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 2:
+                                self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder по истечении таймаута: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}\nЗначение FrontPassengerSafetyBeltReminder после сброса: {hex((Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.No_Warning and Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.Warning_level_1):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 4:
+                                self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning по истечении таймаута: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) )}\nЗначение SecondRowCenterSafetyBeltWarning после сброса: {hex((Result.frame[1].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) )}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.No_Warning and Result.frame[1].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.Warning_level_1):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 3:
+                                self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning по истечении таймаута: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}\nЗначение SecondRowRightSafetyBeltWarning после сброса: {hex((Result.frame[1].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.No_Warning and Result.frame[1].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.Warning_level_1):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 5:
+                                self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning по истечении таймаута: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}\nЗначение SecondRowLeftSetyBeltWarning после сброса: {hex((Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.No_Warning and Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.Warning_level_1):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                    case 0x47:
+                        self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
+                        time.sleep(0.02)
+                        self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[1].timestamp)}   id:{str(hex(Result.frame[1].id))}   DLC:{str(Result.frame[1].length)}   Data:{str(Result.frame[1].data.hex())}")
+                        match Command.Seatbelt_position:
+                            case 1:
+                                self.got_res_SBR_brs.append( f"Значение DriverSafetyBeltReminder при закрытой двери: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}")
+                                time.sleep(0.02)
+                                self.got_res_SBR_brs.append( f"Значение DriverSafetyBeltReminder при открытой двери: {hex((Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used != DriverSafetyBeltReminder.No_Warning and Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.No_Warning):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 2:
+                                self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder при закрытой двери: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
+                                time.sleep(0.01)
+                                self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder при открытой двери: {hex((Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used != FrontPassengerSafetyBeltReminder.No_Warning and Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.No_Warning):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 4:
+                                self.got_res_SBR_brs.append( f"Значение SecondRowCenterSafetyBeltWarning при закрытой двери: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) )}")
+                                time.sleep(0.01)
+                                self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning при открытой двери: {hex((Result.frame[1].data[1] & SecondRowCenterSafetyBeltWarning.Not_used))}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used != SecondRowCenterSafetyBeltWarning.No_Warning and Result.frame[1].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.No_Warning):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 3:
+                                self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning при закрытой двери: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
+                                time.sleep(0.01)
+                                self.got_res_SBR_brs.append( f"Значение SecondRowRightSafetyBeltWarning при открытой двери: {hex((Result.frame[1].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used != SecondRowRightSafetyBeltWarning.No_Warning and Result.frame[1].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.No_Warning):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 5:
+                                self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning при закрытой двери:: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}")
+                                time.sleep(0.01)
+                                self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning при открытой двери:: {hex((Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used) >> SecondRowLeftSafetyBeltWarning.shift)}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used != SecondRowLeftSafetyBeltWarning.No_Warning and Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.No_Warning):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                    case 0x48:
+                        self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
+                        time.sleep(0.01)
+                        self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[1].timestamp)}   id:{str(hex(Result.frame[1].id))}   DLC:{str(Result.frame[1].length)}   Data:{str(Result.frame[1].data.hex())}")
+                        match Command.Seatbelt_position:
+                            case 1:
+                                self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder при Gear Lever drive: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}")
+                                time.sleep(0.01)
+                                self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder при Gear Lever reverse: {hex((Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}")
+                                time.sleep(0.01)
+                                if ((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.Warning_level_1) and (Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.No_Warning)):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 2:
+                                self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder при Gear Lever drive: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
+                                time.sleep(0.01)
+                                self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder при Gear Lever reverse: {hex((Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.Warning_level_1 and Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.No_Warning):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 4:
+                                self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning при Gear Lever drive: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) )}")
+                                time.sleep(0.01)
+                                self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning при Gear Lever reverse: {hex((Result.frame[1].data[1] & SecondRowCenterSafetyBeltWarning.Not_used))}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[1] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.Warning_level_1 and Result.frame[1].data[1] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.No_Warning):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 3:
+                                self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning при Gear Lever drive: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
+                                time.sleep(0.01)
+                                self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning при Gear Lever reverse: {hex((Result.frame[1].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[2] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.Warning_level_1 and Result.frame[1].data[2] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.No_Warning):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
+                            case 5:
+                                self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning при Gear Lever drive: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}")
+                                time.sleep(0.01)
+                                self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning при Gear Lever reverse: {hex((Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}")
+                                time.sleep(0.01)
+                                if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.Warning_level_1 and Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.No_Warning):
+                                    self.got_res_SBR_brs.append("Success")
+                                else:
+                                    self.got_res_SBR_brs.append("Fail")
 
-                case 0x49:
-                    self.acc_SBR_brs.append(
-                        f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
-                    time.sleep(0.02)
-                    self.acc_SBR_brs.append(
-                        f"Timestamp:{str(Result.frame[1].timestamp)}   id:{str(hex(Result.frame[1].id))}   DLC:{str(Result.frame[1].length)}   Data:{str(Result.frame[1].data.hex())}")
+                    case 0x49:
+                        self.acc_SBR_brs.append(
+                            f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
+                        time.sleep(0.02)
+                        self.acc_SBR_brs.append(
+                            f"Timestamp:{str(Result.frame[1].timestamp)}   id:{str(hex(Result.frame[1].id))}   DLC:{str(Result.frame[1].length)}   Data:{str(Result.frame[1].data.hex())}")
 
-                    self.got_res_SBR_brs.append("При отсутствии пассажира")
-                    time.sleep(0.02)
-                    self.got_res_SBR_brs.append(f"PassengerPresenceState: {hex((Result.frame[0].data[0] & 0b00000011))}")
-                    time.sleep(0.02)
-                    self.got_res_SBR_brs.append("При наличии пассажира")
-                    time.sleep(0.01)
-                    self.got_res_SBR_brs.append(f"PassengerPrecsenceState: {hex((Result.frame[1].data[0] & 0b00000011))}")
-                    if((Result.frame[0].data[0] & 0b00000011)==1 and (Result.frame[1].data[0] & 0b00000011) ==2):
-                        self.got_res_SBR_brs.append("Success")
-                    else:
-                        self.got_res_SBR_brs.append("Fail")
-                case 0x4A:
-                    self.acc_SBR_brs.append(
-                        f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
-                    time.sleep(0.02)
-                    self.acc_SBR_brs.append(
-                        f"Timestamp:{str(Result.frame[1].timestamp)}   id:{str(hex(Result.frame[1].id))}   DLC:{str(Result.frame[1].length)}   Data:{str(Result.frame[1].data.hex())}")
-                    time.sleep(0.02)
-                    self.got_res_SBR_brs.append(f"PassengerAIRBAG_inhibition при отключенной ПБ: {hex((Result.frame[0].data[1] & 0b00001000) >> 3)}")
-                    time.sleep(0.02)
-                    self.got_res_SBR_brs.append(f"PassengerAIRBAG_inhibition при включенной ПБ: {hex((Result.frame[1].data[1] & 0b00001000) >> 3)}")
-                    time.sleep(0.02)
-                    if(int(hex((Result.frame[0].data[1] & 0b00001000) >> 3),16)==1 and int(hex((Result.frame[1].data[1] & 0b00001000) >> 3),16)==0):
-                        self.got_res_SBR_brs.append("Success")
-                    else:
-                        self.got_res_SBR_brs.append("Fail")
-        self.start_SBR_btn.setEnabled(True)
+                        self.got_res_SBR_brs.append("При отсутствии пассажира")
+                        time.sleep(0.02)
+                        self.got_res_SBR_brs.append(f"PassengerPresenceState: {hex((Result.frame[0].data[0] & 0b00000011))}")
+                        time.sleep(0.02)
+                        self.got_res_SBR_brs.append("При наличии пассажира")
+                        time.sleep(0.01)
+                        self.got_res_SBR_brs.append(f"PassengerPrecsenceState: {hex((Result.frame[1].data[0] & 0b00000011))}")
+                        if((Result.frame[0].data[0] & 0b00000011)==1 and (Result.frame[1].data[0] & 0b00000011) ==2):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+                    case 0x4A:
+                        self.acc_SBR_brs.append(
+                            f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
+                        time.sleep(0.02)
+                        self.acc_SBR_brs.append(
+                            f"Timestamp:{str(Result.frame[1].timestamp)}   id:{str(hex(Result.frame[1].id))}   DLC:{str(Result.frame[1].length)}   Data:{str(Result.frame[1].data.hex())}")
+                        time.sleep(0.02)
+                        self.got_res_SBR_brs.append(f"PassengerAIRBAG_inhibition при отключенной ПБ: {hex((Result.frame[0].data[1] & 0b00001000) >> 3)}")
+                        time.sleep(0.02)
+                        self.got_res_SBR_brs.append(f"PassengerAIRBAG_inhibition при включенной ПБ: {hex((Result.frame[1].data[1] & 0b00001000) >> 3)}")
+                        time.sleep(0.02)
+                        if(int(hex((Result.frame[0].data[1] & 0b00001000) >> 3),16)==1 and int(hex((Result.frame[1].data[1] & 0b00001000) >> 3),16)==0):
+                            self.got_res_SBR_brs.append("Success")
+                        else:
+                            self.got_res_SBR_brs.append("Fail")
+        except:
+            self.got_res_SBR_brs.append("Возникла ошибка.Попробуйте ещё раз")
+        self.EnableAll()
         self.STOP_BTN_5.setEnabled(False)
         self.UART.close()
 
@@ -4893,7 +5127,11 @@ class Ui_MainWindow(object):
 
     def EDR_num_read(self):
         self.EDR_OTHER_DATA_BRS.clear()
-        self.UART.open()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
         Result=Messages.TestData()
         Command = Messages.TestData()
         Command.method = 0
@@ -4915,11 +5153,8 @@ class Ui_MainWindow(object):
             self.EDR_OTHER_DATA_BRS.addItem("Возникла ошибка. Попробуйте ещё раз")
         self.UART.flush()
         self.UART.close()
-        self.EDR1_BTN.setEnabled(True)
-        self.EDR2_BTN.setEnabled(True)
-        self.EDR3_BTN.setEnabled(True)
-        self.READ_NUM_BTN.setEnabled(True)
-        self.EDR_STOP_BTN.setEnabled(True)
+        self.EnableAll()
+        self.EDR_STOP_BTN.setEnabled(False)
 
     def run_EDR_num_read(self):
         Receiver = threading.Thread(target=self.EDR_num_read)
@@ -4928,7 +5163,11 @@ class Ui_MainWindow(object):
         self.Precrash_data_table.clearContents()
         self.Crash_data_table.clearContents()
         self.EDR_OTHER_DATA_BRS.clear()
-        self.UART.open()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
         #self.READ_NUM_BTN.setDisabled(True)
         #self.EDR_STOP_BTN.setDisabled(True)
         Command = Messages.TestData()
@@ -4951,7 +5190,7 @@ class Ui_MainWindow(object):
                 for index in bytes_read:
                     f.write(str(hex(bytes_read[index]))+' ')'''
                 Result = Parse_EDR(bytes_read)
-                for i in range(10, 310, 10):
+                for i in range(10, 260, 10):
                     self.Crash_data_table.setItem(int(i / 10) -1, 0, QtWidgets.QTableWidgetItem(f"{i}"))
                     self.Crash_data_table.setItem(int(i / 10) - 1, 1, QtWidgets.QTableWidgetItem(f"{Result[0][int(i/10) - 1]}"))
                     self.Crash_data_table.setItem(int(i / 10) - 1, 2, QtWidgets.QTableWidgetItem(f"{Result[1][int(i/10) - 1]}"))
@@ -4979,18 +5218,20 @@ class Ui_MainWindow(object):
             self.EDR_OTHER_DATA_BRS.addItem("Ошибка чтения EDR. Попробуйте ещё раз")
         self.UART.flush()
         self.UART.close()
-        self.EDR1_BTN.setEnabled(True)
-        self.EDR2_BTN.setEnabled(True)
-        self.EDR3_BTN.setEnabled(True)
-        self.READ_NUM_BTN.setEnabled(True)
-        self.EDR_STOP_BTN.setEnabled(True)
+        self.EnableAll()
+
+        self.EDR_STOP_BTN.setEnabled(False)
 
     def run_EDR_read(self, num):
         Receiver = threading.Thread(target=self.EDR_read,args=(num,))
         Receiver.start()
     def update_params(self):
-        self.UPDATE_PARAMS_BTN.setDisabled(True)
-        self.UART.open()
+        self.DisableAll()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -5026,25 +5267,29 @@ class Ui_MainWindow(object):
         self.UART.write(PARAMS_ARRAY)
         received_len = self.UART.read(2).hex()
         if (received_len == ''):
-            self.PARAM_RESULT_BRS.append("Остановлено")
+            self.PARAM_RESULT_BRS_2.append("Остановлено")
         else:
             bytes_read = self.UART.read(int(received_len, 16))
             Result.ParseFromString(bytes_read)
             if((hex(Result.frame[1].data[1])=='0x6e'and hex(Result.frame[3].data[1])=='0x6e'and hex(Result.frame[5].data[1])=='0x6e'and hex(Result.frame[7].data[1])=='0x6e'and hex(Result.frame[9].data[1])=='0x6e'and hex(Result.frame[11].data[1])=='0x6e'and hex(Result.frame[13].data[1])=='0x6e'and hex(Result.frame[15].data[1])=='0x6e'and hex(Result.frame[1].data[1])=='0x6e'and hex(Result.frame[17].data[1])=='0x6e'and hex(Result.frame[19].data[1])=='0x6e'and hex(Result.frame[21].data[1])=='0x6e'and hex(Result.frame[23].data[1])=='0x6e')):
-                self.PARAM_RESULT_BRS.append("Успешное обновление")
+                self.PARAM_RESULT_BRS_2.append("Успешное обновление")
             else:
-                self.PARAM_RESULT_BRS.append("Ошибка обновления параметров")
+                self.PARAM_RESULT_BRS_2.append("Ошибка обновления параметров")
             for i in range(0,12):
-                self.PARAM_RESULT_BRS.append(f"Отправлено:{str(Result.frame[2*i].data.hex())}\nПринято:{str(Result.frame[2*i+1].data.hex())}")
+                self.PARAM_RESULT_BRS_2.append(f"Отправлено:{str(Result.frame[2*i].data.hex())}\nПринято:{str(Result.frame[2*i+1].data.hex())}")
                 time.sleep(0.02)
         self.UART.close()
-        self.UPDATE_PARAMS_BTN.setEnabled(True)
+        self.EnableAll()
     def run_update_params(self):
         Receiver = threading.Thread(target=self.update_params)
         Receiver.start()
     def read_params(self):
-        self.read_params_btn.setDisabled(True)
-        self.UART.open()
+        self.DisableAll()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -5053,48 +5298,100 @@ class Ui_MainWindow(object):
         self.UART.write(Command)
         received_len = self.UART.read(2).hex()
         if (received_len == ''):
-            self.got_res_SBR_brs.append("Остановлено")
+            self.PARAM_RESULT_BRS_2.append("Остановлено")
         else:
             try:
                 bytes_read = self.UART.read(int(received_len, 16))
                 Result.ParseFromString(bytes_read)
-                self.PARAM_RESULT_BRS.append(f"Limit Ares front (10\u207b\u00b9 m/s\u00B2):{(int((Result.frame[1].data[4])<<8)+int(Result.frame[1].data[5]))}")
+                self.PARAM_RESULT_BRS_2.append(f"Limit Ares front (10\u207b\u00b9 m/s\u00B2):{(int((Result.frame[1].data[4])<<8)+int(Result.frame[1].data[5]))}")
                 time.sleep(0.02)
-                self.PARAM_RESULT_BRS.append(f"Limit Ares side (10\u207b\u00b9 m/s\u00B2):{(int((Result.frame[3].data[4])<<8)+int(Result.frame[3].data[5]))}")
+                self.PARAM_RESULT_BRS_2.append(f"Limit Ares side (10\u207b\u00b9 m/s\u00B2):{(int((Result.frame[3].data[4])<<8)+int(Result.frame[3].data[5]))}")
                 time.sleep(0.02)
-                self.PARAM_RESULT_BRS.append(f"Limit Sx,Sy front (10\u207b\u2076 m):{round((((Result.frame[5].data[4])<<8)+int(Result.frame[5].data[5])) ,0)}")
+                self.PARAM_RESULT_BRS_2.append(f"Limit Sx,Sy front (10\u207b\u2076 m):{round((((Result.frame[5].data[4])<<8)+int(Result.frame[5].data[5])) ,0)}")
                 time.sleep(0.02)
-                self.PARAM_RESULT_BRS.append(f"Limit Sx,Sy side (10\u207b\u2076 m):{round((((Result.frame[7].data[4])<<8)+int(Result.frame[7].data[5])) ,0)}")
+                self.PARAM_RESULT_BRS_2.append(f"Limit Sx,Sy side (10\u207b\u2076 m):{round((((Result.frame[7].data[4])<<8)+int(Result.frame[7].data[5])) ,0)}")
                 time.sleep(0.02)
-                self.PARAM_RESULT_BRS.append(f"Limit Sres front (10\u207b\u2076 m):{round((((Result.frame[9].data[4])<<8)+int(Result.frame[9].data[5])) ,0)}")
+                self.PARAM_RESULT_BRS_2.append(f"Limit Sres front (10\u207b\u2076 m):{round((((Result.frame[9].data[4])<<8)+int(Result.frame[9].data[5])) ,0)}")
                 time.sleep(0.02)
-                self.PARAM_RESULT_BRS.append(f"Limit Sres side (10\u207b\u2076 m):{round((((Result.frame[11].data[4])<<8)+int(Result.frame[11].data[5])) ,0)}")
+                self.PARAM_RESULT_BRS_2.append(f"Limit Sres side (10\u207b\u2076 m):{round((((Result.frame[11].data[4])<<8)+int(Result.frame[11].data[5])) ,0)}")
                 time.sleep(0.02)
-                self.PARAM_RESULT_BRS.append(f"T calc front (ms):{(int(Result.frame[13].data[4]))}")
+                self.PARAM_RESULT_BRS_2.append(f"T calc front (ms):{(int(Result.frame[13].data[4]))}")
                 time.sleep(0.02)
-                self.PARAM_RESULT_BRS.append(f"T calc side(ms):{(int(Result.frame[15].data[4]))}")
+                self.PARAM_RESULT_BRS_2.append(f"T calc side(ms):{(int(Result.frame[15].data[4]))}")
                 time.sleep(0.02)
-                self.PARAM_RESULT_BRS.append(f"Time to stop calculation(ms):{(int(Result.frame[17].data[4]))}")
+                self.PARAM_RESULT_BRS_2.append(f"Time to stop calculation(ms):{(int(Result.frame[17].data[4]))}")
                 time.sleep(0.02)
-                self.PARAM_RESULT_BRS.append(f"Sres impact front (10\u207b\u2076 m):{round((((Result.frame[19].data[4])<<8)+int(Result.frame[19].data[5])) ,0)}")
+                self.PARAM_RESULT_BRS_2.append(f"Sres impact front (10\u207b\u2076 m):{round((((Result.frame[19].data[4])<<8)+int(Result.frame[19].data[5])) ,0)}")
                 time.sleep(0.02)
-                self.PARAM_RESULT_BRS.append(f"Sres impact side (10\u207b\u2076 m):{round((((Result.frame[21].data[4])<<8)+int(Result.frame[21].data[5])) ,0)}")
+                self.PARAM_RESULT_BRS_2.append(f"Sres impact side (10\u207b\u2076 m):{round((((Result.frame[21].data[4])<<8)+int(Result.frame[21].data[5])) ,0)}")
                 time.sleep(0.02)
-                self.PARAM_RESULT_BRS.append(f"Delta Ares(m/s\u00B2):{(int(Result.frame[23].data[4]))}")
+                self.PARAM_RESULT_BRS_2.append(f"Delta Ares(m/s\u00B2):{(int(Result.frame[23].data[4]))}")
                 time.sleep(0.02)
             except:
-                self.PARAM_RESULT_BRS.append("Ошибка чтения парметров. Попробуйте ещё раз")
+                self.PARAM_RESULT_BRS_2.append("Ошибка чтения парметров. Попробуйте ещё раз")
         self.UART.close()
-        self.read_params_btn.setEnabled(True)
+        self.EnableAll()
 
     def run_read_params(self):
         Receiver = threading.Thread(target=self.read_params)
         Receiver.start()
+    def save_params(self,f_name):
+        try:
+            file = open(f_name, "w")
+            file.write(f"Limit_Ax = 0\n")
+            file.write(f"Limit_Ay = 0\n")
+            file.write(f"Limit_Ares_front = {self.LimitAresfront_input.value() / 10}\n")
+            self.PARAM_RESULT_BRS_2.append(f"Limit_Ares_front = {self.LimitAresfront_input.value() / 10}")
+            time.sleep(0.02)
+            file.write(f"Limit_Sx_Sy_front = {self.LimitSxSyfront_input.value() / 100}e-4\n")
+            self.PARAM_RESULT_BRS_2.append(f"Limit_Sx_Sy_front = {self.LimitSxSyfront_input.value() / 100}e-4")
+            time.sleep(0.02)
+            file.write(f"Limit_Sres_front = {self.LimitSresfront_input.value() / 100}e-4\n")
+            self.PARAM_RESULT_BRS_2.append(f"Limit_Sres_front = {self.LimitSresfront_input.value() / 100}e-4")
+            time.sleep(0.02)
+            file.write(f"delta_Ares = {self.deltaAres_input.value()}\n")
+            self.PARAM_RESULT_BRS_2.append(f"delta_Ares = {self.deltaAres_input.value()}")
+            time.sleep(0.02)
+            file.write(f"Limit_Ares_side = {self.LimitAresside_input.value() / 10}\n")
+            self.PARAM_RESULT_BRS_2.append(f"Limit_Ares_side = {self.LimitAresside_input.value() / 10}")
+            time.sleep(0.02)
+            file.write(f"Limit_Sx_Sy_side = {self.LimitSxSyside_input.value() / 100}e-4\n")
+            self.PARAM_RESULT_BRS_2.append(f"Limit_Sx_Sy_side = {self.LimitSxSyside_input.value() / 100}e-4")
+            time.sleep(0.02)
+            file.write(f"Limit_Sres_side = {self.LimitSresside_input.value() / 100}e-4\n")
+            self.PARAM_RESULT_BRS_2.append(f"Limit_Sres_side = {self.LimitSresside_input.value() / 100}e-4")
+            time.sleep(0.02)
+            file.write(f"T_calc_front = {self.Tcalc_input.value()}\n")
+            self.PARAM_RESULT_BRS_2.append(f"T_calc_front = {self.Tcalc_input.value()}")
+            time.sleep(0.02)
+            file.write(f"T_calc_side = {self.Tcalc2_input.value()}\n")
+            self.PARAM_RESULT_BRS_2.append(f"T_calc_side = {self.Tcalc2_input.value()}")
+            time.sleep(0.02)
+            file.write(f"Time_to_stop = {self.Timetostopcalc_input.value() / 1000}e3\n")
+            self.PARAM_RESULT_BRS_2.append(f"Time_to_stop = {self.Timetostopcalc_input.value() / 1000}e3")
+            time.sleep(0.02)
+            file.write(f"Sres_impact_front = {self.Sresimpactfront_input.value() / 100}e-4\n")
+            self.PARAM_RESULT_BRS_2.append(f"Sres_impact_front = {self.Sresimpactfront_input.value() / 100}e-4")
+            time.sleep(0.02)
+            file.write(f"Sres_impact_side = {self.Sresimpact_side_input.value() / 100}e-4\n")
+            self.PARAM_RESULT_BRS_2.append(f"Sres_impact_side = {self.Sresimpact_side_input.value() / 100}e-4")
+            time.sleep(0.02)
+            file.close()
+            self.PARAM_RESULT_BRS_2.append("\nНабор успешно сохранён")
+            time.sleep(0.02)
+        except:
+            self.PARAM_RESULT_BRS_2.append('Возникла ошибка')
+    def run_save_params(self,file):
+        Receiver = threading.Thread(target=self.save_params,args=(file,))
+        Receiver.start()
     def Reprogrammer(self):
-        faulthandler.enable()
-        self.pushButton_3.setDisabled(True)
+        self.DisableAll()
         self.progressBar.setValue(0)
-        self.UART.open()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
         Command = Messages.TestData()
         Command.method = 0
         Command.testNumber = 0x88
@@ -5102,7 +5399,7 @@ class Ui_MainWindow(object):
         Command = Command.SerializeToString()
         self.UART.write(Command)
         self.UART.close()
-        #time.sleep(0.5)
+
         appHex = HexOp(self.file)
         appHex.readHex()
         hexsize = appHex.getHexZise()
@@ -5149,9 +5446,8 @@ class Ui_MainWindow(object):
         time.sleep(1)
         signal.progress_changed.emit(100)
         self.LOG_print(f"ECU was reprogrammed in{round(timetaken/60,0)} min and {round(timetaken%60,0)} sec.")
-        self.toolButton.setEnabled(True)
+        self.EnableAll()
         UARTDriver.stopUART()
-        faulthandler.disable()
         return
 
     def Reprogrammer_run(self):
@@ -5163,186 +5459,176 @@ class Ui_MainWindow(object):
         self.UART.flushOutput()
         self.UART.close()
     def CheckConnection(self):
-
-        self.UART.open()
-        self.UART.timeout = 2
-        check=bytes([0xbb])
-        self.UART.write(check)
-        bytes_read=self.UART.read(1)
-        if(len(bytes_read)==0):
-            bytes_read=bytes([0x70])
-        if(bytes_read[0]==0xBB):
-            self.COM_PORT_BRS.append("Связь с СТО установлена")
-            self.start_SBR_btn.setEnabled(True)
-            self.start_acc_btn.setEnabled(True)
-            self.Run_Init_btn.setEnabled(True)
-            self.CHECK_CRASH_DETECTION_BTN.setEnabled(True)
-            self.UDS_RUN_BTN.setEnabled(True)
-            self.perod_periodic_btn.setEnabled(True)
-            self.start_trig_btn.setEnabled(True)
-            self.DIAG_CLEAR_DTC_BTN.setEnabled(True)
-            self.DIAG_READ_0x08_BTN.setEnabled(True)
-            self.DIAG_READ_0x09_BTN.setEnabled(True)
-            self.DIAG_EXTDIAG_BTN.setEnabled(True)
-            self.DIAG_VIN0_BTN.setEnabled(True)
-            self.DIAG_VIN1_BTN.setEnabled(True)
-            self.DIAG_RESET_BTN.setEnabled(True)
-            self.READ_NUM_BTN.setEnabled(True)
-            self.START_VALID_AB_BTN.setEnabled(True)
-            self.toolButton.setEnabled(True)
-            self.DIAG_UPD_CAN_MSG_BTN.setEnabled(True)
-            self.DIAG_STOP_CAN_MSG_BTN.setEnabled(True)
-            self.read_snap_btn.setEnabled(True)
-            self.UPDATE_PARAMS_BTN.setEnabled(True)
-            self.STO_VER_BTN.setEnabled(True)
-            self.ACC_VER_BTN.setEnabled(True)
-            self.Manufacture_mode_btn.setEnabled(True)
-            self.read_params_btn.setEnabled(True)
-            self.WRITE_ACU_BTN.setEnabled(True)
-            self.EDR1_BTN.setEnabled(True)
-            self.EDR2_BTN.setEnabled(True)
-            self.EDR3_BTN.setEnabled(True)
-            self.EDR_STOP_BTN.setEnabled(True)
-        else:
+        try:
+            self.UART.open()
+            self.UART.timeout = 2
+            check=bytes([0xbb])
+            self.UART.write(check)
+            bytes_read=self.UART.read(1)
+            if(len(bytes_read)==0):
+                bytes_read=bytes([0x70])
+            if(bytes_read[0]==0xBB):
+                self.COM_PORT_BRS.append("Связь с СТО установлена")
+                self.EnableAll()
+                self.UART.timeout = 300
+                self.UART.close()
+            else:
+                self.COM_PORT_BRS.append("Ошибка подключения.Попробуйте ещё раз")
+                time.sleep(0.02)
+                return
+        except:
+            time.sleep(0.01)
             self.COM_PORT_BRS.append("Ошибка подключения.Попробуйте ещё раз")
-        self.UART.timeout=300
-        self.UART.close()
+            time.sleep(0.02)
+            return
 
-
+    def EnableAll(self):
+        self.start_SBR_btn.setEnabled(True)
+        self.start_acc_btn.setEnabled(True)
+        self.Run_Init_btn.setEnabled(True)
+        self.CHECK_CRASH_DETECTION_BTN.setEnabled(True)
+        self.UDS_RUN_BTN.setEnabled(True)
+        self.perod_periodic_btn.setEnabled(True)
+        self.start_trig_btn.setEnabled(True)
+        self.DIAG_CLEAR_DTC_BTN.setEnabled(True)
+        self.DIAG_READ_0x08_BTN.setEnabled(True)
+        self.DIAG_READ_0x09_BTN.setEnabled(True)
+        self.DIAG_VIN0_BTN.setEnabled(True)
+        self.DIAG_VIN1_BTN.setEnabled(True)
+        self.DIAG_RESET_BTN.setEnabled(True)
+        self.READ_NUM_BTN.setEnabled(True)
+        self.START_VALID_AB_BTN.setEnabled(True)
+        self.toolButton.setEnabled(True)
+        self.DIAG_UPD_CAN_MSG_BTN.setEnabled(True)
+        self.DIAG_STOP_CAN_MSG_BTN.setEnabled(True)
+        self.read_snap_btn.setEnabled(True)
+        self.UPDATE_PARAMS_BTN.setEnabled(True)
+        self.STO_VER_BTN.setEnabled(True)
+        self.ACC_VER_BTN.setEnabled(True)
+        self.Manufacture_mode_btn.setEnabled(True)
+        self.read_params_btn.setEnabled(True)
+        self.WRITE_ACU_BTN.setEnabled(True)
+        self.EDR1_BTN.setEnabled(True)
+        self.EDR2_BTN.setEnabled(True)
+        self.EDR3_BTN.setEnabled(True)
+        self.EDR_STOP_BTN.setEnabled(True)
+        self.READ_VERSBTN.setEnabled(True)
+        self.SET_WM_BTN.setEnabled(True)
+        self.manual_mode_btn.setEnabled(True)
+    def DisableAll(self):
+        self.STO_VER_BTN.setDisabled(True)
+        self.ACC_VER_BTN.setDisabled(True)
+        self.Manufacture_mode_btn.setDisabled(True)
+        self.start_SBR_btn.setDisabled(True)
+        self.start_acc_btn.setDisabled(True)
+        self.Run_Init_btn.setDisabled(True)
+        self.CHECK_CRASH_DETECTION_BTN.setDisabled(True)
+        self.UDS_RUN_BTN.setDisabled(True)
+        self.EDR1_BTN.setDisabled(True)
+        self.EDR2_BTN.setDisabled(True)
+        self.EDR3_BTN.setDisabled(True)
+        self.EDR_STOP_BTN.setDisabled(True)
+        self.perod_periodic_btn.setDisabled(True)
+        self.read_params_btn.setDisabled(True)
+        self.start_trig_btn.setDisabled(True)
+        self.DIAG_CLEAR_DTC_BTN.setDisabled(True)
+        self.DIAG_READ_0x08_BTN.setDisabled(True)
+        self.DIAG_READ_0x09_BTN.setDisabled(True)
+        self.DIAG_VIN0_BTN.setDisabled(True)
+        self.DIAG_VIN1_BTN.setDisabled(True)
+        self.DIAG_RESET_BTN.setDisabled(True)
+        self.START_VALID_AB_BTN.setDisabled(True)
+        self.toolButton.setDisabled(True)
+        self.DIAG_UPD_CAN_MSG_BTN.setDisabled(True)
+        self.DIAG_STOP_CAN_MSG_BTN.setDisabled(True)
+        self.read_snap_btn.setDisabled(True)
+        self.UPDATE_PARAMS_BTN.setDisabled(True)
+        self.WRITE_ACU_BTN.setDisabled(True)
+        self.READ_NUM_BTN.setDisabled(True)
+        self.READ_VERSBTN.setDisabled(True)
+        self.SET_WM_BTN.setDisabled(True)
+        self.manual_mode_btn.setDisabled(True)
     def CheckConnection_run(self):
         Receiver = threading.Thread(target=self.CheckConnection)
         Receiver.start()
-    def run_model_single(self):
-        absolute_path = os.path.dirname(__file__)
-        relative_path = "pillows\\lib\\test.exe"
-        full_path = os.path.join(absolute_path, relative_path)
-        params=tests.get(self.data_selector.currentText())
-        is_single_test = 1
-        inc_fire_tests = 1
-        inc_misuse_tests = 1
-        inc_exp_tests = 1
-        single_test_type = params[0]  ##0-fire 1-misuse 2-exp
-        single_fold_num = params[1]  ## check description
-        single_testnum = params[2]
+
+
+    def run_model_all(self):
+        select_all_tests = str(1)
+        main_fold_dict = dict()
+        os.chdir("pillows")
+        folder = self.model_test_selector.currentText()
+        os.chdir('test_folder')
+        main_fold = os.listdir()
+        for i in range(0, len(main_fold)):
+            main_fold_dict.update({main_fold[i]: i + 1})
+        #print(main_fold_dict)
+        os.chdir('..')
+        #print(main_fold_dict.get(folder))
         tmp_stdout = sys.stdout
         result = StringIO()
         sys.stdout = result
-
-        proc = subprocess.Popen(
-            [full_path, absolute_path+"\pillows\params.txt" , str(is_single_test), str(inc_fire_tests), str(inc_misuse_tests),
-             str(inc_exp_tests), str(single_test_type), str(single_fold_num), str(single_testnum), absolute_path+"\pillows\lib\yres.txt"],#поменять зависимости
-            stdout=subprocess.PIPE)
-        time.sleep(3)
+        proc = subprocess.Popen(['main.exe', select_all_tests, str(main_fold_dict.get(folder))],stdout=subprocess.PIPE)
+        os.chdir('..')
+        time.sleep(1)
         sys.stdout = tmp_stdout
         while True:
             try:
-                line = proc.stdout.readline()
+                line = proc.stdout.read()
+                #line = proc.stdout.readline()
                 decoded = line.decode("utf-8")
-                splited = decoded.split(";")
-                if(splited[0]=='name_type_full'):
-                    continue
-                self.single_test_result_brs.append("-----------------------------------------------------------------------------------\n")
-                time.sleep(0.01)
-                self.single_test_result_brs.append(f"test type:{splited[0]}\n")
-                time.sleep(0.01)
-                self.single_test_result_brs.append(f"test name:{splited[1]}\n")
-                time.sleep(0.01)
-                self.single_test_result_brs.append(f"TTF DAB={splited[2]}\n")
-                time.sleep(0.01)
-                self.single_test_result_brs.append(f"TTF PAB={splited[3]}\n")
-                time.sleep(0.01)
-                self.single_test_result_brs.append(f"TTF DPT={splited[4]}\n")
-                time.sleep(0.01)
-                self.single_test_result_brs.append(f"TTF PPT={splited[4]}\n")
-                time.sleep(0.01)
-                self.single_test_result_brs.append(f"TTF DSAB={splited[5]}\n")
-                time.sleep(0.01)
-                self.single_test_result_brs.append(f"TTF PSAB={splited[5]}\n")
-                time.sleep(0.01)
-                self.single_test_result_brs.append(f"TTF DCAB={splited[6]}\n")
-                time.sleep(0.01)
-                self.single_test_result_brs.append(f"TTF PCAB={splited[6]}\n")
-                time.sleep(0.01)
+                self.PARAM_RESULT_BRS.append(decoded)
+                time.sleep(0.1)
                 break
             except:
-                self.single_test_result_brs.append(f"Error occured, please try again")
+                self.PARAM_RESULT_BRS.append(f"Error occured, please try again")
                 break
+        proc.terminate()
 
 
 
     def run_thread_model_single(self):
         Receiver = threading.Thread(target=self.run_model_single)
         Receiver.start()
-    def run_model_all(self):
-        faulthandler.enable()
-        self.CHECK_PARAM_VALID_BTN.setDisabled(True)
-        time.sleep(0.01)
-        self.PARAMS_PROCESS_BRS.append("Running model")
-        time.sleep(0.01)
-        absolute_path = os.path.dirname(__file__)
-        relative_path = "pillows\\lib\\test.exe"
-        full_path = os.path.join(absolute_path, relative_path)
-        is_XGF = 0
-        is_FIRE = 0
-        is_EXP = 0
-        is_single_test = 0
-        inc_fire_tests = int(self.FIRE.isChecked())
-        inc_misuse_tests = int(self.MISUSE.isChecked())
-        inc_exp_tests = int(self.EXP.isChecked())
-        single_test_type = 1  ##0-fire 1-misuse 2-exp
-        single_fold_num = 2  ## check description
-        single_testnum = 2
+    def run_model_single(self):
+        select_all_tests = str(0)
+        main_fold_dict = dict()
+        os.chdir("pillows")
+        folder = self.model_test_selector.currentText()
+        test = self.model_test_selector2.currentText()
+        os.chdir('test_folder')
+        main_fold = os.listdir()
+        for i in range(0, len(main_fold)):
+            main_fold_dict.update({main_fold[i]: i + 1})
+        #print(main_fold_dict)
+        os.chdir('..')
+        #print(main_fold_dict.get(folder))
         tmp_stdout = sys.stdout
         result = StringIO()
         sys.stdout = result
-
-        proc = subprocess.Popen(
-            [full_path, absolute_path+"\pillows\params.txt", str(is_single_test), str(inc_fire_tests), str(inc_misuse_tests),
-             str(inc_exp_tests), str(single_test_type), str(single_fold_num), str(single_testnum), absolute_path+"\pillows\lib\TEST_RESULT.csv"],
-            stdout=subprocess.PIPE)
+        proc = subprocess.Popen(['main.exe', select_all_tests, str(main_fold_dict.get(folder)), str(self.tests_dict.get(test))], stdout=subprocess.PIPE)
+        os.chdir('..')
+        time.sleep(1)
         sys.stdout = tmp_stdout
-        time.sleep(3)
         while True:
             try:
-                line = proc.stdout.readline()
+                line = proc.stdout.read()
+                # line = proc.stdout.readline()
                 decoded = line.decode("utf-8")
-                splited = decoded.split(";")
-                if(splited[0]=='name_type_full'):
-                    continue
-                self.PARAMS_PROCESS_BRS.append("---------------------------------------------------------------------------------------------\n")
-                time.sleep(0.01)
-                self.PARAMS_PROCESS_BRS.append(f"test type:{splited[0]}\n")
-                time.sleep(0.01)
-                self.PARAMS_PROCESS_BRS.append(f"test name:{splited[1]}\n")
-                time.sleep(0.01)
-                self.PARAMS_PROCESS_BRS.append(f"TTF DAB={splited[2]}\n")
-                time.sleep(0.01)
-                self.PARAMS_PROCESS_BRS.append(f"TTF PAB={splited[3]}\n")
-                time.sleep(0.01)
-                self.PARAMS_PROCESS_BRS.append(f"TTF DPT={splited[4]}\n")
-                time.sleep(0.01)
-                self.PARAMS_PROCESS_BRS.append(f"TTF PPT={splited[4]}\n")
-                time.sleep(0.01)
-                self.PARAMS_PROCESS_BRS.append(f"TTF DSAB={splited[5]}\n")
-                time.sleep(0.01)
-                self.PARAMS_PROCESS_BRS.append(f"TTF PSAB={splited[5]}\n")
-                time.sleep(0.01)
-                self.PARAMS_PROCESS_BRS.append(f"TTF DCAB={splited[6]}\n")
-                time.sleep(0.01)
-                self.PARAMS_PROCESS_BRS.append(f"TTF PCAB={splited[6]}\n")
-                time.sleep(0.01)
+                self.PARAM_RESULT_BRS.append(decoded)
+                time.sleep(0.1)
+                break
             except:
+                self.PARAM_RESULT_BRS.append(f"Error occured, please try again")
                 break
-
-            if not line:
-                break
-            self.CHECK_PARAM_VALID_BTN.setDisabled(False)
+        proc.terminate()
     def run_thread_model_all(self):
         Receiver = threading.Thread(target=self.run_model_all)
         Receiver.start()
     def export_results(self):
-        os.chdir("D:\STO_gui\pillows\lib")
-        subprocess.call("TEST_RESULT.csv", shell=True)
+        os.chdir("D:\STO_gui\pillows")
+        subprocess.call("Results.csv", shell=True)
+        os.chdir("..")
         #process = subprocess.Popen(["D:\STO_gui\pillows\lib\TEST_RESULT.csv"],stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
     def run_export_results(self):
         Receiver = threading.Thread(target=self.export_results)
@@ -5351,8 +5637,12 @@ class Ui_MainWindow(object):
         self.progressBar.setValue(value)
 
     def to_manufacture_mode(self):
-        self.Manufacture_mode_btn.setDisabled(True)
-        self.UART.open()
+        self.DisableAll()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -5360,9 +5650,7 @@ class Ui_MainWindow(object):
         Command = Command.SerializeToString()
         self.UART.write(Command)
         received_len = self.UART.read(2).hex()
-
         bytes_read = self.UART.read(int(received_len, 16))
-        self.UART.close()
         Result.ParseFromString(bytes_read)
         self.VER_LOG_BRS.append("Вход в Security access:")
         self.VER_LOG_BRS.append(
@@ -5377,53 +5665,166 @@ class Ui_MainWindow(object):
         self.VER_LOG_BRS.append("Cброс к заводским настройкам:")
         self.VER_LOG_BRS.append(f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}")
         self.UART.close()
-        self.Manufacture_mode_btn.setEnabled(True)
+        self.EnableAll()
 
 
     def run_to_manufacture_mode(self):
         Receiver = threading.Thread(target=self.to_manufacture_mode)
         Receiver.start()
+    def set_working_mode(self):
+        self.DisableAll()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
+        Command = Messages.TestData()
+        Result = Messages.TestData()
+        Command.method = 0
+        Command.testNumber = 0x95
+        Command = Command.SerializeToString()
+        self.UART.write(Command)
+        received_len = self.UART.read(2).hex()
+        bytes_read = self.UART.read(int(received_len, 16))
+        Result.ParseFromString(bytes_read)
+        self.VER_LOG_BRS.append("Вход в Security access:")
+        self.VER_LOG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+        time.sleep(0.02)
+        self.VER_LOG_BRS.append(f"Отправлено:{str(Result.frame[2].data.hex())}\nПринято:{str(Result.frame[3].data.hex())}")
+        time.sleep(0.02)
+        self.VER_LOG_BRS.append( f"Отправлено:{str(Result.frame[4].data.hex())}\nПринято:{str(Result.frame[5].data.hex())}")
+        time.sleep(0.02)
+        self.VER_LOG_BRS.append("\nCмена режима")
+        time.sleep(0.02)
+        self.VER_LOG_BRS.append(f"Отправлено:{str(Result.frame[6].data.hex())}\nПринято:{str(Result.frame[7].data.hex())}")
+        time.sleep(0.02)
+        self.VER_LOG_BRS.append("\nПерезагрузка")
+        time.sleep(0.02)
+        self.VER_LOG_BRS.append(f"Отправлено:{str(Result.frame[8].data.hex())}\nПринято:{str(Result.frame[9].data.hex())}")
+        time.sleep(0.02)
+        self.UART.close()
+        self.EnableAll()
 
+    def run_set_working_mode(self):
+        Receiver = threading.Thread(target=self.set_working_mode)
+        Receiver.start()
+
+    def manual_mode(self):
+        self.DisableAll()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
+        Command = Messages.TestData()
+        Result = Messages.TestData()
+        Command.method = 0
+        Command.testNumber = 0x98
+        Command = Command.SerializeToString()
+        self.UART.write(Command)
+        received_len = self.UART.read(2).hex()
+        bytes_read = self.UART.read(int(received_len, 16))
+        Result.ParseFromString(bytes_read)
+        if(Result.measuredValue[0]==1):
+            self.COM_PORT_BRS.append("Переведено в ручной режим")
+        self.UART.close()
+        self.EnableAll()
+
+    def run_manual_mode(self):
+        Receiver = threading.Thread(target=self.manual_mode)
+        Receiver.start()
+    def read_ecu_version(self):
+        self.DisableAll()
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
+        Command = Messages.TestData()
+        Result = Messages.TestData()
+        Command.method = 0
+        Command.testNumber = 0x96
+        Command = Command.SerializeToString()
+        self.UART.write(Command)
+        try:
+            received_len = self.UART.read(2).hex()
+            bytes_read = self.UART.read(int(received_len, 16))
+            Result.ParseFromString(bytes_read)
+            self.VER_LOG_BRS.append(f"Отправлено:{str(Result.frame[0].data.hex())}\nПринято:{str(Result.frame[1].data.hex())}")
+            time.sleep(0.02)
+            if(Result.frame[1].data[4] == 0x01):
+                self.VER_LOG_BRS.append("Работа с СТО")
+            if (Result.frame[1].data[4] == 0x00):
+                self.VER_LOG_BRS.append("Работа с внутренним акселерометром")
+        except:
+            self.VER_LOG_BRS.append("Возникла ошибка.Попробуйте ещё раз")
+        self.UART.close()
+        self.EnableAll()
+
+    def run_read_ecu_version(self):
+        Receiver = threading.Thread(target=self.read_ecu_version)
+        Receiver.start()
     def file_updater(self):
-        file =open("params.txt","w")
+        os.chdir('pillows')
+        file =open("input_value.txt","w")
         file.write(f"Limit_Ax = 0\n")
         file.write(f"Limit_Ay = 0\n")
         file.write(f"Limit_Ares_front = {self.LimitAresfront_input.value()/10}\n")
-        self.single_test_result_brs.append(f"Limit_Ares_front = {self.LimitAresfront_input.value()/10}")
+        self.PARAM_RESULT_BRS_2.append(f"Limit_Ares_front = {self.LimitAresfront_input.value()/10}")
         file.write(f"Limit_Sx_Sy_front = {self.LimitSxSyfront_input.value()/100}e-4\n")
-        self.single_test_result_brs.append(f"Limit_Sx_Sy_front = {self.LimitSxSyfront_input.value()/100}e-4")
+        self.PARAM_RESULT_BRS_2.append(f"Limit_Sx_Sy_front = {self.LimitSxSyfront_input.value()/100}e-4")
         file.write(f"Limit_Sres_front = {self.LimitSresfront_input.value()/100}e-4\n")
-        self.single_test_result_brs.append(f"Limit_Sres_front = {self.LimitSresfront_input.value()/100}e-4")
+        self.PARAM_RESULT_BRS_2.append(f"Limit_Sres_front = {self.LimitSresfront_input.value()/100}e-4")
         file.write(f"delta_Ares = {self.deltaAres_input.value()}\n")
-        self.single_test_result_brs.append(f"delta_Ares = {self.deltaAres_input.value()}")
+        self.PARAM_RESULT_BRS_2.append(f"delta_Ares = {self.deltaAres_input.value()}")
         file.write(f"Limit_Ares_side = {self.LimitAresside_input.value()/10}\n")
-        self.single_test_result_brs.append(f"Limit_Ares_side = {self.LimitAresside_input.value()/10}")
+        self.PARAM_RESULT_BRS_2.append(f"Limit_Ares_side = {self.LimitAresside_input.value()/10}")
         file.write(f"Limit_Sx_Sy_side = {self.LimitSxSyside_input.value()/100}e-4\n")
-        self.single_test_result_brs.append(f"Limit_Sx_Sy_side = {self.LimitSxSyside_input.value()/100}e-4")
+        self.PARAM_RESULT_BRS_2.append(f"Limit_Sx_Sy_side = {self.LimitSxSyside_input.value()/100}e-4")
         file.write(f"Limit_Sres_side = {self.LimitSresside_input.value()/100}e-4\n")
-        self.single_test_result_brs.append(f"Limit_Sres_side = {self.LimitSresside_input.value()/100}e-4")
+        self.PARAM_RESULT_BRS_2.append(f"Limit_Sres_side = {self.LimitSresside_input.value()/100}e-4")
         file.write(f"T_calc_front = {self.Tcalc_input.value()}\n")
-        self.single_test_result_brs.append(f"T_calc_front = {self.Tcalc_input.value()}")
+        self.PARAM_RESULT_BRS_2.append(f"T_calc_front = {self.Tcalc_input.value()}")
         file.write(f"T_calc_side = {self.Tcalc2_input.value()}\n")
-        self.single_test_result_brs.append(f"T_calc_side = {self.Tcalc2_input.value()}")
+        self.PARAM_RESULT_BRS_2.append(f"T_calc_side = {self.Tcalc2_input.value()}")
         file.write(f"Time_to_stop = {self.Timetostopcalc_input.value()/1000}e3\n")
-        self.single_test_result_brs.append(f"Time_to_stop = {self.Timetostopcalc_input.value()/1000}e3")
+        self.PARAM_RESULT_BRS_2.append(f"Time_to_stop = {self.Timetostopcalc_input.value()/1000}e3")
         file.write(f"Sres_impact_front = {self.Sresimpactfront_input.value()/100}e-4\n")
-        self.single_test_result_brs.append(f"Sres_impact_front = {self.Sresimpactfront_input.value()/100}e-4")
+        self.PARAM_RESULT_BRS_2.append(f"Sres_impact_front = {self.Sresimpactfront_input.value()/100}e-4")
         file.write(f"Sres_impact_side = {self.Sresimpact_side_input.value()/100}e-4\n")
-        self.single_test_result_brs.append(f"Sres_impact_side = {self.Sresimpact_side_input.value()/100}e-4")
+        self.PARAM_RESULT_BRS_2.append(f"Sres_impact_side = {self.Sresimpact_side_input.value()/100}e-4")
+        file.close()
+        os.chdir('..')
 
 
     def run_file_updater(self):
         Receiver = threading.Thread(target=self.file_updater)
         Receiver.start()
 
+    def file_reader(self):
+        os.chdir('pillows')
+        file =open("input_value.txt","r")
+        l=file.readline()
+        l = file.readline()
+        self.PARAM_RESULT_BRS_2.append('Считанные парамтеры:')
+        time.sleep(0.01)
+        self.PARAM_RESULT_BRS_2.append(file.read())
+        file.close()
+        os.chdir('..')
+
+
+    def run_file_reader(self):
+        Receiver = threading.Thread(target=self.file_reader)
+        Receiver.start()
+
 
     def Config_version(self,ver):
-        self.UART.open()
-        self.ACC_VER_BTN.setDisabled(True)
-        time.sleep(0.02)
-        self.STO_VER_BTN.setDisabled(True)
+        try:
+            self.UART.open()
+        except:
+            self.UART.close()
+            self.UART.open()
+        self.DisableAll()
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
@@ -5448,9 +5849,7 @@ class Ui_MainWindow(object):
         except:
             self.VER_LOG_BRS.append("Ошибка конфигурации. Перезапустите СТО и попробуйте ещё раз:\n")
         self.UART.close()
-        self.ACC_VER_BTN.setEnabled(True)
-        time.sleep(0.02)
-        self.STO_VER_BTN.setEnabled(True)
+        self.EnableAll()
 
     def run_Config_version(self, ver):
         Receiver = threading.Thread(target=self.Config_version,args=(ver,))
@@ -5479,30 +5878,7 @@ class Ui_MainWindow(object):
 
     def close_com(self):
         self.UART.close()
-        self.start_SBR_btn.setEnabled(True)
-        self.start_acc_btn.setEnabled(True)
-        self.Run_Init_btn.setEnabled(True)
-        self.CHECK_CRASH_DETECTION_BTN.setEnabled(True)
-        self.UDS_RUN_BTN.setEnabled(True)
-        self.perod_periodic_btn.setEnabled(True)
-        self.start_trig_btn.setEnabled(True)
-        self.DIAG_CLEAR_DTC_BTN.setEnabled(True)
-        self.DIAG_READ_0x08_BTN.setEnabled(True)
-        self.DIAG_READ_0x09_BTN.setEnabled(True)
-        self.DIAG_EXTDIAG_BTN.setEnabled(True)
-        self.DIAG_VIN0_BTN.setEnabled(True)
-        self.DIAG_VIN1_BTN.setEnabled(True)
-        self.DIAG_RESET_BTN.setEnabled(True)
-        self.START_VALID_AB_BTN.setEnabled(True)
-        self.toolButton.setEnabled(True)
-        self.DIAG_UPD_CAN_MSG_BTN.setEnabled(True)
-        self.DIAG_STOP_CAN_MSG_BTN.setEnabled(True)
-        self.read_snap_btn.setEnabled(True)
-        self.UPDATE_PARAMS_BTN.setEnabled(True)
-        self.STO_VER_BTN.setEnabled(True)
-        self.ACC_VER_BTN.setEnabled(True)
-        self.Manufacture_mode_btn.setEnabled(True)
-        self.read_params_btn.setEnabled(True)
+        self.DisableAll()
     def update_plot(self):
         self.tstart_min_input.setMaximum(self.t1_input.value()-1)
         self.tstart_max_input.setMaximum(self.t2_input.value()-1)
@@ -5533,10 +5909,9 @@ class Ui_MainWindow(object):
 
 
     def nevjebacca_generator(self):
-        faulthandler.enable()
         self.syntez_btn.setDisabled(True)
         absolute_path = os.path.dirname(__file__)
-        relative_path = "acceleration_synthesis\\gen2.exe"
+        relative_path = "acceleration_synthesis\\gen3.exe"
         full_path = os.path.join(absolute_path, relative_path)
 #        os.chdir('acceleration_synthesis')
         Limit_ares = str(self.limit_ares_input.value())
@@ -5559,7 +5934,6 @@ class Ui_MainWindow(object):
              name_of_output_file],stdout=subprocess.PIPE)
         #os.chdir('..')
         self.syntez_btn.setEnabled(True)
-        faulthandler.disable()
     def run_nevjebacca_generator(self):
         Receiver = threading.Thread(target=self.nevjebacca_generator)
         Receiver.start()
@@ -5570,9 +5944,18 @@ class Ui_MainWindow(object):
         file, _ = QtWidgets.QFileDialog.getSaveFileName(self.params_tab, 'Save as', './', " (*.csv)")
         if file:
             self.file = file
-            print(self.file)
+           # print(self.file)
         self.run_nevjebacca_generator()
         os.chdir('..')
+        os.chdir('..')
+
+    def on_click3(self):
+        os.chdir('parameters')
+        file, _ = QtWidgets.QFileDialog.getSaveFileName(self.params_tab, 'Save as', './', " (*.txt)")
+        if file:
+            self.file = file
+            #print(self.file)
+        self.run_save_params(file)
         os.chdir('..')
 
 
@@ -5642,9 +6025,14 @@ class PlotCanvas(FigureCanvas):
 #        self.ax.legend()
         self.draw()  # Refresh the canvasb v
 
+def load_stylesheet(file_name):
+    with open(file_name, "r") as file:
+        return file.read()
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
+    stylesheet = load_stylesheet("style.qss")
+    app.setStyleSheet(stylesheet)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
