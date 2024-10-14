@@ -1,0 +1,14 @@
+Limit_Ax = 0
+Limit_Ay = 0
+Limit_Ares_front = 3300.0
+Limit_Sx_Sy_front = 12.0e-4
+Limit_Sres_front = 19.0e-4
+delta_Ares = 6
+Limit_Ares_side = 2000.0
+Limit_Sx_Sy_side = 10.0e-4
+Limit_Sres_side = 15.5e-4
+T_calc_front = 1
+T_calc_side = 1
+Time_to_stop = 0.018e3
+Sres_impact_front = 1.9e-4
+Sres_impact_side = 1.6e-4

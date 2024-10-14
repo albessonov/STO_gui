@@ -1,0 +1,22 @@
+# depslib dependency file v1.0
+1728562315 source:c:\users\work-a\desktop\avtovaz\exp_avtovaz\full_misuse_xgf_2024_08_09_forme\synthesis_data_2024_09_17\gen_data.c
+	<time.h>
+	"gen_data.h"
+
+1728562241 source:c:\users\work-a\desktop\avtovaz\exp_avtovaz\full_misuse_xgf_2024_08_09_forme\synthesis_data_2024_09_17\main.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	<string.h>
+	<locale.h>
+	<stdint.h>
+	"gen_data.h"
+
+1726843863 c:\users\work-a\desktop\avtovaz\exp_avtovaz\full_misuse_xgf_2024_08_09_forme\synthesis_data_2024_09_17\gen_data.h
+	<stddef.h>
+	<stdlib.h>
+	<stdio.h>
+	<stdbool.h>
+	<locale.h>
+	<stdlib.h>
+
