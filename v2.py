@@ -56,7 +56,7 @@ class Ui_MainWindow(object):
         self.gridLayout.setObjectName("gridLayout")
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName("tabWidget")
-        font = QtGui.QFont()
+        font=QtGui.QFont()
         font.setPointSize(10)
         self.tabWidget.setFont(font)
         self.init_tab = QtWidgets.QWidget()
@@ -64,7 +64,7 @@ class Ui_MainWindow(object):
         self.gridLayout_8 = QtWidgets.QGridLayout(self.init_tab)
         self.gridLayout_8.setObjectName("gridLayout_8")
         self.groupBox_13 = QtWidgets.QGroupBox(self.init_tab)
-        font = QtGui.QFont()
+
         font.setPointSize(16)
         self.groupBox_13.setFont(font)
         self.groupBox_13.setObjectName("groupBox_13")
@@ -76,7 +76,7 @@ class Ui_MainWindow(object):
         self.gridLayout_2.addWidget(self.VALIDAB_BRS, 2, 0, 1, 2)
         self.STOP_BTN_8 = QtWidgets.QPushButton(self.groupBox_13)
         self.STOP_BTN_8.setMinimumSize(QtCore.QSize(0, 55))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.STOP_BTN_8.setFont(font)
         self.STOP_BTN_8.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -84,7 +84,7 @@ class Ui_MainWindow(object):
         self.gridLayout_2.addWidget(self.STOP_BTN_8, 1, 1, 1, 1)
         self.START_VALID_AB_BTN = QtWidgets.QPushButton(self.groupBox_13)
         self.START_VALID_AB_BTN.setMinimumSize(QtCore.QSize(0, 55))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.START_VALID_AB_BTN.setFont(font)
         self.START_VALID_AB_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -92,7 +92,7 @@ class Ui_MainWindow(object):
         self.gridLayout_2.addWidget(self.START_VALID_AB_BTN, 0, 1, 1, 1)
         self.gridLayout_8.addWidget(self.groupBox_13, 1, 0, 1, 1)
         self.groupBox_2 = QtWidgets.QGroupBox(self.init_tab)
-        font = QtGui.QFont()
+
         font.setPointSize(16)
         self.groupBox_2.setFont(font)
         self.groupBox_2.setObjectName("groupBox_2")
@@ -105,14 +105,14 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.STOP_BTN_3.sizePolicy().hasHeightForWidth())
         self.STOP_BTN_3.setSizePolicy(sizePolicy)
         self.STOP_BTN_3.setMinimumSize(QtCore.QSize(0, 55))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.STOP_BTN_3.setFont(font)
         self.STOP_BTN_3.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.STOP_BTN_3.setObjectName("STOP_BTN_3")
         self.gridLayout_3.addWidget(self.STOP_BTN_3, 1, 2, 1, 1)
         self.Inittime_lbl = QtWidgets.QLabel(self.groupBox_2)
-        font = QtGui.QFont()
+
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(16)
         self.Inittime_lbl.setFont(font)
@@ -126,26 +126,26 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.inittime_brs.sizePolicy().hasHeightForWidth())
         self.inittime_brs.setSizePolicy(sizePolicy)
         self.inittime_brs.setMinimumSize(QtCore.QSize(0, 30))
-        font = QtGui.QFont()
+
         font.setPointSize(16)
         self.inittime_brs.setFont(font)
         self.inittime_brs.setObjectName("inittime_brs")
         self.gridLayout_3.addWidget(self.inittime_brs, 3, 1, 1, 1)
         self.can_msg_lbl = QtWidgets.QLabel(self.groupBox_2)
-        font = QtGui.QFont()
+
         font.setPointSize(16)
         self.can_msg_lbl.setFont(font)
         self.can_msg_lbl.setObjectName("can_msg_lbl")
         self.gridLayout_3.addWidget(self.can_msg_lbl, 6, 1, 1, 1)
         self.Initreuult_lbl = QtWidgets.QLabel(self.groupBox_2)
-        font = QtGui.QFont()
+
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(16)
         self.Initreuult_lbl.setFont(font)
         self.Initreuult_lbl.setObjectName("Initreuult_lbl")
         self.gridLayout_3.addWidget(self.Initreuult_lbl, 2, 2, 1, 1)
         self.initresult_brs = QtWidgets.QTextBrowser(self.groupBox_2)
-        font = QtGui.QFont()
+
         font.setPointSize(16)
         self.initresult_brs.setFont(font)
         self.initresult_brs.setObjectName("initresult_brs")
@@ -157,7 +157,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.can_msg_brs.sizePolicy().hasHeightForWidth())
         self.can_msg_brs.setSizePolicy(sizePolicy)
         self.can_msg_brs.setMinimumSize(QtCore.QSize(0, 100))
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.can_msg_brs.setFont(font)
         self.can_msg_brs.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
@@ -170,7 +170,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.Run_Init_btn.sizePolicy().hasHeightForWidth())
         self.Run_Init_btn.setSizePolicy(sizePolicy)
         self.Run_Init_btn.setMinimumSize(QtCore.QSize(50, 55))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.Run_Init_btn.setFont(font)
         self.Run_Init_btn.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -188,13 +188,13 @@ class Ui_MainWindow(object):
         self.gridLayout_5 = QtWidgets.QGridLayout(self.groupBox_4)
         self.gridLayout_5.setObjectName("gridLayout_5")
         self.label_9 = QtWidgets.QLabel(self.groupBox_4)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.label_9.setFont(font)
         self.label_9.setObjectName("label_9")
         self.gridLayout_5.addWidget(self.label_9, 3, 1, 1, 1)
         self.accepted_trig_brs = QtWidgets.QTextBrowser(self.groupBox_4)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.accepted_trig_brs.setFont(font)
         self.accepted_trig_brs.setObjectName("accepted_trig_brs")
@@ -203,33 +203,33 @@ class Ui_MainWindow(object):
         self.expected_trig_brs.setObjectName("expected_trig_brs")
         self.gridLayout_5.addWidget(self.expected_trig_brs, 3, 4, 1, 1)
         self.measured_trig_brs = QtWidgets.QTextBrowser(self.groupBox_4)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.expected_trig_brs.setFont(font)
         self.measured_trig_brs.setFont(font)
         self.measured_trig_brs.setObjectName("measured_trig_brs")
         self.gridLayout_5.addWidget(self.measured_trig_brs, 4, 4, 1, 1)
         self.result_trig_brs = QtWidgets.QTextBrowser(self.groupBox_4)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.result_trig_brs.setFont(font)
         self.result_trig_brs.setObjectName("result_trig_brs")
         self.gridLayout_5.addWidget(self.result_trig_brs, 8, 4, 1, 1)
         self.measured_trig_lbl = QtWidgets.QLabel(self.groupBox_4)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.measured_trig_lbl.setFont(font)
         self.measured_trig_lbl.setObjectName("measured_trig_lbl")
         self.gridLayout_5.addWidget(self.measured_trig_lbl, 4, 1, 1, 1)
         self.result_trig_lbl = QtWidgets.QLabel(self.groupBox_4)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.result_trig_lbl.setFont(font)
         self.result_trig_lbl.setObjectName("result_trig_lbl")
         self.gridLayout_5.addWidget(self.result_trig_lbl, 8, 1, 1, 1)
         self.start_trig_btn = QtWidgets.QPushButton(self.groupBox_4)
         self.start_trig_btn.setMinimumSize(QtCore.QSize(0, 50))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.start_trig_btn.setFont(font)
         self.start_trig_btn.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -242,20 +242,20 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.STOP_BTN_2.sizePolicy().hasHeightForWidth())
         self.STOP_BTN_2.setSizePolicy(sizePolicy)
         self.STOP_BTN_2.setMinimumSize(QtCore.QSize(0, 50))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.STOP_BTN_2.setFont(font)
         self.STOP_BTN_2.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.STOP_BTN_2.setObjectName("STOP_BTN_2")
         self.gridLayout_5.addWidget(self.STOP_BTN_2, 1, 4, 1, 1)
         self.label_3 = QtWidgets.QLabel(self.groupBox_4)
-        font = QtGui.QFont()
+
         font.setPointSize(18)
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
         self.gridLayout_5.addWidget(self.label_3, 0, 0, 1, 1)
         self.accepted_trig_lbl = QtWidgets.QLabel(self.groupBox_4)
-        font = QtGui.QFont()
+
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(16)
         self.accepted_trig_lbl.setFont(font)
@@ -268,7 +268,7 @@ class Ui_MainWindow(object):
         self.gridLayout_4 = QtWidgets.QGridLayout(self.groupBox_3)
         self.gridLayout_4.setObjectName("gridLayout_4")
         self.label_7 = QtWidgets.QLabel(self.groupBox_3)
-        font = QtGui.QFont()
+
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(16)
         self.label_7.setFont(font)
@@ -280,7 +280,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.period_peciodic_title.sizePolicy().hasHeightForWidth())
         self.period_peciodic_title.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
+
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(18)
         self.period_peciodic_title.setFont(font)
@@ -293,7 +293,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.STOP_BTN_1.sizePolicy().hasHeightForWidth())
         self.STOP_BTN_1.setSizePolicy(sizePolicy)
         self.STOP_BTN_1.setMinimumSize(QtCore.QSize(0, 50))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.STOP_BTN_1.setFont(font)
         self.STOP_BTN_1.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -306,7 +306,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.perod_periodic_btn.sizePolicy().hasHeightForWidth())
         self.perod_periodic_btn.setSizePolicy(sizePolicy)
         self.perod_periodic_btn.setMinimumSize(QtCore.QSize(0, 50))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.perod_periodic_btn.setFont(font)
         self.perod_periodic_btn.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -319,43 +319,43 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.result_periodic_brs.sizePolicy().hasHeightForWidth())
         self.result_periodic_brs.setSizePolicy(sizePolicy)
         self.result_periodic_brs.setMinimumSize(QtCore.QSize(371, 40))
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.result_periodic_brs.setFont(font)
         self.result_periodic_brs.setObjectName("result_periodic_brs")
         self.gridLayout_4.addWidget(self.result_periodic_brs, 10, 5, 1, 1)
         self.measured_period_brs = QtWidgets.QTextBrowser(self.groupBox_3)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.measured_period_brs.setFont(font)
         self.measured_period_brs.setObjectName("measured_period_brs")
         self.gridLayout_4.addWidget(self.measured_period_brs, 7, 5, 1, 1)
         self.expected_period_brs = QtWidgets.QTextBrowser(self.groupBox_3)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.expected_period_brs.setFont(font)
         self.expected_period_brs.setObjectName("expected_period_brs")
         self.gridLayout_4.addWidget(self.expected_period_brs, 3, 5, 1, 1)
         self.label_5 = QtWidgets.QLabel(self.groupBox_3)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.label_5.setFont(font)
         self.label_5.setObjectName("label_5")
         self.gridLayout_4.addWidget(self.label_5, 3, 2, 1, 1)
         self.label_6 = QtWidgets.QLabel(self.groupBox_3)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.label_6.setFont(font)
         self.label_6.setObjectName("label_6")
         self.gridLayout_4.addWidget(self.label_6, 7, 2, 1, 1)
         self.label_8 = QtWidgets.QLabel(self.groupBox_3)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.label_8.setFont(font)
         self.label_8.setObjectName("label_8")
         self.gridLayout_4.addWidget(self.label_8, 10, 2, 1, 1)
         self.accepted_periodic_brs = QtWidgets.QTextBrowser(self.groupBox_3)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.accepted_periodic_brs.setFont(font)
         self.accepted_periodic_brs.setObjectName("accepted_periodic_brs")
@@ -372,32 +372,32 @@ class Ui_MainWindow(object):
         self.gridLayout_7 = QtWidgets.QGridLayout(self.groupBox_5)
         self.gridLayout_7.setObjectName("gridLayout_7")
         self.exp_res_acc_brs = QtWidgets.QTextBrowser(self.groupBox_5)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.exp_res_acc_brs.setFont(font)
         self.exp_res_acc_brs.setObjectName("exp_res_acc_brs")
         self.gridLayout_7.addWidget(self.exp_res_acc_brs, 1, 1, 1, 1)
         self.got_res_brs = QtWidgets.QTextBrowser(self.groupBox_5)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.got_res_brs.setFont(font)
         self.got_res_brs.setObjectName("got_res_brs")
         self.gridLayout_7.addWidget(self.got_res_brs, 3, 1, 1, 1)
         self.got_res_acc_lbl = QtWidgets.QLabel(self.groupBox_5)
-        font = QtGui.QFont()
+
         font.setPointSize(16)
         self.got_res_acc_lbl.setFont(font)
         self.got_res_acc_lbl.setObjectName("got_res_acc_lbl")
         self.gridLayout_7.addWidget(self.got_res_acc_lbl, 2, 1, 1, 1)
         self.expected_res_acc_lbl = QtWidgets.QLabel(self.groupBox_5)
-        font = QtGui.QFont()
+
         font.setPointSize(16)
         self.expected_res_acc_lbl.setFont(font)
         self.expected_res_acc_lbl.setObjectName("expected_res_acc_lbl")
         self.gridLayout_7.addWidget(self.expected_res_acc_lbl, 0, 1, 1, 1)
         self.gridLayout_25.addWidget(self.groupBox_5, 0, 0, 1, 1)
         self.groupBox_20 = QtWidgets.QGroupBox(self.tab_2)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.groupBox_20.setFont(font)
         self.groupBox_20.setObjectName("groupBox_20")
@@ -405,7 +405,7 @@ class Ui_MainWindow(object):
         self.gridLayout_10.setObjectName("gridLayout_10")
         self.CRASHDETECTED_BRS = QtWidgets.QTextBrowser(self.groupBox_20)
         self.CRASHDETECTED_BRS.setObjectName("CRASHDETECTED_BRS")
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.CRASHDETECTED_BRS.setFont(font)
         self.gridLayout_10.addWidget(self.CRASHDETECTED_BRS, 0, 0, 1, 1)
@@ -422,7 +422,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.start_acc_btn.sizePolicy().hasHeightForWidth())
         self.start_acc_btn.setSizePolicy(sizePolicy)
         self.start_acc_btn.setMinimumSize(QtCore.QSize(100, 55))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.start_acc_btn.setFont(font)
         self.start_acc_btn.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -435,7 +435,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.acc_selector.sizePolicy().hasHeightForWidth())
         self.acc_selector.setSizePolicy(sizePolicy)
         self.acc_selector.setMaximumSize(QtCore.QSize(16777215, 45))
-        font = QtGui.QFont()
+
         font.setPointSize(13)
         self.acc_selector.setFont(font)
         self.acc_selector.setObjectName("acc_selector")
@@ -449,7 +449,7 @@ class Ui_MainWindow(object):
                 self.acc_selector.addItem(filename.replace(".csv",""))
         self.gridLayout_6.addWidget(self.acc_selector, 5, 0, 1, 1)
         #self.AIRBAG_OFF_btn = QtWidgets.QRadioButton(self.groupBox)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         #self.AIRBAG_OFF_btn.setFont(font)
         #self.AIRBAG_OFF_btn.setObjectName("AIRBAG_OFF_btn")
@@ -460,7 +460,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.acc_selector_lbl.sizePolicy().hasHeightForWidth())
         self.acc_selector_lbl.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.acc_selector_lbl.setFont(font)
         self.acc_selector_lbl.setObjectName("acc_selector_lbl")
@@ -473,7 +473,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.STOP_BTN_4.sizePolicy().hasHeightForWidth())
         self.STOP_BTN_4.setSizePolicy(sizePolicy)
         self.STOP_BTN_4.setMinimumSize(QtCore.QSize(0, 55))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.STOP_BTN_4.setFont(font)
         self.STOP_BTN_4.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -491,31 +491,31 @@ class Ui_MainWindow(object):
         self.gridLayout_11 = QtWidgets.QGridLayout(self.groupBox_6)
         self.gridLayout_11.setObjectName("gridLayout_11")
         self.exp_res_SBR_brs = QtWidgets.QTextBrowser(self.groupBox_6)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.exp_res_SBR_brs.setFont(font)
         self.exp_res_SBR_brs.setObjectName("exp_res_SBR_brs")
         self.gridLayout_11.addWidget(self.exp_res_SBR_brs, 6, 0, 1, 1)
         self.exp_res_SBR_lbl = QtWidgets.QLabel(self.groupBox_6)
-        font = QtGui.QFont()
+
         font.setPointSize(16)
         self.exp_res_SBR_lbl.setFont(font)
         self.exp_res_SBR_lbl.setObjectName("exp_res_SBR_lbl")
         self.gridLayout_11.addWidget(self.exp_res_SBR_lbl, 5, 0, 1, 1)
         self.got_res_SBR_brs = QtWidgets.QTextBrowser(self.groupBox_6)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.got_res_SBR_brs.setFont(font)
         self.got_res_SBR_brs.setObjectName("got_res_SBR_brs")
         self.gridLayout_11.addWidget(self.got_res_SBR_brs, 8, 0, 1, 1)
         self.got_res_SBR_lbl = QtWidgets.QLabel(self.groupBox_6)
-        font = QtGui.QFont()
+
         font.setPointSize(16)
         self.got_res_SBR_lbl.setFont(font)
         self.got_res_SBR_lbl.setObjectName("got_res_SBR_lbl")
         self.gridLayout_11.addWidget(self.got_res_SBR_lbl, 7, 0, 1, 1)
         self.groupBox_7 = QtWidgets.QGroupBox(self.groupBox_6)
-        font = QtGui.QFont()
+
         font.setPointSize(10)
         self.groupBox_7.setFont(font)
         self.groupBox_7.setTitle("")
@@ -524,7 +524,7 @@ class Ui_MainWindow(object):
         self.gridLayout_12.setObjectName("gridLayout_12")
         self.start_SBR_btn = QtWidgets.QPushButton(self.groupBox_7)
         self.start_SBR_btn.setMinimumSize(QtCore.QSize(0, 42))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.start_SBR_btn.setFont(font)
         self.start_SBR_btn.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -532,7 +532,7 @@ class Ui_MainWindow(object):
         self.gridLayout_12.addWidget(self.start_SBR_btn, 2, 0, 1, 1)
         self.STOP_BTN_5 = QtWidgets.QPushButton(self.groupBox_7)
         self.STOP_BTN_5.setMinimumSize(QtCore.QSize(0, 42))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.STOP_BTN_5.setFont(font)
         self.STOP_BTN_5.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -540,7 +540,7 @@ class Ui_MainWindow(object):
         self.gridLayout_12.addWidget(self.STOP_BTN_5, 2, 1, 1, 1)
         self.Seatbelt_selector = QtWidgets.QComboBox(self.groupBox_7)
         self.Seatbelt_selector.setMinimumSize(QtCore.QSize(0, 32))
-        font = QtGui.QFont()
+
         font.setPointSize(11)
         self.Seatbelt_selector.setFont(font)
         self.Seatbelt_selector.setObjectName("Seatbelt_selector")
@@ -552,7 +552,7 @@ class Ui_MainWindow(object):
         self.gridLayout_12.addWidget(self.Seatbelt_selector, 1, 0, 1, 2)
         self.SBR_test_selector = QtWidgets.QComboBox(self.groupBox_7)
         self.SBR_test_selector.setMinimumSize(QtCore.QSize(0, 32))
-        font = QtGui.QFont()
+
         font.setPointSize(11)
         self.SBR_test_selector.setFont(font)
         self.SBR_test_selector.setObjectName("SBR_test_selector")
@@ -567,7 +567,7 @@ class Ui_MainWindow(object):
         self.SBR_test_selector.addItem("")
         self.gridLayout_12.addWidget(self.SBR_test_selector, 5, 0, 1, 2)
         self.sbr_test_sel_lbl = QtWidgets.QLabel(self.groupBox_7)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         font.setBold(False)
         font.setWeight(50)
@@ -575,7 +575,7 @@ class Ui_MainWindow(object):
         self.sbr_test_sel_lbl.setObjectName("sbr_test_sel_lbl")
         self.gridLayout_12.addWidget(self.sbr_test_sel_lbl, 3, 0, 1, 1)
         self.SB_select_lbl = QtWidgets.QLabel(self.groupBox_7)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.SB_select_lbl.setFont(font)
         self.SB_select_lbl.setObjectName("SB_select_lbl")
@@ -588,13 +588,13 @@ class Ui_MainWindow(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox_22)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.accepted_SBR_title = QtWidgets.QLabel(self.groupBox_22)
-        font = QtGui.QFont()
+
         font.setPointSize(16)
         self.accepted_SBR_title.setFont(font)
         self.accepted_SBR_title.setObjectName("accepted_SBR_title")
         self.verticalLayout_2.addWidget(self.accepted_SBR_title)
         self.acc_SBR_brs = QtWidgets.QTextBrowser(self.groupBox_22)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.acc_SBR_brs.setFont(font)
         self.acc_SBR_brs.setObjectName("acc_SBR_brs")
@@ -611,14 +611,14 @@ class Ui_MainWindow(object):
         self.gridLayout_18 = QtWidgets.QGridLayout(self.groupBox_12)
         self.gridLayout_18.setObjectName("gridLayout_18")
         self.UDS_TEST_LBL = QtWidgets.QLabel(self.groupBox_12)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.UDS_TEST_LBL.setFont(font)
         self.UDS_TEST_LBL.setObjectName("UDS_TEST_LBL")
         self.gridLayout_18.addWidget(self.UDS_TEST_LBL, 3, 0, 1, 1)
         self.UDS_RUN_BTN = QtWidgets.QPushButton(self.groupBox_12)
         self.UDS_RUN_BTN.setMinimumSize(QtCore.QSize(0, 50))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.UDS_RUN_BTN.setFont(font)
         self.UDS_RUN_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -626,14 +626,14 @@ class Ui_MainWindow(object):
         self.gridLayout_18.addWidget(self.UDS_RUN_BTN, 0, 0, 1, 1)
         self.STOP_BTN_6 = QtWidgets.QPushButton(self.groupBox_12)
         self.STOP_BTN_6.setMinimumSize(QtCore.QSize(0, 50))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.STOP_BTN_6.setFont(font)
         self.STOP_BTN_6.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.STOP_BTN_6.setObjectName("STOP_BTN_6")
         self.gridLayout_18.addWidget(self.STOP_BTN_6, 1, 0, 1, 1)
         self.UDS_TEST_SELECTOR = QtWidgets.QComboBox(self.groupBox_12)
-        font = QtGui.QFont()
+
         font.setPointSize(11)
         self.UDS_TEST_SELECTOR.setFont(font)
         self.UDS_TEST_SELECTOR.setObjectName("UDS_TEST_SELECTOR")
@@ -653,7 +653,7 @@ class Ui_MainWindow(object):
 
         self.gridLayout_18.addWidget(self.UDS_TEST_SELECTOR, 4, 0, 1, 1)
         self.UDS_LED_SELECTOR = QtWidgets.QComboBox(self.groupBox_12)
-        font = QtGui.QFont()
+
         font.setPointSize(11)
         self.UDS_LED_SELECTOR.setFont(font)
         self.UDS_LED_SELECTOR.setObjectName("UDS_LED_SELECTOR")
@@ -672,7 +672,7 @@ class Ui_MainWindow(object):
         self.UDS_NRC_LBL.setText("NRC")
         self.gridLayout_18.addWidget(self.UDS_NRC_LBL, 5, 0, 1, 1)
         self.label_4 = QtWidgets.QLabel(self.groupBox_12)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.label_4.setFont(font)
         self.label_4.setObjectName("label_4")
@@ -684,13 +684,13 @@ class Ui_MainWindow(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(self.groupBox_11)
         self.verticalLayout.setObjectName("verticalLayout")
         self.UDS_MSG_LBL = QtWidgets.QLabel(self.groupBox_11)
-        font = QtGui.QFont()
+
         font.setPointSize(16)
         self.UDS_MSG_LBL.setFont(font)
         self.UDS_MSG_LBL.setObjectName("UDS_MSG_LBL")
         self.verticalLayout.addWidget(self.UDS_MSG_LBL)
         self.UDS_MSG_BRS = QtWidgets.QTextBrowser(self.groupBox_11)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.UDS_MSG_BRS.setFont(font)
         self.UDS_MSG_BRS.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
@@ -703,13 +703,13 @@ class Ui_MainWindow(object):
         self.gridLayout_19 = QtWidgets.QGridLayout(self.groupBox_19)
         self.gridLayout_19.setObjectName("gridLayout_19")
         self.EXP_UDS_BRS = QtWidgets.QTextBrowser(self.groupBox_19)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.EXP_UDS_BRS.setFont(font)
         self.EXP_UDS_BRS.setObjectName("EXP_UDS_BRS")
         self.gridLayout_19.addWidget(self.EXP_UDS_BRS, 1, 0, 1, 1)
         self.EXP_UDS_LBL = QtWidgets.QLabel(self.groupBox_19)
-        font = QtGui.QFont()
+
         font.setPointSize(16)
         self.EXP_UDS_LBL.setFont(font)
         self.EXP_UDS_LBL.setObjectName("EXP_UDS_LBL")
@@ -727,13 +727,13 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.groupBox11.sizePolicy().hasHeightForWidth())
         self.groupBox11.setSizePolicy(sizePolicy)
         self.groupBox11.setMinimumSize(QtCore.QSize(55, 55))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.groupBox11.setFont(font)
         self.groupBox11.setObjectName("groupBox")
         self.gridLayout_511 = QtWidgets.QGridLayout(self.groupBox11)
         self.gridLayout_511.setObjectName("gridLayout_511")
-        font = QtGui.QFont()
+
         font.setPointSize(16)
         self.snap_brs = QtWidgets.QTextBrowser(self.groupBox11)
         self.snap_brs.setFont(font)
@@ -751,7 +751,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.groupBox_243.sizePolicy().hasHeightForWidth())
         self.groupBox_243.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.groupBox_243.setFont(font)
         self.groupBox_243.setObjectName("groupBox_243")
@@ -760,7 +760,7 @@ class Ui_MainWindow(object):
         self.lcdNumber_4 = QtWidgets.QTextBrowser(self.groupBox_243)
         #self.lcdNumber_4.setDigitCount(8)
         self.lcdNumber_4.setObjectName("lcdNumber_4")
-        font = QtGui.QFont()
+
         font.setPointSize(52)
         self.lcdNumber_4.setFont(font)
         self.gridLayout_412.addWidget(self.lcdNumber_4, 4, 1, 1, 3)
@@ -770,37 +770,37 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.stat_snap.sizePolicy().hasHeightForWidth())
         self.stat_snap.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
+
         font.setPointSize(20)
         self.stat_snap.setFont(font)
         self.stat_snap.setObjectName("stat_snap")
         self.gridLayout_412.addWidget(self.stat_snap, 2, 0, 1, 1)
         self.speed_snap = QtWidgets.QLabel(self.groupBox_243)
-        font = QtGui.QFont()
+
         font.setPointSize(20)
         self.speed_snap.setFont(font)
         self.speed_snap.setObjectName("speed_snap")
         self.gridLayout_412.addWidget(self.speed_snap, 3, 0, 1, 1)
         self.lcdNumber_3 = QtWidgets.QTextBrowser(self.groupBox_243)
         self.lcdNumber_3.setObjectName("lcdNumber_3")
-        font = QtGui.QFont()
+
         font.setPointSize(52)
         self.lcdNumber_3.setFont(font)
         self.gridLayout_412.addWidget(self.lcdNumber_3, 5, 1, 1, 3)
         self.errctr_snpa = QtWidgets.QLabel(self.groupBox_243)
-        font = QtGui.QFont()
+
         font.setPointSize(20)
         self.errctr_snpa.setFont(font)
         self.errctr_snpa.setObjectName("errctr_snpa")
         self.gridLayout_412.addWidget(self.errctr_snpa, 6, 0, 1, 1)
         self.lifetime_snap = QtWidgets.QLabel(self.groupBox_243)
-        font = QtGui.QFont()
+
         font.setPointSize(20)
         self.lifetime_snap.setFont(font)
         self.lifetime_snap.setObjectName("lifetime_snap")
         self.gridLayout_412.addWidget(self.lifetime_snap, 4, 0, 1, 1)
         self.probeg_snap = QtWidgets.QLabel(self.groupBox_243)
-        font = QtGui.QFont()
+
         font.setPointSize(20)
         self.probeg_snap.setFont(font)
         self.probeg_snap.setObjectName("probeg_snap")
@@ -809,7 +809,7 @@ class Ui_MainWindow(object):
         self.status_brs.setMaximumSize(1000,150)
         self.status_brs.setObjectName("lcdNumber")
         self.status_brs.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
-        font = QtGui.QFont()
+
         font.setPointSize(52)
         self.status_brs.setFont(font)
         self.gridLayout_412.addWidget(self.status_brs, 2, 1, 1, 3)
@@ -830,7 +830,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.SNAP_GROUP.sizePolicy().hasHeightForWidth())
         self.SNAP_GROUP.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.SNAP_GROUP.setFont(font)
         self.SNAP_GROUP.setObjectName("SNAP_GROUP")
@@ -844,7 +844,7 @@ class Ui_MainWindow(object):
         self.gridLayout_311.addItem(spacerItem2, 0, 1, 1, 1)
         self.read_snap_btn = QtWidgets.QPushButton(self.SNAP_GROUP)
         self.read_snap_btn.setMinimumSize(QtCore.QSize(0, 60))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.read_snap_btn.setFont(font)
         self.read_snap_btn.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -938,7 +938,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.DIAG_VIN1_BTN.sizePolicy().hasHeightForWidth())
         self.DIAG_VIN1_BTN.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.DIAG_VIN1_BTN.setFont(font)
         self.DIAG_VIN1_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -950,7 +950,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.DIAG_VIN0_BTN.sizePolicy().hasHeightForWidth())
         self.DIAG_VIN0_BTN.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.DIAG_VIN0_BTN.setFont(font)
         self.DIAG_VIN0_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -958,7 +958,7 @@ class Ui_MainWindow(object):
         self.gridLayout_16.addWidget(self.DIAG_VIN0_BTN, 1, 0, 1, 1)
 
 
-        font = QtGui.QFont()
+
         font.setPointSize(12)
 
         self.DIAG_RESET_BTN = QtWidgets.QPushButton(self.groupBox_9)
@@ -967,7 +967,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.DIAG_RESET_BTN.sizePolicy().hasHeightForWidth())
         self.DIAG_RESET_BTN.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.DIAG_RESET_BTN.setFont(font)
         self.DIAG_RESET_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -979,7 +979,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.CHECK_CRASH_DETECTION_BTN.sizePolicy().hasHeightForWidth())
         self.CHECK_CRASH_DETECTION_BTN.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.CHECK_CRASH_DETECTION_BTN.setFont(font)
         self.CHECK_CRASH_DETECTION_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -999,7 +999,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.DIAG_READ_0x09_BTN.sizePolicy().hasHeightForWidth())
         self.DIAG_READ_0x09_BTN.setSizePolicy(sizePolicy)
         self.DIAG_READ_0x09_BTN.setMaximumSize(QtCore.QSize(1000, 50))
-        font = QtGui.QFont()
+
         font.setPointSize(10)
         self.DIAG_READ_0x09_BTN.setFont(font)
         self.DIAG_READ_0x09_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -1007,7 +1007,7 @@ class Ui_MainWindow(object):
         self.gridLayout_15.addWidget(self.DIAG_READ_0x09_BTN, 0, 0, 1, 1)
         self.DIAG_READ_0x08_BTN = QtWidgets.QPushButton(self.groupBox_8)
         self.DIAG_READ_0x08_BTN.setMaximumSize(QtCore.QSize(16777215, 60))
-        font = QtGui.QFont()
+
         font.setPointSize(10)
         self.DIAG_READ_0x08_BTN.setFont(font)
         self.DIAG_READ_0x08_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -1015,7 +1015,7 @@ class Ui_MainWindow(object):
         self.gridLayout_15.addWidget(self.DIAG_READ_0x08_BTN, 0, 1, 1, 1)
         self.DIAG_CLEAR_DTC_BTN = QtWidgets.QPushButton(self.groupBox_8)
         self.DIAG_CLEAR_DTC_BTN.setMaximumSize(QtCore.QSize(16777215, 55))
-        font = QtGui.QFont()
+
         font.setPointSize(10)
         self.DIAG_CLEAR_DTC_BTN.setFont(font)
         self.DIAG_CLEAR_DTC_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -1027,7 +1027,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.DIAG_ERRORS_LBL.sizePolicy().hasHeightForWidth())
         self.DIAG_ERRORS_LBL.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
+
         font.setPointSize(16)
         self.DIAG_ERRORS_LBL.setFont(font)
         self.DIAG_ERRORS_LBL.setObjectName("DIAG_ERRORS_LBL")
@@ -1038,7 +1038,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.DIAG_ERRORS_BRS.sizePolicy().hasHeightForWidth())
         self.DIAG_ERRORS_BRS.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.DIAG_ERRORS_BRS.setFont(font)
         self.DIAG_ERRORS_BRS.setObjectName("DIAG_ERRORS_BRS")
@@ -1056,13 +1056,13 @@ class Ui_MainWindow(object):
         self.gridLayout_17 = QtWidgets.QGridLayout(self.groupBox_14)
         self.gridLayout_17.setObjectName("gridLayout_17")
         self.label_2 = QtWidgets.QLabel(self.groupBox_14)
-        font = QtGui.QFont()
+
         font.setPointSize(16)
         self.label_2.setFont(font)
         self.label_2.setObjectName("label_2")
         self.gridLayout_17.addWidget(self.label_2, 0, 0, 1, 1)
         self.DIAG_ACCEPTED_BRS = QtWidgets.QTextBrowser(self.groupBox_14)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.DIAG_ACCEPTED_BRS.setFont(font)
         self.DIAG_ACCEPTED_BRS.setObjectName("DIAG_ACCEPTED_BRS")
@@ -1084,7 +1084,7 @@ class Ui_MainWindow(object):
         self.DIAG_SPEED_SELECTOR.setRange(0, 25500)  # Установка диапазона от 0 до 100
         self.DIAG_SPEED_SELECTOR.setValue(0)  # Установка начального значения
         self.DIAG_SPEED_SELECTOR.setTickInterval(1)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.DIAG_SPEED_SELECTOR.setFont(font)
         self.DIAG_SPEED_SELECTOR.setObjectName("DIAG_SPEED_SELECTOR")
@@ -1107,7 +1107,7 @@ class Ui_MainWindow(object):
         self.DIAG_MILEAGE_SELECTOR_2.setText('Отправляемый пробег:')
 
         self.DIAG_DIAGENABLE_SELECTOR_2 = QtWidgets.QLabel(self.groupBox_10)
-        font = QtGui.QFont()
+
         font.setPointSize(13)
         self.DIAG_DIAGENABLE_SELECTOR_2.setFont(font)
         self.DIAG_DIAGENABLE_SELECTOR_2.setObjectName("DIAG_DIAGENABLE_SELECTOR_2")
@@ -1117,7 +1117,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.DIAG_UPD_CAN_MSG_BTN.sizePolicy().hasHeightForWidth())
         self.DIAG_UPD_CAN_MSG_BTN.setSizePolicy(sizePolicy)
         self.DIAG_UPD_CAN_MSG_BTN.setMaximumSize(QtCore.QSize(474, 70))
-        font = QtGui.QFont()
+
         font.setPointSize(10)
         self.DIAG_UPD_CAN_MSG_BTN.setFont(font)
         self.DIAG_UPD_CAN_MSG_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -1128,7 +1128,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.DIAG_STOP_CAN_MSG_BTN.sizePolicy().hasHeightForWidth())
         self.DIAG_STOP_CAN_MSG_BTN.setSizePolicy(sizePolicy)
         self.DIAG_STOP_CAN_MSG_BTN.setMaximumSize(QtCore.QSize(474, 70))
-        font = QtGui.QFont()
+
         font.setPointSize(10)
         self.DIAG_STOP_CAN_MSG_BTN.setFont(font)
         self.DIAG_STOP_CAN_MSG_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -1137,13 +1137,13 @@ class Ui_MainWindow(object):
 
         self.gridLayout_14.addWidget(self.DIAG_UPD_CAN_MSG_BTN, 4, 0, 1, 1)
         self.DIAG_CAN_MSG_LBL = QtWidgets.QLabel(self.groupBox_10)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.DIAG_CAN_MSG_LBL.setFont(font)
         self.DIAG_CAN_MSG_LBL.setObjectName("DIAG_CAN_MSG_LBL")
         self.gridLayout_14.addWidget(self.DIAG_CAN_MSG_LBL, 3, 0, 1, 1)
         self.DIAG_DIAGENABLE_SELECTOR = QtWidgets.QComboBox(self.groupBox_10)
-        font = QtGui.QFont()
+
         font.setPointSize(13)
         self.DIAG_DIAGENABLE_SELECTOR.setFont(font)
         self.DIAG_DIAGENABLE_SELECTOR.setObjectName("DIAG_DIAGENABLE_SELECTOR")
@@ -1153,7 +1153,7 @@ class Ui_MainWindow(object):
         self.DIAG_DIAGENABLE_SELECTOR.addItem("")
         self.gridLayout_14.addWidget(self.DIAG_DIAGENABLE_SELECTOR, 17, 0, 1, 3)
         self.DIAG_SPEED_SELECTOR_2 = QtWidgets.QLabel(self.groupBox_10)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.DIAG_SPEED_SELECTOR_2.setFont(font)
         self.DIAG_SPEED_SELECTOR_2.setObjectName("DIAG_SPEED_SELECTOR_2")
@@ -1163,7 +1163,7 @@ class Ui_MainWindow(object):
         self.DIAG_RPM_SELECTOR.setRange(0, 25500)  # Установка диапазона от 0 до 100
         self.DIAG_RPM_SELECTOR.setValue(0)  # Установка начального значения
         self.DIAG_RPM_SELECTOR.setTickInterval(1)
-        font = QtGui.QFont()
+        
         font.setPointSize(11)
         self.DIAG_RPM_SELECTOR.setFont(font)
         self.DIAG_RPM_SELECTOR.setObjectName("DIAG_SPEED_SELECTOR")
@@ -1192,7 +1192,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.EDR_STOP_BTN.sizePolicy().hasHeightForWidth())
         self.EDR_STOP_BTN.setSizePolicy(sizePolicy)
         self.EDR_STOP_BTN.setMaximumSize(QtCore.QSize(16777215, 100))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.EDR_STOP_BTN.setFont(font)
         self.EDR_STOP_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -1207,14 +1207,14 @@ class Ui_MainWindow(object):
         self.EDR1_BTN.setMinimumSize(QtCore.QSize(0, 50))
         self.EDR1_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.EDR1_BTN.setMaximumSize(QtCore.QSize(16777215, 50))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.EDR1_BTN.setFont(font)
         self.EDR1_BTN.setObjectName("EDR1_BTN")
         self.gridLayout_4.addWidget(self.EDR1_BTN, 0, 2, 1, 1)
         self.EDR3_BTN = QtWidgets.QPushButton(self.groupBox789)
         self.EDR3_BTN.setMinimumSize(QtCore.QSize(0, 50))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.EDR3_BTN.setFont(font)
         self.EDR3_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
@@ -1223,14 +1223,14 @@ class Ui_MainWindow(object):
         self.EDR2_BTN = QtWidgets.QPushButton(self.groupBox789)
         self.EDR2_BTN.setMinimumSize(QtCore.QSize(0, 50))
         self.EDR2_BTN.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.EDR2_BTN.setFont(font)
         self.EDR2_BTN.setObjectName("EDR2_BTN")
         self.gridLayout_4.addWidget(self.EDR2_BTN, 1, 2, 1, 1)
         self.READ_NUM_BTN = QtWidgets.QPushButton(self.groupBox789)
         self.READ_NUM_BTN.setMinimumSize(QtCore.QSize(0, 50))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.READ_NUM_BTN.setFont(font)
         self.READ_NUM_BTN.setObjectName("READ_NUM_BTN")
@@ -1239,7 +1239,7 @@ class Ui_MainWindow(object):
         self.gridLayout_3.addWidget(self.groupBox789, 0, 0, 1, 3)
         self.groupBox_17 = QtWidgets.QGroupBox(self.groupBox_11223344)
         self.groupBox_17.setMaximumSize(QtCore.QSize(16777215, 500))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.groupBox_17.setFont(font)
         self.groupBox_17.setObjectName("groupBox_17")
@@ -1247,7 +1247,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.Precrash_data_table = QtWidgets.QTableWidget(self.groupBox_17)
         self.Precrash_data_table.setMaximumSize(QtCore.QSize(6666, 6666))
-        font = QtGui.QFont()
+
         font.setPointSize(10)
         self.Precrash_data_table.setFont(font)
         self.Precrash_data_table.setShowGrid(True)
@@ -1308,7 +1308,7 @@ class Ui_MainWindow(object):
         self.groupBox_16 = QtWidgets.QGroupBox(self.groupBox_11223344)
         self.groupBox_16.setMinimumSize(QtCore.QSize(330, 0))
         self.groupBox_16.setMaximumSize(QtCore.QSize(66666, 16777215))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.groupBox_16.setFont(font)
         self.groupBox_16.setObjectName("groupBox_16")
@@ -1357,7 +1357,7 @@ class Ui_MainWindow(object):
                                 color: white; /* Цвет текста выделенного элемента */
                             }
                         """)
-        font = QtGui.QFont()
+
         font.setPointSize(10)
         self.Crash_data_table.setFont(font)
         self.Crash_data_table.setObjectName("Crash_data_table")
@@ -1426,7 +1426,7 @@ class Ui_MainWindow(object):
         self.groupBox_18 = QtWidgets.QGroupBox(self.groupBox_11223344)
         self.groupBox_18.setMinimumSize(QtCore.QSize(0, 1))
         self.groupBox_18.setMaximumSize(QtCore.QSize(16777215, 600))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.groupBox_18.setFont(font)
         self.groupBox_18.setObjectName("groupBox_18")
@@ -1455,7 +1455,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.groupBoxA.sizePolicy().hasHeightForWidth())
         self.groupBoxA.setSizePolicy(sizePolicy)
         self.groupBoxA.setMinimumSize(QtCore.QSize(500, 0))
-        font = QtGui.QFont()
+
         font.setPointSize(13)
         self.groupBoxA.setFont(font)
         self.groupBoxA.setObjectName("groupBoxA")
@@ -1468,15 +1468,17 @@ class Ui_MainWindow(object):
         self.defined_params_lbl.setObjectName("defined_params_lbl")
         self.gridLayout_3.addWidget(self.defined_params_lbl, 0, 0, 1, 1)
         self.Sresimpact_side_input = QtWidgets.QSpinBox(self.groupBoxA)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
+        self.defined_params_selector.setFont(font)
+        self.defined_params_lbl.setFont(font)
         self.Sresimpact_side_input.setFont(font)
         self.Sresimpact_side_input.setMinimumSize(QtCore.QSize(0, 26))
         self.Sresimpact_side_input.setMaximum(65535)
         self.Sresimpact_side_input.setObjectName("Sresimpact_side_input")
         self.gridLayout_3.addWidget(self.Sresimpact_side_input, 16, 1, 1, 1)
         self.LimitSxSyfront_input = QtWidgets.QSpinBox(self.groupBoxA)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.LimitSxSyfront_input.setFont(font)
         self.LimitSxSyfront_input.setMinimumSize(QtCore.QSize(0, 26))
@@ -1484,7 +1486,7 @@ class Ui_MainWindow(object):
         self.LimitSxSyfront_input.setObjectName("LimitSxSyfront_input")
         self.gridLayout_3.addWidget(self.LimitSxSyfront_input, 5, 1, 1, 1)
         self.Tcalc_input = QtWidgets.QSpinBox(self.groupBoxA)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.Tcalc_input.setFont(font)
         self.Tcalc_input.setMaximum(255)
@@ -1492,7 +1494,7 @@ class Ui_MainWindow(object):
         self.Tcalc_input.setObjectName("Tcalc_input")
         self.gridLayout_3.addWidget(self.Tcalc_input, 11, 1, 1, 1)
         self.Sresimpactfront_input = QtWidgets.QSpinBox(self.groupBoxA)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.Sresimpactfront_input.setFont(font)
         self.Sresimpactfront_input.setMinimumSize(QtCore.QSize(0, 26))
@@ -1500,7 +1502,7 @@ class Ui_MainWindow(object):
         self.Sresimpactfront_input.setObjectName("Sresimpactfront_input")
         self.gridLayout_3.addWidget(self.Sresimpactfront_input, 15, 1, 1, 1)
         self.LimitAresfront_input = QtWidgets.QSpinBox(self.groupBoxA)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.LimitAresfront_input.setFont(font)
         self.LimitAresfront_input.setMinimumSize(QtCore.QSize(0, 26))
@@ -1508,19 +1510,19 @@ class Ui_MainWindow(object):
         self.LimitAresfront_input.setObjectName("LimitAresfront_input")
         self.gridLayout_3.addWidget(self.LimitAresfront_input, 3, 1, 1, 1)
         self.LimitAresfront_lbl = QtWidgets.QLabel(self.groupBoxA)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.LimitAresfront_lbl.setFont(font)
         self.LimitAresfront_lbl.setObjectName("LimitAresfront_lbl")
         self.gridLayout_3.addWidget(self.LimitAresfront_lbl, 3, 0, 1, 1)
         self.Tcalc_lbl = QtWidgets.QLabel(self.groupBoxA)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.Tcalc_lbl.setFont(font)
         self.Tcalc_lbl.setObjectName("Tcalc_lbl")
         self.gridLayout_3.addWidget(self.Tcalc_lbl, 11, 0, 1, 1)
         self.LimitSresfront_input = QtWidgets.QSpinBox(self.groupBoxA)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.LimitSresfront_input.setFont(font)
         self.LimitSresfront_input.setMaximum(65535)
@@ -1528,38 +1530,38 @@ class Ui_MainWindow(object):
         self.LimitSresfront_input.setObjectName("LimitSresfront_input")
         self.gridLayout_3.addWidget(self.LimitSresfront_input, 8, 1, 1, 1)
         self.Sresimpactfront_lbl = QtWidgets.QLabel(self.groupBoxA)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.Sresimpactfront_lbl.setFont(font)
         self.Sresimpactfront_lbl.setObjectName("Sresimpactfront_lbl")
         self.gridLayout_3.addWidget(self.Sresimpactfront_lbl, 15, 0, 1, 1)
         self.Sresimpactside_lbl = QtWidgets.QLabel(self.groupBoxA)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.Sresimpactside_lbl.setFont(font)
         self.Sresimpactside_lbl.setObjectName("Sresimpactside_lbl")
         self.gridLayout_3.addWidget(self.Sresimpactside_lbl, 16, 0, 1, 1)
         self.LimitSxSyfront_lbl = QtWidgets.QLabel(self.groupBoxA)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.LimitSxSyfront_lbl.setFont(font)
         self.LimitSxSyfront_lbl.setObjectName("LimitSxSyfront_lbl")
         self.gridLayout_3.addWidget(self.LimitSxSyfront_lbl, 5, 0, 1, 1)
         self.LimitSxSyside_lbl = QtWidgets.QLabel(self.groupBoxA)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.LimitSxSyside_lbl.setFont(font)
         self.LimitSxSyside_lbl.setObjectName("LimitSxSyside_lbl")
         self.gridLayout_3.addWidget(self.LimitSxSyside_lbl, 6, 0, 1, 1)
         self.Time_to_stop_calc_lbl = QtWidgets.QLabel(self.groupBoxA)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.Time_to_stop_calc_lbl.setFont(font)
         self.Time_to_stop_calc_lbl.setObjectName("Time_to_stop_calc_lbl")
         self.gridLayout_3.addWidget(self.Time_to_stop_calc_lbl, 14, 0, 1, 1)
         self.LimitSresside_input = QtWidgets.QSpinBox(self.groupBoxA)
         self.LimitSresside_input.setMinimumSize(QtCore.QSize(0, 26))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.LimitSresside_input.setFont(font)
         self.LimitSresside_input.setMaximum(65535)
@@ -1567,14 +1569,14 @@ class Ui_MainWindow(object):
         self.gridLayout_3.addWidget(self.LimitSresside_input, 10, 1, 1, 1)
         self.LimitSxSyside_input = QtWidgets.QSpinBox(self.groupBoxA)
         self.LimitSxSyside_input.setMinimumSize(QtCore.QSize(0, 26))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.LimitSxSyside_input.setFont(font)
         self.LimitSxSyside_input.setMaximum(65535)
         self.LimitSxSyside_input.setObjectName("LimitSxSyside_input")
         self.gridLayout_3.addWidget(self.LimitSxSyside_input, 6, 1, 1, 1)
         self.LimitAresside_input = QtWidgets.QSpinBox(self.groupBoxA)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.LimitAresside_input.setFont(font)
         self.LimitAresside_input.setMaximum(65535)
@@ -1582,13 +1584,13 @@ class Ui_MainWindow(object):
         self.LimitAresside_input.setObjectName("LimitAresside_input")
         self.gridLayout_3.addWidget(self.LimitAresside_input, 4, 1, 1, 1)
         self.deltaAres_lbl = QtWidgets.QLabel(self.groupBoxA)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.deltaAres_lbl.setFont(font)
         self.deltaAres_lbl.setObjectName("deltaAres_lbl")
         self.gridLayout_3.addWidget(self.deltaAres_lbl, 13, 0, 1, 1)
         self.Timetostopcalc_input = QtWidgets.QSpinBox(self.groupBoxA)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.Timetostopcalc_input.setFont(font)
         self.Timetostopcalc_input.setMaximum(255)
@@ -1596,13 +1598,13 @@ class Ui_MainWindow(object):
         self.Timetostopcalc_input.setObjectName("Timetostopcalc_input")
         self.gridLayout_3.addWidget(self.Timetostopcalc_input, 14, 1, 1, 1)
         self.LimitSresside_lbl = QtWidgets.QLabel(self.groupBoxA)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.LimitSresside_lbl.setFont(font)
         self.LimitSresside_lbl.setObjectName("LimitSresside_lbl")
         self.gridLayout_3.addWidget(self.LimitSresside_lbl, 10, 0, 1, 1)
         self.deltaAres_input = QtWidgets.QSpinBox(self.groupBoxA)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.deltaAres_input.setFont(font)
         self.deltaAres_input.setMinimumSize(QtCore.QSize(0, 26))
@@ -1610,7 +1612,7 @@ class Ui_MainWindow(object):
         self.deltaAres_input.setObjectName("deltaAres_input")
         self.gridLayout_3.addWidget(self.deltaAres_input, 13, 1, 1, 1)
         self.LimitAresside_lbl = QtWidgets.QLabel(self.groupBoxA)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.LimitAresside_lbl.setFont(font)
         self.LimitAresside_lbl.setObjectName("LimitAresside_lbl")
@@ -1622,17 +1624,18 @@ class Ui_MainWindow(object):
         self.LOGS_LBL.setObjectName("LOGS_LBL")
         self.gridLayout_3.addWidget(self.LOGS_LBL, 2, 2, 1, 1)
         self.Tcalc2_input = QtWidgets.QSpinBox(self.groupBoxA)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
+        self.LOGS_LBL.setFont(font)
         self.Tcalc2_input.setFont(font)
         self.Tcalc2_input.setMinimumSize(QtCore.QSize(0, 26))
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.Tcalc2_lbl.setFont(font)
         self.Tcalc2_input.setObjectName("Tcalc2_input")
         self.gridLayout_3.addWidget(self.Tcalc2_input, 12, 1, 1, 1)
         self.LimitSresfront_lbl = QtWidgets.QLabel(self.groupBoxA)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.LimitSresfront_lbl.setFont(font)
         self.LimitSresfront_lbl.setObjectName("LimitSresfront_lbl")
@@ -1641,6 +1644,9 @@ class Ui_MainWindow(object):
         self.save_params_btn.setCheckable(False)
         self.save_params_btn.setAutoRepeat(False)
         self.save_params_btn.setObjectName("save_params_btn")
+
+        font.setPointSize(12)
+        self.save_params_btn.setFont(font)
         self.gridLayout_3.addWidget(self.save_params_btn, 0, 2, 2, 1)
         self.PARAM_RESULT_BRS_2 = QtWidgets.QTextBrowser(self.groupBoxA)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
@@ -1648,6 +1654,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.PARAM_RESULT_BRS_2.sizePolicy().hasHeightForWidth())
         self.PARAM_RESULT_BRS_2.setSizePolicy(sizePolicy)
+        self.PARAM_RESULT_BRS_2.setFont(font)
         self.PARAM_RESULT_BRS_2.setObjectName("PARAM_RESULT_BRS_2")
         self.gridLayout_3.addWidget(self.PARAM_RESULT_BRS_2, 3, 2, 13, 1)
         self.gridLayout_2.addWidget(self.groupBoxA, 0, 0, 1, 1)
@@ -1658,7 +1665,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.groupBox143.sizePolicy().hasHeightForWidth())
         self.groupBox143.setSizePolicy(sizePolicy)
         self.groupBox143.setMinimumSize(QtCore.QSize(500, 0))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.groupBox143.setFont(font)
         self.groupBox143.setObjectName("groupBox143")
@@ -1671,14 +1678,14 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.export_results_btn.sizePolicy().hasHeightForWidth())
         self.export_results_btn.setSizePolicy(sizePolicy)
         self.export_results_btn.setMinimumSize(QtCore.QSize(0, 83))
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.export_results_btn.setFont(font)
         self.export_results_btn.setObjectName("export_results_btn")
         self.gridLayout_4.addWidget(self.export_results_btn, 5, 0, 1, 1)
         self.model_test_selector = QtWidgets.QComboBox(self.groupBox143)
         self.model_test_selector.setObjectName("model_test_selector")
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.model_test_selector.setFont(font)
         os.chdir('pillows/test_folder')
@@ -1701,7 +1708,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.run_single_test_btn.sizePolicy().hasHeightForWidth())
         self.run_single_test_btn.setSizePolicy(sizePolicy)
         self.run_single_test_btn.setMinimumSize(QtCore.QSize(0, 83))
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.run_single_test_btn.setFont(font)
         self.run_single_test_btn.setObjectName("run_single_test_btn")
@@ -1722,6 +1729,8 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(10)
         sizePolicy.setHeightForWidth(self.PARAM_RESULT_BRS.sizePolicy().hasHeightForWidth())
         self.PARAM_RESULT_BRS.setSizePolicy(sizePolicy)
+        font.setPointSize(12)
+        self.PARAM_RESULT_BRS.setFont(font)
         self.PARAM_RESULT_BRS.setObjectName("single_test_result_brs")
         self.gridLayout_4.addWidget(self.PARAM_RESULT_BRS, 0, 1, 7, 1)
         self.gridLayout_2.addWidget(self.groupBox143, 2, 0, 1, 1)
@@ -1731,7 +1740,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.groupBox_2666.sizePolicy().hasHeightForWidth())
         self.groupBox_2666.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.groupBox_2666.setFont(font)
         self.groupBox_2666.setObjectName("groupBox_2666")
@@ -1822,6 +1831,7 @@ class Ui_MainWindow(object):
         self.gridLayout_5.addWidget(self.collside_lbl, 20, 0, 1, 1)
         self.syntez_btn = QtWidgets.QPushButton(self.groupBox_2666)
         self.syntez_btn.setObjectName("syntez_btn")
+        self.syntez_btn.setFont(font)
         self.gridLayout_5.addWidget(self.syntez_btn, 23, 0, 1, 3)
         self.ares_range_input = QtWidgets.QSpinBox(self.groupBox_2666)
         self.ares_range_input.setObjectName("ares_range_input")
@@ -1845,7 +1855,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.read_params_btn.sizePolicy().hasHeightForWidth())
         self.read_params_btn.setSizePolicy(sizePolicy)
         self.read_params_btn.setMinimumSize(QtCore.QSize(0, 0))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.read_params_btn.setFont(font)
         self.read_params_btn.setObjectName("read_params_btn")
@@ -1856,7 +1866,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.UPDATE_PARAMS_BTN.sizePolicy().hasHeightForWidth())
         self.UPDATE_PARAMS_BTN.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.UPDATE_PARAMS_BTN.setFont(font)
         self.UPDATE_PARAMS_BTN.setObjectName("UPDATE_PARAMS_BTN")
@@ -1867,7 +1877,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.UPDATE_PARAMS_LOCAL_BTN.sizePolicy().hasHeightForWidth())
         self.UPDATE_PARAMS_LOCAL_BTN.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.UPDATE_PARAMS_LOCAL_BTN.setFont(font)
         self.UPDATE_PARAMS_LOCAL_BTN.setObjectName("UPDATE_PARAMS_LOCAL_BTN")
@@ -1882,13 +1892,13 @@ class Ui_MainWindow(object):
         self.read_params_btn.setMinimumSize(QtCore.QSize(0, 35))
         self.UPDATE_PARAMS_LOCAL_BTN.setMinimumSize(QtCore.QSize(0, 35))
         self.UPDATE_PARAMS_BTN.setMinimumSize(QtCore.QSize(0, 35))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.read_params_local_btn.setFont(font)
         self.read_params_local_btn.setObjectName("read_params_local_btn")
         self.gridLayout_6.addWidget(self.read_params_local_btn, 1, 1, 1, 1)
         self.gridLayout_2.addWidget(self.groupBox1342, 1, 0, 1, 1)
-        font = QtGui.QFont()
+
         font.setPointSize(13)
         self.tstmax_lbl.setFont(font)
         self.tstmin_lbl.setFont(font)
@@ -1952,7 +1962,7 @@ class Ui_MainWindow(object):
         self.gridLayout_2 = QtWidgets.QGridLayout(self.reprogramming_tab)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.groupBox_23456789 = QtWidgets.QGroupBox(self.reprogramming_tab)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.groupBox_23456789.setFont(font)
         self.groupBox_23456789.setObjectName("groupBox_23456789")
@@ -1979,7 +1989,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.pushButton_3.sizePolicy().hasHeightForWidth())
         self.pushButton_3.setSizePolicy(sizePolicy)
         self.pushButton_3.setMinimumSize(QtCore.QSize(50, 60))
-        font = QtGui.QFont()
+
         font.setPointSize(14)
         self.pushButton_3.setFont(font)
         self.pushButton_3.setObjectName("pushButton_3")
@@ -2011,7 +2021,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.groupBox1565.sizePolicy().hasHeightForWidth())
         self.groupBox1565.setSizePolicy(sizePolicy)
         self.groupBox1565.setMinimumSize(QtCore.QSize(0, 200))
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.groupBox1565.setFont(font)
         self.groupBox1565.setObjectName("groupBox1565")
@@ -2104,7 +2114,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.DAB_EN.sizePolicy().hasHeightForWidth())
         self.DAB_EN.setSizePolicy(sizePolicy)
         self.DAB_EN.setMinimumSize(QtCore.QSize(20, 0))
-        font = QtGui.QFont()
+
         font.setPointSize(11)
         self.DAB_EN.setFont(font)
         self.DAB_EN.setObjectName("DAB_EN")
@@ -2114,14 +2124,14 @@ class Ui_MainWindow(object):
         self.gridLayout_5.addWidget(self.PSB_EN, 2, 3, 1, 1)
         self.PAB_EN = QtWidgets.QCheckBox(self.acu_gb)
         self.PAB_EN.setMinimumSize(QtCore.QSize(20, 0))
-        font = QtGui.QFont()
+
         font.setPointSize(11)
         self.PAB_EN.setFont(font)
         self.PAB_EN.setObjectName("PAB_EN")
         self.gridLayout_5.addWidget(self.PAB_EN, 3, 0, 1, 1)
         self.DPT_EN = QtWidgets.QCheckBox(self.acu_gb)
         self.DPT_EN.setMinimumSize(QtCore.QSize(20, 0))
-        font = QtGui.QFont()
+
         font.setPointSize(11)
         self.DPT_EN.setFont(font)
         self.DPT_EN.setObjectName("DPT_EN")
@@ -2134,7 +2144,7 @@ class Ui_MainWindow(object):
         self.gridLayout_5.addWidget(self.PADS_EN, 3, 1, 1, 1)
         self.PPT_EN = QtWidgets.QCheckBox(self.acu_gb)
         self.PPT_EN.setMinimumSize(QtCore.QSize(20, 0))
-        font = QtGui.QFont()
+
         font.setPointSize(11)
         self.PPT_EN.setFont(font)
         self.PPT_EN.setObjectName("PPT_EN")
@@ -2233,7 +2243,7 @@ class Ui_MainWindow(object):
         self.PPSAT_EN.setFont(font)
         self.DPSAT_EN.setFont(font)
         self.groupBoxSEL.setFont(font)
-        font = QtGui.QFont()
+
         font.setPointSize(12)
         self.STO_VER_BTN.setFont(font)
         self.ACC_VER_BTN.setFont(font)
@@ -4071,7 +4081,8 @@ class Ui_MainWindow(object):
             Command.testNumber = self.UDS_TEST_SELECTOR.currentIndex()+0x31
             if(Command.testNumber==0x32 or Command.testNumber==0x3D):
                 Command.UDS_subtest=self.UDS_LED_SELECTOR.currentIndex()+1
-            Command.UDS_NRC = self.UDS_NRC_SELECTOR.currentIndex()
+            if(self.UDS_NRC_SELECTOR.currentIndex()!=-1):
+                Command.UDS_NRC = self.UDS_NRC_SELECTOR.currentIndex()
             Cmd = Command.SerializeToString()
             self.UART.write(Cmd)
             received_len = self.UART.read(2).hex()

@@ -46,13 +46,13 @@ def get_precrash_data_arr(word_num, datalen, EDR_name,EDR_buffer):
             precrash_buff.append((EDR_buffer[i+1]<<8) + EDR_buffer[i])
         EDR_precrash_arr_decoded.update([(EDR_name, precrash_buff)])
         word_num += 22
-    print(word_num)
+    #print(word_num)
     return word_num
 
 def get_unsupported_data(word_num, arraylen, EDR_name):
     word_num += arraylen
     EDR_precrash_arr_decoded.update([(EDR_name, "Not supported")])
-    print(word_num)
+    #print(word_num)
     return word_num
 
 def get_single_data(word_num, datalen, EDR_name,EDR_buffer):
@@ -62,7 +62,7 @@ def get_single_data(word_num, datalen, EDR_name,EDR_buffer):
         EDR_decoded.update([(EDR_name, (EDR_buffer[word_num+1] << 8) + EDR_buffer[word_num])])
 
     word_num += datalen
-    print(word_num)
+    #print(word_num)
     return word_num
 
 def get_dV(word_num, EDR_name,EDR_buffer):
@@ -71,7 +71,7 @@ def get_dV(word_num, EDR_name,EDR_buffer):
         EDR_dv_buf.append(((EDR_buffer[i+1] << 8) + EDR_buffer[i]))
     word_num += 50
     EDR_postcrash_decoded.update([(EDR_name, EDR_dv_buf)])
-    print(word_num)
+    #print(word_num)
     return word_num
 
 def get_val_from_2s_compl(val, len):
