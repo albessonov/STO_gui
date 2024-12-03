@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import time
-from call import *
+#from call import *
 # Form implementation generated from reading ui file 'avtovaz.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
@@ -36,9 +36,9 @@ class Ui_MainWindow(object):
         self.tests_dict=dict()
 
     def setupUi(self, MainWindow):
-        #buffer=[0x69,0x40,0x2C,0x40,0x64,0x40,0x69,0x40,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x2C,0x40,0xD0,0x07,0x00,0x28,0x28,0x28,0x28,0x28,0x28,0x28,0x28,0x28,0x28,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0x00,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x40,0x00,0x0C,0x00,0x01,0x00,0x1A,0x00,0x1A,0x00,0xFE,0xFE,0x01,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0x62,0x40,0x5F,0x40,0x60,0x60,0x40,0x60,0x40,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x5F,0x40,0xD0,0x07,0xE8,0x03,0x00,0x00,0x4B,0x0C,0x4B,0x0E,0x4B,0x0E,0x4B,0x10,0x4B,0x10,0x4B,0x00,0x4B,0x00,0x4B,0x00,0x4B,0x00,0x4B,0x02,0xFE,0xFF,0xFE,0xFF,0xFE,0xFF,0xFE,0xFF,0x00,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x00,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x00,0x00,0x00,0x00,0x94,0xB6,0x94,0xB6,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x15,0x00,0x15,0x00,0xFE,0xFE,0xFE,0xFE,0x01,0x01,0x01,0xFE,0x0F,0x0F,0x0F,0x0F,0x0F,0x0F,0x0F,0x0F,0x0F,0x0F,0x0F,0x0A,0x0A,0x0A,0x0A,0x0A,0x0A,0x0A,0x0A,0x0A,0x0A,0x0A,0x00,0x00,0x14,0x03,0x14,0x03,0x14,0x03,0x14,0x03,0x14,0x03,0x14,0x03,0x14,0x03,0x14,0x03,0x14,0x03,0x14,0x03,0x00,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE,0xFE]
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
+
         MainWindow.resize(1280, 960)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
@@ -49,6 +49,10 @@ class Ui_MainWindow(object):
         os.chdir('..')
         self.COM_PORT=None
         self.UART=None
+        self.SBR_stopper = False
+        self.SBR_signal=Communicate_str()
+        self.SBR_signal.upd_text.connect(self.SBR_upd)
+        self.SBR_signal.probeg_500.connect(self.probeg_500_upd)
         self.progress_changed = QtCore.pyqtSignal(int)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -64,6 +68,7 @@ class Ui_MainWindow(object):
         self.gridLayout_8 = QtWidgets.QGridLayout(self.init_tab)
         self.gridLayout_8.setObjectName("gridLayout_8")
         self.groupBox_13 = QtWidgets.QGroupBox(self.init_tab)
+        self.timer = 0
 
         font.setPointSize(16)
         self.groupBox_13.setFont(font)
@@ -481,126 +486,192 @@ class Ui_MainWindow(object):
         self.gridLayout_6.addWidget(self.STOP_BTN_4, 3, 0, 1, 1)
         self.gridLayout_25.addWidget(self.groupBox, 0, 1, 1, 1)
         self.tabWidget.addTab(self.tab_2, "")
-        self.tab_6 = QtWidgets.QWidget()
-        self.tab_6.setObjectName("tab_6")
-        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.tab_6)
-        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.groupBox_6 = QtWidgets.QGroupBox(self.tab_6)
-        self.groupBox_6.setTitle("")
-        self.groupBox_6.setObjectName("groupBox_6")
-        self.gridLayout_11 = QtWidgets.QGridLayout(self.groupBox_6)
-        self.gridLayout_11.setObjectName("gridLayout_11")
-        self.exp_res_SBR_brs = QtWidgets.QTextBrowser(self.groupBox_6)
+        self.SBR = QtWidgets.QWidget()
+        self.SBR.setObjectName("SBR")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.SBR)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.groupBox_8888 = QtWidgets.QGroupBox(self.SBR)
+        self.groupBox_8888.setTitle("")
+        self.groupBox_8888.setObjectName("groupBox_8888")
+        self.gridLayout_2 = QtWidgets.QGridLayout(self.groupBox_8888)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.groupBox_14141414 = QtWidgets.QGroupBox(self.groupBox_8888)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.groupBox_14141414.setFont(font)
+        self.groupBox_14141414.setObjectName("groupBox_14141414")
+        self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.groupBox_14141414)
+        self.verticalLayout_8.setObjectName("verticalLayout_8")
+        self.PARKING = QtWidgets.QRadioButton(self.groupBox_14141414)
+        self.PARKING.setObjectName("PARKING")
+        self.verticalLayout_8.addWidget(self.PARKING)
+        self.REVERSE = QtWidgets.QRadioButton(self.groupBox_14141414)
+        self.REVERSE.setObjectName("REVERSE")
+        self.verticalLayout_8.addWidget(self.REVERSE)
+        self.NEUTRAL = QtWidgets.QRadioButton(self.groupBox_14141414)
+        self.NEUTRAL.setObjectName("NEUTRAL")
+        self.verticalLayout_8.addWidget(self.NEUTRAL)
+        self.DRIVE = QtWidgets.QRadioButton(self.groupBox_14141414)
+        self.DRIVE.setObjectName("DRIVE")
+        self.verticalLayout_8.addWidget(self.DRIVE)
+        self.gridLayout_2.addWidget(self.groupBox_14141414, 2, 6, 1, 1)
+        self.groupBox_13131313 = QtWidgets.QGroupBox(self.groupBox_8888)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.groupBox_13131313.setFont(font)
+        self.groupBox_13131313.setObjectName("groupBox_13131313")
+        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.groupBox_13131313)
+        self.verticalLayout_5.setObjectName("verticalLayout_5")
+        self.RL_OPEN = QtWidgets.QRadioButton(self.groupBox_13131313)
+        self.RL_OPEN.setFont(font)
+        self.PARKING.setFont(font)
+        self.REVERSE.setFont(font)
+        self.NEUTRAL.setFont(font)
+        self.DRIVE.setFont(font)
+        self.RL_OPEN.setObjectName("RL_OPEN")
+        self.verticalLayout_5.addWidget(self.RL_OPEN)
+        self.RL_CLOSE = QtWidgets.QRadioButton(self.groupBox_13131313)
 
-        font.setPointSize(14)
-        self.exp_res_SBR_brs.setFont(font)
-        self.exp_res_SBR_brs.setObjectName("exp_res_SBR_brs")
-        self.gridLayout_11.addWidget(self.exp_res_SBR_brs, 6, 0, 1, 1)
-        self.exp_res_SBR_lbl = QtWidgets.QLabel(self.groupBox_6)
+        self.RL_CLOSE.setFont(font)
+        self.RL_CLOSE.setObjectName("RL_CLOSE")
+        self.verticalLayout_5.addWidget(self.RL_CLOSE)
+        self.gridLayout_2.addWidget(self.groupBox_13131313, 2, 3, 1, 1)
+        self.groupBox_12121212 = QtWidgets.QGroupBox(self.groupBox_8888)
 
-        font.setPointSize(16)
-        self.exp_res_SBR_lbl.setFont(font)
-        self.exp_res_SBR_lbl.setObjectName("exp_res_SBR_lbl")
-        self.gridLayout_11.addWidget(self.exp_res_SBR_lbl, 5, 0, 1, 1)
-        self.got_res_SBR_brs = QtWidgets.QTextBrowser(self.groupBox_6)
+        self.groupBox_12121212.setFont(font)
+        self.groupBox_12121212.setObjectName("groupBox_12121212")
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.groupBox_12121212)
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
+        self.FP_OPEN = QtWidgets.QRadioButton(self.groupBox_12121212)
 
-        font.setPointSize(14)
-        self.got_res_SBR_brs.setFont(font)
-        self.got_res_SBR_brs.setObjectName("got_res_SBR_brs")
-        self.gridLayout_11.addWidget(self.got_res_SBR_brs, 8, 0, 1, 1)
-        self.got_res_SBR_lbl = QtWidgets.QLabel(self.groupBox_6)
-
-        font.setPointSize(16)
-        self.got_res_SBR_lbl.setFont(font)
-        self.got_res_SBR_lbl.setObjectName("got_res_SBR_lbl")
-        self.gridLayout_11.addWidget(self.got_res_SBR_lbl, 7, 0, 1, 1)
-        self.groupBox_7 = QtWidgets.QGroupBox(self.groupBox_6)
-
-        font.setPointSize(10)
-        self.groupBox_7.setFont(font)
-        self.groupBox_7.setTitle("")
-        self.groupBox_7.setObjectName("groupBox_7")
-        self.gridLayout_12 = QtWidgets.QGridLayout(self.groupBox_7)
-        self.gridLayout_12.setObjectName("gridLayout_12")
-        self.start_SBR_btn = QtWidgets.QPushButton(self.groupBox_7)
-        self.start_SBR_btn.setMinimumSize(QtCore.QSize(0, 42))
-
+        self.FP_OPEN.setFont(font)
+        self.FP_OPEN.setObjectName("FP_OPEN")
+        self.verticalLayout_4.addWidget(self.FP_OPEN)
+        self.FP_CLOSE = QtWidgets.QRadioButton(self.groupBox_12121212)
+        self.FP_CLOSE.setObjectName("FP_CLOSE")
+        self.FP_CLOSE.setFont(font)
+        self.verticalLayout_4.addWidget(self.FP_CLOSE)
+        self.gridLayout_2.addWidget(self.groupBox_12121212, 2, 2, 1, 1)
+        self.groupBox_10101010 = QtWidgets.QGroupBox(self.groupBox_8888)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.groupBox_10101010.setFont(font)
+        self.groupBox_10101010.setObjectName("groupBox_10101010")
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.groupBox_10101010)
+        self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.RR_OPEN = QtWidgets.QRadioButton(self.groupBox_10101010)
+        self.RR_OPEN.setObjectName("RR_OPEN")
+        self.verticalLayout_6.addWidget(self.RR_OPEN)
+        self.RR_CLOSE = QtWidgets.QRadioButton(self.groupBox_10101010)
+        self.RR_CLOSE.setObjectName("RR_CLOSE")
+        self.RR_OPEN.setFont(font)
+        self.RR_CLOSE.setFont(font)
+        self.verticalLayout_6.addWidget(self.RR_CLOSE)
+        self.gridLayout_2.addWidget(self.groupBox_10101010, 2, 4, 1, 1)
+        self.groupBox_11111111 = QtWidgets.QGroupBox(self.groupBox_8888)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.groupBox_11111111.setFont(font)
+        self.groupBox_11111111.setObjectName("groupBox_11111111")
+        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.groupBox_11111111)
+        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.ENG_ST_1 = QtWidgets.QRadioButton(self.groupBox_11111111)
+        self.ENG_ST_1.setObjectName("ENG_ST_1")
+        self.verticalLayout_7.addWidget(self.ENG_ST_1)
+        self.ENG_ST_2 = QtWidgets.QRadioButton(self.groupBox_11111111)
+        self.ENG_ST_2.setObjectName("ENG_ST_2")
+        self.ENG_ST_2.setFont(font)
+        self.ENG_ST_1.setFont(font)
+        self.verticalLayout_7.addWidget(self.ENG_ST_2)
+        self.gridLayout_2.addWidget(self.groupBox_11111111, 2, 5, 1, 1)
+        self.start_SBR_btn = QtWidgets.QPushButton(self.groupBox_8888)
+        self.start_SBR_btn.setMinimumSize(QtCore.QSize(0, 45))
+        font = QtGui.QFont()
         font.setPointSize(12)
         self.start_SBR_btn.setFont(font)
-        self.start_SBR_btn.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.start_SBR_btn.setObjectName("start_SBR_btn")
-        self.gridLayout_12.addWidget(self.start_SBR_btn, 2, 0, 1, 1)
-        self.STOP_BTN_5 = QtWidgets.QPushButton(self.groupBox_7)
-        self.STOP_BTN_5.setMinimumSize(QtCore.QSize(0, 42))
+        self.gridLayout_2.addWidget(self.start_SBR_btn, 5, 1, 1, 6)
+        self.groupBox_9999 = QtWidgets.QGroupBox(self.groupBox_8888)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.groupBox_9999.setFont(font)
+        self.groupBox_9999.setObjectName("groupBox_9999")
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.groupBox_9999)
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.DR_OPEN = QtWidgets.QRadioButton(self.groupBox_9999)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.DR_OPEN.setFont(font)
+        self.DR_OPEN.setObjectName("DR_OPEN")
+        self.verticalLayout_3.addWidget(self.DR_OPEN)
+        self.DR_CLOSE = QtWidgets.QRadioButton(self.groupBox_9999)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.DR_CLOSE.setFont(font)
+        self.DR_CLOSE.setObjectName("DR_CLOSE")
+        self.verticalLayout_3.addWidget(self.DR_CLOSE)
+        self.gridLayout_2.addWidget(self.groupBox_9999, 2, 1, 3, 1)
 
+        self.STOP_BTN_5 = QtWidgets.QPushButton(self.groupBox_8888)
+        self.STOP_BTN_5.setMinimumSize(QtCore.QSize(0, 45))
+        font = QtGui.QFont()
         font.setPointSize(12)
         self.STOP_BTN_5.setFont(font)
-        self.STOP_BTN_5.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         self.STOP_BTN_5.setObjectName("STOP_BTN_5")
-        self.gridLayout_12.addWidget(self.STOP_BTN_5, 2, 1, 1, 1)
-        self.Seatbelt_selector = QtWidgets.QComboBox(self.groupBox_7)
-        self.Seatbelt_selector.setMinimumSize(QtCore.QSize(0, 32))
+        self.gridLayout_2.addWidget(self.STOP_BTN_5, 6, 1, 1, 6)
+        self.DR_CLOSE.setChecked(True)
+        self.FP_CLOSE.setChecked(True)
+        self.RR_CLOSE.setChecked(True)
+        self.RL_CLOSE.setChecked(True)
+        self.ENG_ST_2.setChecked(True)
+        self.DRIVE.setChecked(True)
+        self.EBU_ALIBABU = QtWidgets.QPushButton(self.groupBox_8888)
+        self.EBU_ALIBABU.setMinimumSize(QtCore.QSize(0, 45))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.EBU_ALIBABU.setFont(font)
+        self.EBU_ALIBABU.setObjectName("EBU_ALIBABU")
+        self.EBU_ALIBABU.setText("Перезапустить БУ СНПБ")
+        self.EBU_ALIBABU.setDisabled(True)
+        self.gridLayout_2.addWidget(self.EBU_ALIBABU, 7, 1, 1, 6)
 
-        font.setPointSize(11)
-        self.Seatbelt_selector.setFont(font)
-        self.Seatbelt_selector.setObjectName("Seatbelt_selector")
-        self.Seatbelt_selector.addItem("")
-        self.Seatbelt_selector.addItem("")
-        self.Seatbelt_selector.addItem("")
-        self.Seatbelt_selector.addItem("")
-        self.Seatbelt_selector.addItem("")
-        self.gridLayout_12.addWidget(self.Seatbelt_selector, 1, 0, 1, 2)
-        self.SBR_test_selector = QtWidgets.QComboBox(self.groupBox_7)
-        self.SBR_test_selector.setMinimumSize(QtCore.QSize(0, 32))
-
-        font.setPointSize(11)
-        self.SBR_test_selector.setFont(font)
-        self.SBR_test_selector.setObjectName("SBR_test_selector")
-        self.SBR_test_selector.addItem("")
-        self.SBR_test_selector.addItem("")
-        self.SBR_test_selector.addItem("")
-        self.SBR_test_selector.addItem("")
-        self.SBR_test_selector.addItem("")
-        self.SBR_test_selector.addItem("")
-        self.SBR_test_selector.addItem("")
-        self.SBR_test_selector.addItem("")
-        self.SBR_test_selector.addItem("")
-        self.gridLayout_12.addWidget(self.SBR_test_selector, 5, 0, 1, 2)
-        self.sbr_test_sel_lbl = QtWidgets.QLabel(self.groupBox_7)
-
-        font.setPointSize(14)
-        font.setBold(False)
-        font.setWeight(50)
-        self.sbr_test_sel_lbl.setFont(font)
-        self.sbr_test_sel_lbl.setObjectName("sbr_test_sel_lbl")
-        self.gridLayout_12.addWidget(self.sbr_test_sel_lbl, 3, 0, 1, 1)
-        self.SB_select_lbl = QtWidgets.QLabel(self.groupBox_7)
-
-        font.setPointSize(14)
-        self.SB_select_lbl.setFont(font)
-        self.SB_select_lbl.setObjectName("SB_select_lbl")
-        self.gridLayout_12.addWidget(self.SB_select_lbl, 0, 0, 1, 1)
-        self.gridLayout_11.addWidget(self.groupBox_7, 0, 0, 1, 1)
-        self.horizontalLayout_3.addWidget(self.groupBox_6)
-        self.groupBox_22 = QtWidgets.QGroupBox(self.tab_6)
-        self.groupBox_22.setTitle("")
-        self.groupBox_22.setObjectName("groupBox_22")
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox_22)
+        self.verticalLayout.addWidget(self.groupBox_8888)
+        self.groupBox7777 = QtWidgets.QGroupBox(self.SBR)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.groupBox7777.sizePolicy().hasHeightForWidth())
+        self.groupBox7777.setSizePolicy(sizePolicy)
+        self.groupBox7777.setTitle("")
+        self.groupBox7777.setObjectName("groupBox7777")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox7777)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.accepted_SBR_title = QtWidgets.QLabel(self.groupBox_22)
-
-        font.setPointSize(16)
-        self.accepted_SBR_title.setFont(font)
-        self.accepted_SBR_title.setObjectName("accepted_SBR_title")
-        self.verticalLayout_2.addWidget(self.accepted_SBR_title)
-        self.acc_SBR_brs = QtWidgets.QTextBrowser(self.groupBox_22)
-
+        self.SBR_RES_LBL = QtWidgets.QLabel(self.groupBox7777)
+        font = QtGui.QFont()
         font.setPointSize(14)
-        self.acc_SBR_brs.setFont(font)
-        self.acc_SBR_brs.setObjectName("acc_SBR_brs")
-        self.verticalLayout_2.addWidget(self.acc_SBR_brs)
-        self.horizontalLayout_3.addWidget(self.groupBox_22)
-        self.tabWidget.addTab(self.tab_6, "")
+        self.SBR_RES_LBL.setFont(font)
+        self.SBR_RES_LBL.setObjectName("SBR_RES_LBL")
+        self.verticalLayout_2.addWidget(self.SBR_RES_LBL)
+        self.SBR_RESULT_BRS = QtWidgets.QTextBrowser(self.groupBox7777)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.SBR_RESULT_BRS.setFont(font)
+        self.SBR_RESULT_BRS.setObjectName("SBR_RESULT_BRS")
+        self.verticalLayout_2.addWidget(self.SBR_RESULT_BRS)
+        self.CURRENT_SPEED = QtWidgets.QLabel(self.groupBox7777)
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.CURRENT_SPEED.setFont(font)
+        self.CURRENT_SPEED.setObjectName("CURRENT_SPEED")
+        self.verticalLayout_2.addWidget(self.CURRENT_SPEED)
+        self.PASSED_MILEAGE = QtWidgets.QLabel(self.groupBox7777)
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.PASSED_MILEAGE.setFont(font)
+        self.PASSED_MILEAGE.setObjectName("PASSED_MILEAGE")
+        self.verticalLayout_2.addWidget(self.PASSED_MILEAGE)
+        self.verticalLayout.addWidget(self.groupBox7777)
+        self.tabWidget.addTab(self.SBR, "")
         self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setObjectName("tab_3")
         self.gridLayout_20 = QtWidgets.QGridLayout(self.tab_3)
@@ -1448,456 +1519,478 @@ class Ui_MainWindow(object):
         self.params_tab.setObjectName("params_tab")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.params_tab)
         self.gridLayout_2.setObjectName("gridLayout_2")
-        self.groupBoxA = QtWidgets.QGroupBox(self.params_tab)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.groupBoxA.sizePolicy().hasHeightForWidth())
-        self.groupBoxA.setSizePolicy(sizePolicy)
-        self.groupBoxA.setMinimumSize(QtCore.QSize(500, 0))
-
-        font.setPointSize(13)
-        self.groupBoxA.setFont(font)
-        self.groupBoxA.setObjectName("groupBoxA")
-        self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBoxA)
-        self.gridLayout_3.setObjectName("gridLayout_3")
-        self.defined_params_selector = QtWidgets.QComboBox(self.groupBoxA)
-        self.defined_params_selector.setObjectName("defined_params_selector")
-        self.gridLayout_3.addWidget(self.defined_params_selector, 1, 0, 1, 1)
-        self.defined_params_lbl = QtWidgets.QLabel(self.groupBoxA)
-        self.defined_params_lbl.setObjectName("defined_params_lbl")
-        self.gridLayout_3.addWidget(self.defined_params_lbl, 0, 0, 1, 1)
-        self.Sresimpact_side_input = QtWidgets.QSpinBox(self.groupBoxA)
-
-        font.setPointSize(12)
-        self.defined_params_selector.setFont(font)
-        self.defined_params_lbl.setFont(font)
-        self.Sresimpact_side_input.setFont(font)
-        self.Sresimpact_side_input.setMinimumSize(QtCore.QSize(0, 26))
-        self.Sresimpact_side_input.setMaximum(65535)
-        self.Sresimpact_side_input.setObjectName("Sresimpact_side_input")
-        self.gridLayout_3.addWidget(self.Sresimpact_side_input, 16, 1, 1, 1)
-        self.LimitSxSyfront_input = QtWidgets.QSpinBox(self.groupBoxA)
-
-        font.setPointSize(12)
-        self.LimitSxSyfront_input.setFont(font)
-        self.LimitSxSyfront_input.setMinimumSize(QtCore.QSize(0, 26))
-        self.LimitSxSyfront_input.setMaximum(65535)
-        self.LimitSxSyfront_input.setObjectName("LimitSxSyfront_input")
-        self.gridLayout_3.addWidget(self.LimitSxSyfront_input, 5, 1, 1, 1)
-        self.Tcalc_input = QtWidgets.QSpinBox(self.groupBoxA)
-
-        font.setPointSize(12)
-        self.Tcalc_input.setFont(font)
-        self.Tcalc_input.setMaximum(255)
-        self.Tcalc_input.setMinimumSize(QtCore.QSize(0, 26))
-        self.Tcalc_input.setObjectName("Tcalc_input")
-        self.gridLayout_3.addWidget(self.Tcalc_input, 11, 1, 1, 1)
-        self.Sresimpactfront_input = QtWidgets.QSpinBox(self.groupBoxA)
-
-        font.setPointSize(12)
-        self.Sresimpactfront_input.setFont(font)
-        self.Sresimpactfront_input.setMinimumSize(QtCore.QSize(0, 26))
-        self.Sresimpactfront_input.setMaximum(65535)
-        self.Sresimpactfront_input.setObjectName("Sresimpactfront_input")
-        self.gridLayout_3.addWidget(self.Sresimpactfront_input, 15, 1, 1, 1)
-        self.LimitAresfront_input = QtWidgets.QSpinBox(self.groupBoxA)
-
-        font.setPointSize(12)
-        self.LimitAresfront_input.setFont(font)
-        self.LimitAresfront_input.setMinimumSize(QtCore.QSize(0, 26))
-        self.LimitAresfront_input.setMaximum(65535)
-        self.LimitAresfront_input.setObjectName("LimitAresfront_input")
-        self.gridLayout_3.addWidget(self.LimitAresfront_input, 3, 1, 1, 1)
-        self.LimitAresfront_lbl = QtWidgets.QLabel(self.groupBoxA)
-
-        font.setPointSize(14)
-        self.LimitAresfront_lbl.setFont(font)
-        self.LimitAresfront_lbl.setObjectName("LimitAresfront_lbl")
-        self.gridLayout_3.addWidget(self.LimitAresfront_lbl, 3, 0, 1, 1)
-        self.Tcalc_lbl = QtWidgets.QLabel(self.groupBoxA)
-
-        font.setPointSize(14)
-        self.Tcalc_lbl.setFont(font)
-        self.Tcalc_lbl.setObjectName("Tcalc_lbl")
-        self.gridLayout_3.addWidget(self.Tcalc_lbl, 11, 0, 1, 1)
-        self.LimitSresfront_input = QtWidgets.QSpinBox(self.groupBoxA)
-
-        font.setPointSize(12)
-        self.LimitSresfront_input.setFont(font)
-        self.LimitSresfront_input.setMaximum(65535)
-        self.LimitSresfront_input.setMinimumSize(QtCore.QSize(0, 26))
-        self.LimitSresfront_input.setObjectName("LimitSresfront_input")
-        self.gridLayout_3.addWidget(self.LimitSresfront_input, 8, 1, 1, 1)
-        self.Sresimpactfront_lbl = QtWidgets.QLabel(self.groupBoxA)
-
-        font.setPointSize(14)
-        self.Sresimpactfront_lbl.setFont(font)
-        self.Sresimpactfront_lbl.setObjectName("Sresimpactfront_lbl")
-        self.gridLayout_3.addWidget(self.Sresimpactfront_lbl, 15, 0, 1, 1)
-        self.Sresimpactside_lbl = QtWidgets.QLabel(self.groupBoxA)
-
-        font.setPointSize(14)
-        self.Sresimpactside_lbl.setFont(font)
-        self.Sresimpactside_lbl.setObjectName("Sresimpactside_lbl")
-        self.gridLayout_3.addWidget(self.Sresimpactside_lbl, 16, 0, 1, 1)
-        self.LimitSxSyfront_lbl = QtWidgets.QLabel(self.groupBoxA)
-
-        font.setPointSize(14)
-        self.LimitSxSyfront_lbl.setFont(font)
-        self.LimitSxSyfront_lbl.setObjectName("LimitSxSyfront_lbl")
-        self.gridLayout_3.addWidget(self.LimitSxSyfront_lbl, 5, 0, 1, 1)
-        self.LimitSxSyside_lbl = QtWidgets.QLabel(self.groupBoxA)
-
-        font.setPointSize(14)
-        self.LimitSxSyside_lbl.setFont(font)
-        self.LimitSxSyside_lbl.setObjectName("LimitSxSyside_lbl")
-        self.gridLayout_3.addWidget(self.LimitSxSyside_lbl, 6, 0, 1, 1)
-        self.Time_to_stop_calc_lbl = QtWidgets.QLabel(self.groupBoxA)
-
-        font.setPointSize(14)
-        self.Time_to_stop_calc_lbl.setFont(font)
-        self.Time_to_stop_calc_lbl.setObjectName("Time_to_stop_calc_lbl")
-        self.gridLayout_3.addWidget(self.Time_to_stop_calc_lbl, 14, 0, 1, 1)
-        self.LimitSresside_input = QtWidgets.QSpinBox(self.groupBoxA)
-        self.LimitSresside_input.setMinimumSize(QtCore.QSize(0, 26))
-
-        font.setPointSize(12)
-        self.LimitSresside_input.setFont(font)
-        self.LimitSresside_input.setMaximum(65535)
-        self.LimitSresside_input.setObjectName("LimitSresside_input")
-        self.gridLayout_3.addWidget(self.LimitSresside_input, 10, 1, 1, 1)
-        self.LimitSxSyside_input = QtWidgets.QSpinBox(self.groupBoxA)
-        self.LimitSxSyside_input.setMinimumSize(QtCore.QSize(0, 26))
-
-        font.setPointSize(12)
-        self.LimitSxSyside_input.setFont(font)
-        self.LimitSxSyside_input.setMaximum(65535)
-        self.LimitSxSyside_input.setObjectName("LimitSxSyside_input")
-        self.gridLayout_3.addWidget(self.LimitSxSyside_input, 6, 1, 1, 1)
-        self.LimitAresside_input = QtWidgets.QSpinBox(self.groupBoxA)
-
-        font.setPointSize(12)
-        self.LimitAresside_input.setFont(font)
-        self.LimitAresside_input.setMaximum(65535)
-        self.LimitAresside_input.setMinimumSize(QtCore.QSize(0, 26))
-        self.LimitAresside_input.setObjectName("LimitAresside_input")
-        self.gridLayout_3.addWidget(self.LimitAresside_input, 4, 1, 1, 1)
-        self.deltaAres_lbl = QtWidgets.QLabel(self.groupBoxA)
-
-        font.setPointSize(14)
-        self.deltaAres_lbl.setFont(font)
-        self.deltaAres_lbl.setObjectName("deltaAres_lbl")
-        self.gridLayout_3.addWidget(self.deltaAres_lbl, 13, 0, 1, 1)
-        self.Timetostopcalc_input = QtWidgets.QSpinBox(self.groupBoxA)
-
-        font.setPointSize(12)
-        self.Timetostopcalc_input.setFont(font)
-        self.Timetostopcalc_input.setMaximum(255)
-        self.Timetostopcalc_input.setMinimumSize(QtCore.QSize(0, 26))
-        self.Timetostopcalc_input.setObjectName("Timetostopcalc_input")
-        self.gridLayout_3.addWidget(self.Timetostopcalc_input, 14, 1, 1, 1)
-        self.LimitSresside_lbl = QtWidgets.QLabel(self.groupBoxA)
-
-        font.setPointSize(14)
-        self.LimitSresside_lbl.setFont(font)
-        self.LimitSresside_lbl.setObjectName("LimitSresside_lbl")
-        self.gridLayout_3.addWidget(self.LimitSresside_lbl, 10, 0, 1, 1)
-        self.deltaAres_input = QtWidgets.QSpinBox(self.groupBoxA)
-
-        font.setPointSize(12)
-        self.deltaAres_input.setFont(font)
-        self.deltaAres_input.setMinimumSize(QtCore.QSize(0, 26))
-        self.deltaAres_input.setMaximum(255)
-        self.deltaAres_input.setObjectName("deltaAres_input")
-        self.gridLayout_3.addWidget(self.deltaAres_input, 13, 1, 1, 1)
-        self.LimitAresside_lbl = QtWidgets.QLabel(self.groupBoxA)
-
-        font.setPointSize(14)
-        self.LimitAresside_lbl.setFont(font)
-        self.LimitAresside_lbl.setObjectName("LimitAresside_lbl")
-        self.gridLayout_3.addWidget(self.LimitAresside_lbl, 4, 0, 1, 1)
-        self.Tcalc2_lbl = QtWidgets.QLabel(self.groupBoxA)
-        self.Tcalc2_lbl.setObjectName("Tcalc2_lbl")
-        self.gridLayout_3.addWidget(self.Tcalc2_lbl, 12, 0, 1, 1)
-        self.LOGS_LBL = QtWidgets.QLabel(self.groupBoxA)
-        self.LOGS_LBL.setObjectName("LOGS_LBL")
-        self.gridLayout_3.addWidget(self.LOGS_LBL, 2, 2, 1, 1)
-        self.Tcalc2_input = QtWidgets.QSpinBox(self.groupBoxA)
-
-        font.setPointSize(12)
-        self.LOGS_LBL.setFont(font)
-        self.Tcalc2_input.setFont(font)
-        self.Tcalc2_input.setMinimumSize(QtCore.QSize(0, 26))
-
-        font.setPointSize(14)
-        self.Tcalc2_lbl.setFont(font)
-        self.Tcalc2_input.setObjectName("Tcalc2_input")
-        self.gridLayout_3.addWidget(self.Tcalc2_input, 12, 1, 1, 1)
-        self.LimitSresfront_lbl = QtWidgets.QLabel(self.groupBoxA)
-
-        font.setPointSize(14)
-        self.LimitSresfront_lbl.setFont(font)
-        self.LimitSresfront_lbl.setObjectName("LimitSresfront_lbl")
-        self.gridLayout_3.addWidget(self.LimitSresfront_lbl, 8, 0, 1, 1)
-        self.save_params_btn = QtWidgets.QPushButton(self.groupBoxA)
-        self.save_params_btn.setCheckable(False)
-        self.save_params_btn.setAutoRepeat(False)
-        self.save_params_btn.setObjectName("save_params_btn")
-
-        font.setPointSize(12)
-        self.save_params_btn.setFont(font)
-        self.gridLayout_3.addWidget(self.save_params_btn, 0, 2, 2, 1)
-        self.PARAM_RESULT_BRS_2 = QtWidgets.QTextBrowser(self.groupBoxA)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.PARAM_RESULT_BRS_2.sizePolicy().hasHeightForWidth())
-        self.PARAM_RESULT_BRS_2.setSizePolicy(sizePolicy)
-        self.PARAM_RESULT_BRS_2.setFont(font)
-        self.PARAM_RESULT_BRS_2.setObjectName("PARAM_RESULT_BRS_2")
-        self.gridLayout_3.addWidget(self.PARAM_RESULT_BRS_2, 3, 2, 13, 1)
-        self.gridLayout_2.addWidget(self.groupBoxA, 0, 0, 1, 1)
         self.groupBox143 = QtWidgets.QGroupBox(self.params_tab)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.groupBox143.sizePolicy().hasHeightForWidth())
         self.groupBox143.setSizePolicy(sizePolicy)
-        self.groupBox143.setMinimumSize(QtCore.QSize(500, 0))
-
-        font.setPointSize(12)
+        self.groupBox143.setMaximumSize(QtCore.QSize(1300, 16777215))
+        font = QtGui.QFont()
+        font.setPointSize(11)
         self.groupBox143.setFont(font)
         self.groupBox143.setObjectName("groupBox143")
-        self.gridLayout_4 = QtWidgets.QGridLayout(self.groupBox143)
-        self.gridLayout_4.setObjectName("gridLayout_4")
-        self.export_results_btn = QtWidgets.QPushButton(self.groupBox143)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
+        self.gridLayout_5 = QtWidgets.QGridLayout(self.groupBox143)
+        self.gridLayout_5.setObjectName("gridLayout_5")
+        self.run_single_test_btn = QtWidgets.QPushButton(self.groupBox143)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.export_results_btn.sizePolicy().hasHeightForWidth())
-        self.export_results_btn.setSizePolicy(sizePolicy)
-        self.export_results_btn.setMinimumSize(QtCore.QSize(0, 83))
-
-        font.setPointSize(14)
-        self.export_results_btn.setFont(font)
-        self.export_results_btn.setObjectName("export_results_btn")
-        self.gridLayout_4.addWidget(self.export_results_btn, 5, 0, 1, 1)
+        sizePolicy.setHeightForWidth(self.run_single_test_btn.sizePolicy().hasHeightForWidth())
+        self.run_single_test_btn.setSizePolicy(sizePolicy)
+        self.run_single_test_btn.setObjectName("run_single_test_btn")
+        self.gridLayout_5.addWidget(self.run_single_test_btn, 2, 0, 1, 1)
+        self.CHECK_PARAM_VALID_BTN = QtWidgets.QPushButton(self.groupBox143)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.CHECK_PARAM_VALID_BTN.sizePolicy().hasHeightForWidth())
+        self.CHECK_PARAM_VALID_BTN.setSizePolicy(sizePolicy)
+        self.CHECK_PARAM_VALID_BTN.setObjectName("CHECK_PARAM_VALID_BTN")
+        self.gridLayout_5.addWidget(self.CHECK_PARAM_VALID_BTN, 4, 0, 1, 1)
+        self.model_test_selector2 = QtWidgets.QComboBox(self.groupBox143)
+        self.model_test_selector2.setObjectName("model_test_selector2")
+        self.gridLayout_5.addWidget(self.model_test_selector2, 1, 0, 1, 1)
         self.model_test_selector = QtWidgets.QComboBox(self.groupBox143)
         self.model_test_selector.setObjectName("model_test_selector")
-
-        font.setPointSize(12)
-        self.model_test_selector.setFont(font)
         os.chdir('pillows/test_folder')
         for dir in os.listdir():
             self.model_test_selector.addItem(str(dir))
 
         os.chdir('..')
         os.chdir('..')
-        self.gridLayout_4.addWidget(self.model_test_selector, 1, 0, 1, 1)
-
-        self.model_test_selector2 = QtWidgets.QComboBox(self.groupBox143)
-        self.model_test_selector2.setObjectName("model_test_selector")
-        self.model_test_selector2.setFont(font)
-        self.gridLayout_4.addWidget(self.model_test_selector2, 2, 0, 1, 1)
-        self.run_single_test_btn = QtWidgets.QPushButton(self.groupBox143)
-        self.run_single_test_btn.setEnabled(True)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.run_single_test_btn.sizePolicy().hasHeightForWidth())
-        self.run_single_test_btn.setSizePolicy(sizePolicy)
-        self.run_single_test_btn.setMinimumSize(QtCore.QSize(0, 83))
-
-        font.setPointSize(14)
-        self.run_single_test_btn.setFont(font)
-        self.run_single_test_btn.setObjectName("run_single_test_btn")
-        self.gridLayout_4.addWidget(self.run_single_test_btn, 4, 0, 1, 1)
-        self.CHECK_PARAM_VALID_BTN = QtWidgets.QPushButton(self.groupBox143)
-        self.CHECK_PARAM_VALID_BTN.setFont(font)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.CHECK_PARAM_VALID_BTN.sizePolicy().hasHeightForWidth())
-        self.CHECK_PARAM_VALID_BTN.setSizePolicy(sizePolicy)
-        self.CHECK_PARAM_VALID_BTN.setMinimumSize(QtCore.QSize(0, 83))
-        self.CHECK_PARAM_VALID_BTN.setObjectName("CHECK_PARAM_VALID_BTN")
-        self.gridLayout_4.addWidget(self.CHECK_PARAM_VALID_BTN, 6, 0, 1, 1)
+        self.gridLayout_5.addWidget(self.model_test_selector, 0, 0, 1, 1)
         self.PARAM_RESULT_BRS = QtWidgets.QTextBrowser(self.groupBox143)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(10)
+        sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.PARAM_RESULT_BRS.sizePolicy().hasHeightForWidth())
         self.PARAM_RESULT_BRS.setSizePolicy(sizePolicy)
+        self.PARAM_RESULT_BRS.setMinimumSize(QtCore.QSize(0, 0))
+        font = QtGui.QFont()
         font.setPointSize(12)
+        self.model_test_selector.setFont(font)
+        self.model_test_selector2.setFont(font)
+        self.run_single_test_btn.setFont(font)
+        self.CHECK_PARAM_VALID_BTN.setFont(font)
         self.PARAM_RESULT_BRS.setFont(font)
-        self.PARAM_RESULT_BRS.setObjectName("single_test_result_brs")
-        self.gridLayout_4.addWidget(self.PARAM_RESULT_BRS, 0, 1, 7, 1)
-        self.gridLayout_2.addWidget(self.groupBox143, 2, 0, 1, 1)
-        self.groupBox_2666 = QtWidgets.QGroupBox(self.params_tab)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Preferred)
+        self.PARAM_RESULT_BRS.setObjectName("PARAM_RESULT_BRS")
+        self.gridLayout_5.addWidget(self.PARAM_RESULT_BRS, 0, 2, 5, 1)
+        self.export_results_btn = QtWidgets.QPushButton(self.groupBox143)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.groupBox_2666.sizePolicy().hasHeightForWidth())
-        self.groupBox_2666.setSizePolicy(sizePolicy)
-
-        font.setPointSize(14)
-        self.groupBox_2666.setFont(font)
-        self.groupBox_2666.setObjectName("groupBox_2666")
-        self.gridLayout_5 = QtWidgets.QGridLayout(self.groupBox_2666)
-        self.gridLayout_5.setObjectName("gridLayout_5")
-        self.tendmin_lbl = QtWidgets.QLabel(self.groupBox_2666)
-        self.tendmin_lbl.setObjectName("tendmin_lbl")
-        self.gridLayout_5.addWidget(self.tendmin_lbl, 13, 0, 1, 1)
-        self.tstmax_lbl = QtWidgets.QLabel(self.groupBox_2666)
-        self.tstmax_lbl.setObjectName("tstmax_lbl")
-        self.gridLayout_5.addWidget(self.tstmax_lbl, 2, 0, 1, 1)
-        self.t2_lbl = QtWidgets.QLabel(self.groupBox_2666)
-        self.t2_lbl.setObjectName("t2_lbl")
-        self.gridLayout_5.addWidget(self.t2_lbl, 8, 0, 1, 1)
-        self.tstmin_lbl = QtWidgets.QLabel(self.groupBox_2666)
-        self.tstmin_lbl.setObjectName("tstmin_lbl")
-        self.gridLayout_5.addWidget(self.tstmin_lbl, 3, 0, 1, 1)
-        self.tstart_min_input = QtWidgets.QSpinBox(self.groupBox_2666)
-        self.tstart_min_input.setObjectName("tstart_min_input")
-        self.gridLayout_5.addWidget(self.tstart_min_input, 3, 1, 1, 1)
-        #self.replace_to_plot = QtWidgets.QTextBrowser(self.groupBox_2666)
-        #self.replace_to_plot.setObjectName("replace_to_plot")
-        self.canvas = PlotCanvas(self)
-        self.gridLayout_5.addWidget(self.canvas, 0, 0, 1, 3)
-        self.aresrange_lbl = QtWidgets.QLabel(self.groupBox_2666)
-        self.aresrange_lbl.setObjectName("aresrange_lbl")
-        self.gridLayout_5.addWidget(self.aresrange_lbl, 16, 0, 1, 1)
-        self.tstart_max_input = QtWidgets.QSpinBox(self.groupBox_2666)
-        self.tstart_max_input.setObjectName("tstart_max_input")
-        self.gridLayout_5.addWidget(self.tstart_max_input, 2, 1, 1, 1)
-        self.limitares_lbl = QtWidgets.QLabel(self.groupBox_2666)
-        self.limitares_lbl.setObjectName("limitares_lbl")
-        self.gridLayout_5.addWidget(self.limitares_lbl, 17, 0, 1, 1)
-        self.t1_input = QtWidgets.QSpinBox(self.groupBox_2666)
-        self.t1_input.setObjectName("t1_input")
-        self.gridLayout_5.addWidget(self.t1_input, 5, 1, 1, 1)
-        self.t3_input = QtWidgets.QSpinBox(self.groupBox_2666)
-        self.t3_input.setObjectName("t3_input")
-        self.gridLayout_5.addWidget(self.t3_input, 9, 1, 1, 1)
-        self.limit_ares_input = QtWidgets.QSpinBox(self.groupBox_2666)
-        self.limit_ares_input.setObjectName("limit_ares_input")
-        self.gridLayout_5.addWidget(self.limit_ares_input, 17, 1, 1, 1)
-        self.t2_input = QtWidgets.QSpinBox(self.groupBox_2666)
-        self.t2_input.setObjectName("t2_input")
-        self.gridLayout_5.addWidget(self.t2_input, 8, 1, 1, 1)
-        self.tendmax_lbl = QtWidgets.QLabel(self.groupBox_2666)
-        self.tendmax_lbl.setObjectName("tendmax_lbl")
-        self.gridLayout_5.addWidget(self.tendmax_lbl, 15, 0, 1, 1)
-        self.tend_max_input = QtWidgets.QSpinBox(self.groupBox_2666)
-        self.tend_max_input.setObjectName("tend_max_input")
-        self.gridLayout_5.addWidget(self.tend_max_input, 15, 1, 1, 1)
-        self.t4_input = QtWidgets.QSpinBox(self.groupBox_2666)
-        self.t4_input.setObjectName("t4_input")
-        self.gridLayout_5.addWidget(self.t4_input, 11, 1, 1, 1)
-        self.t3_lbl = QtWidgets.QLabel(self.groupBox_2666)
-        self.t3_lbl.setObjectName("t3_lbl")
-        self.gridLayout_5.addWidget(self.t3_lbl, 9, 0, 1, 1)
-        self.t4_lbl = QtWidgets.QLabel(self.groupBox_2666)
-        self.t4_lbl.setObjectName("t4_lbl")
-        self.gridLayout_5.addWidget(self.t4_lbl, 11, 0, 1, 1)
-        self.t1_lbl = QtWidgets.QLabel(self.groupBox_2666)
-        self.t1_lbl.setObjectName("t1_lbl")
-        self.gridLayout_5.addWidget(self.t1_lbl, 5, 0, 1, 1)
-        self.tend_min_input = QtWidgets.QSpinBox(self.groupBox_2666)
-        self.tend_min_input.setObjectName("tend_min_input")
-        self.gridLayout_5.addWidget(self.tend_min_input, 13, 1, 1, 1)
-        self.sideinput = QtWidgets.QComboBox(self.groupBox_2666)
-        self.sideinput.setObjectName("comboBox")
-        self.sideinput.addItem("")
-        self.sideinput.addItem("")
-        self.sideinput.addItem("")
-        self.sideinput.addItem("")
-        self.gridLayout_5.addWidget(self.sideinput, 20, 1, 1, 1)
-        self.timebeforecollis_input = QtWidgets.QSpinBox(self.groupBox_2666)
-        self.timebeforecollis_input.setObjectName("timebeforecollis_input")
-        self.gridLayout_5.addWidget(self.timebeforecollis_input, 19, 1, 1, 1)
-        self.timestep_lbl = QtWidgets.QLabel(self.groupBox_2666)
-        self.timestep_lbl.setObjectName("timestep_lbl")
-        self.gridLayout_5.addWidget(self.timestep_lbl, 18, 0, 1, 1)
-        self.timebeforecoll_lbl = QtWidgets.QLabel(self.groupBox_2666)
-        self.timebeforecoll_lbl.setObjectName("timebeforecoll_lbl")
-        self.gridLayout_5.addWidget(self.timebeforecoll_lbl, 19, 0, 1, 1)
-        self.timestep_input = QtWidgets.QDoubleSpinBox(self.groupBox_2666)
-        self.timestep_input.setObjectName("timestep_input")
-        self.gridLayout_5.addWidget(self.timestep_input, 18, 1, 1, 1)
-        self.collside_lbl = QtWidgets.QLabel(self.groupBox_2666)
-        self.collside_lbl.setObjectName("collside_lbl")
-        self.gridLayout_5.addWidget(self.collside_lbl, 20, 0, 1, 1)
-        self.syntez_btn = QtWidgets.QPushButton(self.groupBox_2666)
-        self.syntez_btn.setObjectName("syntez_btn")
-        self.syntez_btn.setFont(font)
-        self.gridLayout_5.addWidget(self.syntez_btn, 23, 0, 1, 3)
-        self.ares_range_input = QtWidgets.QSpinBox(self.groupBox_2666)
-        self.ares_range_input.setObjectName("ares_range_input")
-        self.gridLayout_5.addWidget(self.ares_range_input, 16, 1, 1, 1)
-        self.gridLayout_2.addWidget(self.groupBox_2666, 0, 2, 3, 1)
-        self.groupBox1342 = QtWidgets.QGroupBox(self.params_tab)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHeightForWidth(self.export_results_btn.sizePolicy().hasHeightForWidth())
+        self.export_results_btn.setSizePolicy(sizePolicy)
+        self.export_results_btn.setFont(font)
+        self.export_results_btn.setObjectName("export_results_btn")
+        self.gridLayout_5.addWidget(self.export_results_btn, 3, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.groupBox143, 3, 0, 1, 1)
+        self.groupBox_1342 = QtWidgets.QGroupBox(self.params_tab)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.groupBox1342.sizePolicy().hasHeightForWidth())
-        self.groupBox1342.setSizePolicy(sizePolicy)
-        self.groupBox1342.setMinimumSize(QtCore.QSize(0, 90))
-        self.groupBox1342.setTitle("")
-        self.groupBox1342.setObjectName("groupBox1342")
-        self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox1342)
-        self.gridLayout_6.setObjectName("gridLayout_6")
-        self.read_params_btn = QtWidgets.QPushButton(self.groupBox1342)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.read_params_btn.sizePolicy().hasHeightForWidth())
-        self.read_params_btn.setSizePolicy(sizePolicy)
-        self.read_params_btn.setMinimumSize(QtCore.QSize(0, 0))
-
-        font.setPointSize(12)
-        self.read_params_btn.setFont(font)
-        self.read_params_btn.setObjectName("read_params_btn")
-        self.gridLayout_6.addWidget(self.read_params_btn, 0, 1, 1, 1)
-        self.UPDATE_PARAMS_BTN = QtWidgets.QPushButton(self.groupBox1342)
+        sizePolicy.setHeightForWidth(self.groupBox_1342.sizePolicy().hasHeightForWidth())
+        self.groupBox_1342.setSizePolicy(sizePolicy)
+        self.groupBox_1342.setMaximumSize(QtCore.QSize(16777215, 150))
+        self.groupBox_1342.setTitle("")
+        self.groupBox_1342.setObjectName("groupBox_1342")
+        self.gridLayout_4 = QtWidgets.QGridLayout(self.groupBox_1342)
+        self.gridLayout_4.setObjectName("gridLayout_4")
+        self.UPDATE_PARAMS_BTN = QtWidgets.QPushButton(self.groupBox_1342)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.UPDATE_PARAMS_BTN.sizePolicy().hasHeightForWidth())
         self.UPDATE_PARAMS_BTN.setSizePolicy(sizePolicy)
-
+        self.UPDATE_PARAMS_BTN.setMaximumSize(QtCore.QSize(16777215, 60))
+        font = QtGui.QFont()
         font.setPointSize(12)
         self.UPDATE_PARAMS_BTN.setFont(font)
         self.UPDATE_PARAMS_BTN.setObjectName("UPDATE_PARAMS_BTN")
-        self.gridLayout_6.addWidget(self.UPDATE_PARAMS_BTN, 0, 0, 1, 1)
-        self.UPDATE_PARAMS_LOCAL_BTN = QtWidgets.QPushButton(self.groupBox1342)
+        self.gridLayout_4.addWidget(self.UPDATE_PARAMS_BTN, 0, 0, 1, 1)
+        self.read_params_btn = QtWidgets.QPushButton(self.groupBox_1342)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.UPDATE_PARAMS_LOCAL_BTN.sizePolicy().hasHeightForWidth())
-        self.UPDATE_PARAMS_LOCAL_BTN.setSizePolicy(sizePolicy)
-
+        sizePolicy.setHeightForWidth(self.read_params_btn.sizePolicy().hasHeightForWidth())
+        self.read_params_btn.setSizePolicy(sizePolicy)
+        self.read_params_btn.setMaximumSize(QtCore.QSize(16777215, 60))
+        font = QtGui.QFont()
         font.setPointSize(12)
-        self.UPDATE_PARAMS_LOCAL_BTN.setFont(font)
-        self.UPDATE_PARAMS_LOCAL_BTN.setObjectName("UPDATE_PARAMS_LOCAL_BTN")
-        self.gridLayout_6.addWidget(self.UPDATE_PARAMS_LOCAL_BTN, 1, 0, 1, 1)
-        self.read_params_local_btn = QtWidgets.QPushButton(self.groupBox1342)
+        self.read_params_btn.setFont(font)
+        self.read_params_btn.setObjectName("read_params_btn")
+        self.gridLayout_4.addWidget(self.read_params_btn, 0, 1, 1, 1)
+        self.read_params_local_btn = QtWidgets.QPushButton(self.groupBox_1342)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.read_params_local_btn.sizePolicy().hasHeightForWidth())
         self.read_params_local_btn.setSizePolicy(sizePolicy)
-        self.read_params_local_btn.setMinimumSize(QtCore.QSize(0, 35))
-        self.read_params_btn.setMinimumSize(QtCore.QSize(0, 35))
-        self.UPDATE_PARAMS_LOCAL_BTN.setMinimumSize(QtCore.QSize(0, 35))
-        self.UPDATE_PARAMS_BTN.setMinimumSize(QtCore.QSize(0, 35))
-
+        self.read_params_local_btn.setMaximumSize(QtCore.QSize(16777215, 60))
+        font = QtGui.QFont()
         font.setPointSize(12)
         self.read_params_local_btn.setFont(font)
         self.read_params_local_btn.setObjectName("read_params_local_btn")
-        self.gridLayout_6.addWidget(self.read_params_local_btn, 1, 1, 1, 1)
-        self.gridLayout_2.addWidget(self.groupBox1342, 1, 0, 1, 1)
+        self.gridLayout_4.addWidget(self.read_params_local_btn, 1, 1, 1, 1)
+        self.UPDATE_PARAMS_LOCAL_BTN = QtWidgets.QPushButton(self.groupBox_1342)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.UPDATE_PARAMS_LOCAL_BTN.sizePolicy().hasHeightForWidth())
+        self.UPDATE_PARAMS_LOCAL_BTN.setSizePolicy(sizePolicy)
+        self.UPDATE_PARAMS_LOCAL_BTN.setMaximumSize(QtCore.QSize(16777215, 60))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.UPDATE_PARAMS_LOCAL_BTN.setFont(font)
+        self.UPDATE_PARAMS_LOCAL_BTN.setObjectName("UPDATE_PARAMS_LOCAL_BTN")
+        self.gridLayout_4.addWidget(self.UPDATE_PARAMS_LOCAL_BTN, 1, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.groupBox_1342, 2, 0, 1, 1)
+        self.groupBoxA = QtWidgets.QGroupBox(self.params_tab)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.groupBoxA.setFont(font)
+        self.groupBoxA.setTitle("")
+        self.groupBoxA.setObjectName("groupBoxA")
+        self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBoxA)
+        self.gridLayout_3.setObjectName("gridLayout_3")
+        self.LimitSresfront_input = QtWidgets.QSpinBox(self.groupBoxA)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.LimitSresfront_input.sizePolicy().hasHeightForWidth())
+        self.LimitSresfront_input.setSizePolicy(sizePolicy)
+        self.LimitSresfront_input.setMinimumSize(QtCore.QSize(0, 0))
+        self.LimitSresfront_input.setMaximumSize(QtCore.QSize(90, 16777215))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.LimitSresfront_input.setFont(font)
+        self.LimitSresfront_input.setMaximum(65535)
+        self.LimitSresfront_input.setObjectName("LimitSresfront_input")
+        self.gridLayout_3.addWidget(self.LimitSresfront_input, 11, 1, 1, 1)
+        self.Time_to_stop_calc_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.Time_to_stop_calc_lbl.setFont(font)
+        self.Time_to_stop_calc_lbl.setObjectName("Time_to_stop_calc_lbl")
+        self.gridLayout_3.addWidget(self.Time_to_stop_calc_lbl, 19, 0, 1, 1)
+        self.Sresimpactfront_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.Sresimpactfront_lbl.setFont(font)
+        self.Sresimpactfront_lbl.setObjectName("Sresimpactfront_lbl")
+        self.gridLayout_3.addWidget(self.Sresimpactfront_lbl, 20, 0, 1, 1)
+        self.LimitAresfront_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.LimitAresfront_lbl.setFont(font)
+        self.LimitAresfront_lbl.setObjectName("LimitAresfront_lbl")
+        self.gridLayout_3.addWidget(self.LimitAresfront_lbl, 7, 0, 1, 1)
+        self.deltaAres_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.deltaAres_lbl.setFont(font)
+        self.deltaAres_lbl.setObjectName("deltaAres_lbl")
+        self.gridLayout_3.addWidget(self.deltaAres_lbl, 18, 0, 1, 1)
+        self.LimitSresfront_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.LimitSresfront_lbl.setFont(font)
+        self.LimitSresfront_lbl.setObjectName("LimitSresfront_lbl")
+        self.gridLayout_3.addWidget(self.LimitSresfront_lbl, 11, 0, 1, 1)
+        self.Tcalc_input = QtWidgets.QSpinBox(self.groupBoxA)
+        self.Tcalc_input.setMaximumSize(QtCore.QSize(90, 16777215))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.Tcalc_input.setFont(font)
+        self.Tcalc_input.setMaximum(255)
+        self.Tcalc_input.setObjectName("Tcalc_input")
+        self.gridLayout_3.addWidget(self.Tcalc_input, 15, 1, 1, 1)
+        self.Sresimpactfront_input = QtWidgets.QSpinBox(self.groupBoxA)
+        self.Sresimpactfront_input.setMaximumSize(QtCore.QSize(90, 16777215))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.Sresimpactfront_input.setFont(font)
+        self.Sresimpactfront_input.setMaximum(65535)
+        self.Sresimpactfront_input.setObjectName("Sresimpactfront_input")
+        self.gridLayout_3.addWidget(self.Sresimpactfront_input, 20, 1, 1, 1)
+        self.LimitAresfront_input = QtWidgets.QSpinBox(self.groupBoxA)
+        self.LimitAresfront_input.setMaximumSize(QtCore.QSize(90, 16777215))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.LimitAresfront_input.setFont(font)
+        self.LimitAresfront_input.setMaximum(65535)
+        self.LimitAresfront_input.setObjectName("LimitAresfront_input")
+        self.gridLayout_3.addWidget(self.LimitAresfront_input, 7, 1, 1, 1)
+        self.LimitSxSyfront_input = QtWidgets.QSpinBox(self.groupBoxA)
+        self.LimitSxSyfront_input.setMaximumSize(QtCore.QSize(90, 16777215))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.LimitSxSyfront_input.setFont(font)
+        self.LimitSxSyfront_input.setMaximum(65535)
+        self.LimitSxSyfront_input.setObjectName("LimitSxSyfront_input")
+        self.gridLayout_3.addWidget(self.LimitSxSyfront_input, 9, 1, 1, 1)
+        self.LimitSxSyfront_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.LimitSxSyfront_lbl.setFont(font)
+        self.LimitSxSyfront_lbl.setObjectName("LimitSxSyfront_lbl")
+        self.gridLayout_3.addWidget(self.LimitSxSyfront_lbl, 9, 0, 1, 1)
+        self.Timetostopcalc_input = QtWidgets.QSpinBox(self.groupBoxA)
+        self.Timetostopcalc_input.setMaximumSize(QtCore.QSize(90, 16777215))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.Timetostopcalc_input.setFont(font)
+        self.Timetostopcalc_input.setMaximum(255)
+        self.Timetostopcalc_input.setObjectName("Timetostopcalc_input")
+        self.gridLayout_3.addWidget(self.Timetostopcalc_input, 19, 1, 1, 1)
+        self.deltaAres_input = QtWidgets.QSpinBox(self.groupBoxA)
+        self.deltaAres_input.setMaximumSize(QtCore.QSize(90, 16777215))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.deltaAres_input.setFont(font)
+        self.deltaAres_input.setMaximum(255)
+        self.deltaAres_input.setObjectName("deltaAres_input")
+        self.gridLayout_3.addWidget(self.deltaAres_input, 18, 1, 1, 1)
+        self.Size_side_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.Size_side_lbl.setFont(font)
+        self.Size_side_lbl.setObjectName("Size_side_lbl")
+        self.gridLayout_3.addWidget(self.Size_side_lbl, 23, 0, 1, 1)
+        self.Size_front_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.Size_front_lbl.setFont(font)
+        self.Size_front_lbl.setObjectName("Size_front_lbl")
+        self.gridLayout_3.addWidget(self.Size_front_lbl, 22, 0, 1, 1)
+        self.size_side_input = QtWidgets.QSpinBox(self.groupBoxA)
+        self.size_side_input.setMaximumSize(QtCore.QSize(90, 16777215))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.size_side_input.setFont(font)
+        self.size_side_input.setMaximum(255)
+        self.size_side_input.setObjectName("size_side_input")
+        self.gridLayout_3.addWidget(self.size_side_input, 23, 1, 1, 1)
+        self.LOGS_LBL = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.LOGS_LBL.setFont(font)
+        self.LOGS_LBL.setObjectName("LOGS_LBL")
+        self.gridLayout_3.addWidget(self.LOGS_LBL, 1, 2, 1, 1)
+        self.defined_params_selector = QtWidgets.QComboBox(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.defined_params_selector.setFont(font)
+        self.defined_params_selector.setObjectName("defined_params_selector")
+        self.gridLayout_3.addWidget(self.defined_params_selector, 1, 0, 1, 1)
+        self.Sresimpactside_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.Sresimpactside_lbl.setFont(font)
+        self.Sresimpactside_lbl.setObjectName("Sresimpactside_lbl")
+        self.gridLayout_3.addWidget(self.Sresimpactside_lbl, 21, 0, 1, 1)
+        self.LimitAresside_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.LimitAresside_lbl.setFont(font)
+        self.LimitAresside_lbl.setObjectName("LimitAresside_lbl")
+        self.gridLayout_3.addWidget(self.LimitAresside_lbl, 8, 0, 1, 1)
+        self.Tcalc2_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.Tcalc2_lbl.setFont(font)
+        self.Tcalc2_lbl.setObjectName("Tcalc2_lbl")
+        self.gridLayout_3.addWidget(self.Tcalc2_lbl, 16, 0, 1, 1)
+        self.LimitAresside_input = QtWidgets.QSpinBox(self.groupBoxA)
+        self.LimitAresside_input.setMaximumSize(QtCore.QSize(90, 16777215))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.LimitAresside_input.setFont(font)
+        self.LimitAresside_input.setMaximum(65535)
+        self.LimitAresside_input.setObjectName("LimitAresside_input")
+        self.gridLayout_3.addWidget(self.LimitAresside_input, 8, 1, 1, 1)
+        self.LimitSxSyside_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.LimitSxSyside_lbl.setFont(font)
+        self.LimitSxSyside_lbl.setObjectName("LimitSxSyside_lbl")
+        self.gridLayout_3.addWidget(self.LimitSxSyside_lbl, 10, 0, 1, 1)
+        self.LimitSresside_input = QtWidgets.QSpinBox(self.groupBoxA)
+        self.LimitSresside_input.setMaximumSize(QtCore.QSize(90, 16777215))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.LimitSresside_input.setFont(font)
+        self.LimitSresside_input.setMaximum(65535)
+        self.LimitSresside_input.setObjectName("LimitSresside_input")
+        self.gridLayout_3.addWidget(self.LimitSresside_input, 12, 1, 1, 1)
+        self.LimitSxSyside_input = QtWidgets.QSpinBox(self.groupBoxA)
+        self.LimitSxSyside_input.setMaximumSize(QtCore.QSize(90, 16777215))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.LimitSxSyside_input.setFont(font)
+        self.LimitSxSyside_input.setMaximum(65535)
+        self.LimitSxSyside_input.setObjectName("LimitSxSyside_input")
+        self.gridLayout_3.addWidget(self.LimitSxSyside_input, 10, 1, 1, 1)
+        self.Sresimpact_side_input = QtWidgets.QSpinBox(self.groupBoxA)
+        self.Sresimpact_side_input.setMaximumSize(QtCore.QSize(90, 16777215))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.Sresimpact_side_input.setFont(font)
+        self.Sresimpact_side_input.setMaximum(65535)
+        self.Sresimpact_side_input.setObjectName("Sresimpact_side_input")
+        self.gridLayout_3.addWidget(self.Sresimpact_side_input, 21, 1, 1, 1)
+        self.size_front_input = QtWidgets.QSpinBox(self.groupBoxA)
+        self.size_front_input.setMaximumSize(QtCore.QSize(90, 16777215))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.size_front_input.setFont(font)
+        self.size_front_input.setMaximum(6)
+        self.size_front_input.setObjectName("size_front_input")
+        self.gridLayout_3.addWidget(self.size_front_input, 22, 1, 1, 1)
+        self.Tcalc2_input = QtWidgets.QSpinBox(self.groupBoxA)
+        self.Tcalc2_input.setMaximumSize(QtCore.QSize(90, 16777215))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.Tcalc2_input.setFont(font)
+        self.Tcalc2_input.setMaximum(255)
+        self.Tcalc2_input.setObjectName("Tcalc2_input")
+        self.gridLayout_3.addWidget(self.Tcalc2_input, 16, 1, 1, 1)
+        self.LimitSresside_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.LimitSresside_lbl.setFont(font)
+        self.LimitSresside_lbl.setObjectName("LimitSresside_lbl")
+        self.gridLayout_3.addWidget(self.LimitSresside_lbl, 12, 0, 1, 1)
+        self.PARAM_RESULT_BRS_2 = QtWidgets.QTextBrowser(self.groupBoxA)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.PARAM_RESULT_BRS_2.sizePolicy().hasHeightForWidth())
+        self.PARAM_RESULT_BRS_2.setSizePolicy(sizePolicy)
+        self.PARAM_RESULT_BRS_2.setFont(font)
+        self.PARAM_RESULT_BRS_2.setObjectName("PARAM_RESULT_BRS_2")
+        self.gridLayout_3.addWidget(self.PARAM_RESULT_BRS_2, 7, 2, 17, 4)
+        self.config_arrays = QtWidgets.QCheckBox(self.groupBoxA)
+        self.config_arrays.setObjectName("config_arrays")
+        self.config_arrays.setFont(font)
+        self.gridLayout_3.addWidget(self.config_arrays, 24, 0, 1, 1)
+        self.defined_params_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.defined_params_lbl.setFont(font)
+        self.defined_params_lbl.setObjectName("defined_params_lbl")
+        self.gridLayout_3.addWidget(self.defined_params_lbl, 0, 0, 1, 1)
+        self.save_params_btn = QtWidgets.QPushButton(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.save_params_btn.setFont(font)
+        self.save_params_btn.setObjectName("save_params_btn")
+        self.gridLayout_3.addWidget(self.save_params_btn, 0, 2, 1, 4)
+        self.Tcalc_lbl = QtWidgets.QLabel(self.groupBoxA)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.Tcalc_lbl.setFont(font)
+        self.Tcalc_lbl.setObjectName("Tcalc_lbl")
+        self.gridLayout_3.addWidget(self.Tcalc_lbl, 15, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.groupBoxA, 1, 0, 1, 1)
+        self.groupBox_2666 = QtWidgets.QGroupBox(self.params_tab)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.groupBox_2666.setFont(font)
+        self.groupBox_2666.setObjectName("groupBox_2666")
+        self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_2666)
+        self.gridLayout_6.setObjectName("gridLayout_6")
+        self.timestep_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.timestep_lbl.setObjectName("timestep_lbl")
+        self.gridLayout_6.addWidget(self.timestep_lbl, 16, 0, 1, 1)
+        self.timebeforecoll_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.timebeforecoll_lbl.setObjectName("timebeforecoll_lbl")
+        self.gridLayout_6.addWidget(self.timebeforecoll_lbl, 17, 0, 1, 1)
+        self.tstart_max_input = QtWidgets.QSpinBox(self.groupBox_2666)
+        self.tstart_max_input.setObjectName("tstart_max_input")
+        self.gridLayout_6.addWidget(self.tstart_max_input, 2, 1, 1, 1)
+        self.collside_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.collside_lbl.setObjectName("collside_lbl")
+        self.gridLayout_6.addWidget(self.collside_lbl, 18, 0, 1, 1)
+        self.t1_input = QtWidgets.QSpinBox(self.groupBox_2666)
+        self.t1_input.setObjectName("t1_input")
+        self.gridLayout_6.addWidget(self.t1_input, 4, 1, 1, 1)
+        self.tstmax_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.tstmax_lbl.setObjectName("tstmax_lbl")
+        self.gridLayout_6.addWidget(self.tstmax_lbl, 2, 0, 1, 1)
+        self.t3_input = QtWidgets.QSpinBox(self.groupBox_2666)
+        self.t3_input.setObjectName("t3_input")
+        self.gridLayout_6.addWidget(self.t3_input, 6, 1, 1, 1)
+        self.t2_input = QtWidgets.QSpinBox(self.groupBox_2666)
+        self.t2_input.setObjectName("t2_input")
+        self.gridLayout_6.addWidget(self.t2_input, 5, 1, 1, 1)
+        self.t4_input = QtWidgets.QSpinBox(self.groupBox_2666)
+        self.t4_input.setObjectName("t4_input")
+        self.gridLayout_6.addWidget(self.t4_input, 7, 1, 1, 1)
+        self.aresrange_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.aresrange_lbl.setObjectName("aresrange_lbl")
+        self.gridLayout_6.addWidget(self.aresrange_lbl, 13, 0, 1, 1)
+        self.tstart_min_input = QtWidgets.QSpinBox(self.groupBox_2666)
+        self.tstart_min_input.setObjectName("tstart_min_input")
+        self.gridLayout_6.addWidget(self.tstart_min_input, 3, 1, 1, 1)
+        self.canvas = PlotCanvas(self)
+        self.gridLayout_6.addWidget(self.canvas, 0, 0, 1, 4)
+        self.tendmin_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.tendmin_lbl.setObjectName("tendmin_lbl")
+        self.gridLayout_6.addWidget(self.tendmin_lbl, 8, 0, 1, 1)
+        self.tstmin_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.tstmin_lbl.setObjectName("tstmin_lbl")
+        self.gridLayout_6.addWidget(self.tstmin_lbl, 3, 0, 1, 1)
+        self.tendmax_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.tendmax_lbl.setObjectName("tendmax_lbl")
+        self.gridLayout_6.addWidget(self.tendmax_lbl, 10, 0, 1, 1)
+        self.tend_min_input = QtWidgets.QSpinBox(self.groupBox_2666)
+        self.tend_min_input.setObjectName("tend_min_input")
+        self.gridLayout_6.addWidget(self.tend_min_input, 8, 1, 1, 1)
+        self.ares_range_input = QtWidgets.QSpinBox(self.groupBox_2666)
+        self.ares_range_input.setObjectName("ares_range_input")
+        self.gridLayout_6.addWidget(self.ares_range_input, 13, 1, 1, 1)
+        self.limit_ares_input = QtWidgets.QSpinBox(self.groupBox_2666)
+        self.limit_ares_input.setObjectName("limit_ares_input")
+        self.gridLayout_6.addWidget(self.limit_ares_input, 14, 1, 1, 1)
+        self.limitares_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.limitares_lbl.setObjectName("limitares_lbl")
+        self.gridLayout_6.addWidget(self.limitares_lbl, 14, 0, 1, 1)
+        self.t3_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.t3_lbl.setObjectName("t3_lbl")
+        self.gridLayout_6.addWidget(self.t3_lbl, 6, 0, 1, 1)
+        self.t1_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.t1_lbl.setObjectName("t1_lbl")
+        self.gridLayout_6.addWidget(self.t1_lbl, 4, 0, 1, 1)
+        self.t2_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.t2_lbl.setObjectName("t2_lbl")
+        self.gridLayout_6.addWidget(self.t2_lbl, 5, 0, 1, 1)
+        self.t4_lbl = QtWidgets.QLabel(self.groupBox_2666)
+        self.t4_lbl.setObjectName("t4_lbl")
+        self.gridLayout_6.addWidget(self.t4_lbl, 7, 0, 1, 1)
+        self.tend_max_input = QtWidgets.QSpinBox(self.groupBox_2666)
+        self.tend_max_input.setObjectName("tend_max_input")
+        self.gridLayout_6.addWidget(self.tend_max_input, 10, 1, 1, 1)
+        self.syntez_btn = QtWidgets.QPushButton(self.groupBox_2666)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.syntez_btn.sizePolicy().hasHeightForWidth())
+        self.syntez_btn.setSizePolicy(sizePolicy)
+        self.syntez_btn.setFont(font)
+        self.syntez_btn.setObjectName("syntez_btn")
+        self.gridLayout_6.addWidget(self.syntez_btn, 19, 0, 1, 4)
+        self.timebeforecollis_input = QtWidgets.QSpinBox(self.groupBox_2666)
+        self.timebeforecollis_input.setObjectName("timebeforecollis_input")
+        self.gridLayout_6.addWidget(self.timebeforecollis_input, 17, 1, 1, 1)
+        self.timestep_input = QtWidgets.QDoubleSpinBox(self.groupBox_2666)
+        self.timestep_input.setObjectName("timestep_input")
+        self.gridLayout_6.addWidget(self.timestep_input, 16, 1, 1, 1)
+        self.sideinput = QtWidgets.QComboBox(self.groupBox_2666)
+        self.sideinput.setObjectName("sideinput")
+        self.gridLayout_6.addWidget(self.sideinput, 18, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.groupBox_2666, 0, 1, 4, 1)
 
         font.setPointSize(13)
         self.tstmax_lbl.setFont(font)
@@ -2291,11 +2384,14 @@ class Ui_MainWindow(object):
         self.READ_VERSBTN.clicked.connect(self.run_read_ecu_version)
         self.READ_VERSBTN.clicked.connect(self.VER_LOG_BRS.clear)
 
+        self.EBU_ALIBABU.clicked.connect(self.sbr_reset)
+
         self.Run_Init_btn.clicked.connect(self.run_test1)
         self.Run_Init_btn.clicked.connect(self.inittime_brs.clear)
         self.Run_Init_btn.clicked.connect(self.initresult_brs.clear)
         self.Run_Init_btn.clicked.connect(self.can_msg_brs.clear)
         self.Run_Init_btn.clicked.connect(self.DisableAll)
+        self.config_arrays.stateChanged.connect(self.array_config)
 
         self.perod_periodic_btn.clicked.connect(self.run_test2)
         self.perod_periodic_btn.clicked.connect(self.accepted_periodic_brs.clear)
@@ -2315,6 +2411,7 @@ class Ui_MainWindow(object):
         self.start_acc_btn.clicked.connect(self.got_res_brs.clear)
         self.start_acc_btn.clicked.connect(self.CRASHDETECTED_BRS.clear)
         self.start_acc_btn.clicked.connect(self.DisableAll)
+        self.start_SBR_btn.clicked.connect(self.run_SBR)
 
         self.UDS_RUN_BTN.clicked.connect(self.run_UDS)
         self.UDS_RUN_BTN.clicked.connect(self.UDS_MSG_BRS.clear)
@@ -2329,13 +2426,9 @@ class Ui_MainWindow(object):
         self.UDS_NRC_SELECTOR.currentIndexChanged['int'].connect(self.NRC_CHANGED)
         self.UDS_NRC_SELECTOR.currentIndexChanged['int'].connect(self.UDS_MSG_BRS.clear)
 
-        self.start_SBR_btn.clicked.connect(self.run_SBR)
-        self.start_SBR_btn.clicked.connect(self.acc_SBR_brs.clear)
-        self.start_SBR_btn.clicked.connect(self.got_res_SBR_brs.clear)
-        self.start_SBR_btn.clicked.connect(self.DisableAll)
+
 
         self.acc_selector.currentIndexChanged['int'].connect(self.acc_set_changed) # type: ignore
-        self.SBR_test_selector.currentIndexChanged['int'].connect(self.SBR_test_changed) # type: ignore
 
         self.DIAG_RESET_BTN.clicked.connect(self.run_ECU_reset)
         self.DIAG_RESET_BTN.clicked.connect(self.DIAG_ACCEPTED_BRS.clear)
@@ -2424,8 +2517,8 @@ class Ui_MainWindow(object):
         self.STOP_BTN_4.clicked.connect(self.EnableAll)
         self.STOP_BTN_4.setDisabled(True)
 
-
-        self.STOP_BTN_5.clicked.connect(self.close)
+        self.STOP_BTN_5.clicked.connect(self.STOP_SBR)
+        #self.STOP_BTN_5.clicked.connect(self.close)
         self.STOP_BTN_5.clicked.connect(self.EnableAll)
         self.STOP_BTN_5.setDisabled(True)
 
@@ -2550,43 +2643,40 @@ class Ui_MainWindow(object):
         self.UDS_RUN_BTN.setText(_translate("MainWindow", "Старт"))
         self.UDS_TEST_LBL.setText(_translate("MainWindow", "Запускаемый тест"))
         self.EXP_UDS_LBL.setText(_translate("MainWindow", "Ожидаемый ход проверки"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("MainWindow", "Проверка системы UDS"))
-        self.start_SBR_btn.setText(_translate("MainWindow", "Старт"))
-        self.SBR_test_selector.setItemText(0, _translate("MainWindow",
-                                                         "Проверка корректности передачи состояний РБ по CAN шине"))
-        self.SBR_test_selector.setItemText(1, _translate("MainWindow",
-                                                         "Проверка активации системы при включении зажигания"))
-        self.SBR_test_selector.setItemText(2, _translate("MainWindow",
-                                                         "Проверка включения 1 уровня тревоги seat belt reminder"))
-        self.SBR_test_selector.setItemText(3, _translate("MainWindow",
-                                                         "Проверка включения 2 уровня тревоги seat belt reminder"))
-        self.SBR_test_selector.setItemText(4, _translate("MainWindow",
-                                                         "Проверка отключения сообщения о тревоге по таймауту"))
-        self.SBR_test_selector.setItemText(5, _translate("MainWindow", "Проверка обнуления таймаута"))
-        self.SBR_test_selector.setItemText(6,_translate("MainWindow", "Проверка отключения тревоги при открытии дверей"))
-        self.SBR_test_selector.setItemText(7,
-                                           _translate("MainWindow", "Проверка отключения тревоги при заднем ходе"))
-        self.SBR_test_selector.setItemText(8,
-                                           _translate("MainWindow", "Проверка ДНП переднего пассажира"))
-
-        self.sbr_test_sel_lbl.setText(_translate("MainWindow", "Запускаемый тест"))
-        self.exp_res_SBR_lbl.setText(_translate("MainWindow", "Ожидаемый результат"))
-        self.got_res_SBR_lbl.setText(_translate("MainWindow", "Полученный результат"))
-        self.groupBox_7.setTitle(_translate("MainWindow", "Параметры"))
-        self.Seatbelt_selector.setItemText(0, _translate("MainWindow", "Водитель"))
-        self.Seatbelt_selector.setItemText(1, _translate("MainWindow", "Передний пассажир"))
-        self.Seatbelt_selector.setItemText(3, _translate("MainWindow", "Центральный Задний пассажир"))
-        self.Seatbelt_selector.setItemText(2, _translate("MainWindow", "Правый задний пассажир"))
-        self.Seatbelt_selector.setItemText(4, _translate("MainWindow", "Левый задний пассажир"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("MainWindow", "UDS протокол"))
+        self.config_arrays.setText(_translate("MainWindow", "Конфигурация массивов"))
        # self.PARAM_RESULT_LBL.setText(_translate("MainWindow", "Результат"))
-        self.SB_select_lbl.setText(_translate("MainWindow", "Селектор ремня безопасности"))
+        self.groupBox_14141414.setTitle(_translate("MainWindow", "Gear lever"))
+        self.PARKING.setText(_translate("MainWindow", "Parking"))
+        self.REVERSE.setText(_translate("MainWindow", "Reverse"))
+        self.NEUTRAL.setText(_translate("MainWindow", "Neutral"))
+        self.DRIVE.setText(_translate("MainWindow", "Drive"))
+        self.groupBox_13131313.setTitle(_translate("MainWindow", "Задняя левая дверь"))
+        self.RL_OPEN.setText(_translate("MainWindow", "Открыта"))
+        self.RL_CLOSE.setText(_translate("MainWindow", "Закрыта"))
+        self.groupBox_12121212.setTitle(_translate("MainWindow", "Пассажирская дверь"))
+        self.FP_OPEN.setText(_translate("MainWindow", "Открыта"))
+        self.FP_CLOSE.setText(_translate("MainWindow", "Закрыта"))
+        self.groupBox_10101010.setTitle(_translate("MainWindow", "Задняя правая дверь"))
+        self.RR_OPEN.setText(_translate("MainWindow", "Открыта"))
+        self.RR_CLOSE.setText(_translate("MainWindow", "Закрыта"))
+        self.groupBox_11111111.setTitle(_translate("MainWindow", "Engine state"))
+        self.ENG_ST_1.setText(_translate("MainWindow", "Sleeping"))
+        self.ENG_ST_2.setText(_translate("MainWindow", "Engine running"))
+        self.start_SBR_btn.setText(_translate("MainWindow", "Старт"))
+        self.groupBox_9999.setTitle(_translate("MainWindow", "Водительская дверь"))
+        self.DR_OPEN.setText(_translate("MainWindow", "Открыта"))
+        self.DR_CLOSE.setText(_translate("MainWindow", "Закрыта"))
+        self.STOP_BTN_5.setText(_translate("MainWindow", "Стоп"))
+        self.SBR_RES_LBL.setText(_translate("MainWindow", "Результат"))
+        self.CURRENT_SPEED.setText(_translate("MainWindow", "Cкорость :"))
+        self.PASSED_MILEAGE.setText(_translate("MainWindow", "Таймер: "))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.SBR), _translate("MainWindow", "SBR"))
         self.CHECK_PARAM_VALID_BTN.setText(_translate("MainWindow", "Проверить валидность параметров"))
-        self.accepted_SBR_title.setText(_translate("MainWindow", "Ход проверки"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_6), _translate("MainWindow", "Проверка SBR"))
-        self.DIAG_READ_0x09_BTN.setText(_translate("MainWindow", "Считать DTC 0x09"))
+        self.DIAG_READ_0x09_BTN.setText(_translate("MainWindow", "Считать активные DTC"))
         self.DIAG_CLEAR_DTC_BTN.setText(_translate("MainWindow", "Очистить DTC"))
         self.DIAG_ERRORS_LBL.setText(_translate("MainWindow", "Считанные ошибки"))
-        self.DIAG_READ_0x08_BTN.setText(_translate("MainWindow", "Считать DTC 0x08"))
+        self.DIAG_READ_0x08_BTN.setText(_translate("MainWindow", "Считать исторические DTC"))
         self.DIAG_RESET_BTN.setText(_translate("MainWindow", "Перезапустить БУ СНПБ"))
         self.DIAG_VIN0_BTN.setText(_translate("MainWindow", "Записать VIN≠0"))
         self.DIAG_VIN1_BTN.setText(_translate("MainWindow", "Записать VIN=0"))
@@ -2616,6 +2706,8 @@ class Ui_MainWindow(object):
         self.Tcalc_lbl.setText(_translate("MainWindow", "T calc front (ms)"))
         self.Tcalc2_lbl.setText(_translate("MainWindow", "T calc side (ms)"))
         self.Sresimpactside_lbl.setText(_translate("MainWindow", "Sres impact side (10\u207b\u2076 m)"))
+        self.Size_side_lbl.setText(_translate("MainWindow", "Size side crash array"))
+        self.Size_front_lbl.setText(_translate("MainWindow", "Size front crash array"))
         self.groupBox143.setTitle(_translate("MainWindow", "Работа с БУ СНПБ"))
         self.groupBox_2666.setTitle(_translate("MainWindow", "Проверка модели"))
         self.LimitAresside_lbl.setText(_translate("MainWindow", "Limit Ares side (10\u207b\u00b9 m/s\u00B2)"))
@@ -2643,6 +2735,10 @@ class Ui_MainWindow(object):
         self.t3_lbl.setText(_translate("MainWindow", "t₃ (ms)"))
         self.t4_lbl.setText(_translate("MainWindow", "t₄ (ms)"))
         self.t1_lbl.setText(_translate("MainWindow", "t₁ (ms)"))
+        self.sideinput.addItem("")
+        self.sideinput.addItem("")
+        self.sideinput.addItem("")
+        self.sideinput.addItem("")
         self.sideinput.setItemText(0, _translate("MainWindow", "front"))
         self.sideinput.setItemText(1, _translate("MainWindow", "left"))
         self.sideinput.setItemText(2, _translate("MainWindow", "right"))
@@ -2663,7 +2759,7 @@ class Ui_MainWindow(object):
         self.STOP_BTN_2.setText(_translate("MainWindow", "Стоп"))
         self.STOP_BTN_3.setText(_translate("MainWindow", "Стоп"))
         self.STOP_BTN_4.setText(_translate("MainWindow", "Стоп"))
-        self.STOP_BTN_5.setText(_translate("MainWindow", "Стоп"))
+#        self.STOP_BTN_5.setText(_translate("MainWindow", "Стоп"))
         self.STOP_BTN_6.setText(_translate("MainWindow", "Стоп"))
         self.EDR_STOP_BTN.setText(_translate("MainWindow", "Стоп"))
         self.STOP_BTN_8.setText(_translate("MainWindow", "Стоп"))
@@ -2783,8 +2879,6 @@ class Ui_MainWindow(object):
         self.groupBox_23456789.setTitle(_translate("MainWindow", "Перепрошивка БУ СНПБ"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.reprogramming_tab), _translate("MainWindow", "Перепрошивка БУ СНПБ"))
         self.EXP_UDS_BRS.setText("Отправлено: 02 11 01\nПринято: 02 51 01\nДиагностический светодиод моргает")
-        self.exp_res_SBR_brs.setText(
-            "При пристёгнутом ремне соответствующий сигнал SafetyBeltState равен 0х02 (SB fastened) \nПри непристёгнутом ремне соответствующий сигнал SafetyBeltState равен 0х01 (SB unfastened)")
         self.pushButton_3.setEnabled(False)
         self.EDR1_BTN.setText(_translate("MainWindow", "EDR0"))
         self.EDR3_BTN.setText(_translate("MainWindow", "EDR2"))
@@ -2919,7 +3013,8 @@ class Ui_MainWindow(object):
         os.chdir('..')
         os.chdir('..')
         os.chdir('..')
-
+    #def driver_check(self):
+        #if(self.DR_OPEN)
 
     def UDS_test_changed(self):
         if self.UDS_TEST_SELECTOR.currentIndex() == 0:
@@ -3159,28 +3254,6 @@ class Ui_MainWindow(object):
             case 12:
                 pass
 
-    def SBR_test_changed(self):
-        if self.SBR_test_selector.currentIndex() == 0:
-            self.exp_res_SBR_brs.setText("При пристёгнутом ремне соответствующий сигнал SafetyBeltState равен 0х02 (SB fastened) \nПри непристёгнутом ремне соответствующий сигнал SafetyBeltState равен 0х01 (SB unfastened)")
-        elif self.SBR_test_selector.currentIndex() == 1:
-            self.exp_res_SBR_brs.setText("Соответствующий сигнал SafetyBeltReminder равен 0 (No warning)")
-        elif self.SBR_test_selector.currentIndex() == 2:
-            self.exp_res_SBR_brs.setText("Соответствующий сигнал SafetyBeltReminder равен 1 (Warning level 1)")
-        elif self.SBR_test_selector.currentIndex() == 3:
-            self.exp_res_SBR_brs.setText("Соответствующий сигнал SafetyBeltReminder  равен 2 (Warning level 2)")
-        elif self.SBR_test_selector.currentIndex() == 4:
-            self.exp_res_SBR_brs.setText("Соответствующий сигнал SafetyBeltReminder  равен 0 (No warning)")
-        elif self.SBR_test_selector.currentIndex() == 5:
-            self.exp_res_SBR_brs.setText(
-                "По истечении таймаута SafetyBeltReminder равен 0 (No warning)\nПосле сброса сигнал SafetyBeltReminder  равен 1 (Warning level 1)")
-        elif self.SBR_test_selector.currentIndex() == 6:
-            self.exp_res_SBR_brs.setText("Cоответствующий cигнал SafetyBeltReminder равен 0 (No warning)")
-        elif self.SBR_test_selector.currentIndex() == 7:
-            self.exp_res_SBR_brs.setText("При GearLeverPosition drive Сигнал SafetyBeltReminder равен 1\nПри GearLeverPosition reverse Сигнал SafetyBeltReminder равен 0")
-        elif self.SBR_test_selector.currentIndex() == 8:
-            self.exp_res_SBR_brs.setText("При отсутствии пассажира:PassengerPresenceState: 0x1\nПри наличии пассажира PassengerPresenceState: 0x2")
-        elif self.SBR_test_selector.currentIndex() == 9:
-            self.exp_res_SBR_brs.setText("При отключенной ПБ сигнал PassengerAIRBAG_Inhibition равен 1\nПри включенной ПБ сигнал PassengerAIRBAG_Inhibition равен 0")
     def snap_changed(self):
         match self.snap_sel_1.currentIndex():
             case 0:
@@ -3363,7 +3436,32 @@ class Ui_MainWindow(object):
     def run_ECU_reset(self):
         Receiver=threading.Thread(target=self.ECU_reset)
         Receiver.start()
-
+    def sbr_reset(self):
+        Command = Messages.TestData()
+        self.timer=0
+        Result = Messages.TestData()
+        Command.method = 0
+        if (self.DR_OPEN.isChecked() == True):
+            Command.UDS_snap|=0x01
+        if (self.FP_OPEN.isChecked() == True):
+            Command.UDS_snap|=0x02
+        if (self.RL_OPEN.isChecked() == True):
+            Command.UDS_snap|=0x04
+        if (self.RR_OPEN.isChecked() == True):
+            Command.UDS_snap|=0x08
+        if (self.ENG_ST_2.isChecked() == True):
+            Command.VehicleStateExtended|=0x08
+        if (self.PARKING.isChecked() == True):
+            Command.Door_position=0x1
+        elif (self.REVERSE.isChecked() == True):
+            Command.Door_position=0x2
+        elif (self.NEUTRAL.isChecked() == True):
+            Command.Door_position=0x3
+        elif (self.DRIVE.isChecked() == True):
+            Command.Door_position=0x4
+        Command.testNumber = 0x42
+        Command = Command.SerializeToString()
+        self.UART.write(Command)
     def Check_CD(self):
         try:
             self.UART.open()
@@ -4706,431 +4804,80 @@ class Ui_MainWindow(object):
             self.UART.close()
             self.UART.open()
         self.STOP_BTN_5.setEnabled(True)
+        speed=40.0
+        self.timer=float(0)
+        if(len(self.DIAG_SPEED_SELECTOR_2.text().split(':'))!=1):
+            speed=float(self.DIAG_SPEED_SELECTOR_2.text().split(':')[1])
+        self.CURRENT_SPEED.setText(f"Скорость: {speed} км/ч")
         Command = Messages.TestData()
         Result = Messages.TestData()
         Command.method = 0
-        Command.testNumber = self.SBR_test_selector.currentIndex()+0x41
-        Command.Seatbelt_position=self.Seatbelt_selector.currentIndex()+1
-        match Command.testNumber:
-            case 0x41: #Проверка корректности передачи состояний РБ по CAN шине
-                Command.VehicleStateExtended=1
-                Command.vehicle_speed = 0
-            case 0x42: #Проверка активации системы при включении зажигания
-                Command.VehicleStateExtended=0
-                Command.vehicle_speed=0
-            case 0x43: #Проверка включения 1 уровня тревоги seat belt reminder. Скорость < 20 km/h
-                Command.VehicleStateExtended = 1
-                Command.vehicle_speed = 0
-            case 0x44: #Проверка включения 2 уровня тревоги seat belt reminder. Скорость > 20 km/h
-                Command.VehicleStateExtended = 1
-                Command.vehicle_speed = 1
-            case 0x45:  # Проверка отключения сообщения о тревоге по таймауту
-                Command.VehicleStateExtended = 1
-                Command.vehicle_speed = 0
-            case 0x46:  # Проверка обнуления таймаута
-                Command.VehicleStateExtended = 1
-                Command.vehicle_speed = 0
-            case 0x47:  # Проверка отключения тревоги при открытии дверей
-                Command.VehicleStateExtended = 1
-                Command.vehicle_speed = 0
-            case 0x48:  # Проверка отключения тревоги при заднем ходе
-                Command.VehicleStateExtended = 1
-                Command.vehicle_speed = 0
+        if (self.DR_OPEN.isChecked() == True):
+            Command.UDS_snap|=0x01
+        if (self.FP_OPEN.isChecked() == True):
+            Command.UDS_snap|=0x02
+        if (self.RL_OPEN.isChecked() == True):
+            Command.UDS_snap|=0x04
+        if (self.RR_OPEN.isChecked() == True):
+            Command.UDS_snap|=0x08
+        if (self.ENG_ST_2.isChecked() == True):
+            Command.VehicleStateExtended=0x1
+        else:
+            Command.VehicleStateExtended = 0x0
+        if (self.PARKING.isChecked() == True):
+            Command.Door_position=0x1
+        elif (self.REVERSE.isChecked() == True):
+            Command.Door_position=0x2
+        elif (self.NEUTRAL.isChecked() == True):
+            Command.Door_position=0x3
+        elif (self.DRIVE.isChecked() == True):
+            Command.Door_position=0x4
+        self.DisableAll()
+        result_str=""
+        Command.testNumber = 0x41
         Cmd = Command.SerializeToString()
         self.UART.write(Cmd)
-        try:
-            received_len=self.UART.read(2).hex()
-            if (received_len == ''):
-                self.got_res_SBR_brs.append("Остановлено")
-            else:
-                bytes_read = self.UART.read(int(received_len,16))
-                Result.ParseFromString(bytes_read)
-                match Result.testNumber:
-                    case 0x41:
-                        for i in range(0, 2):
-                            self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[i].timestamp)}   id:{str(hex(Result.frame[i].id))}   DLC:{str(Result.frame[i].length)}   Data:{str(Result.frame[i].data.hex())}")
-                        time.sleep(0.02)
-                        match Result.Seatbelt_position:
-                            case 1:
-                                self.got_res_SBR_brs.append(f"При пристегнутом ремне: {hex((Result.frame[0].data[0] & DriverSafetyBeltState.Unavalible) >> DriverSafetyBeltState.shift)}\nПри непристегнутом ремне: {hex((Result.frame[1].data[0] & DriverSafetyBeltState.Unavalible) >> DriverSafetyBeltState.shift)}")
-                                time.sleep(0.02)
-                                if (Result.frame[0].data[0] & DriverSafetyBeltState.Unavalible == DriverSafetyBeltState.SB_fastened and Result.frame[1].data[0] & DriverSafetyBeltState.Unavalible == DriverSafetyBeltState.SB_unfastened):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 2:
-                                self.got_res_SBR_brs.append(f"При пристегнутом ремне: {hex((Result.frame[1].data[0] & FrontPassengerSafetyBeltState.Unavalible) >> FrontPassengerSafetyBeltState.shift)}\nПри непристегнутом ремне: {hex((Result.frame[0].data[0] &FrontPassengerSafetyBeltState.Unavalible) >> FrontPassengerSafetyBeltState.shift)}")
-                                time.sleep(0.05)
-                                if (Result.frame[1].data[0] & FrontPassengerSafetyBeltState.Unavalible == FrontPassengerSafetyBeltState.SB_fastened and Result.frame[0].data[0] & FrontPassengerSafetyBeltState.Unavalible == FrontPassengerSafetyBeltState.SB_unfastened):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 4:
-                                self.got_res_SBR_brs.append(f"При пристегнутом ремне: {hex((Result.frame[0].data[2] & SecondRowCenterSafetyBeltState.Unavalible) >> SecondRowCenterSafetyBeltState.shift)}\nПри непристегнутом ремне: {hex((Result.frame[1].data[2] & SecondRowCenterSafetyBeltState.Unavalible) >> SecondRowCenterSafetyBeltState.shift)}")
-                                time.sleep(0.05)
-                                if (Result.frame[0].data[2] & SecondRowCenterSafetyBeltState.Unavalible == SecondRowCenterSafetyBeltState.SB_fastened and Result.frame[1].data[2] & SecondRowCenterSafetyBeltState.Unavalible == SecondRowCenterSafetyBeltState.SB_unfastened):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 3:
-                                self.got_res_SBR_brs.append(f"При пристегнутом ремне: {hex((Result.frame[0].data[3] & SecondRowRightSafetyBeltState.Unavalible) >> SecondRowRightSafetyBeltState.shift)}\nПри непристегнутом ремне: {hex((Result.frame[1].data[3] & SecondRowRightSafetyBeltState.Unavalible) >> SecondRowRightSafetyBeltState.shift)}")
-                                time.sleep(0.05)
-                                if (Result.frame[0].data[3] & SecondRowRightSafetyBeltState.Unavalible == SecondRowRightSafetyBeltState.SB_fastened and Result.frame[1].data[3] & SecondRowRightSafetyBeltState.Unavalible== SecondRowRightSafetyBeltState.SB_unfastened):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 5:
-                                self.got_res_SBR_brs.append(f"При пристегнутом ремне: {hex(((Result.frame[0].data[2] <<8)+(Result.frame[0].data[3])&0b0000000110000000)>>7)}\nПри непристегнутом ремне: {hex(((Result.frame[1].data[2] <<8)+(Result.frame[1].data[3])&0b0000000110000000)>>7)}")
-                                time.sleep(0.05)
-                                if (int(hex(((Result.frame[0].data[2] <<8)+(Result.frame[0].data[3])&0b0000000110000000)>>7),16)==0x2 and int(hex(((Result.frame[1].data[2] <<8)+(Result.frame[1].data[3])&0b0000000110000000)>>7),16)==0x1):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                    case 0x42:
-                        self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
-                        time.sleep(0.02)
-                        match Command.Seatbelt_position:
-                            case 1:
-                                self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used) )}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.No_Warning):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 2:
-                                self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.No_Warning ):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 4:
-                                self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used))}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.No_Warning ):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 3:
-                                self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.No_Warning):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 5:
-                                self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used) >> SecondRowLeftSafetyBeltWarning.shift)}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.No_Warning):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
+        while (self.SBR_stopper==False):
+            try:
+                t1=time.time()
+                received_len = self.UART.read(2).hex()
+                if (received_len != ''):
+                    bytes_read = self.UART.read(int(received_len, 16))
+                    Result.ParseFromString(bytes_read)
+                    result_str+=f"DATA:{Result.frame[0].data.hex()}\n\n"
 
-                    case 0x43:
-                        self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
-                        time.sleep(0.05)
-                        match Command.Seatbelt_position:
-                            case 1:
-                                self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift )}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.Warning_level_1):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 2:
-                                self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.Warning_level_1 ):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 4:
-                                self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used))}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.Warning_level_1 ):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 3:
-                                self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.Warning_level_1):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 5:
-                                self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift )}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.Warning_level_1):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                    case 0x44:
-                        self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
-                        time.sleep(0.05)
-                        match Command.Seatbelt_position:
-                            case 1:
-                                self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift )}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.Warning_level_2):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 2:
-                                self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.Warning_level_2 ):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 4:
-                                self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) )}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.Warning_level_2 ):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 3:
-                                self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.Warning_level_2):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 5:
-                                self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.Warning_level_2):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                    case 0x45:
-                        self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
-                        time.sleep(0.05)
-                        self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[1].timestamp)}   id:{str(hex(Result.frame[1].id))}   DLC:{str(Result.frame[1].length)}   Data:{str(Result.frame[1].data.hex())}")
-                        time.sleep(0.05)
-                        match Command.Seatbelt_position:
-                            case 1:
-                                self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder до истечения таймаута: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}")
-                                time.sleep(0.05)
-                                self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder после истечения таймаута: {hex((Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}")
-                                if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used >0 and Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.No_Warning):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 2:
-                                self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder до истечения таймаута: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
-                                time.sleep(0.05)
-                                self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder после истечения таймаута: {hex((Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
-                                if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used != FrontPassengerSafetyBeltReminder.No_Warning and Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.No_Warning):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 4:
-                                self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning до истечения таймаута: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used))}")
-                                time.sleep(0.05)
-                                self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning после истечения таймаута: {hex((Result.frame[1].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) )}")
-                                if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used != SecondRowCenterSafetyBeltWarning.No_Warning and Result.frame[1].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.No_Warning):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 3:
-                                self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning до истечения таймаута: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
-                                time.sleep(0.05)
-                                self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning после истечения таймаута: {hex((Result.frame[1].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
-                                if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used != SecondRowRightSafetyBeltWarning.No_Warning and Result.frame[1].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.No_Warning):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 5:
-                                self.got_res_SBR_brs.append( f"Значение SecondRowLeftSafetyBeltWarning до истечения таймаута: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}")
-                                time.sleep(0.05)
-                                self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning после истечения таймаута: {hex((Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}")
-                                if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used != SecondRowLeftSafetyBeltWarning.No_Warning and Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.No_Warning):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
+                    result_str += f"Driver safety belt state:{self.to_seatbelt_state((Result.frame[0].data[0]&0x30)>>4)}\n"
+                    result_str += f"Driver safety belt reminder:{self.to_warning_state((Result.frame[0].data[1]&0xC0)>>6)}\n\n"
 
-                    case 0x46:
-                        for i in range(0,2):
-                            self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[i].timestamp)}   id:{str(hex(Result.frame[i].id))}   DLC:{str(Result.frame[i].length)}   Data:{str(Result.frame[i].data.hex())}")
-                        time.sleep(0.05)
-                        match Command.Seatbelt_position:
-                            case 1:
-                                self.got_res_SBR_brs.append(
-                                    f"Значение DriverSafetyBeltReminder по истечении таймаута: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}\nЗначение DriverSafetyBeltReminder после сброса: {hex((Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.No_Warning and Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.Warning_level_1):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 2:
-                                self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder по истечении таймаута: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}\nЗначение FrontPassengerSafetyBeltReminder после сброса: {hex((Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.No_Warning and Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.Warning_level_1):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 4:
-                                self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning по истечении таймаута: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) )}\nЗначение SecondRowCenterSafetyBeltWarning после сброса: {hex((Result.frame[1].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) )}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.No_Warning and Result.frame[1].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.Warning_level_1):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 3:
-                                self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning по истечении таймаута: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}\nЗначение SecondRowRightSafetyBeltWarning после сброса: {hex((Result.frame[1].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.No_Warning and Result.frame[1].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.Warning_level_1):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 5:
-                                self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning по истечении таймаута: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}\nЗначение SecondRowLeftSetyBeltWarning после сброса: {hex((Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.No_Warning and Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.Warning_level_1):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                    case 0x47:
-                        self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
-                        time.sleep(0.02)
-                        self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[1].timestamp)}   id:{str(hex(Result.frame[1].id))}   DLC:{str(Result.frame[1].length)}   Data:{str(Result.frame[1].data.hex())}")
-                        match Command.Seatbelt_position:
-                            case 1:
-                                self.got_res_SBR_brs.append( f"Значение DriverSafetyBeltReminder при закрытой двери: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}")
-                                time.sleep(0.02)
-                                self.got_res_SBR_brs.append( f"Значение DriverSafetyBeltReminder при открытой двери: {hex((Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used != DriverSafetyBeltReminder.No_Warning and Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.No_Warning):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 2:
-                                self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder при закрытой двери: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
-                                time.sleep(0.01)
-                                self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder при открытой двери: {hex((Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used != FrontPassengerSafetyBeltReminder.No_Warning and Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.No_Warning):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 4:
-                                self.got_res_SBR_brs.append( f"Значение SecondRowCenterSafetyBeltWarning при закрытой двери: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) )}")
-                                time.sleep(0.01)
-                                self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning при открытой двери: {hex((Result.frame[1].data[1] & SecondRowCenterSafetyBeltWarning.Not_used))}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used != SecondRowCenterSafetyBeltWarning.No_Warning and Result.frame[1].data[1] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.No_Warning):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 3:
-                                self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning при закрытой двери: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
-                                time.sleep(0.01)
-                                self.got_res_SBR_brs.append( f"Значение SecondRowRightSafetyBeltWarning при открытой двери: {hex((Result.frame[1].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used != SecondRowRightSafetyBeltWarning.No_Warning and Result.frame[1].data[2] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.No_Warning):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 5:
-                                self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning при закрытой двери:: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}")
-                                time.sleep(0.01)
-                                self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning при открытой двери:: {hex((Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used) >> SecondRowLeftSafetyBeltWarning.shift)}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used != SecondRowLeftSafetyBeltWarning.No_Warning and Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.No_Warning):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                    case 0x48:
-                        self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
-                        time.sleep(0.01)
-                        self.acc_SBR_brs.append(f"Timestamp:{str(Result.frame[1].timestamp)}   id:{str(hex(Result.frame[1].id))}   DLC:{str(Result.frame[1].length)}   Data:{str(Result.frame[1].data.hex())}")
-                        match Command.Seatbelt_position:
-                            case 1:
-                                self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder при Gear Lever drive: {hex((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}")
-                                time.sleep(0.01)
-                                self.got_res_SBR_brs.append(f"Значение DriverSafetyBeltReminder при Gear Lever reverse: {hex((Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used)>>DriverSafetyBeltReminder.shift)}")
-                                time.sleep(0.01)
-                                if ((Result.frame[0].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.Warning_level_1) and (Result.frame[1].data[1] & DriverSafetyBeltReminder.Not_used == DriverSafetyBeltReminder.No_Warning)):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 2:
-                                self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder при Gear Lever drive: {hex((Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
-                                time.sleep(0.01)
-                                self.got_res_SBR_brs.append(f"Значение FrontPassengerSafetyBeltReminder при Gear Lever reverse: {hex((Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used) >> FrontPassengerSafetyBeltReminder.shift)}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.Warning_level_1 and Result.frame[1].data[1] & FrontPassengerSafetyBeltReminder.Not_used == FrontPassengerSafetyBeltReminder.No_Warning):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 4:
-                                self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning при Gear Lever drive: {hex((Result.frame[0].data[1] & SecondRowCenterSafetyBeltWarning.Not_used) )}")
-                                time.sleep(0.01)
-                                self.got_res_SBR_brs.append(f"Значение SecondRowCenterSafetyBeltWarning при Gear Lever reverse: {hex((Result.frame[1].data[1] & SecondRowCenterSafetyBeltWarning.Not_used))}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[1] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.Warning_level_1 and Result.frame[1].data[1] & SecondRowRightSafetyBeltWarning.Not_used == SecondRowRightSafetyBeltWarning.No_Warning):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 3:
-                                self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning при Gear Lever drive: {hex((Result.frame[0].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
-                                time.sleep(0.01)
-                                self.got_res_SBR_brs.append(f"Значение SecondRowRightSafetyBeltWarning при Gear Lever reverse: {hex((Result.frame[1].data[2] & SecondRowRightSafetyBeltWarning.Not_used) >> SecondRowRightSafetyBeltWarning.shift)}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[2] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.Warning_level_1 and Result.frame[1].data[2] & SecondRowCenterSafetyBeltWarning.Not_used == SecondRowCenterSafetyBeltWarning.No_Warning):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
-                            case 5:
-                                self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning при Gear Lever drive: {hex((Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}")
-                                time.sleep(0.01)
-                                self.got_res_SBR_brs.append(f"Значение SecondRowLeftSafetyBeltWarning при Gear Lever reverse: {hex((Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used)>> SecondRowLeftSafetyBeltWarning.shift)}")
-                                time.sleep(0.01)
-                                if (Result.frame[0].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.Warning_level_1 and Result.frame[1].data[2] & SecondRowLeftSafetyBeltWarning.Not_used == SecondRowLeftSafetyBeltWarning.No_Warning):
-                                    self.got_res_SBR_brs.append("Success")
-                                else:
-                                    self.got_res_SBR_brs.append("Fail")
+                    result_str += f"Front passenger safety belt state:{self.to_seatbelt_state((Result.frame[0].data[0] & 0x0C) >> 2)}\n"
+                    result_str += f"Front passenger safety belt reminder:{self.to_warning_state((Result.frame[0].data[1] & 0x30) >> 4)}\n\n"
 
-                    case 0x49:
-                        self.acc_SBR_brs.append(
-                            f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
-                        time.sleep(0.02)
-                        self.acc_SBR_brs.append(
-                            f"Timestamp:{str(Result.frame[1].timestamp)}   id:{str(hex(Result.frame[1].id))}   DLC:{str(Result.frame[1].length)}   Data:{str(Result.frame[1].data.hex())}")
+                    result_str += f"Second row right safety belt state:{self.to_seatbelt_state((Result.frame[0].data[3] & 0x60) >> 5)}\n"
+                    result_str += f"Second row right safety belt warning:{self.to_warning_state((Result.frame[0].data[2] & 0x30) >> 4)}\n\n"
 
-                        self.got_res_SBR_brs.append("При отсутствии пассажира")
-                        time.sleep(0.02)
-                        self.got_res_SBR_brs.append(f"PassengerPresenceState: {hex((Result.frame[0].data[0] & 0b00000011))}")
-                        time.sleep(0.02)
-                        self.got_res_SBR_brs.append("При наличии пассажира")
-                        time.sleep(0.01)
-                        self.got_res_SBR_brs.append(f"PassengerPrecsenceState: {hex((Result.frame[1].data[0] & 0b00000011))}")
-                        if((Result.frame[0].data[0] & 0b00000011)==1 and (Result.frame[1].data[0] & 0b00000011) ==2):
-                            self.got_res_SBR_brs.append("Success")
-                        else:
-                            self.got_res_SBR_brs.append("Fail")
-                    case 0x4A:
-                        self.acc_SBR_brs.append(
-                            f"Timestamp:{str(Result.frame[0].timestamp)}   id:{str(hex(Result.frame[0].id))}   DLC:{str(Result.frame[0].length)}   Data:{str(Result.frame[0].data.hex())}")
-                        time.sleep(0.02)
-                        self.acc_SBR_brs.append(
-                            f"Timestamp:{str(Result.frame[1].timestamp)}   id:{str(hex(Result.frame[1].id))}   DLC:{str(Result.frame[1].length)}   Data:{str(Result.frame[1].data.hex())}")
-                        time.sleep(0.02)
-                        self.got_res_SBR_brs.append(f"PassengerAIRBAG_inhibition при отключенной ПБ: {hex((Result.frame[0].data[1] & 0b00001000) >> 3)}")
-                        time.sleep(0.02)
-                        self.got_res_SBR_brs.append(f"PassengerAIRBAG_inhibition при включенной ПБ: {hex((Result.frame[1].data[1] & 0b00001000) >> 3)}")
-                        time.sleep(0.02)
-                        if(int(hex((Result.frame[0].data[1] & 0b00001000) >> 3),16)==1 and int(hex((Result.frame[1].data[1] & 0b00001000) >> 3),16)==0):
-                            self.got_res_SBR_brs.append("Success")
-                        else:
-                            self.got_res_SBR_brs.append("Fail")
-        except:
-            self.got_res_SBR_brs.append("Возникла ошибка.Попробуйте ещё раз")
+                    result_str += f"Second row center safety belt state:{self.to_seatbelt_state((Result.frame[0].data[2] & 0x06) >> 1)}\n"
+                    result_str += f"Second row center safety belt warning:{self.to_warning_state((Result.frame[0].data[1] & 0x03))}\n\n"
+
+                    result_str += f"Second row left safety belt state:{self.to_seatbelt_state(((Result.frame[0].data[2] & 0x01) << 1)+((Result.frame[0].data[3] & 0x80)>>7))}\n"
+                    result_str += f"Second row left safety belt warning:{self.to_warning_state((Result.frame[0].data[2] & 0xC0) >> 6)}\n\n"
+
+                    result_str += f"Passenger presence sensor:{self.to_dnp_state((Result.frame[0].data[0] & 0x03))}\n"
+
+
+                    self.SBR_signal.upd_text.emit(result_str)
+                    t2=time.time()
+                    self.timer+=t2-t1
+                    self.SBR_signal.probeg_500.emit(f"Таймер: {round(self.timer,2)} c.")
+
+                    result_str=""
+            except:
+                self.SBR_signal.upd_text.emit("Поели говна")
+        self.SBR_stopper=False
+        rasst=0
+        self.SBR_signal.upd_text.emit("")
+        time.sleep(0.1)
         self.EnableAll()
-        self.STOP_BTN_5.setEnabled(False)
-        self.UART.close()
+
 
     def run_SBR(self):
         Receiver=threading.Thread(target=self.SBR_handler)
@@ -5273,28 +5020,150 @@ class Ui_MainWindow(object):
         Sres_impact_front = self.Sresimpactfront_input.value()
 
         Sres_impact_side = self.Sresimpact_side_input.value()
-        PARAMS_ARRAY=bytearray([(Limit_Ares_front>>8)&0xff,(Limit_Ares_front)&0xff,(Limit_Ares_side)>>8&0xff,(Limit_Ares_side)&0xff,(Limit_Sx_Sy_front>>8)&0xff,(Limit_Sx_Sy_front)&0xff,(Limit_Sx_Sy_side>>8)&0xff,(Limit_Sx_Sy_side)&0xff,(Limit_Sres_front>>8)&0xff,Limit_Sres_front&0xff,(Limit_Sres_side>>8)&0xff,Limit_Sres_side&0xff,T_calc_front,T_calc_side,Time_to_stop_calc,(Sres_impact_front>>8)&0xff,(Sres_impact_front)&0xff,(Sres_impact_side>>8)&0xff,(Sres_impact_side)&0xff,delta_Ares])
+        Size_front=self.size_front_input.value()
+        Size_side=self.size_side_input.value()
+        PARAMS_ARRAY=bytearray([(Limit_Ares_front>>8)&0xff,(Limit_Ares_front)&0xff,(Limit_Ares_side)>>8&0xff,(Limit_Ares_side)&0xff,(Limit_Sx_Sy_front>>8)&0xff,(Limit_Sx_Sy_front)&0xff,(Limit_Sx_Sy_side>>8)&0xff,(Limit_Sx_Sy_side)&0xff,(Limit_Sres_front>>8)&0xff,Limit_Sres_front&0xff,(Limit_Sres_side>>8)&0xff,Limit_Sres_side&0xff,T_calc_front,T_calc_side,Time_to_stop_calc,(Sres_impact_front>>8)&0xff,(Sres_impact_front)&0xff,(Sres_impact_side>>8)&0xff,(Sres_impact_side)&0xff,delta_Ares,Size_front,Size_side])
+        os.chdir("pillows")
+
+        lines = ['', '', '', '', '', '']
+        file = open("arrays.txt", 'r')
+        for i in range(0, 6):
+            line = file.readline()
+            line = line.split('=')
+            if ('\n' in line[1]):
+                line[1] = line[1].replace('\n', '')
+            lines[i] = line[1]
+        #print(lines)
+        TTF_SIDE_ARR = lines[0].split(',')
+        SRES_SIDE_ARR = lines[1].split(',')
+        TTF_DPT_PPT_ARR = lines[2].split(',')
+        SRES_FRONT_ARR = lines[3].split(',')
+        TTF_DAB_ARR = lines[4].split(',')
+        TTF_PAB_ARR = lines[5].split(',')
+        MAXLENGTH = max(len(lines[0].split(',')), len(lines[1].split(',')), len(lines[2].split(',')), len(lines[3].split(',')),len(lines[4].split(',')), len(lines[5].split(',')))
+        for array in [TTF_SIDE_ARR,SRES_SIDE_ARR,TTF_DPT_PPT_ARR,SRES_FRONT_ARR,TTF_DAB_ARR,TTF_PAB_ARR]:
+            if(len(array)<MAXLENGTH):
+                for i in range(MAXLENGTH-len(array)):
+                    array.append('0')
+        for i in range(len(TTF_SIDE_ARR)):
+            TTF_SIDE_ARR.append((int(round(float(TTF_SIDE_ARR[i].replace('[','').replace(']','')) / 0.01))&0xFF00)>>8)
+            TTF_SIDE_ARR.append(int(round(float(TTF_SIDE_ARR[i].replace('[','').replace(']','')) / 0.01))&0xFF)
+        for i in range(MAXLENGTH):
+            TTF_SIDE_ARR.pop(0)
+
+        for i in range(len(SRES_SIDE_ARR)):
+            SRES_SIDE_ARR.append((int(round(float(SRES_SIDE_ARR[i].replace('[','').replace(']','')) / 10e-9)) & 0xFF000000) >> 24)
+            SRES_SIDE_ARR.append((int(round(float(SRES_SIDE_ARR[i].replace('[','').replace(']','')) / 10e-9)) & 0x00FF0000) >> 16)
+            SRES_SIDE_ARR.append((int(round(float(SRES_SIDE_ARR[i].replace('[','').replace(']','')) / 10e-9)) & 0x0000FF00) >> 8)
+            SRES_SIDE_ARR.append(int(round(float(SRES_SIDE_ARR[i].replace('[','').replace(']','')) /10e-9)) & 0x000000FF)
+        for i in range(MAXLENGTH):
+            SRES_SIDE_ARR.pop(0)
+
+        for i in range(len(TTF_DPT_PPT_ARR)):
+            TTF_DPT_PPT_ARR.append((int(round(float(TTF_DPT_PPT_ARR[i].replace('[','').replace(']','')) / 0.01)) & 0xFF00) >> 8)
+            TTF_DPT_PPT_ARR.append(int(round(float(TTF_DPT_PPT_ARR[i].replace('[','').replace(']','')) / 0.01)) & 0xFF)
+        for i in range(MAXLENGTH):
+            TTF_DPT_PPT_ARR.pop(0)
+
+        for i in range(len(SRES_FRONT_ARR)):
+            SRES_FRONT_ARR.append((int(round(float(SRES_FRONT_ARR[i].replace('[','').replace(']','')) / 10e-9)) & 0xFF000000) >> 24)
+            SRES_FRONT_ARR.append((int(round(float(SRES_FRONT_ARR[i].replace('[','').replace(']','')) / 10e-9)) & 0x00FF0000) >> 16)
+            SRES_FRONT_ARR.append((int(round(float(SRES_FRONT_ARR[i].replace('[','').replace(']','')) / 10e-9)) & 0x0000FF00) >> 8)
+            SRES_FRONT_ARR.append(int(round(float(SRES_FRONT_ARR[i].replace('[','').replace(']','')) / 10e-9)) & 0x000000FF)
+        for i in range(MAXLENGTH):
+            SRES_FRONT_ARR.pop(0)
+
+        for i in range(len(TTF_DAB_ARR)):
+            TTF_DAB_ARR.append((int(round(float(TTF_DAB_ARR[i].replace('[','').replace(']','')) / 0.01)) & 0xFF00) >> 8)
+            TTF_DAB_ARR.append(int(round(float(TTF_DAB_ARR[i].replace('[','').replace(']','')) / 0.01)) & 0xFF)
+        for i in range(MAXLENGTH):
+            TTF_DAB_ARR.pop(0)
+        #self.UART.write(bytearray(TTF_DAB_ARR))
+
+        for i in range(len(TTF_PAB_ARR)):
+            TTF_PAB_ARR.append((int(round(float(TTF_PAB_ARR[i].replace('[','').replace(']','')) / 0.01)) & 0xFF00) >> 8)
+            TTF_PAB_ARR.append(int(round(float(TTF_PAB_ARR[i].replace('[','').replace(']','')) / 0.01)) & 0xFF)
+        for i in range(MAXLENGTH):
+            TTF_PAB_ARR.pop(0)
+
+
+        self.UART.write(Command)
         time.sleep(1)
         self.UART.write(PARAMS_ARRAY)
+        file.close()
+        os.chdir("..")
+
         received_len = self.UART.read(2).hex()
         if (received_len == ''):
             self.PARAM_RESULT_BRS_2.append("Остановлено")
         else:
             bytes_read = self.UART.read(int(received_len, 16))
             Result.ParseFromString(bytes_read)
-            if((hex(Result.frame[1].data[1])=='0x6e'and hex(Result.frame[3].data[1])=='0x6e'and hex(Result.frame[5].data[1])=='0x6e'and hex(Result.frame[7].data[1])=='0x6e'and hex(Result.frame[9].data[1])=='0x6e'and hex(Result.frame[11].data[1])=='0x6e'and hex(Result.frame[13].data[1])=='0x6e'and hex(Result.frame[15].data[1])=='0x6e'and hex(Result.frame[1].data[1])=='0x6e'and hex(Result.frame[17].data[1])=='0x6e'and hex(Result.frame[19].data[1])=='0x6e'and hex(Result.frame[21].data[1])=='0x6e'and hex(Result.frame[23].data[1])=='0x6e')):
+            if((hex(Result.frame[1].data[1])=='0x6e'and hex(Result.frame[3].data[1])=='0x6e'and hex(Result.frame[5].data[1])=='0x6e'and hex(Result.frame[7].data[1])=='0x6e'and hex(Result.frame[9].data[1])=='0x6e'and hex(Result.frame[11].data[1])=='0x6e'and hex(Result.frame[13].data[1])=='0x6e'and hex(Result.frame[15].data[1])=='0x6e'and hex(Result.frame[1].data[1])=='0x6e'and hex(Result.frame[17].data[1])=='0x6e'and hex(Result.frame[19].data[1])=='0x6e'and hex(Result.frame[21].data[1])=='0x6e'and hex(Result.frame[23].data[1])=='0x6e'and hex(Result.frame[25].data[1])=='0x6e'and hex(Result.frame[27].data[1])=='0x6e')):
                 self.PARAM_RESULT_BRS_2.append("Успешное обновление")
             else:
                 self.PARAM_RESULT_BRS_2.append("Ошибка обновления параметров")
-            for i in range(0,12):
+            for i in range(0,14):
                 self.PARAM_RESULT_BRS_2.append(f"Отправлено:{str(Result.frame[2*i].data.hex())}\nПринято:{str(Result.frame[2*i+1].data.hex())}")
                 time.sleep(0.02)
+        res='0'
+        while (int(res,16)!= 0x33):
+            res = self.UART.read(1).hex()
+        self.UART.write(bytearray(TTF_SIDE_ARR))
+        res='0'
+        if (received_len == ''):
+            self.PARAM_RESULT_BRS_2.append("Остановлено")
+        else:
+            self.PARAM_RESULT_BRS_2.append("Пошёл прогрев гоев")
+        while (int(res,16)!= 0x33):
+            res = self.UART.read(1).hex()
+        self.UART.write(bytearray(SRES_SIDE_ARR))
+        res = '0'
+        if (received_len == ''):
+            self.PARAM_RESULT_BRS_2.append("Остановлено")
+        else:
+            self.PARAM_RESULT_BRS_2.append("Пошёл прогрев гоев")
+        while (int(res,16)!= 0x33):
+            res = self.UART.read(1).hex()
+        self.UART.write(bytearray(TTF_DPT_PPT_ARR))
+        res = '0'
+        if (received_len == ''):
+            self.PARAM_RESULT_BRS_2.append("Остановлено")
+        else:
+            self.PARAM_RESULT_BRS_2.append("Пошёл прогрев гоев")
+        while (int(res,16)!= 0x33):
+            res = self.UART.read(1).hex()
+        self.UART.write(bytearray(SRES_FRONT_ARR))
+        res = '0'
+        if (received_len == ''):
+            self.PARAM_RESULT_BRS_2.append("Остановлено")
+        else:
+            self.PARAM_RESULT_BRS_2.append("Пошёл прогрев гоев")
+        while (int(res,16)!= 0x33):
+            res = self.UART.read(1).hex()
+        self.UART.write(bytearray(TTF_DAB_ARR))
+        res = '0'
+        if (received_len == ''):
+            self.PARAM_RESULT_BRS_2.append("Остановлено")
+        else:
+            self.PARAM_RESULT_BRS_2.append("Пошёл прогрев гоев")
+        while (int(res,16)!= 0x33):
+            res = self.UART.read(1).hex()
+        self.UART.write(bytearray(TTF_PAB_ARR))
+        res = '0'
+        received_len = self.UART.read(2).hex()
+        if (received_len == ''):
+            self.PARAM_RESULT_BRS_2.append("Остановлено")
+        else:
+            self.PARAM_RESULT_BRS_2.append("Пошёл прогрев гоев")
         self.UART.close()
         self.EnableAll()
     def run_update_params(self):
         Receiver = threading.Thread(target=self.update_params)
         Receiver.start()
     def read_params(self):
+        number=0
+        massiv=[]
         self.DisableAll()
         try:
             self.UART.open()
@@ -5338,8 +5207,189 @@ class Ui_MainWindow(object):
                 time.sleep(0.02)
                 self.PARAM_RESULT_BRS_2.append(f"Delta Ares(m/s\u00B2):{(int(Result.frame[23].data[4]))}")
                 time.sleep(0.02)
+                self.PARAM_RESULT_BRS_2.append(f"Size front(m/s\u00B2):{(int(Result.frame[25].data[4]))}")
+                time.sleep(0.02)
+                self.PARAM_RESULT_BRS_2.append(f"Size side(m/s\u00B2):{(int(Result.frame[27].data[4]))}")
+                time.sleep(0.02)
+                received_len = self.UART.read(2).hex()
+                if (received_len == ''):
+                    self.PARAM_RESULT_BRS_2.append("Остановлено")
+                else:
+                    try:
+                        bytes_read = self.UART.read(int(received_len, 16))
+                        Result.ParseFromString(bytes_read)
+                        pointer=[0,4]
+                        for i in range(int((len(Result.frame[len(Result.frame)-1].data)-1)/2+3/2+(len(Result.frame)-2)*3.5)):
+                            pointer[1] += 1
+                            if (pointer[1] == len(Result.frame[pointer[0]].data)):
+                                pointer[1] = 1
+                                pointer[0] += 1
+                            number+=(Result.frame[pointer[0]].data[pointer[1]])<<8
+                            pointer[1]+=1
+                            if(pointer[1] == len(Result.frame[pointer[0]].data)):
+                                pointer[1]=1
+                                pointer[0]+=1
+                            number += (Result.frame[pointer[0]].data[pointer[1]])
+                            massiv.append(round(float(number)/100,2))
+                            number=0
+                        self.PARAM_RESULT_BRS_2.append(f"TTF SIDE ARR:{str(massiv)}")
+                        massiv.clear()
+                    except:
+                        self.PARAM_RESULT_BRS_2.append("Ошибка")#
+
+
+                received_len = self.UART.read(2).hex()
+                if (received_len == ''):
+                    self.PARAM_RESULT_BRS_2.append("Остановлено")
+                else:
+                    try:
+                        bytes_read = self.UART.read(int(received_len, 16))
+                        Result.ParseFromString(bytes_read)
+                        pointer = [0, 4]
+                        for i in range(int((len(Result.frame[len(Result.frame)-1].data)-1)/4+3/4+(len(Result.frame)-2)*7/4)):
+                            pointer[1] += 1
+                            if (pointer[1] == len(Result.frame[pointer[0]].data)):
+                                pointer[1] = 1
+                                pointer[0] += 1
+                            number += (Result.frame[pointer[0]].data[pointer[1]]) << 24
+                            pointer[1] += 1
+                            if (pointer[1] == len(Result.frame[pointer[0]].data)):
+                                pointer[1] = 1
+                                pointer[0] += 1
+                            number += (Result.frame[pointer[0]].data[pointer[1]])<<16
+                            pointer[1] += 1
+                            if (pointer[1] == len(Result.frame[pointer[0]].data)):
+                                pointer[1] = 1
+                                pointer[0] += 1
+                            number += (Result.frame[pointer[0]].data[pointer[1]]) << 8
+                            pointer[1] += 1
+                            if (pointer[1] == len(Result.frame[pointer[0]].data)):
+                                pointer[1] = 1
+                                pointer[0] += 1
+                            number += (Result.frame[pointer[0]].data[pointer[1]])
+                            massiv.append(round(float(number) / 10e8, 4))
+                            number = 0
+                        self.PARAM_RESULT_BRS_2.append(f"SRES SIDE ARR:{str(massiv)}")
+                        massiv.clear()
+                    except:
+                        self.PARAM_RESULT_BRS_2.append("Ошибка")
+                received_len = self.UART.read(2).hex()
+                if (received_len == ''):
+                    self.PARAM_RESULT_BRS_2.append("Остановлено")
+                else:
+                    try:
+                        bytes_read = self.UART.read(int(received_len, 16))
+                        Result.ParseFromString(bytes_read)
+                        pointer = [0, 4]
+                        for i in range(int((len(Result.frame[len(Result.frame) - 1].data) - 1) / 2 + 3 / 2 + (
+                                len(Result.frame) - 2) * 3.5)):
+                            pointer[1] += 1
+                            if (pointer[1] == len(Result.frame[pointer[0]].data)):
+                                pointer[1] = 1
+                                pointer[0] += 1
+                            number += (Result.frame[pointer[0]].data[pointer[1]]) << 8
+                            pointer[1] += 1
+                            if (pointer[1] == len(Result.frame[pointer[0]].data)):
+                                pointer[1] = 1
+                                pointer[0] += 1
+                            number += (Result.frame[pointer[0]].data[pointer[1]])
+                            massiv.append(round(float(number) / 100, 2))
+                            number = 0
+                        self.PARAM_RESULT_BRS_2.append(f"TTF DPT PPT ARR:{str(massiv)}")
+                        massiv.clear()
+                    except:
+                        self.PARAM_RESULT_BRS_2.append("Ошибка")
+                received_len = self.UART.read(2).hex()
+                if (received_len == ''):
+                    self.PARAM_RESULT_BRS_2.append("Остановлено")
+                else:
+                    try:
+                        bytes_read = self.UART.read(int(received_len, 16))
+                        Result.ParseFromString(bytes_read)
+                        pointer = [0, 4]
+                        for i in range(int((len(Result.frame[len(Result.frame) - 1].data) - 1) / 4 + 3 / 4 + (
+                                len(Result.frame) - 2) * 7 / 4)):
+                            pointer[1] += 1
+                            if (pointer[1] == len(Result.frame[pointer[0]].data)):
+                                pointer[1] = 1
+                                pointer[0] += 1
+                            number += (Result.frame[pointer[0]].data[pointer[1]]) << 24
+                            pointer[1] += 1
+                            if (pointer[1] == len(Result.frame[pointer[0]].data)):
+                                pointer[1] = 1
+                                pointer[0] += 1
+                            number += (Result.frame[pointer[0]].data[pointer[1]]) << 16
+                            pointer[1] += 1
+                            if (pointer[1] == len(Result.frame[pointer[0]].data)):
+                                pointer[1] = 1
+                                pointer[0] += 1
+                            number += (Result.frame[pointer[0]].data[pointer[1]]) << 8
+                            pointer[1] += 1
+                            if (pointer[1] == len(Result.frame[pointer[0]].data)):
+                                pointer[1] = 1
+                                pointer[0] += 1
+                            number += (Result.frame[pointer[0]].data[pointer[1]])
+                            massiv.append(round(float(number) / 10e8, 4))
+                            number = 0
+                        self.PARAM_RESULT_BRS_2.append(f"SRES FRONT ARR:{str(massiv)}")
+                        massiv.clear()
+                    except:
+                        self.PARAM_RESULT_BRS_2.append("Ошибка")
+                received_len = self.UART.read(2).hex()
+                if (received_len == ''):
+                    self.PARAM_RESULT_BRS_2.append("Остановлено")
+                else:
+                    try:
+                        bytes_read = self.UART.read(int(received_len, 16))
+                        Result.ParseFromString(bytes_read)
+                        pointer = [0, 4]
+                        for i in range(int((len(Result.frame[len(Result.frame) - 1].data) - 1) / 2 + 3 / 2 + (
+                                len(Result.frame) - 2) * 3.5)):
+                            pointer[1] += 1
+                            if (pointer[1] == len(Result.frame[pointer[0]].data)):
+                                pointer[1] = 1
+                                pointer[0] += 1
+                            number += (Result.frame[pointer[0]].data[pointer[1]]) << 8
+                            pointer[1] += 1
+                            if (pointer[1] == len(Result.frame[pointer[0]].data)):
+                                pointer[1] = 1
+                                pointer[0] += 1
+                            number += (Result.frame[pointer[0]].data[pointer[1]])
+                            massiv.append(round(float(number) / 100, 2))
+                            number = 0
+                        self.PARAM_RESULT_BRS_2.append(f"TTF DAB ARR:{str(massiv)}")
+                        massiv.clear()
+                    except:
+                        self.PARAM_RESULT_BRS_2.append("Ошибка")
+                received_len = self.UART.read(2).hex()
+                if (received_len == ''):
+                    self.PARAM_RESULT_BRS_2.append("Остановлено")
+                else:
+                    try:
+                        bytes_read = self.UART.read(int(received_len, 16))
+                        Result.ParseFromString(bytes_read)
+                        pointer = [0, 4]
+                        for i in range(int((len(Result.frame[len(Result.frame) - 1].data) - 1) / 2 + 3 / 2 + (
+                                len(Result.frame) - 2) * 3.5)):
+                            pointer[1] += 1
+                            if (pointer[1] == len(Result.frame[pointer[0]].data)):
+                                pointer[1] = 1
+                                pointer[0] += 1
+                            number += (Result.frame[pointer[0]].data[pointer[1]]) << 8
+                            pointer[1] += 1
+                            if (pointer[1] == len(Result.frame[pointer[0]].data)):
+                                pointer[1] = 1
+                                pointer[0] += 1
+                            number += (Result.frame[pointer[0]].data[pointer[1]])
+                            massiv.append(round(float(number) / 100, 2))
+                            number = 0
+                        self.PARAM_RESULT_BRS_2.append(f"TTF PAB ARR:{str(massiv)}")
+                        massiv.clear()
+                    except:
+                        self.PARAM_RESULT_BRS_2.append("Ошибка")
             except:
                 self.PARAM_RESULT_BRS_2.append("Ошибка чтения парметров. Попробуйте ещё раз")
+
         self.UART.close()
         self.EnableAll()
 
@@ -5471,7 +5521,11 @@ class Ui_MainWindow(object):
         self.UART.close()
     def CheckConnection(self):
         try:
-            self.UART.open()
+            try:
+                self.UART.open()
+            except:
+                self.UART.close()
+                self.UART.open()
             self.UART.timeout = 2
             check=bytes([0xbb])
             self.UART.write(check)
@@ -5497,6 +5551,7 @@ class Ui_MainWindow(object):
         self.start_SBR_btn.setEnabled(True)
         self.start_acc_btn.setEnabled(True)
         self.Run_Init_btn.setEnabled(True)
+        self.EBU_ALIBABU.setEnabled(True)
         self.CHECK_CRASH_DETECTION_BTN.setEnabled(True)
         self.UDS_RUN_BTN.setEnabled(True)
         self.perod_periodic_btn.setEnabled(True)
@@ -5637,8 +5692,8 @@ class Ui_MainWindow(object):
         Receiver = threading.Thread(target=self.run_model_all)
         Receiver.start()
     def export_results(self):
-        os.chdir("D:\STO_gui\pillows")
-        subprocess.call("Results.csv", shell=True)
+        os.chdir("pillows")
+        subprocess.call("Result.csv", shell=True)
         os.chdir("..")
         #process = subprocess.Popen(["D:\STO_gui\pillows\lib\TEST_RESULT.csv"],stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
     def run_export_results(self):
@@ -5948,6 +6003,8 @@ class Ui_MainWindow(object):
     def run_nevjebacca_generator(self):
         Receiver = threading.Thread(target=self.nevjebacca_generator)
         Receiver.start()
+    def STOP_SBR(self):
+        self.SBR_stopper=True
 
     def on_click2(self):
         os.chdir('acceleration_synthesis')
@@ -5969,10 +6026,52 @@ class Ui_MainWindow(object):
         self.run_save_params(file)
         os.chdir('..')
 
+    def array_config(self):
+        if(self.config_arrays.isChecked()==True):
+            os.chdir("pillows")
+            subprocess.call("arrays.txt", shell=True)
+            os.chdir("..")
+    def SBR_upd(self,text):
+        self.SBR_RESULT_BRS.setText(text)
+    def probeg_500_upd(self,text):
+        self.PASSED_MILEAGE.setText(text)
+    def to_seatbelt_state(self,val):
+        if (val == 0):
+            return "Not monitored"
+        elif (val == 1):
+            return "Unfastened"
+        elif (val == 2):
+            return "Fastened"
+        elif (val == 3):
+            return "Unavalible"
+    def to_dnp_state(self,val):
+        if (val == 0):
+            return "Not monitored"
+        elif (val == 1):
+            return "Present"
+        elif (val == 2):
+            return "Absent"
+        elif (val == 3):
+            return "Unknown"
+    def to_warning_state(self,val):
+        if (val == 0):
+            return "No warning"
+        elif (val == 1):
+            return "Warning level 1"
+        elif (val == 2):
+            return "Warning level 2"
+        elif (val == 3):
+            return "Not used"
+
+
 
 
 class Communicate(QtCore.QObject):
     progress_changed = QtCore.pyqtSignal(int)
+class Communicate_str(QtCore.QObject):
+    upd_text= QtCore.pyqtSignal(str)
+    probeg_500=QtCore.pyqtSignal(str)
+    probeg_ne_skruchenniy=QtCore.pyqtSignal(str)
 
 class PlotCanvas(FigureCanvas):
     def __init__(self, parent=None):

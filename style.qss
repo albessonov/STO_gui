@@ -1,0 +1,88 @@
+QPushButton {
+       background-color: #B8B8FF; 
+       color: white; /* Белый текст */
+       border-radius: 10px; /* Скругленные углы */
+       padding: 10px;
+   }
+   QPushButton:hover {
+       background-color: #45a049; /* Цвет при наведении */
+   }
+   QPushButton:disabled {
+          background-color:#BABBBE;
+   }
+QMainWindow::separator {
+     background: yellow;
+     width: 10px; /* когда вертикальный */
+     height: 10px; /* когда горизонтальный */
+ }
+ QProgressBar {
+     border: 2px solid grey;
+     border-radius: 5px;
+     text-align: center;
+ }
+
+ QProgressBar::chunk {
+     background-color: #CD96CD;
+     width: 10px;
+     margin: 0.5px;
+ }
+QTabBar::tab {
+    background: #c8d1f4; /* Фон вкладки */
+    padding: 10px; /* Отступ внутри вкладки */
+    border: 1px solid transparent; /* Скрытая граница для нормального состояния */
+    border-top-left-radius: 10px; /* Скругление верхнего левого угла */
+    border-top-right-radius: 10px; /* Скругление верхнего правого угла */
+}
+
+QTabBar::tab:selected {
+    background: #ffffff; /* Цвет фона выбранной вкладки */
+    border: 1px solid #0078d7; /* Синяя граница для выбранной вкладки */
+    border-bottom: 1px solid #f0f0f0; /* Скрываем нижнюю границу */
+}
+QTabBar::tab:hover {
+    background-color: #d0d0d0; /* Цвет фона при наведении */
+}
+QTabWidget::pane { /* Рамка виджета со вкладками */
+     border-top: 2px solid #C2C7CB;
+ }
+QTextBrowser {
+    
+    border: 1px solid #aaaaaa; /* Светло-серый бордер */
+    border-radius: 10px; /* Скругленные углы */
+    padding: 2px; /* Отступ внутри */
+}
+
+QTextBrowser:focus {
+    border: 1px solid #0078d7; /* Синий бордер при фокусе */
+}
+
+QSpinBox {
+    background-color: #f0f0f0; /* Цвет фона */
+    color: #333333; /* Цвет текста */
+    border: 1px solid #aaaaaa; /* Цвет границы */
+    border-radius: 10px; /* Скруглённые углы */
+    padding: 5px; /* Отступ для содержимого */
+}
+
+QDoubleSpinBox {
+    background-color: #f0f0f0; /* Цвет фона */
+    color: #333333; /* Цвет текста */
+    border: 1px solid #aaaaaa; /* Цвет границы */
+    border-radius: 10px; /* Скруглённые углы */
+    padding: 5px; /* Отступ для содержимого */
+}
+
+QComboBox {
+    background-color: #f0f0f0; /* Цвет фона */
+    color: #333333; /* Цвет текста */
+    border: 1px solid #aaaaaa; /* Цвет границы */
+    border-radius: 5px; /* Скруглённые углы */
+    padding: 5px; /* Отступ для содержимого */
+}
+
+
+QComboBox QListView {
+    border: 1px solid #aaaaaa; 
+    selection-background-color: #a0c0f0; 
+    selection-color: #ffffff; 
+}
